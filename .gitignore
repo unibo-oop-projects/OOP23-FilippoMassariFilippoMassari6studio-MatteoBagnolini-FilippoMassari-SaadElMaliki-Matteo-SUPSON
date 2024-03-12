@@ -5,6 +5,12 @@
 build/
 bin/
 
+# Ignore vscode files
+.vscode
+
+# Ignore Mac directories file
+.DS_Store
+
 # Ignore Idea customizations
 .idea
 
