@@ -43,7 +43,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("supson.App")
+    mainClass.set("SonicLaunch.java")
 }
 
 tasks.test {
