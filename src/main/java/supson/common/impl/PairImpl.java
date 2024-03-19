@@ -63,7 +63,7 @@ public class PairImpl<X, Y> implements Pair<X, Y> {
      * @param obj the object to compare with this Pair
      * @return true if the specified object is equal to this Pair, false otherwise
      */
-    //@SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
