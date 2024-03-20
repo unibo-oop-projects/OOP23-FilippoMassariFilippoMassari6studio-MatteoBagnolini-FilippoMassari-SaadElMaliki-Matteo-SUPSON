@@ -8,7 +8,7 @@ import supson.model.hitbox.api.Hitbox;
  * This abstract class, which implements the interface GameEntity, models a generic game entity.
  * This class is used as a template to create other more specific classes.
  */
-public abstract class GameEntityImpl implements GameEntity {
+public abstract class AbstractGameEntity implements GameEntity {
 
     private Pos2d position;
     private Hitbox hitbox;
