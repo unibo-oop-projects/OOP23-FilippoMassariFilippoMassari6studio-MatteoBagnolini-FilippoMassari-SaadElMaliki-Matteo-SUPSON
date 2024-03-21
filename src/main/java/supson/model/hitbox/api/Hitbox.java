@@ -7,9 +7,9 @@ public interface Hitbox {
 
     /**
      * 
-     * @param box the hitbox to check the collision with
+     * @param other the hitbox to check the collision with
      * @return true if the two hitboxes are colliding, false otherwise
      */
-    boolean isCollidingWith(Hitbox box);
+    boolean isCollidingWith(Hitbox other);
 
 }
