@@ -43,12 +43,12 @@ public final class RectHitbox implements Hitbox {
 
     @Override
     public Pos2d getURCorner() {
-        return new Pos2dImpl(pos.x() + width / 2.0, pos.y() + height / 2.0);
+        return new Pos2dImpl(pos.x() + (float) width / 2, pos.y() + (float) height / 2);
     }
 
     @Override
     public Pos2d getLLCorner() {
-        return new Pos2dImpl(pos.x() - width / 2.0, pos.y() - height / 2.0);
+        return new Pos2dImpl(pos.x() - (float) width / 2, pos.y() - (float) height / 2.0);
     }
 
 }
