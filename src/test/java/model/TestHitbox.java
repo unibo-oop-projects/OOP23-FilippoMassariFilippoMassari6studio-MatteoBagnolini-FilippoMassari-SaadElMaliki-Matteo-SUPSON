@@ -1,10 +1,8 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +13,9 @@ import supson.model.hitbox.impl.RectHitbox;
 /**
  * THis class tests hitboxes.
  */
+// CHECKSTYLE: MagicNumber OFF
 class TestHitbox {
-    
+
     private RectHitbox hb1;
     private RectHitbox hb2;
     private RectHitbox hb3;
@@ -57,6 +56,6 @@ class TestHitbox {
         assertFalse(hb4.isCollidingWith(hb1));
         assertFalse(hb4.isCollidingWith(hb2));
         assertTrue(hb4.isCollidingWith(hb3));      //here the two rects share the same side (left side)
-        
+
     }
 }
