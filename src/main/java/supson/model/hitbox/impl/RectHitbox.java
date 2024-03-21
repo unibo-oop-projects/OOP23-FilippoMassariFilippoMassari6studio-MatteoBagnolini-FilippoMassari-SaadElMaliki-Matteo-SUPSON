@@ -32,8 +32,8 @@ public final class RectHitbox implements Hitbox {
         final Pos2d ll = getLLCorner();
         final Pos2d ur1 = box.getURCorner();
         final Pos2d ll1 = box.getLLCorner();
-        return  ll.x() < ur1.x() && ll1.x() < ur.x()
-            && ll.y() < ur1.y() && ll1.y() < ur.y();
+        return  ll.x() <= ur1.x() && ll1.x() <= ur.x()
+            && ll.y() <= ur1.y() && ll1.y() <= ur.y();
     }
 
     @Override
@@ -43,12 +43,12 @@ public final class RectHitbox implements Hitbox {
 
     @Override
     public Pos2d getURCorner() {
-        return new Pos2dImpl(pos.x() + width / 2, pos.y() + height / 2);
+        return new Pos2dImpl(pos.x() + width / 2.0, pos.y() + height / 2.0);
     }
 
     @Override
     public Pos2d getLLCorner() {
-        return new Pos2dImpl(pos.x() - width / 2, pos.y() - height / 2);
+        return new Pos2dImpl(pos.x() - width / 2.0, pos.y() - height / 2.0);
     }
 
 }
