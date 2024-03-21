@@ -1,5 +1,7 @@
 package supson.model.hitbox.api;
 
+import supson.common.api.Pos2d;
+
 /**
  * This interface models an hitbox.
  */
@@ -12,4 +14,10 @@ public interface Hitbox {
      */
     boolean isCollidingWith(Hitbox other);
 
+    /**
+     * Move the hitbox to a new position.
+     * @param newPosition the new position where the hitbox should be
+     */
+    void setPosition(Pos2d newPosition);
+    
 }
