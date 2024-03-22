@@ -10,6 +10,8 @@ import supson.model.entity.api.MoveableEntity;
  */
 public abstract class AbstractMoveableEntity extends AbstractGameEntity implements MoveableEntity {
 
+    private static final double VEL_MULT_FACTOR = 0.001;
+
     private Vect2d vel;
     private int life;
 
@@ -34,10 +36,16 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
         this.life = numLife;
     }
 
+    @Override
+    public final void move(final long timeDelta) {
+        updateVelocity();
+        setPosition(getPosition().sum(vel.mul(VEL_MULT_FACTOR * timeDelta)));
+    }
+
     /**
-     * This method shall be overrided.
+     * This method should be overrided.
      */
     @Override
-    public abstract void move(long timeDelta);
+    public abstract void updateVelocity();
 
 }
