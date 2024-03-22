@@ -38,4 +38,9 @@ public interface MoveableEntity extends GameEntity {
      */
     void move(long timeDelta);
 
+    /**
+     * Update the velocity vector based on input/behavior.
+     */
+    void updateVelocity();
+
 }
