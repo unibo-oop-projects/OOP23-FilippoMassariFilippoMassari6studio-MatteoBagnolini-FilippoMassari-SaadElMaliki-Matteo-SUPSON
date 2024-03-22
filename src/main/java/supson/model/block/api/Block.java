@@ -12,5 +12,5 @@ public interface Block extends GameEntity {
      * 
      * @return the type of the block
      */
-    public BlockType getBlockType();
+    BlockType getBlockType();
 }
