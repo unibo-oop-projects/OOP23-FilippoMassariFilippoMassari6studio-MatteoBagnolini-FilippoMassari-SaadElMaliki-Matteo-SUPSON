@@ -3,7 +3,11 @@ package supson.model.entity.impl;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
 
-public class Player extends AbstractMoveableEntity {
+/**
+ * This class, which extends the abstract class MoveableEntity, models
+ * the player of the game.
+ */
+public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 10;
     private static final double ACC_SPEED = 0.001;
@@ -30,7 +34,7 @@ public class Player extends AbstractMoveableEntity {
      * to move right.
      */
     private void moveRight() {
-        Vect2d oldVel = getVelocity();
+        final Vect2d oldVel = getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
 
@@ -54,19 +58,19 @@ public class Player extends AbstractMoveableEntity {
      * to move left.
      */
     private void moveLeft() {
-        Vect2d oldVel = getVelocity();
+        final Vect2d oldVel = getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
 
             stopOrizVel();
 
-        } else if (oldVel.x() > - MAX_SPEED) {
+        } else if (oldVel.x() > -MAX_SPEED) {
 
             newXVel -= ACC_SPEED;   //accelerate
 
-            if (newXVel <= - MAX_SPEED) {
+            if (newXVel <= -MAX_SPEED) {
 
-                newXVel = - MAX_SPEED;  //top speed reached
+                newXVel = -MAX_SPEED;  //top speed reached
 
             }
         }
@@ -86,7 +90,7 @@ public class Player extends AbstractMoveableEntity {
      */
     private void jump() {
         if (!isJumping) {
-            
+            setVelocity(getVelocity());
         }
     }
 
