@@ -17,6 +17,11 @@ public enum BlockType {
     /**
      * Represents ring blocks.
      */
-    RING
-}
+    RING,
 
+    /**
+     * Represents trap blocks.
+     */
+    TRAP
+
+}
