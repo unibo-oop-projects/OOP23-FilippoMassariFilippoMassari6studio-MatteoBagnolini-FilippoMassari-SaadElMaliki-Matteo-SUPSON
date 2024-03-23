@@ -24,4 +24,17 @@ public interface GameEntity {
      */
     Hitbox getHitbox();
 
+    /**
+     * Check if the entity is colliding with another entity.
+     * @param otherGameEntity the other entity to check collision with
+     * @return true if the entities are colliding, false otherwise
+     */
+    boolean isColliding(GameEntity otherGameEntity);
+
+    /**
+     * Notify the entity that it is colliding with another entity.
+     * @param otherGameEntity the other entity that the entity is colliding with
+     */
+    void notifyCollision(GameEntity collidingGameEntity);
+
 }
