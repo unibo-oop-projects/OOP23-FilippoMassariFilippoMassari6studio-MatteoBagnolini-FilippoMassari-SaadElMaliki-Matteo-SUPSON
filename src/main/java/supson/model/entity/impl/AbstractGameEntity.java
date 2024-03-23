@@ -28,4 +28,15 @@ public abstract class AbstractGameEntity implements GameEntity {
         return this.hitbox;
     }
 
+    @Override
+    public final boolean isColliding(final GameEntity otherGameEntity) {
+        //TODO : real implementation
+        return true;
+    }
+
+    @Override
+    public final void notifyCollision(final GameEntity collidingGameEntity) {
+        //TODO : real implementation
+    }
+
 }

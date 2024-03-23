@@ -33,7 +33,7 @@ public interface GameEntity {
 
     /**
      * Notify the entity that it is colliding with another entity.
-     * @param otherGameEntity the other entity that the entity is colliding with
+     * @param collidingGameEntity the other entity that the entity is colliding with
      */
     void notifyCollision(GameEntity collidingGameEntity);
 
