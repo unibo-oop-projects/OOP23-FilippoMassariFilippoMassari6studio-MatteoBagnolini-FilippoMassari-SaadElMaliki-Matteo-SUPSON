@@ -5,7 +5,7 @@ import supson.common.api.BlockType;
 /**
  * An interface representing a block in the game.
  */
-public interface Block extends GameEntity {
+public interface BlockEntity extends GameEntity {
 
     /**
      * Retrieves the type of the block.
