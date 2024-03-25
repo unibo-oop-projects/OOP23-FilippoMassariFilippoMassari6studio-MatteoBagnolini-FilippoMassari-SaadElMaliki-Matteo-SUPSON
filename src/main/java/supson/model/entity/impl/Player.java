@@ -1,7 +1,9 @@
 package supson.model.entity.impl;
 
+import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
+import supson.model.hitbox.api.Hitbox;
 
 /**
  * This class, which extends the abstract class MoveableEntity, models
@@ -10,11 +12,13 @@ import supson.common.impl.Vect2dImpl;
 public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 10;
-    private static final double ACC_SPEED = 0.001;
+    private static final double ACC_SPEED = 0.01;
+    private static final int JUMP_FORCE = 12;
+    private static final double GRAVITY = 0.05;
 
-    private boolean left, right;
+    private boolean left, right, jump;
     private boolean isJumping;
-    private boolean jump;
+    private boolean onGround;
 
     @Override
     public void updateVelocity() {
@@ -23,10 +27,9 @@ public final class Player extends AbstractMoveableEntity {
         } else if (right) {
             moveRight();
         }
-        if (jump) {
+        if (jump || isJumping) {
             jump();
         }
-        setMovesToFalse();
     }
 
     /**
@@ -89,19 +92,40 @@ public final class Player extends AbstractMoveableEntity {
      * This method update the velocity vector, causing the player to jump.
      */
     private void jump() {
-        if (!isJumping) {
-            setVelocity(getVelocity());
+        final Vect2d oldVel = getVelocity();
+        double newY = oldVel.y();
+        if (!isJumping) {       //jump starting now
+
+            newY = JUMP_FORCE;
+
+        } else {
+
+            newY -= GRAVITY;
+
         }
+        setVelocity(new Vect2dImpl(oldVel.x(), newY));
     }
 
     /**
      * This method set all the movement flags to false.
-     * It should be called only at the end of updateVelocity method.
+     * This method should be called by the controller when the player
+     * stops moving in the X axis.
      */
-    private void setMovesToFalse() {
+    public void setMovesToFalse() {
         this.left = false;
         this.right = false;
-        this.jump = false;
+    }
+
+    public void setMoveRight(boolean flag) {
+        this.right = flag;
+    }
+
+    public void setMoveLeft(boolean flag) {
+        this.left = flag;
+    }
+
+    public void setJump(boolean flag) {
+        this.jump = flag;
     }
 
 }
