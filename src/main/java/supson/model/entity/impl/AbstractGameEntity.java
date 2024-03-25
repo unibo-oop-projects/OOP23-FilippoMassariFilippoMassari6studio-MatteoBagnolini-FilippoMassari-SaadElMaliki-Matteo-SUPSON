@@ -29,9 +29,8 @@ public abstract class AbstractGameEntity implements GameEntity {
     }
 
     @Override
-    public final boolean isColliding(final GameEntity otherGameEntity) {
-        //TODO : real implementation
-        return true;
+    public final boolean isCollidingWith(final GameEntity otherGameEntity) {
+        return this.getHitbox().isCollidingWith(otherGameEntity.getHitbox());
     }
 
     @Override

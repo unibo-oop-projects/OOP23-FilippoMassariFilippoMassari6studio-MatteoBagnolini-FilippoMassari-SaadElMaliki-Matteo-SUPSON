@@ -29,7 +29,7 @@ public interface GameEntity {
      * @param otherGameEntity the other entity to check collision with
      * @return true if the entities are colliding, false otherwise
      */
-    boolean isColliding(GameEntity otherGameEntity);
+    boolean isCollidingWith(GameEntity otherGameEntity);
 
     /**
      * Notify the entity that it is colliding with another entity.
