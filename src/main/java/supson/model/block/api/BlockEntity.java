@@ -1,6 +1,7 @@
-package supson.model.entity.api;
+package supson.model.block.api;
 
-import supson.common.api.BlockType;
+import supson.model.block.BlockType;
+import supson.model.entity.api.GameEntity;
 
 /**
  * An interface representing a block in the game.

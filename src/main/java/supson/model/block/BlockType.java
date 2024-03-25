@@ -1,4 +1,4 @@
-package supson.common.api;
+package supson.model.block;
 
 /**
  * Enum representing different types of blocks in the game.
