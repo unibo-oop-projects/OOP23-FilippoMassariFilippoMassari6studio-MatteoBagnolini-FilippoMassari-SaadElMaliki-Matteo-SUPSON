@@ -16,7 +16,14 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
     private Vect2d vel;
     private int life;
 
-
+    /**
+     * The constructor of a generic moveable entity.
+     * @param pos the position of the entity
+     * @param height the height of the entity
+     * @param width the width of the entity
+     * @param vel the starting velocity of the entity
+     * @param life the number of life of the entity
+     */
     public AbstractMoveableEntity(final Pos2d pos, final int height, final int width,
      final Vect2d vel, final int life) {
         super(pos, height, width);

@@ -14,11 +14,17 @@ public abstract class AbstractGameEntity implements GameEntity {
     private Pos2d position;
     private Hitbox hitbox;
 
+    /**
+     * The constructor of a generic game entity.
+     * @param pos the position of the entity
+     * @param height the height of the entity
+     * @param width the width of the entity
+     */
     public AbstractGameEntity(final Pos2d pos, final int height, final int width) {
         this.position = pos;
         this.hitbox = new RectHitbox(pos, height, width);
     }
-    
+
     @Override
     public final Pos2d getPosition() {
         return this.position;

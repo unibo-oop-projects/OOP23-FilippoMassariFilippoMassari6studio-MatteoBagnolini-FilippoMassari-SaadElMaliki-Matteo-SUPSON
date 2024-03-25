@@ -16,11 +16,19 @@ public final class Player extends AbstractMoveableEntity {
     private static final double GRAVITY = 0.05;
 
     private static final int HEIGHT = 2;
-    private static final int WIDTH = 2;
+    private static final int WIDTH = 1;
 
     private boolean left, right, jump;
     private boolean isJumping;
 
+    /**
+     * The constructor of the player class.
+     * @param pos the starting positon of the player
+     * @param heigth the height of the player
+     * @param width the width of the player
+     * @param vel the starting velocity of the player
+     * @param life the number of life of the player
+     */
     public Player(final Pos2d pos, final int heigth, final int width,
     final Vect2d vel, final int life) {
         super(pos, HEIGHT, WIDTH, vel, life);
@@ -122,14 +130,26 @@ public final class Player extends AbstractMoveableEntity {
         this.right = false;
     }
 
+    /**
+     * This method sets the right flag. It should be used when 
+     * the player moves right.
+     */
     public void setMoveRight(boolean flag) {
         this.right = flag;
     }
 
+    /**
+     * This method sets the left flag. It should be used when 
+     * the player moves left.
+     */
     public void setMoveLeft(boolean flag) {
         this.left = flag;
     }
 
+    /**
+     * This method sets the jump flag. It should be used when 
+     * the player jumps.
+     */
     public void setJump(boolean flag) {
         this.jump = flag;
     }
