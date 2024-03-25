@@ -3,7 +3,6 @@ package supson.model.entity.impl;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.model.entity.api.MoveableEntity;
-import supson.model.hitbox.api.Hitbox;
 
 /**
  * This abstract class, which extends AbstractGame and implements the interface MoveableEntity,

@@ -3,7 +3,6 @@ package supson.model.entity.impl;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
-import supson.model.hitbox.api.Hitbox;
 
 /**
  * This class, which extends the abstract class MoveableEntity, models
@@ -21,7 +20,6 @@ public final class Player extends AbstractMoveableEntity {
 
     private boolean left, right, jump;
     private boolean isJumping;
-    private boolean onGround;
 
     public Player(final Pos2d pos, final int heigth, final int width,
     final Vect2d vel, final int life) {

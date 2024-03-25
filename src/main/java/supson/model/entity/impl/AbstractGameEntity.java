@@ -11,9 +11,6 @@ import supson.model.hitbox.impl.RectHitbox;
  */
 public abstract class AbstractGameEntity implements GameEntity {
 
-    private static final int HEIGHT = 2;
-    private static final int WIDTH = 2;
-
     private Pos2d position;
     private Hitbox hitbox;
 
