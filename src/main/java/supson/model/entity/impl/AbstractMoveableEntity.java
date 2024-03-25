@@ -45,7 +45,6 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
     /**
      * This method should be overrided.
      */
-    @Override
-    public abstract void updateVelocity();
+    protected abstract void updateVelocity();
 
 }
