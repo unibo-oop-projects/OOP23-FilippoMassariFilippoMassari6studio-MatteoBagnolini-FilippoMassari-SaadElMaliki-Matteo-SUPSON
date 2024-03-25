@@ -16,9 +16,17 @@ public final class Player extends AbstractMoveableEntity {
     private static final int JUMP_FORCE = 12;
     private static final double GRAVITY = 0.05;
 
+    private static final int HEIGHT = 2;
+    private static final int WIDTH = 2;
+
     private boolean left, right, jump;
     private boolean isJumping;
     private boolean onGround;
+
+    public Player(final Pos2d pos, final int heigth, final int width,
+    final Vect2d vel, final int life) {
+        super(pos, HEIGHT, WIDTH, vel, life);
+    } 
 
     @Override
     public void updateVelocity() {

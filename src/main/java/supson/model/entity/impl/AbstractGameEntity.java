@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.hitbox.api.Hitbox;
+import supson.model.hitbox.impl.RectHitbox;
 
 /**
  * This abstract class, which implements the interface GameEntity, models a generic game entity.
@@ -10,9 +11,17 @@ import supson.model.hitbox.api.Hitbox;
  */
 public abstract class AbstractGameEntity implements GameEntity {
 
+    private static final int HEIGHT = 2;
+    private static final int WIDTH = 2;
+
     private Pos2d position;
     private Hitbox hitbox;
 
+    public AbstractGameEntity(final Pos2d pos, final int height, final int width) {
+        this.position = pos;
+        this.hitbox = new RectHitbox(pos, height, width);
+    }
+    
     @Override
     public final Pos2d getPosition() {
         return this.position;

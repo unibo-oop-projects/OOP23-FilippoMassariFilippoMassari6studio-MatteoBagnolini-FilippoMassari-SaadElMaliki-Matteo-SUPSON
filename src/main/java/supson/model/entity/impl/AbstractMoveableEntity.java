@@ -1,7 +1,9 @@
 package supson.model.entity.impl;
 
+import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.model.entity.api.MoveableEntity;
+import supson.model.hitbox.api.Hitbox;
 
 /**
  * This abstract class, which extends AbstractGame and implements the interface MoveableEntity,
@@ -15,6 +17,13 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
     private Vect2d vel;
     private int life;
 
+
+    public AbstractMoveableEntity(final Pos2d pos, final int height, final int width,
+     final Vect2d vel, final int life) {
+        super(pos, height, width);
+        this.vel = vel;
+        this.life = life;
+        }
 
     @Override
     public final Vect2d getVelocity() {
