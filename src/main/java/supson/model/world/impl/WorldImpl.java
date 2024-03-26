@@ -18,22 +18,29 @@ import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Player;
 import supson.model.world.api.World;
 
-public class WorldImpl implements World{
+/**
+ * Implementation of the World interface.
+ */
+public class WorldImpl implements World {
 
     private final List<BlockEntity> rings;
     private final List<BlockEntity> blocks;
     private final List<MoveableEntity> enemies;
     private Player player; //forse final?
 
+    /**
+    * Constructs a new instance of the WorldImpl class.
+    * Initializes the lists for rings, blocks, and enemies.
+    */
     public WorldImpl() {
         this.rings = new ArrayList<>();
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        //this.player = new Player();
+        //this.player = new Player(); //correggere javadoc
     }
 
     @Override
-    public void loadWorld(String filePath) {
+    public final void loadWorld(final String filePath) {
         Map<Integer, BlockType> blockTypeMap = new HashMap<>();
         blockTypeMap.put(1, BlockType.TERRAIN);
         blockTypeMap.put(2, BlockType.POWER_UP);
@@ -63,6 +70,8 @@ public class WorldImpl implements World{
                             case TRAP:
                                 addTrap(pos);
                                 break;
+                            default:
+                                break;
                         }
                     });
                 }
@@ -74,7 +83,7 @@ public class WorldImpl implements World{
 }
 
     @Override
-    public void reset() {
+    public final void reset() {
         this.rings.removeAll(this.rings);
         this.blocks.removeAll(this.blocks);
         this.enemies.removeAll(this.enemies);
@@ -82,57 +91,57 @@ public class WorldImpl implements World{
     }
 
     @Override
-    public void addRing(Pos2d pos) {
+    public final void addRing(final Pos2d pos) {
         this.rings.add(new BlockEntityImpl(pos, BlockType.RING));
     }
 
     @Override
-    public void removeRing(BlockEntity ring) {
+    public final void removeRing(final BlockEntity ring) {
         this.rings.remove(ring);
     }
 
     @Override
-    public void addPowerUp(Pos2d pos) {
+    public final void addPowerUp(final Pos2d pos) {
         this.blocks.add(new BlockEntityImpl(pos, BlockType.POWER_UP));
     }
 
     @Override
-    public void removePowerUp(BlockEntity powerUp) {
+    public final void removePowerUp(final BlockEntity powerUp) {
         this.blocks.remove(powerUp);
     }
 
     @Override
-    public void addTrap(Pos2d pos) {
+    public final void addTrap(final Pos2d pos) {
         this.blocks.add(new BlockEntityImpl(pos, BlockType.TRAP));
     }
 
     @Override
-    public void removeTrap(BlockEntity trap) {
+    public final void removeTrap(final BlockEntity trap) {
         this.blocks.remove(trap);
     }
 
     @Override
-    public void addTerrain(Pos2d pos) {
+    public final void addTerrain(final Pos2d pos) {
         this.blocks.add(new BlockEntityImpl(pos, BlockType.TERRAIN));
     }
 
     @Override
-    public void removeTerrain(BlockEntity terrain) {
+    public final void removeTerrain(final BlockEntity terrain) {
         this.blocks.remove(terrain);
     }
     
     @Override
-    public void addEnemy(Pos2d pos) {
+    public final void addEnemy(final Pos2d pos) {
         this.enemies.add(new Player(pos, 0, 0, null, 0)); //todo : add parameters to the constructor
     }
 
     @Override
-    public void removeEnemy(MoveableEntity enemy) {
+    public final void removeEnemy(final MoveableEntity enemy) {
         this.enemies.remove(enemy);
     }
 
     @Override
-    public void addPlayer(Pos2d pos) {
+    public final void addPlayer(final Pos2d pos) {
         this.player = new Player(pos, 0, 0, null, 0); //todo : add parameters to the constructor
     }
 
