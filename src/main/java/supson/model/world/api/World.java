@@ -1,102 +1,62 @@
 package supson.model.world.api;
 
+import java.util.List;
+
 import supson.common.api.Pos2d;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.MoveableEntity;
 
 /**
  * The World interface represents a game world.
- * It provides methods to load, create, destroy, and reset the world.
- * It also provides methods to add and remove various entities such as rings, blocks, players, and enemies.
+ * It provides methods to load the world, reset it, remove blocks and enemies,
+ * and retrieve information about the blocks, enemies, and player position.
  */
 public interface World {
 
     /**
-     * Loads the world from the specified file path.
+     * Loads the game world from the specified file.
      *
-     * @param filePath The path of the file containing the world data.
+     * @param filePath the path of the file containing the game world data
      */
     void loadWorld(String filePath);
 
     /**
-     * Resets the world to its initial state.
+     * Resets the game world to its initial state.
      */
     void reset();
 
     /**
-     * Adds a ring to the world at the specified position.
+     * Removes the specified block from the game world.
      *
-     * @param pos The position where the ring should be added.
+     * @param block the block to be removed
      */
-    void addRing(Pos2d pos);
+    void removeBlock(BlockEntity block);
 
     /**
-     * Removes a ring from the world.
+     * Removes the specified enemy from the game world.
      *
-     * @param ring The ring to be removed.
-     */
-    void removeRing(BlockEntity ring);
-
-    /**
-     * Adds a power-up to the world at the specified position.
-     *
-     * @param pos The position where the power-up should be added.
-     */
-    void addPowerUp(Pos2d pos);
-
-    /**
-     * Removes a power-up from the world.
-     *
-     * @param powerUp The power-up to be removed.
-     */
-    void removePowerUp(BlockEntity powerUp);
-
-    /**
-     * Adds a trap to the world at the specified position.
-     *
-     * @param pos The position where the trap should be added.
-     */
-    void addTrap(Pos2d pos);
-
-    /**
-     * Removes a trap from the world.
-     *
-     * @param trap The trap to be removed.
-     */
-    void removeTrap(BlockEntity trap);
-
-    /**
-     * Adds a block to the world at the specified position.
-     *
-     * @param pos The position where the block should be added.
-     */
-    void addTerrain(Pos2d pos);
-
-    /**
-     * Removes a block from the world.
-     *
-     * @param terrain The block to be removed.
-     */
-    void removeTerrain(BlockEntity terrain);
-
-    /**
-     * Adds an enemy to the world at the specified position.
-     *
-     * @param pos The position where the enemy should be added.
-     */
-    void addEnemy(Pos2d pos);
-
-    /**
-     * Removes an enemy from the world.
-     *
-     * @param enemy The enemy to be removed.
+     * @param enemy the enemy to be removed
      */
     void removeEnemy(MoveableEntity enemy);
 
     /**
-     * Adds a player to the world at the specified position.
+     * Returns a list of all the blocks in the game world.
      *
-     * @param pos The position where the player should be added.
+     * @return a list of BlockEntity objects representing the blocks
      */
-    void addPlayer(Pos2d pos);
+    List<BlockEntity> getBlocks();
+
+    /**
+     * Returns a list of all the enemies in the game world.
+     *
+     * @return a list of MoveableEntity objects representing the enemies
+     */
+    List<MoveableEntity> getEnemies();
+
+    /**
+     * Returns the position of the player in the game world.
+     *
+     * @return a Pos2d object representing the player's position
+     */
+    Pos2d getPlayerPosition();
 }

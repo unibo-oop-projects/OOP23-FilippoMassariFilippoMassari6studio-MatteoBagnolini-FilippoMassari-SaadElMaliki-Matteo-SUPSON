@@ -23,29 +23,28 @@ import supson.model.world.api.World;
  */
 public class WorldImpl implements World {
 
-    private final List<BlockEntity> rings;
     private final List<BlockEntity> blocks;
     private final List<MoveableEntity> enemies;
-    private Player player; //forse final?
+    private final Player player;
 
     /**
     * Constructs a new instance of the WorldImpl class.
-    * Initializes the lists for rings, blocks, and enemies.
+    * Initializes the lists for blocks, enemies and palyer.
     */
     public WorldImpl() {
-        this.rings = new ArrayList<>();
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        //this.player = new Player(); //correggere javadoc
+        this.player = new Player(null, 0, 0, null, 0); //todo : add parameters to the constructor
     }
 
+    // non viene gestito l'insrimento di sonic ed  enimis
     @Override
     public final void loadWorld(final String filePath) {
-        Map<Integer, BlockType> blockTypeMap = new HashMap<>();
-        blockTypeMap.put(1, BlockType.TERRAIN);
-        blockTypeMap.put(2, BlockType.POWER_UP);
-        blockTypeMap.put(3, BlockType.RING);
-        blockTypeMap.put(4, BlockType.TRAP);  
+        Map<Integer, BlockType> worldElementMap = new HashMap<>();
+        worldElementMap.put(1, BlockType.TERRAIN);
+        worldElementMap.put(2, BlockType.POWER_UP);
+        worldElementMap.put(3, BlockType.RING);
+        worldElementMap.put(4, BlockType.TRAP);  
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -53,26 +52,11 @@ public class WorldImpl implements World {
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
-                    int blockType = Integer.parseInt(tokens[x]);
+                    int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    Optional<BlockType> optionalType = Optional.ofNullable(blockTypeMap.get(blockType));
+                    Optional<BlockType> optionalType = Optional.ofNullable(worldElementMap.get(worldElement));
                     optionalType.ifPresent(type -> {
-                        switch (type) {
-                            case TERRAIN:
-                                addTerrain(pos);
-                                break;
-                            case POWER_UP:
-                                addPowerUp(pos);
-                                break;
-                            case RING:
-                                addRing(pos);
-                                break;
-                            case TRAP:
-                                addTrap(pos);
-                                break;
-                            default:
-                                break;
-                        }
+                        this.addBlock(pos, type);
                     });
                 }
                 y++;
@@ -84,54 +68,21 @@ public class WorldImpl implements World {
 
     @Override
     public final void reset() {
-        this.rings.removeAll(this.rings);
         this.blocks.removeAll(this.blocks);
         this.enemies.removeAll(this.enemies);
-        //this.loadWorld(); //todo : add parameters to the method
+        this.loadWorld(null); //todo : add file path
+    }
+
+    private final void addBlock(final Pos2d pos, final BlockType type) {
+        this.blocks.add(new BlockEntityImpl(pos, type));
     }
 
     @Override
-    public final void addRing(final Pos2d pos) {
-        this.rings.add(new BlockEntityImpl(pos, BlockType.RING));
-    }
-
-    @Override
-    public final void removeRing(final BlockEntity ring) {
-        this.rings.remove(ring);
-    }
-
-    @Override
-    public final void addPowerUp(final Pos2d pos) {
-        this.blocks.add(new BlockEntityImpl(pos, BlockType.POWER_UP));
-    }
-
-    @Override
-    public final void removePowerUp(final BlockEntity powerUp) {
-        this.blocks.remove(powerUp);
-    }
-
-    @Override
-    public final void addTrap(final Pos2d pos) {
-        this.blocks.add(new BlockEntityImpl(pos, BlockType.TRAP));
-    }
-
-    @Override
-    public final void removeTrap(final BlockEntity trap) {
-        this.blocks.remove(trap);
-    }
-
-    @Override
-    public final void addTerrain(final Pos2d pos) {
-        this.blocks.add(new BlockEntityImpl(pos, BlockType.TERRAIN));
-    }
-
-    @Override
-    public final void removeTerrain(final BlockEntity terrain) {
-        this.blocks.remove(terrain);
+    public final void removeBlock(final BlockEntity block) {
+        this.blocks.remove(block);
     }
     
-    @Override
-    public final void addEnemy(final Pos2d pos) {
+    private final void addEnemy(final Pos2d pos) {
         this.enemies.add(new Player(pos, 0, 0, null, 0)); //todo : add parameters to the constructor
     }
 
@@ -141,8 +92,18 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public final void addPlayer(final Pos2d pos) {
-        this.player = new Player(pos, 0, 0, null, 0); //todo : add parameters to the constructor
+    public List<BlockEntity> getBlocks() {
+        return new ArrayList<>(blocks); //verificare che sia giusto
+    }
+
+    @Override
+    public List<MoveableEntity> getEnemies() {
+        return new ArrayList<>(enemies); //verificare che sia giusto
+    }
+
+    @Override
+    public Pos2d getPlayerPosition() {
+        return player.getPosition();
     }
 
 }
