@@ -21,7 +21,7 @@ import supson.model.world.api.World;
 /**
  * Implementation of the World interface.
  */
-public class WorldImpl implements World {
+public final class WorldImpl implements World {
 
     private final List<BlockEntity> blocks;
     private final List<MoveableEntity> enemies;

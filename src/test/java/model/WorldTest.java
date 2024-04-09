@@ -3,21 +3,26 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.common.impl.Pos2dImpl;
-import java.util.List;
 
 /**
  * This class contains unit tests for the World class.
  */
 public class WorldTest {
 
-    String FILEPATH = "src\\resources\\world.txt";
+    private static final String filePath = "src\\resources\\world.txt";
     private World world;
 
     /**
@@ -26,7 +31,7 @@ public class WorldTest {
     @BeforeEach
     void setUp() {
         world = new WorldImpl();
-        world.loadWorld(FILEPATH);
+        world.loadWorld(filePath);
     }
 
     /**
@@ -69,7 +74,7 @@ public class WorldTest {
      */
     @Test
     void testReset() {
-        world.reset(FILEPATH);
+        world.reset(filePath);
         assertNotNull(world.getBlocks());
         assertFalse(world.getBlocks().isEmpty());
         assertTrue(world.getEnemies().isEmpty());
