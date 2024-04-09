@@ -22,8 +22,10 @@ public interface World {
 
     /**
      * Resets the game world to its initial state.
+     *
+     * @param filePath the path of the file containing the game world data
      */
-    void reset();
+    void reset(String filePath);
 
     /**
      * Removes the specified block from the game world.

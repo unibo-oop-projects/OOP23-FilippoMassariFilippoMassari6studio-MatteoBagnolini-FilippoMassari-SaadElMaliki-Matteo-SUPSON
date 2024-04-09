@@ -28,28 +28,27 @@ public class WorldImpl implements World {
     private final Player player;
 
     /**
-    * Constructs a new instance of the WorldImpl class.
-    * Initializes the lists for blocks, enemies and palyer.
-    */
+     * Constructs a new instance of the WorldImpl class.
+     * Initializes the lists for blocks, enemies and player.
+     */
     public WorldImpl() {
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        this.player = new Player(null, 0, 0, null, 0); //todo : add parameters to the constructor
+        this.player = new Player(new Pos2dImpl(0, 0), 0, 0, null, 0); //todo : add parameters to the constructor
     }
 
-    // non viene gestito l'insrimento di sonic ed  enimis
     @Override
     public final void loadWorld(final String filePath) {
         Map<Integer, BlockType> worldElementMap = new HashMap<>();
         worldElementMap.put(1, BlockType.TERRAIN);
         worldElementMap.put(2, BlockType.POWER_UP);
         worldElementMap.put(3, BlockType.RING);
-        worldElementMap.put(4, BlockType.TRAP);  
+        worldElementMap.put(4, BlockType.TRAP);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             int y = 0;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { //todo : cambiare readear per renderlo standard
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
@@ -64,16 +63,23 @@ public class WorldImpl implements World {
         } catch (IOException e) {
             e.printStackTrace();
         }
-}
-
-    @Override
-    public final void reset() {
-        this.blocks.removeAll(this.blocks);
-        this.enemies.removeAll(this.enemies);
-        this.loadWorld(null); //todo : add file path
     }
 
-    private final void addBlock(final Pos2d pos, final BlockType type) {
+    @Override
+    public final void reset(final String filePath) {
+        this.blocks.clear();
+        this.enemies.clear();
+        this.player.setPosition(null); //todo : add parameters to the constructor
+        this.loadWorld(filePath); //todo : add file path
+    }
+
+    /**
+     * Adds a new block to the world at the specified position with the specified type.
+     *
+     * @param pos  The position where the block should be added.
+     * @param type The type of the block to be added.
+     */
+    private void addBlock(final Pos2d pos, final BlockType type) {
         this.blocks.add(new BlockEntityImpl(pos, type));
     }
 
@@ -81,8 +87,13 @@ public class WorldImpl implements World {
     public final void removeBlock(final BlockEntity block) {
         this.blocks.remove(block);
     }
-    
-    private final void addEnemy(final Pos2d pos) {
+
+    /**
+     * Adds a new enemy to the world at the specified position.
+     *
+     * @param pos The position where the enemy should be added.
+     */
+    private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
         this.enemies.add(new Player(pos, 0, 0, null, 0)); //todo : add parameters to the constructor
     }
 
