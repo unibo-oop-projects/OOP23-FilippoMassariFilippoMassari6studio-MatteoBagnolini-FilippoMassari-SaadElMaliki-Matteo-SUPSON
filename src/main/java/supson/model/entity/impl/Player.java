@@ -41,8 +41,11 @@ public final class Player extends AbstractMoveableEntity {
         } else if (right) {
             moveRight();
         }
-        if (jump || isJumping) {
-            jump();
+        if (jump) {
+            startJumping();
+        }
+        if (isJumping) {
+            applyGravity();
         }
     }
 
@@ -55,7 +58,7 @@ public final class Player extends AbstractMoveableEntity {
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
 
-            stopOrizVel();
+            newXVel = 0;        //the player stops moving
 
         } else if (oldVel.x() < MAX_SPEED) {
 
@@ -79,7 +82,7 @@ public final class Player extends AbstractMoveableEntity {
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
 
-            stopOrizVel();
+            newXVel = 0;        //the player stops moving
 
         } else if (oldVel.x() > -MAX_SPEED) {
 
@@ -95,29 +98,18 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method stops the player on the X axis. It is called everytime the 
-     * player changes direction (from left to right and vice versa).
+     * This method start the jumping action of the player, by setting the new y component
+     * of the velocity.
      */
-    private void stopOrizVel() {
-        setVelocity(new Vect2dImpl(0.0, getVelocity().y()));
+    private void startJumping() {
+        setVelocity(new Vect2dImpl(getVelocity().x(), JUMP_FORCE));
     }
 
     /**
-     * This method update the velocity vector, causing the player to jump.
+     * This method update the y component of the velocity, applying gravity force.
      */
-    private void jump() {
-        final Vect2d oldVel = getVelocity();
-        double newY = oldVel.y();
-        if (!isJumping) {       //jump starting now
-
-            newY = JUMP_FORCE;
-
-        } else {
-
-            newY -= GRAVITY;
-
-        }
-        setVelocity(new Vect2dImpl(oldVel.x(), newY));
+    private void applyGravity() {
+        setVelocity(new Vect2dImpl(getVelocity().x(), getVelocity().y() - GRAVITY));
     }
 
     /**
