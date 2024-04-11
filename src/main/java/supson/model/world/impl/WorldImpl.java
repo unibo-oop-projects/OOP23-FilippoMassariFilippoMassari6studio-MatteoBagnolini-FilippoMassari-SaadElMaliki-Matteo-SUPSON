@@ -55,7 +55,7 @@ public final class WorldImpl implements World {
                     Pos2d pos = new Pos2dImpl(x, y);
                     Optional<BlockType> optionalType = Optional.ofNullable(worldElementMap.get(worldElement));
                     optionalType.ifPresent(type -> {
-                        this.addBlock(pos, type);
+                        this.addBlock(pos, type); //decidere se terere il metodo addBlock che crea il blocco o meno
                     });
                 }
                 y++;
