@@ -12,7 +12,7 @@ import supson.model.hitbox.impl.RectHitbox;
 public abstract class AbstractGameEntity implements GameEntity {
 
     private Pos2d position;
-    private Hitbox hitbox;
+    private final Hitbox hitbox;
 
     /**
      * The constructor of a generic game entity.
