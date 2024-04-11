@@ -34,7 +34,7 @@ public final class WorldImpl implements World {
     public WorldImpl() {
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        this.player = new Player(new Pos2dImpl(0, 0), 0, 0, null, 0); //todo : add parameters to the constructor
+        this.player = new Player(new Pos2dImpl(0, 0), null, 0); //todo : add parameters to the constructor
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class WorldImpl implements World {
      * @param pos The position where the enemy should be added.
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
-        this.enemies.add(new Player(pos, 0, 0, null, 0)); //todo : add parameters to the constructor
+        this.enemies.add(new Player(pos, null, 0)); //todo : add parameters to the constructor
     }
 
     @Override
