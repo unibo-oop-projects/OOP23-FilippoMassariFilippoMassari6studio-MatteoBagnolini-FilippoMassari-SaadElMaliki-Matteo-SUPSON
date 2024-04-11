@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.model.entity.api.MoveableEntity;
+import supson.model.physics.api.Physics;
 
 /**
  * This abstract class, which extends AbstractGame and implements the interface MoveableEntity,
@@ -15,6 +16,7 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
 
     private Vect2d vel;
     private int life;
+    protected Physics physicsComponent;
 
     /**
      * The constructor of a generic moveable entity.
