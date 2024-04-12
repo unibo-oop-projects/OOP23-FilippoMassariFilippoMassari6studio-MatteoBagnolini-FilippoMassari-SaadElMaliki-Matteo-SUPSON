@@ -21,7 +21,7 @@ import supson.model.world.api.World;
 /**
  * Implementation of the World interface.
  */
-public final class WorldImpl implements World {
+public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
     private final List<BlockEntity> blocks;
     private final List<MoveableEntity> enemies;
@@ -94,7 +94,7 @@ public final class WorldImpl implements World {
      * @param pos The position where the enemy should be added.
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
-        this.enemies.add(new Player(pos, null, 0)); //todo : add parameters to the constructor
+        this.enemies.add(new Player(pos, null, 0)); //todo : sostiture con enemy quando sara possibile
     }
 
     @Override
@@ -104,12 +104,12 @@ public final class WorldImpl implements World {
 
     @Override
     public List<BlockEntity> getBlocks() {
-        return new ArrayList<>(blocks); //verificare che sia giusto
+        return new ArrayList<>(this.blocks); //verificare che sia giusto
     }
 
     @Override
     public List<MoveableEntity> getEnemies() {
-        return new ArrayList<>(enemies); //verificare che sia giusto
+        return new ArrayList<>(this.enemies); //verificare che sia giusto
     }
 
     @Override
