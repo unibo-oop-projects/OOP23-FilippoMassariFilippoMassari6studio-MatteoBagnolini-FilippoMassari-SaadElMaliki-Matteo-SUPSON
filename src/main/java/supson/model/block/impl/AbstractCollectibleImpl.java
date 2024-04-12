@@ -7,6 +7,8 @@ import supson.model.block.api.Collectible;
 /**
  * An abstract implementation of the Collectible interface.
  * This class provides a base implementation for collectible blocks in the game.
+ *
+ * @param <T> the type of the collectible item
  */
 public abstract class AbstractCollectibleImpl<T> extends BlockEntityImpl implements Collectible<T> {
 

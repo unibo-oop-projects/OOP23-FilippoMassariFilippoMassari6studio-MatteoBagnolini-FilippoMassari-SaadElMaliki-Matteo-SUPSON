@@ -17,8 +17,8 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         return new AbstractCollectibleImpl<Object>(pos, BlockType.RING) {
 
             @Override
-            public void collect(Object obj) {  // TODO : quando ci sarà l'hud potro implemntare
-                // TODO Auto-generated method stub
+            public void collect(final Object obj) {
+                // TODO: Implement when HUD is available
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 
@@ -30,11 +30,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         return new AbstractCollectibleImpl<Player>(pos, BlockType.POWER_UP) {
 
             @Override
-            public void collect(Player player) {  // TODO : quando ci sarà l'hud potro implemntare
-                // todo: implementare quado ci sarè una set stato di sonic
+            public void collect(final Player player) {
+                // TODO: Implement when HUD is available
+                throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 
         };
     }
-    
+
 }
