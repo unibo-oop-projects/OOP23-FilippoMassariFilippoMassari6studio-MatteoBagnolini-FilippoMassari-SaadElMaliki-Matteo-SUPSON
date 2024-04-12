@@ -4,6 +4,7 @@ import supson.common.api.Pos2d;
 import supson.model.block.BlockType;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
+import supson.model.entity.impl.Player;
 
 /**
  * An implementation of the CollectibleFactory interface.
@@ -12,11 +13,11 @@ import supson.model.block.api.CollectibleFactory;
 public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
-    public Collectible createCollectibleRing(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.RING) {
+    public Collectible<Object> createCollectibleRing(final Pos2d pos) {
+        return new AbstractCollectibleImpl<Object>(pos, BlockType.RING) {
 
             @Override
-            public void collect() {  // TODO : quando ci sarà l'hud potro implemntare
+            public void collect(Object obj) {  // TODO : quando ci sarà l'hud potro implemntare
                 // TODO Auto-generated method stub
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
@@ -25,13 +26,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     }
 
     @Override
-    public Collectible createCollectiblePowerUp(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.POWER_UP) {
+    public Collectible<Player> createCollectiblePowerUp(final Pos2d pos) {
+        return new AbstractCollectibleImpl<Player>(pos, BlockType.POWER_UP) {
 
             @Override
-            public void collect() {  // TODO : quando ci sarà l'hud potro implemntare
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'collect'");
+            public void collect(Player player) {  // TODO : quando ci sarà l'hud potro implemntare
+                // todo: implementare quado ci sarè una set stato di sonic
             }
 
         };

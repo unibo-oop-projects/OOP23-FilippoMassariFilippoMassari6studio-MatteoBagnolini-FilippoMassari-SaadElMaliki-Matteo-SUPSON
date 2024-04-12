@@ -22,7 +22,7 @@ import supson.common.impl.Pos2dImpl;
  */
 public class WorldTest {
 
-    private static final String filePath = "src\\resources\\world.txt";
+    private static final String FILE_PATH = "src\\resources\\world.txt";
     private World world;
 
     /**
@@ -31,7 +31,7 @@ public class WorldTest {
     @BeforeEach
     void setUp() {
         world = new WorldImpl();
-        world.loadWorld(filePath);
+        world.loadWorld(FILE_PATH);
     }
 
     /**
@@ -74,7 +74,7 @@ public class WorldTest {
      */
     @Test
     void testReset() {
-        world.reset(filePath);
+        world.reset(FILE_PATH);
         assertNotNull(world.getBlocks());
         assertFalse(world.getBlocks().isEmpty());
         assertTrue(world.getEnemies().isEmpty());
