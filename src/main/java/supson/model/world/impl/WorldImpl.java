@@ -94,7 +94,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * @param pos The position where the enemy should be added.
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
-        this.enemies.add(new Player(pos, null, 0)); //todo : sostiture con enemy quando sara possibile
+        //this.enemies.add(); //todo : aggiungere nemici quando esisteranno
     }
 
     @Override
