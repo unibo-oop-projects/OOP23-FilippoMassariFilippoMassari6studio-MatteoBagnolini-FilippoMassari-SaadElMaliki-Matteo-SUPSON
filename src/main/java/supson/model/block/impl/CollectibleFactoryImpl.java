@@ -18,7 +18,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                // TODO: implemtare quando sonic agvra setPoints
+                //TODO: implemtare quando sonic agvra setPoints
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 
@@ -31,7 +31,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                // TODO: Implement when setStatus is available
+                //TODO: Implement when setStatus is available
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 

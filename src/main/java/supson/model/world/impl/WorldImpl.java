@@ -32,13 +32,13 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * Initializes the lists for blocks, enemies and player.
      */
     public WorldImpl() {
-        this.blocks = new ArrayList<>();
-        this.enemies = new ArrayList<>();
+        this.blocks = new ArrayList<BlockEntity>();
+        this.enemies = new ArrayList<>(); //todo : aggiungere nemici quando esisteranno
         this.player = new Player(new Pos2dImpl(0, 0), 0, 0, null, 0); //todo : add parameters to the constructor
     }
 
     @Override
-    public final void loadWorld(final String filePath) {
+    public void loadWorld(final String filePath) {
         Map<Integer, BlockType> worldElementMap = new HashMap<>();
         worldElementMap.put(1, BlockType.TERRAIN);
         worldElementMap.put(2, BlockType.POWER_UP);
@@ -66,7 +66,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public final void reset(final String filePath) {
+    public void reset(final String filePath) {
         this.blocks.clear();
         this.enemies.clear();
         this.player.setPosition(null); //todo : add parameters to the constructor
@@ -84,7 +84,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public final void removeBlock(final BlockEntity block) {
+    public void removeBlock(final BlockEntity block) {
         this.blocks.remove(block);
     }
 
@@ -98,18 +98,18 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public final void removeEnemy(final MoveableEntity enemy) {
+    public void removeEnemy(final MoveableEntity enemy) {
         this.enemies.remove(enemy);
     }
 
     @Override
     public List<BlockEntity> getBlocks() {
-        return new ArrayList<>(this.blocks); //verificare che sia giusto
+        return new ArrayList<BlockEntity>(this.blocks); //verificare che sia giusto
     }
 
     @Override
     public List<MoveableEntity> getEnemies() {
-        return new ArrayList<>(this.enemies); //verificare che sia giusto
+        return new ArrayList<>(this.enemies); //verificare che sia giusto  //todo : aggiungere nemici quando esisteranno
     }
 
     @Override
