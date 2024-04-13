@@ -13,12 +13,12 @@ import supson.model.entity.impl.Player;
 public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
-    public Collectible<Object> createCollectibleRing(final Pos2d pos) {
-        return new AbstractCollectibleImpl<Object>(pos, BlockType.RING) {
+    public Collectible createCollectibleRing(final Pos2d pos) {
+        return new AbstractCollectibleImpl(pos, BlockType.RING) {
 
             @Override
-            public void collect(final Object obj) {
-                // TODO: Implement when HUD is available
+            public void collect(final Player player) {
+                //TODO: implemtare quando sonic agvra setPoints
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 
@@ -26,12 +26,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     }
 
     @Override
-    public Collectible<Player> createCollectiblePowerUp(final Pos2d pos) {
-        return new AbstractCollectibleImpl<Player>(pos, BlockType.POWER_UP) {
+    public Collectible createCollectiblePowerUp(final Pos2d pos) {
+        return new AbstractCollectibleImpl(pos, BlockType.POWER_UP) {
 
             @Override
             public void collect(final Player player) {
-                // TODO: Implement when HUD is available
+                //TODO: Implement when setStatus is available
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 
