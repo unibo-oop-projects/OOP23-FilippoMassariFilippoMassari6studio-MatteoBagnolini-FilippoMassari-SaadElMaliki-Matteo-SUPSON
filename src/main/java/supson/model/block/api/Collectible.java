@@ -1,18 +1,18 @@
 package supson.model.block.api;
 
+import supson.model.entity.impl.Player;
+
 /**
  * The Collectible interface represents a block entity that can be collected.
  * It extends the BlockEntity interface.
- *
- * @param <T> the type of the collectible item
  */
-public interface Collectible<T> extends BlockEntity {
+public interface Collectible extends BlockEntity {
 
     /**
      * Collects the collectible item.
      * 
-     * @param item the specific item to collect
+     * @param player the player collecting the item
      */
-    void collect(T item);
+    void collect(Player player);
 
 }
