@@ -90,7 +90,7 @@ public final class Player extends AbstractMoveableEntity {
      * This method is used to set the score.
      * @param score the score to be set
      */
-    void setScore(int score) {
+    void setScore(final int score) {
         this.score = score;
     }
 
