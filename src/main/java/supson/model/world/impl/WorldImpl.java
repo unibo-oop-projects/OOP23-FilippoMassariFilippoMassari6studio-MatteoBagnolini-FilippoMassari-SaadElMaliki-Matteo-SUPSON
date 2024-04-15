@@ -70,7 +70,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.blocks.clear();
         this.enemies.clear();
         this.player.setPosition(null); //todo : add parameters to the constructor
-        this.loadWorld(filePath); //todo : add file path
+        this.loadWorld(filePath);
     }
 
     /**

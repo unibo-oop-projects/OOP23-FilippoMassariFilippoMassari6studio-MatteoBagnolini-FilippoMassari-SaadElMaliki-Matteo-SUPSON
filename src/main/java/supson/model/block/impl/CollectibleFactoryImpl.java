@@ -18,8 +18,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                //TODO: implemtare quando sonic agvra setPoints
-                throw new UnsupportedOperationException("Unimplemented method 'collect'");
+                player.setScore(player.getScore() + 100);
             }
 
         };
