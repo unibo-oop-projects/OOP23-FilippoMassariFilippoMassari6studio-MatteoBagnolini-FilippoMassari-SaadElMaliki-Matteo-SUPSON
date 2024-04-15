@@ -20,6 +20,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private boolean left, right, jump;
     private boolean isJumping;
+    private int score;
 
     /**
      * The constructor of the player class.
@@ -30,6 +31,7 @@ public final class Player extends AbstractMoveableEntity {
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
         super(pos, HEIGHT, WIDTH, vel, life);
         setPhysics(new PhysicsImpl(this, MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        this.score = 0;
     } 
 
     @Override
@@ -82,6 +84,22 @@ public final class Player extends AbstractMoveableEntity {
      */
     public void setJump(final boolean flag) {
         this.jump = flag;
+    }
+
+    /**
+     * This method is used to set the score.
+     * @param score the score to be set
+     */
+    void setScore(int score) {
+        this.score = score;
+    }
+
+    /**
+     * This method return the score.
+     * @return the score
+     */
+    int getScore() {
+        return this.score;
     }
 
 }
