@@ -41,9 +41,10 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     public void loadWorld(final String filePath) {
         Map<Integer, BlockType> worldElementMap = new HashMap<>();
         worldElementMap.put(1, BlockType.TERRAIN);
-        worldElementMap.put(2, BlockType.POWER_UP);
-        worldElementMap.put(3, BlockType.RING);
-        worldElementMap.put(4, BlockType.TRAP);
+        worldElementMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
+        worldElementMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
+        worldElementMap.put(4, BlockType.RING);
+        worldElementMap.put(5, BlockType.TRAP);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;

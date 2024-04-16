@@ -16,17 +16,33 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     public Collectible createCollectibleRing(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, BlockType.RING) {
 
+            private final static int RING_VALUE = 100;
+
             @Override
             public void collect(final Player player) {
-                player.setScore(player.getScore() + 100);
+                player.setScore(player.getScore() + RING_VALUE);
             }
 
         };
     }
 
     @Override
-    public Collectible createCollectiblePowerUp(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.POWER_UP) {
+    public Collectible createCollectibleLifeBoostPowerUp(Pos2d pos) {
+        return new AbstractCollectibleImpl(pos, BlockType.LIFE_BOOST_POWER_UP) {
+
+            private static final int LIFE_BOOST_VALUE = 1;
+
+            @Override
+            public void collect(final Player player) {
+                player.setLife(player.getLife() + LIFE_BOOST_VALUE);
+            }
+
+        };
+    }
+
+    @Override
+    public Collectible createCollectibleStrengthPowerUp(Pos2d pos) {
+        return new AbstractCollectibleImpl(pos, BlockType.STRNGTH_BOOST_POWER_UP) {
 
             @Override
             public void collect(final Player player) {

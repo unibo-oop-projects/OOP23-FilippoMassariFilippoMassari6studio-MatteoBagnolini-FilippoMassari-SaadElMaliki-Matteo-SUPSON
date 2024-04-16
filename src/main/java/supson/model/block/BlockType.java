@@ -10,9 +10,14 @@ public enum BlockType {
     TERRAIN,
 
     /**
-     * Represents power-up blocks.
+     * Represents life boost power-up blocks.
      */
-    POWER_UP,
+    LIFE_BOOST_POWER_UP,
+
+    /**
+     * Represents life boost power-up blocks.
+     */
+    STRNGTH_BOOST_POWER_UP,
 
     /**
      * Represents ring blocks.
