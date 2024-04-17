@@ -14,7 +14,7 @@ import supson.common.impl.Pos2dImpl;
 import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.impl.BlockEntityImpl;
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.world.api.World;
 
@@ -24,7 +24,7 @@ import supson.model.world.api.World;
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
     private final List<BlockEntity> blocks;
-    private final List<MoveableEntity> enemies;
+    private final List<Enemy> enemies;
     private final Player player;
 
     /**
@@ -33,7 +33,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      */
     public WorldImpl() {
         this.blocks = new ArrayList<BlockEntity>();
-        this.enemies = new ArrayList<>(); //todo : aggiungere nemici quando esisteranno
+        this.enemies = new ArrayList<Enemy>();
         this.player = new Player(new Pos2dImpl(0, 0), null, 0); //todo : add parameters to the constructor
     }
 
@@ -66,14 +66,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         }
     }
 
-    @Override
-    public void reset(final String filePath) {
-        this.blocks.clear();
-        this.enemies.clear();
-        this.player.setPosition(null); //todo : add parameters to the constructor
-        this.loadWorld(filePath);
-    }
-
+    
     /**
      * Adds a new block to the world at the specified position with the specified type.
      *
@@ -84,22 +77,30 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.blocks.add(new BlockEntityImpl(pos, type));
     }
 
-    @Override
-    public void removeBlock(final BlockEntity block) {
-        this.blocks.remove(block);
-    }
-
     /**
      * Adds a new enemy to the world at the specified position.
      *
      * @param pos The position where the enemy should be added.
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
-        //this.enemies.add(); //todo : aggiungere nemici quando esisteranno
+        this.enemies.add(new Enemy(pos, null, 0, 0)); //todo : add parameters to the constructor
     }
 
     @Override
-    public void removeEnemy(final MoveableEntity enemy) {
+    public void reset(final String filePath) {
+        this.blocks.clear();
+        this.enemies.clear();
+        this.player.setPosition(null); //todo : add parameters to the constructor
+        this.loadWorld(filePath);
+    }
+
+    @Override
+    public void removeBlock(final BlockEntity block) {
+        this.blocks.remove(block);
+    }
+
+    @Override
+    public void removeEnemy(final Enemy enemy) {
         this.enemies.remove(enemy);
     }
 
@@ -109,8 +110,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public List<MoveableEntity> getEnemies() {
-        return new ArrayList<>(this.enemies); //verificare che sia giusto  //todo : aggiungere nemici quando esisteranno
+    public List<Enemy> getEnemies() {
+        return new ArrayList<Enemy>(this.enemies); //verificare che sia giusto  //todo : aggiungere nemici quando esisteranno
     }
 
     @Override

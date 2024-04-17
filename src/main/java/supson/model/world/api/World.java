@@ -4,7 +4,7 @@ import java.util.List;
 
 import supson.common.api.Pos2d;
 import supson.model.block.api.BlockEntity;
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.impl.Enemy;
 
 /**
  * The World interface represents a game world.
@@ -39,7 +39,7 @@ public interface World {
      *
      * @param enemy the enemy to be removed
      */
-    void removeEnemy(MoveableEntity enemy);
+    void removeEnemy(Enemy enemy);
 
     /**
      * Returns a list of all the blocks in the game world.
@@ -53,7 +53,7 @@ public interface World {
      *
      * @return a list of MoveableEntity objects representing the enemies
      */
-    List<MoveableEntity> getEnemies();
+    List<Enemy> getEnemies();
 
     /**
      * Returns the position of the player in the game world.
