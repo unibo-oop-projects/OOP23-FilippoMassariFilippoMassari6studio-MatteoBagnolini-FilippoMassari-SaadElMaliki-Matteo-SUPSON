@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import supson.model.block.api.BlockEntity;
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.impl.Enemy;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.common.impl.Pos2dImpl;
@@ -52,7 +52,7 @@ public class WorldTest {
      */
     @Test
     void testGetEnemies() {
-        List<MoveableEntity> enemies = world.getEnemies();
+        List<Enemy> enemies = world.getEnemies();
         assertNotNull(enemies);
         assertTrue(enemies.isEmpty());
     }
@@ -103,7 +103,7 @@ public class WorldTest {
      */
     @Test
     void testRemoveEnemy() {
-        List<MoveableEntity> enemies = world.getEnemies();
+        List<Enemy> enemies = world.getEnemies();
         int initialEnemyCount = enemies.size();
         if (initialEnemyCount > 0) {
             world.removeEnemy(enemies.get(0));

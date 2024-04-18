@@ -23,6 +23,10 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
+    private final int INT_OF_PLAYER = 6;
+    private final int INT_OF_ENEMY = 7;
+    private final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
+
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
@@ -34,17 +38,17 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     public WorldImpl() {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
-        this.player = new Player(new Pos2dImpl(0, 0), null, 0); //todo : add parameters to the constructor
+        this.player = new Player(DEFAULT_PLAYER_POSITION, null, 0); //todo : add parameters to the constructor
     }
 
     @Override
     public void loadWorld(final String filePath) {
-        Map<Integer, BlockType> worldElementMap = new HashMap<>();
-        worldElementMap.put(1, BlockType.TERRAIN);
-        worldElementMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
-        worldElementMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
-        worldElementMap.put(4, BlockType.RING);
-        worldElementMap.put(5, BlockType.TRAP);
+        final Map<Integer, BlockType> blocksMap = new HashMap<>();
+        blocksMap.put(1, BlockType.TERRAIN);
+        blocksMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
+        blocksMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
+        blocksMap.put(4, BlockType.RING);
+        blocksMap.put(5, BlockType.TRAP);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -54,10 +58,18 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    Optional<BlockType> optionalType = Optional.ofNullable(worldElementMap.get(worldElement));
-                    optionalType.ifPresent(type -> {
-                        this.addBlock(pos, type); //decidere se terere il metodo addBlock che crea il blocco o meno
-                    });
+                    if (worldElement==INT_OF_PLAYER) {
+                        this.player.setPosition(pos);
+                    }
+                    else if (worldElement== INT_OF_ENEMY) {
+                        this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
+                    }
+                    else { 
+                        Optional<BlockType> optionalType = Optional.ofNullable(blocksMap.get(worldElement));
+                        optionalType.ifPresent(type -> {
+                            this.addBlock(pos, type);
+                        });
+                    }
                 }
                 y++;
             }
@@ -66,7 +78,6 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         }
     }
 
-    
     /**
      * Adds a new block to the world at the specified position with the specified type.
      *
@@ -111,7 +122,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public List<Enemy> getEnemies() {
-        return new ArrayList<Enemy>(this.enemies); //verificare che sia giusto  //todo : aggiungere nemici quando esisteranno
+        return new ArrayList<Enemy>(this.enemies); //verificare che sia giusto 
     }
 
     @Override
