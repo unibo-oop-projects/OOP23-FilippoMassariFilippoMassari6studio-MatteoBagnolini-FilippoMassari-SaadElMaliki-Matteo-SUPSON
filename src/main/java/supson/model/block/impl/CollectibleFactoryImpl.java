@@ -16,7 +16,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     public Collectible createCollectibleRing(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, BlockType.RING) {
 
-            private final static int RING_VALUE = 100;
+            private static final int RING_VALUE = 100;
 
             @Override
             public void collect(final Player player) {
@@ -27,7 +27,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     }
 
     @Override
-    public Collectible createCollectibleLifeBoostPowerUp(Pos2d pos) {
+    public Collectible createCollectibleLifeBoostPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, BlockType.LIFE_BOOST_POWER_UP) {
 
             private static final int LIFE_BOOST_VALUE = 1;
@@ -46,7 +46,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                //TODO: Implement when setStatus is available
+                //TODO : Implement when setStatus is available
                 throw new UnsupportedOperationException("Unimplemented method 'collect'");
             }
 

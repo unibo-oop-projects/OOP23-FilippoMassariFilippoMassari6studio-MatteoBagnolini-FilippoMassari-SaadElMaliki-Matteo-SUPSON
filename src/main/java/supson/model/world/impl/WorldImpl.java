@@ -23,9 +23,9 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
-    private final int INT_OF_PLAYER = 6;
-    private final int INT_OF_ENEMY = 7;
-    private final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
+    private static final int INT_OF_PLAYER = 6;  //todo : da verificare il puttern di scrittura
+    private static final int INT_OF_ENEMY = 7;
+    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
 
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
@@ -48,7 +48,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         blocksMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
         blocksMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
         blocksMap.put(4, BlockType.RING);
-        blocksMap.put(5, BlockType.TRAP);
+        blocksMap.put(5, BlockType.TRAP); //todo : me lo da magic number non so il perchè
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -58,10 +58,10 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    if (worldElement==INT_OF_PLAYER) {
+                    if (worldElement == INT_OF_PLAYER) { //todo : graffe da verificare
                         this.player.setPosition(pos);
                     }
-                    else if (worldElement== INT_OF_ENEMY) {
+                    else if (worldElement == INT_OF_ENEMY) {
                         this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
                     }
                     else { 
