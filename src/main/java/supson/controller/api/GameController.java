@@ -22,4 +22,9 @@ public interface GameController {
      */
     void render(); //il render è gia presente in GameEngine vedere se tenerlo o no
 
+    /**
+     * Initialises the game.
+     */
+    void initGame();
+
 }

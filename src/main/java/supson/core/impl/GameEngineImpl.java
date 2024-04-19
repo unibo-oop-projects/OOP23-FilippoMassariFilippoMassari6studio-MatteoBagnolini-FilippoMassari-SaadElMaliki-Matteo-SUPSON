@@ -1,18 +1,22 @@
 package supson.core.impl;
 
 import supson.core.api.GameEngine;
+import supson.controller.api.GameController;
+import supson.controller.impl.GameControllerImpl;
 
 public class GameEngineImpl implements GameEngine {
 
     private final static long REFRESH_RATE = 20;
 
-    public GameEngineImpl() {
+    private final GameController controller;
 
+    public GameEngineImpl() {
+        this.controller = new GameControllerImpl();
     }
 
     @Override
     public void initGame() {
-
+        this.controller.initGame();
     }
 
     @Override
@@ -32,16 +36,19 @@ public class GameEngineImpl implements GameEngine {
     @Override
     public void processInput() {
         System.out.println("processing input");
+        this.controller.processInput();
     }
 
     @Override
     public void updateGame(long elapsed) {
         System.out.println("Updating game: " + elapsed);
+        this.controller.update();
     }
 
     @Override
     public void render() {
         System.out.println("rendering");
+        this.controller.render();
     }
 
     @Override
