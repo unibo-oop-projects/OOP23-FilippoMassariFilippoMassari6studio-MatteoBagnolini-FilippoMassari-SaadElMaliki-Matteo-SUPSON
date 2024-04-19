@@ -126,8 +126,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public Pos2d getPlayerPosition() {
-        return player.getPosition();
+    public Player getPlayer() {
+        return this.player; //todo : non passo copia difensiva verificare che sia giusto
     }
 
 }
