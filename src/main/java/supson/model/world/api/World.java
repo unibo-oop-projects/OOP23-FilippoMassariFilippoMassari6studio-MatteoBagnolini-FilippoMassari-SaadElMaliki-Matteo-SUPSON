@@ -5,6 +5,7 @@ import java.util.List;
 import supson.common.api.Pos2d;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.impl.Enemy;
+import supson.model.entity.impl.Player;
 
 /**
  * The World interface represents a game world.
@@ -60,5 +61,5 @@ public interface World {
      *
      * @return a Pos2d object representing the player's position
      */
-    Pos2d getPlayerPosition();
+    Player getPlayer();
 }
