@@ -63,8 +63,8 @@ public class WorldTest {
      */
     @Test
     void testPlayerPosition() {
-        assertNotNull(world.getPlayerPosition());
-        assertEquals(new Pos2dImpl(0, 0), world.getPlayerPosition());
+        assertNotNull(world.getPlayer());
+        assertEquals(new Pos2dImpl(0, 0), world.getPlayer().getPosition());
     }
 
     /**
@@ -78,7 +78,7 @@ public class WorldTest {
         assertNotNull(world.getBlocks());
         assertFalse(world.getBlocks().isEmpty());
         assertTrue(world.getEnemies().isEmpty());
-        assertNull(world.getPlayerPosition());
+        assertNull(world.getPlayer());
     }
 
     /**
