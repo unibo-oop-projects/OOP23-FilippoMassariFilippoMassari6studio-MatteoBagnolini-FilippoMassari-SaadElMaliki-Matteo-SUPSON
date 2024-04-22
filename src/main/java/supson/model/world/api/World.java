@@ -2,7 +2,6 @@ package supson.model.world.api;
 
 import java.util.List;
 
-import supson.common.api.Pos2d;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
