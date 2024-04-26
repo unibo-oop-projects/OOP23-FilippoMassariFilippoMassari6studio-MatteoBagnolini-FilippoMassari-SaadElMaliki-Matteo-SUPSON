@@ -10,7 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import supson.common.api.Pos2d;
+import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
+import supson.common.impl.Vect2dImpl;
 import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.impl.BlockEntityImpl;
@@ -23,9 +25,16 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
-    private static final int INT_OF_PLAYER = 6;  //todo : da verificare il puttern di scrittura
+    private static final int INT_OF_PLAYER = 6;
     private static final int INT_OF_ENEMY = 7;
+
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
+    private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
+    private static final int DEFAULT_PLAYER_LIFE = 3;
+
+    private static final Vect2d DEFAULT_ENEMY_VELOCITY = new Vect2dImpl(0, 0);
+    private static final int DEFAULT_ENEMY_LIFE = 1;
+    private static final int DEFAUL_ENEMY_RANGE = 0;
 
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
@@ -38,7 +47,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     public WorldImpl() {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
-        this.player = new Player(DEFAULT_PLAYER_POSITION, null, 0); //todo : add parameters to the constructor
+        this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
     }
 
     @Override
@@ -94,14 +103,14 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * @param pos The position where the enemy should be added.
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
-        this.enemies.add(new Enemy(pos, null, 0, 0)); //todo : add parameters to the constructor
+        this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
     }
 
     @Override
     public void reset(final String filePath) {
         this.blocks.clear();
         this.enemies.clear();
-        this.player.setPosition(null); //todo : add parameters to the constructor
+        this.player.setPosition(DEFAULT_PLAYER_POSITION);
         this.loadWorld(filePath);
     }
 
@@ -117,12 +126,12 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public List<BlockEntity> getBlocks() {
-        return new ArrayList<BlockEntity>(this.blocks); //verificare che sia giusto
+        return new ArrayList<BlockEntity>(this.blocks);
     }
 
     @Override
     public List<Enemy> getEnemies() {
-        return new ArrayList<Enemy>(this.enemies); //verificare che sia giusto 
+        return new ArrayList<Enemy>(this.enemies); 
     }
 
     @Override
