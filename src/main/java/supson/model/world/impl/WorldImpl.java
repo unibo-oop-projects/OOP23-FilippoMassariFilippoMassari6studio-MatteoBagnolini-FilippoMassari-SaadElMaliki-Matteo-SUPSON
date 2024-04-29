@@ -25,7 +25,7 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
-    private static final int INT_OF_PLAYER = 6;
+    private static final int INT_OF_PLAYER = 6; //todo: soluzione potaenzialmente migliorabile
     private static final int INT_OF_ENEMY = 7;
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
