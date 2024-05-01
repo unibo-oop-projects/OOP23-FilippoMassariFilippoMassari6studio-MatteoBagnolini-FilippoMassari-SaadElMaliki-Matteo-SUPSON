@@ -78,7 +78,7 @@ public class WorldTest {
         assertNotNull(world.getBlocks());
         assertFalse(world.getBlocks().isEmpty());
         assertTrue(world.getEnemies().isEmpty());
-        assertNull(world.getPlayer());
+        assertNotNull(world.getPlayer());
     }
 
     /**
