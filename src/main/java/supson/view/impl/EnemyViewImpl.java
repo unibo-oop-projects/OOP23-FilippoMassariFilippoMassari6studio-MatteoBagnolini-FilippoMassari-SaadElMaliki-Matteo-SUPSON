@@ -6,7 +6,7 @@ import supson.view.api.GameEntityView;
 public class EnemyViewImpl implements GameEntityView<Enemy> {
 
     @Override
-    public void renderGameEntity(Enemy enemy) {
+    public void renderGameEntity(Enemy enemy, GamePanel gamePanel) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'renderEnemy'");
     }
