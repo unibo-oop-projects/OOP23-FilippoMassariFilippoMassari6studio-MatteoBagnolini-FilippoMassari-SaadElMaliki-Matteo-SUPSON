@@ -9,7 +9,7 @@ import supson.model.entity.impl.AbstractGameEntity;
  * This is the abstract class AbstractBlockImpl that extends AbstractGameEntity and implements the Block interface.
  * It represents a block in the game with a specific type defined by BlockType.
  */
-public class BlockEntityImpl extends AbstractGameEntity implements BlockEntity {
+public class TerrainImpl extends AbstractGameEntity implements BlockEntity {
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 2;
@@ -25,7 +25,7 @@ public class BlockEntityImpl extends AbstractGameEntity implements BlockEntity {
      * @param pos The position of the block to create.
      * @param blockType The type of block to create.
      */
-    public BlockEntityImpl(final Pos2d pos, final BlockType blockType) {
+    public TerrainImpl(final Pos2d pos, final BlockType blockType) {
         super(pos, HEIGHT, WIDTH);
         this.blockType = blockType;
     }
