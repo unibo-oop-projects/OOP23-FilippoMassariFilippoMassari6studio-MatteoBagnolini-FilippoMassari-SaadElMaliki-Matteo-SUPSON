@@ -1,17 +1,16 @@
 package supson.view.impl;
 
 import supson.model.entity.impl.Player;
-import supson.view.api.PlayerView;
+import supson.view.api.GameEntityView;
 
-public class PlayerViewImpl implements PlayerView{
+public class PlayerViewImpl implements GameEntityView<Player>{
 
     @Override
-    public void renderPlayer(Player player) {
+    public void renderGameEntity(Player player) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'renderPlayer'");
     }
 
-    @Override
     public void renderHud(Player player) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'renderHud'");
