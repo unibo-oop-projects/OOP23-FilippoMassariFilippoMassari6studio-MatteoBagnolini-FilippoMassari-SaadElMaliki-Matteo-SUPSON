@@ -15,7 +15,7 @@ import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
-import supson.model.block.impl.BlockEntityImpl;
+import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.world.api.World;
@@ -94,7 +94,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * @param type The type of the block to be added.
      */
     private void addBlock(final Pos2d pos, final BlockType type) {
-        this.blocks.add(new BlockEntityImpl(pos, type));
+        this.blocks.add(new TerrainImpl(pos, type));
     }
 
     /**
