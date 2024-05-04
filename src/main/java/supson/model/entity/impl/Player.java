@@ -30,22 +30,22 @@ public final class Player extends AbstractMoveableEntity {
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
         super(pos, HEIGHT, WIDTH, vel, life);
-        setPhysics(new PhysicsImpl(this, MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
     @Override
     public void updateVelocity() {
         if (left) {
-            getPhysicsComponent().moveLeft();
+            getPhysicsComponent().moveLeft(this);
         } else if (right) {
-            getPhysicsComponent().moveRight();
+            getPhysicsComponent().moveRight(this);
         }
         if (jump) {
-            getPhysicsComponent().startJumping();
+            getPhysicsComponent().startJumping(this);
         }
         if (isJumping) {
-            getPhysicsComponent().applyGravity();
+            getPhysicsComponent().applyGravity(this);
         }
     }
 
