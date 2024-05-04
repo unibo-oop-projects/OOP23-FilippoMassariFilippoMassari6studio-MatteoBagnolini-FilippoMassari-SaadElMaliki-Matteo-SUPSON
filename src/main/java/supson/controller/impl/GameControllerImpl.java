@@ -1,8 +1,29 @@
 package supson.controller.impl;
 
 import supson.controller.api.GameController;
+import supson.model.world.api.World;
+import supson.model.world.impl.WorldImpl;
+import supson.view.impl.GameViewImpl;
 
-public class GameControllerImpl implements GameController{
+/**
+ * This class, which implements the GameController interface, models the game controller.
+ * It is the coordinator between the view and the model.
+ */
+public class GameControllerImpl implements GameController {
+
+    private static final String WORLD_FILE_PATH = "src\\resources\\world.txt";
+    
+    private final World model;
+    private final GameViewImpl view;
+
+    /**
+     * This is the GameControllerImpl constructor.
+     */
+    public GameControllerImpl() {
+        this.model = new WorldImpl();
+        this.view = new GameViewImpl();
+    }
+
 
     @Override
     public void processInput() {
@@ -18,14 +39,13 @@ public class GameControllerImpl implements GameController{
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+        this.view.renderGame(model.getBlocks(), model.getEnemies(), model.getPlayer());
     }
 
     @Override
     public void initGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initGame'");
+        this.model.loadWorld(WORLD_FILE_PATH);
+        this.view.renderStartGame();
     }
     
 }
