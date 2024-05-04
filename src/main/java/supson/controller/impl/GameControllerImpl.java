@@ -9,10 +9,10 @@ import supson.view.impl.GameViewImpl;
  * This class, which implements the GameController interface, models the game controller.
  * It is the coordinator between the view and the model.
  */
-public class GameControllerImpl implements GameController {
+public final class GameControllerImpl implements GameController {
 
     private static final String WORLD_FILE_PATH = "src\\resources\\world.txt";
-    
+
     private final World model;
     private final GameViewImpl view;
 
@@ -47,5 +47,5 @@ public class GameControllerImpl implements GameController {
         this.model.loadWorld(WORLD_FILE_PATH);
         this.view.renderStartGame();
     }
-    
+
 }
