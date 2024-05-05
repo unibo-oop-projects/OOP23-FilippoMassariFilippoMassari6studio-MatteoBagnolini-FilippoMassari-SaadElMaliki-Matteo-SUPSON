@@ -1,8 +1,12 @@
 package supson.model.hitbox.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import supson.common.api.Pos2d;
+import supson.common.impl.Pos2dImpl;
+import supson.common.impl.Vect2dImpl;
+import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
@@ -32,9 +36,36 @@ public final class CollisionResolver {
      * @param startingPos the initial position of the entity, before it has move
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
-        final List<BlockEntity> blocks, final Pos2d startingPos) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resolvePlatformCollisions'");
+            final List<BlockEntity> blocks, final Pos2d startingPos) {
+
+        Pos2d actualPos = entity.getPosition();
+
+        List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+
+        if (collidingBlocks.size() > 0) {
+
+            entity.setPosition(new Pos2dImpl(actualPos.x(), startingPos.y()));
+
+            List<BlockEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
+
+            if (collidingOrizontalBlocks.size() > 0) {
+
+                adjustOrizontalPos(entity, collidingOrizontalBlocks.get(0));
+
+            }
+
+            entity.setPosition(new Pos2dImpl(entity.getPosition().x(), actualPos.y()));
+
+            List<BlockEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
+
+            if (collidingVerticalBlocks.size() > 0) {
+
+                adjustVerticalPos(entity, collidingOrizontalBlocks.get(0));   //possiamo prendere per semplicità il primo blocco
+
+            }
+
+        }
+
     }
 
     /**
@@ -51,13 +82,47 @@ public final class CollisionResolver {
      * This method resolves collisions between the player and the collectible entities.
      * @param player the player
      * @param collectibles the list of collectible entities
+     * @return a list of collectible that have been collected and have to be removed
      */
-    public static void resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
-        collectibles.stream()
+    public static List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
+        return collectibles.stream()
         .filter(collectible -> collectible.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(collectible -> collectible.getHitbox().isCollidingWith(player.getHitbox()))
-        .forEach(collectible -> collectible.collect(player));
-        // bisogna gestire l'eliminazione dei collezionabili che si rimuovono (anelli)
+        .peek(collectible -> collectible.collect(player))
+        .collect(Collectors.toList());
+    }
+
+    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> blocks) {
+        return blocks.stream()
+        .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
+        .filter(b -> b.getBlockType().equals(BlockType.TERRAIN))
+        .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
+        .collect(Collectors.toList());
+    }
+
+    private static void adjustOrizontalPos(final MoveableEntity entity, final BlockEntity block) {
+        double newXPos;
+        if (entity.getPosition().x() < block.getPosition().x()) {     //contatto da destra
+            newXPos = entity.getPosition().x()
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
+        } else {                                                    //contatto da sinistra
+            newXPos = entity.getPosition().x()
+                - block.getHitbox().getURCorner().x() + entity.getHitbox().getLLCorner().x();
+        }
+        entity.setPosition(new Pos2dImpl(newXPos, entity.getPosition().y()));
+    }
+
+    private static void adjustVerticalPos(final MoveableEntity entity, final BlockEntity block) {
+        double newYPos;
+        if (entity.getPosition().y() > block.getPosition().y()) {     //contatto da sopra 
+            newYPos = entity.getPosition().y()
+                + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y();
+        } else {                                                    //contatto da sotto
+            newYPos = entity.getPosition().y()
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
+            entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));        //velY è 0 perchè tocca il soffitto
+        }
+        entity.setPosition(new Pos2dImpl(entity.getPosition().x(), newYPos));
     }
 
 }
