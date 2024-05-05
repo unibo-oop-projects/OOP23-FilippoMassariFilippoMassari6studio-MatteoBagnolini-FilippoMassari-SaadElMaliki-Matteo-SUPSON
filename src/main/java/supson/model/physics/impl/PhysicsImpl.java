@@ -36,7 +36,7 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void moveRight(MoveableEntity entity) {
+    public void moveRight(final MoveableEntity entity) {
         final Vect2d oldVel = entity.getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
@@ -57,7 +57,7 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void moveLeft(MoveableEntity entity) {
+    public void moveLeft(final MoveableEntity entity) {
         final Vect2d oldVel = entity.getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
@@ -78,12 +78,12 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void startJumping(MoveableEntity entity) {
+    public void startJumping(final MoveableEntity entity) {
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), jumpForce));
     }
 
     @Override
-    public void applyGravity(MoveableEntity entity) {
+    public void applyGravity(final MoveableEntity entity) {
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), entity.getVelocity().y() - gravity));
     }
 
