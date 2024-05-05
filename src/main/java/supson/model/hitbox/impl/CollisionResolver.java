@@ -10,6 +10,7 @@ import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 
 /**
@@ -38,17 +39,17 @@ public final class CollisionResolver {
     public static void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> blocks, final Pos2d startingPos) {
 
-        Pos2d actualPos = entity.getPosition();
+        final Pos2d actualPos = entity.getPosition();
 
-        List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
 
-        if (collidingBlocks.size() > 0) {
+        if (!collidingBlocks.isEmpty()) {
 
             entity.setPosition(new Pos2dImpl(actualPos.x(), startingPos.y()));
 
-            List<BlockEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
-            if (collidingOrizontalBlocks.size() > 0) {
+            if (!collidingOrizontalBlocks.isEmpty()) {
 
                 adjustOrizontalPos(entity, collidingOrizontalBlocks.get(0));
 
@@ -56,9 +57,9 @@ public final class CollisionResolver {
 
             entity.setPosition(new Pos2dImpl(entity.getPosition().x(), actualPos.y()));
 
-            List<BlockEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
-            if (collidingVerticalBlocks.size() > 0) {
+            if (!collidingVerticalBlocks.isEmpty()) {
 
                 adjustVerticalPos(entity, collidingOrizontalBlocks.get(0));   //possiamo prendere per semplicità il primo blocco
 
@@ -72,8 +73,9 @@ public final class CollisionResolver {
      * This method resolves collisions between the player and the enemies.
      * @param player the player
      * @param enemies the list of enemies in the level
+     * @return the list of enemy killed
      */
-    public static void resolveEnemiesCollisions(final Player player, final List<MoveableEntity> enemies) {
+    public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'resolveEnemiesCollisions'");
     }
@@ -101,7 +103,7 @@ public final class CollisionResolver {
     }
 
     private static void adjustOrizontalPos(final MoveableEntity entity, final BlockEntity block) {
-        double newXPos;
+        final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contatto da destra
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
@@ -113,7 +115,7 @@ public final class CollisionResolver {
     }
 
     private static void adjustVerticalPos(final MoveableEntity entity, final BlockEntity block) {
-        double newYPos;
+        final double newYPos;
         if (entity.getPosition().y() > block.getPosition().y()) {     //contatto da sopra 
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y();
