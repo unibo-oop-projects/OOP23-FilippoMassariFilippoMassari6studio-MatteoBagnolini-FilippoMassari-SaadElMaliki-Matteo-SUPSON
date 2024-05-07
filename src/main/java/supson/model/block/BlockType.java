@@ -5,6 +5,16 @@ package supson.model.block;
  */
 public enum BlockType {
     /**
+     * Represents the player block.
+     */
+    PLAYER,
+
+    /**
+     * Represents the enemy block.
+     */
+    ENEMY,
+
+    /**
      * Represents terrain blocks.
      */
     TERRAIN,
@@ -15,7 +25,7 @@ public enum BlockType {
     LIFE_BOOST_POWER_UP,
 
     /**
-     * Represents life boost power-up blocks.
+     * Represents strength boost power-up blocks.
      */
     STRNGTH_BOOST_POWER_UP,
 
@@ -28,5 +38,4 @@ public enum BlockType {
      * Represents trap blocks.
      */
     TRAP
-
 }
