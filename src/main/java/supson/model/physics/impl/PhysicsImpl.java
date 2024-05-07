@@ -14,7 +14,6 @@ import supson.model.physics.api.Physics;
  */
 public final class PhysicsImpl implements Physics {
 
-    private final MoveableEntity entity;
     private final int maxSpeed;
     private final double accSpeed;
     private final int jumpForce;
@@ -23,15 +22,13 @@ public final class PhysicsImpl implements Physics {
 
     /**
      * This is the constructor of the PhysicsImpl class.
-     * @param entity the entity this class is attached to
      * @param maxSpeed the max speed of the entity
      * @param accSpeed the acceleration factor of the entity
      * @param jumpForce the jump force of the entity
      * @param gravity the gravity factor of the entity
      */
-    public PhysicsImpl(final MoveableEntity entity, final int maxSpeed, final double accSpeed,
+    public PhysicsImpl(final int maxSpeed, final double accSpeed,
         final int jumpForce, final double gravity) {
-        this.entity = entity;
         this.maxSpeed = maxSpeed;
         this.accSpeed = accSpeed;
         this.jumpForce = jumpForce;
@@ -39,7 +36,7 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void moveRight() {
+    public void moveRight(final MoveableEntity entity) {
         final Vect2d oldVel = entity.getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
@@ -60,7 +57,7 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void moveLeft() {
+    public void moveLeft(final MoveableEntity entity) {
         final Vect2d oldVel = entity.getVelocity();
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
@@ -81,12 +78,12 @@ public final class PhysicsImpl implements Physics {
     }
 
     @Override
-    public void startJumping() {
+    public void startJumping(final MoveableEntity entity) {
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), jumpForce));
     }
 
     @Override
-    public void applyGravity() {
+    public void applyGravity(final MoveableEntity entity) {
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), entity.getVelocity().y() - gravity));
     }
 
