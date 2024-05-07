@@ -35,7 +35,7 @@ public enum BlockType {
     RING,
 
     /**
-     * Represents trap blocks.
+     * Represents damage trap blocks.
      */
-    TRAP
+    DAMAGE_TRAP
 }

@@ -2,7 +2,7 @@ package supson.model.world.api;
 
 import java.util.List;
 
-import supson.model.block.api.BlockEntity;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 
@@ -32,7 +32,7 @@ public interface World {
      *
      * @param block the block to be removed
      */
-    void removeBlock(BlockEntity block);
+    void removeBlock(GameEntity block);
 
     /**
      * Removes the specified enemy from the game world.
@@ -44,9 +44,9 @@ public interface World {
     /**
      * Returns a list of all the blocks in the game world.
      *
-     * @return a list of BlockEntity objects representing the blocks
+     * @return a list of GameEntity objects representing the blocks
      */
-    List<BlockEntity> getBlocks();
+    List<GameEntity> getBlocks();
 
     /**
      * Returns a list of all the enemies in the game world.

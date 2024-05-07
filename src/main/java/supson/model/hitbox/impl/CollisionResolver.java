@@ -7,8 +7,8 @@ import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.BlockType;
-import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
@@ -37,17 +37,17 @@ public final class CollisionResolver {
      * @param startingPos the initial position of the entity, before it has move
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<BlockEntity> blocks, final Pos2d startingPos) {
+            final List<TerrainImpl> blocks, final Pos2d startingPos) {
 
         final Pos2d actualPos = entity.getPosition();
 
-        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<TerrainImpl> collidingBlocks = getCollidingBlocks(entity, blocks);
 
         if (!collidingBlocks.isEmpty()) {
 
             entity.setPosition(new Pos2dImpl(actualPos.x(), startingPos.y()));
 
-            final List<BlockEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<TerrainImpl> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
             if (!collidingOrizontalBlocks.isEmpty()) {
 
@@ -57,7 +57,7 @@ public final class CollisionResolver {
 
             entity.setPosition(new Pos2dImpl(entity.getPosition().x(), actualPos.y()));
 
-            final List<BlockEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<TerrainImpl> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
             if (!collidingVerticalBlocks.isEmpty()) {
 
@@ -94,7 +94,7 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> blocks) {
+    private static List<TerrainImpl> getCollidingBlocks(final MoveableEntity entity, final List<TerrainImpl> blocks) {
         return blocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getBlockType().equals(BlockType.TERRAIN))
@@ -102,7 +102,7 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static void adjustOrizontalPos(final MoveableEntity entity, final BlockEntity block) {
+    private static void adjustOrizontalPos(final MoveableEntity entity, final TerrainImpl block) {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contatto da destra
             newXPos = entity.getPosition().x()
@@ -114,7 +114,7 @@ public final class CollisionResolver {
         entity.setPosition(new Pos2dImpl(newXPos, entity.getPosition().y()));
     }
 
-    private static void adjustVerticalPos(final MoveableEntity entity, final BlockEntity block) {
+    private static void adjustVerticalPos(final MoveableEntity entity, final TerrainImpl block) {
         final double newYPos;
         if (entity.getPosition().y() > block.getPosition().y()) {     //contatto da sopra 
             newYPos = entity.getPosition().y()
