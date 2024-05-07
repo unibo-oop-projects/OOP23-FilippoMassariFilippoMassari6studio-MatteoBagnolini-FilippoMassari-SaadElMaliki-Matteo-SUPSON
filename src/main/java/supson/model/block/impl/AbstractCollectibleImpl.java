@@ -1,7 +1,5 @@
 package supson.model.block.impl;
 
-import java.io.File;
-
 import supson.common.api.Pos2d;
 import supson.model.block.BlockType;
 import supson.model.block.api.Collectible;
@@ -19,9 +17,8 @@ public abstract class AbstractCollectibleImpl extends TerrainImpl implements Col
      * @param type the type of the collectible block
      * @param sprite the sprite of the collectible block
      */
-    public AbstractCollectibleImpl(final Pos2d pos, final BlockType type, final File sprite) {
+    public AbstractCollectibleImpl(final Pos2d pos, final BlockType type) {
         super(pos, type);
-        this.sprite = sprite;
     }
 
 }

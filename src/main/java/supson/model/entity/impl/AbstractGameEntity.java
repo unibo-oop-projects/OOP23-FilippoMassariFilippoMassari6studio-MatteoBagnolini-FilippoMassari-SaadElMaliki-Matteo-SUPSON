@@ -1,7 +1,5 @@
 package supson.model.entity.impl;
 
-import java.io.File;
-
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.hitbox.api.Hitbox;
@@ -16,10 +14,6 @@ public abstract class AbstractGameEntity implements GameEntity {
     private Pos2d position;
     private final int height;
     private final int width;
-    /**
-     * The sprite file associated with the game entity.
-     */
-    protected File sprite; //must be private for te gradlw test
 
     /**
      * The constructor of a generic game entity.

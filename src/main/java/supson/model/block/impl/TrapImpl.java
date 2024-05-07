@@ -1,7 +1,5 @@
 package supson.model.block.impl;
 
-import java.io.File;
-
 import supson.common.api.Pos2d;
 import supson.model.block.BlockType;
 import supson.model.entity.impl.Player;
@@ -12,8 +10,6 @@ import supson.model.entity.impl.Player;
  */
 public final class TrapImpl extends TerrainImpl {
 
-    private static final File SPRITE = new File("src/main/resources/trap.png");
-
     private static final int DAMAGE = 2;
 
     /**
@@ -23,7 +19,6 @@ public final class TrapImpl extends TerrainImpl {
      */
     public TrapImpl(final Pos2d pos, final BlockType blockType) {
         super(pos, blockType);
-        this.sprite = SPRITE;
     }
 
     /**

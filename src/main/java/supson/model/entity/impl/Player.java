@@ -1,7 +1,5 @@
 package supson.model.entity.impl;
 
-import java.io.File;
-
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.model.physics.api.Physics;
@@ -12,8 +10,6 @@ import supson.model.physics.impl.PhysicsImpl;
  * the player of the game.
  */
 public final class Player extends AbstractMoveableEntity {
-
-    private static final File SPRITE = new File("src/main/resources/sprites/player.png");
 
     private static final int MAX_SPEED = 10;
     private static final double ACC_SPEED = 0.01;
@@ -35,7 +31,6 @@ public final class Player extends AbstractMoveableEntity {
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
         super(pos, HEIGHT, WIDTH, vel, life);
-        this.sprite = SPRITE;
         setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
