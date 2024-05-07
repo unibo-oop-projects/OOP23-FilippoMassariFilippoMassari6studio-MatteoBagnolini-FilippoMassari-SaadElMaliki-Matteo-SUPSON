@@ -8,7 +8,7 @@ import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.BlockType;
 import supson.model.block.api.Collectible;
-import supson.model.block.impl.TerrainImpl;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
@@ -33,21 +33,21 @@ public final class CollisionResolver {
      * and the hitbox of the colliding block to overlap. This create the effect of "solid"
      * blocks.
      * @param entity the entity that is moving
-     * @param blocks the list of blocks in the level
+     * @param list the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<TerrainImpl> blocks, final Pos2d startingPos) {
+            final List<GameEntity> list, final Pos2d startingPos) {
 
         final Pos2d actualPos = entity.getPosition();
 
-        final List<TerrainImpl> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<GameEntity> collidingBlocks = getCollidingBlocks(entity, list);
 
         if (!collidingBlocks.isEmpty()) {
 
             entity.setPosition(new Pos2dImpl(actualPos.x(), startingPos.y()));
 
-            final List<TerrainImpl> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<GameEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
             if (!collidingOrizontalBlocks.isEmpty()) {
 
@@ -57,7 +57,7 @@ public final class CollisionResolver {
 
             entity.setPosition(new Pos2dImpl(entity.getPosition().x(), actualPos.y()));
 
-            final List<TerrainImpl> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
+            final List<GameEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
 
             if (!collidingVerticalBlocks.isEmpty()) {
 
@@ -94,15 +94,15 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static List<TerrainImpl> getCollidingBlocks(final MoveableEntity entity, final List<TerrainImpl> blocks) {
-        return blocks.stream()
+    private static List<GameEntity> getCollidingBlocks(final MoveableEntity entity, final List<GameEntity> collidingBlocks) {
+        return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getBlockType().equals(BlockType.TERRAIN))
         .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
         .collect(Collectors.toList());
     }
 
-    private static void adjustOrizontalPos(final MoveableEntity entity, final TerrainImpl block) {
+    private static void adjustOrizontalPos(final MoveableEntity entity, final GameEntity block) {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contatto da destra
             newXPos = entity.getPosition().x()
@@ -114,7 +114,7 @@ public final class CollisionResolver {
         entity.setPosition(new Pos2dImpl(newXPos, entity.getPosition().y()));
     }
 
-    private static void adjustVerticalPos(final MoveableEntity entity, final TerrainImpl block) {
+    private static void adjustVerticalPos(final MoveableEntity entity, final GameEntity block) {
         final double newYPos;
         if (entity.getPosition().y() > block.getPosition().y()) {     //contatto da sopra 
             newYPos = entity.getPosition().y()
