@@ -1,5 +1,7 @@
 package supson.model.entity.impl;
 
+import java.io.File;
+
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.model.physics.impl.PhysicsImpl;
@@ -9,6 +11,8 @@ import supson.model.physics.impl.PhysicsImpl;
  * the base enemy of the game.
  */
 public class Enemy extends AbstractMoveableEntity {
+
+    private static final File SPRITE = new File("src/main/resources/sprites/enemy.png");
 
     private static final int MAX_SPEED = 5;
     private static final double ACC_SPEED = 0.01;
@@ -34,6 +38,7 @@ public class Enemy extends AbstractMoveableEntity {
      */
     public Enemy(Pos2d pos, Vect2d vel, int life, int range) {
         super(pos, HEIGHT, WIDTH, vel, life);
+        this.sprite = SPRITE;
         setPhysics(new PhysicsImpl(this, MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;
