@@ -2,6 +2,7 @@ package supson.model.entity.impl;
 
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.block.BlockType;
 import supson.model.physics.impl.PhysicsImpl;
 
 /**
@@ -19,13 +20,13 @@ public final class Enemy extends AbstractMoveableEntity {
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
 
+    private static final BlockType TYPE = BlockType.ENEMY;
+
     private boolean forward;
     private Pos2d initialPos;
     private double range;
 
-
-
-        /**
+    /**
      * The constructor of the enemy class.
      * @param pos the starting positon of the enemy
      * @param vel the starting velocity of the enemy
@@ -33,7 +34,7 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param range the range of movement of the enemy
      */
     public Enemy(final Pos2d pos,final Vect2d vel, final int life, final int range) {
-        super(pos, HEIGHT, WIDTH, vel, life);
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life);
         setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;

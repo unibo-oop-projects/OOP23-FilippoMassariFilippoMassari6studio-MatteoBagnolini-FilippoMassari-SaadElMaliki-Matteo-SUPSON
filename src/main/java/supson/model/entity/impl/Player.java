@@ -2,6 +2,7 @@ package supson.model.entity.impl;
 
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.block.BlockType;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -19,6 +20,8 @@ public final class Player extends AbstractMoveableEntity {
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
 
+    private static final BlockType TYPE = BlockType.PLAYER;
+
     private boolean left, right, jump;
     private boolean isJumping;
     private int score;
@@ -30,7 +33,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, vel, life);
+        super(pos, HEIGHT, WIDTH,TYPE, vel, life);
         setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
