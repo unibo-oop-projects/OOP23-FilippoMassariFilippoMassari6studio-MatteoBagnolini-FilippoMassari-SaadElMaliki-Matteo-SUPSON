@@ -17,6 +17,7 @@ public abstract class AbstractCollectibleImpl extends TerrainImpl implements Col
      *
      * @param pos  the position of the collectible block
      * @param type the type of the collectible block
+     * @param sprite the sprite of the collectible block
      */
     public AbstractCollectibleImpl(final Pos2d pos, final BlockType type, final File sprite) {
         super(pos, type);

@@ -1,5 +1,7 @@
 package supson.model.block.impl;
 
+import java.io.File;
+
 import supson.common.api.Pos2d;
 import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
@@ -10,6 +12,8 @@ import supson.model.entity.impl.AbstractGameEntity;
  * It represents a block in the game with a specific type defined by BlockType.
  */
 public class TerrainImpl extends AbstractGameEntity implements BlockEntity {
+
+    private static final File SPRITE = new File("src/main/resources/terrain.png");
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 2;
@@ -28,6 +32,7 @@ public class TerrainImpl extends AbstractGameEntity implements BlockEntity {
     public TerrainImpl(final Pos2d pos, final BlockType blockType) {
         super(pos, HEIGHT, WIDTH);
         this.blockType = blockType;
+        this.sprite = SPRITE;
     }
 
     @Override

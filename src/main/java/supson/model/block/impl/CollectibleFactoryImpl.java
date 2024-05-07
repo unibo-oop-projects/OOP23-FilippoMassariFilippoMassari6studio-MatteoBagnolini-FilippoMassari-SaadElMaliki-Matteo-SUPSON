@@ -47,7 +47,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     }
 
     @Override
-    public Collectible createCollectibleStrengthPowerUp(Pos2d pos) {
+    public Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, BlockType.STRNGTH_BOOST_POWER_UP, STRENGTH_POWER_UP_SPRITE) {
 
             @Override

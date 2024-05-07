@@ -15,7 +15,10 @@ public abstract class AbstractGameEntity implements GameEntity {
 
     private Pos2d position;
     private final Hitbox hitbox;
-    protected File sprite;
+    /**
+     * The sprite file associated with the game entity.
+     */
+    protected File sprite; //must be private for te gradlw test
 
     /**
      * The constructor of a generic game entity.
