@@ -42,7 +42,7 @@ public class GameEngineImpl implements GameEngine {
     @Override
     public void updateGame(long elapsed) {
         System.out.println("Updating game: " + elapsed);
-        this.controller.update();
+        this.controller.update(elapsed);
     }
 
     @Override

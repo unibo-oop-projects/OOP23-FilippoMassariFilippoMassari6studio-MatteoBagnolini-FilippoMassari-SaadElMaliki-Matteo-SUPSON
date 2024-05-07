@@ -8,14 +8,14 @@ public interface GameController {
 
     /**
      * Processes the input for the game.
-     * TODO: Specify the type of input to be processed.
      */
     void processInput();
 
     /**
      * Updates the game state.
+     * @param elapsed the time delta on which update the game state
      */
-    void update();
+    void update(long elapsed);
 
     /**
      * Renders the game.

@@ -2,6 +2,7 @@ package supson.model.entity.impl;
 
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
 /**
@@ -30,22 +31,24 @@ public final class Player extends AbstractMoveableEntity {
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
         super(pos, HEIGHT, WIDTH, vel, life);
-        setPhysics(new PhysicsImpl(this, MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
     @Override
     public void updateVelocity() {
+        final Physics physicsComponent = getPhysicsComponent();
         if (left) {
-            getPhysicsComponent().moveLeft();
-        } else if (right) {
-            getPhysicsComponent().moveRight();
+            physicsComponent.moveLeft(this);
+        }
+        if (right) {
+            physicsComponent.moveRight(this);
         }
         if (jump) {
-            getPhysicsComponent().startJumping();
+            physicsComponent.startJumping(this);
         }
         if (isJumping) {
-            getPhysicsComponent().applyGravity();
+            physicsComponent.applyGravity(this);
         }
     }
 

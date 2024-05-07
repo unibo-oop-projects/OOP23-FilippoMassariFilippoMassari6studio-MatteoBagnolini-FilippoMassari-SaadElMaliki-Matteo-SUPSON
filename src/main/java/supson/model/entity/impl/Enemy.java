@@ -34,7 +34,7 @@ public class Enemy extends AbstractMoveableEntity {
      */
     public Enemy(Pos2d pos, Vect2d vel, int life, int range) {
         super(pos, HEIGHT, WIDTH, vel, life);
-        setPhysics(new PhysicsImpl(this, MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;
         this.range = range;
@@ -44,10 +44,10 @@ public class Enemy extends AbstractMoveableEntity {
     @Override
     protected void updateVelocity() {
         if (forward) {
-            getPhysicsComponent().moveLeft();
+            getPhysicsComponent().moveLeft(this);
             forward = this.getPosition().getdistance(initialPos) > range ? true : false;
         } else {
-        getPhysicsComponent().moveRight();
+        getPhysicsComponent().moveRight(this);
         forward = this.getPosition().getdistance(initialPos) > range ? false : true;
         }
     }
