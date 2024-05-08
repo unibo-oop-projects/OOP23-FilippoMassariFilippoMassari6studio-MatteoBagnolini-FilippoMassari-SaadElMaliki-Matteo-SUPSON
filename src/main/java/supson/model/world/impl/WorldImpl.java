@@ -14,8 +14,8 @@ import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.BlockType;
+import supson.model.block.api.BlockEntity;
 import supson.model.block.impl.TerrainImpl;
-import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.world.api.World;
@@ -36,7 +36,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     private static final int DEFAULT_ENEMY_LIFE = 1;
     private static final int DEFAUL_ENEMY_RANGE = 0;
 
-    private final List<GameEntity> blocks;
+    private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
 
@@ -45,7 +45,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * Initializes the lists for blocks, enemies and player.
      */
     public WorldImpl() {
-        this.blocks = new ArrayList<GameEntity>();
+        this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
     }
@@ -115,7 +115,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public void removeBlock(final GameEntity block) {
+    public void removeBlock(final BlockEntity block) {
         this.blocks.remove(block);
     }
 
@@ -125,8 +125,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public List<GameEntity> getBlocks() {
-        return new ArrayList<GameEntity>(this.blocks);
+    public List<BlockEntity> getBlocks() {
+        return new ArrayList<BlockEntity>(this.blocks);
     }
 
     @Override

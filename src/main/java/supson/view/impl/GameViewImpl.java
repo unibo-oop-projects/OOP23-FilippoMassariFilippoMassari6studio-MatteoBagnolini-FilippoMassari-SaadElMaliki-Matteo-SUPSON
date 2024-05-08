@@ -2,7 +2,7 @@ package supson.view.impl;
 
 import java.util.List;
 
-import supson.model.entity.api.GameEntity;
+import supson.model.block.api.BlockEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 
@@ -13,8 +13,8 @@ public class GameViewImpl{
     private final EnemyViewImpl enemyView = new EnemyViewImpl();
     private final PlayerViewImpl playerView = new PlayerViewImpl();
 
-    private void renderLevel(List<GameEntity> blocks){
-        for (GameEntity block : blocks) {
+    private void renderLevel(List<BlockEntity> blocks){
+        for (BlockEntity block : blocks) {
             this.blockView.renderGameEntity(block, this.gamePanel);
         }
     }
@@ -37,7 +37,7 @@ public class GameViewImpl{
         this.gamePanel.startGame();
     }
 
-    public void renderGame(List<GameEntity> blocks, List<Enemy> enemies, Player player){
+    public void renderGame(List<BlockEntity> blocks, List<Enemy> enemies, Player player){
         this.renderLevel(blocks);
         this.renderEnemy(enemies);
         this.renderPlayer(player);
