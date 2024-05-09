@@ -1,9 +1,19 @@
-package supson.model.block;
+package supson.common;
 
 /**
  * Enum representing different types of blocks in the game.
  */
-public enum BlockType {
+public enum GameEntityType {
+    /**
+     * Represents the player block.
+     */
+    PLAYER,
+
+    /**
+     * Represents the enemy block.
+     */
+    ENEMY,
+
     /**
      * Represents terrain blocks.
      */
@@ -15,7 +25,7 @@ public enum BlockType {
     LIFE_BOOST_POWER_UP,
 
     /**
-     * Represents life boost power-up blocks.
+     * Represents strength boost power-up blocks.
      */
     STRNGTH_BOOST_POWER_UP,
 
@@ -25,8 +35,7 @@ public enum BlockType {
     RING,
 
     /**
-     * Represents trap blocks.
+     * Represents damage trap blocks.
      */
-    TRAP
-
+    DAMAGE_TRAP
 }

@@ -3,10 +3,10 @@ package supson.model.hitbox.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
-import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
@@ -33,15 +33,15 @@ public final class CollisionResolver {
      * and the hitbox of the colliding block to overlap. This create the effect of "solid"
      * blocks.
      * @param entity the entity that is moving
-     * @param blocks the list of blocks in the level
+     * @param list the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<BlockEntity> blocks, final Pos2d startingPos) {
+            final List<BlockEntity> list, final Pos2d startingPos) {
 
         final Pos2d actualPos = entity.getPosition();
 
-        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
 
         if (!collidingBlocks.isEmpty()) {
 
@@ -94,10 +94,10 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> blocks) {
-        return blocks.stream()
+    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
+        return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
-        .filter(b -> b.getBlockType().equals(BlockType.TERRAIN))
+        .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
         .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
         .collect(Collectors.toList());
     }

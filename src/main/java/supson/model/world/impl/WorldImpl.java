@@ -10,11 +10,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
-import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.impl.TerrainImpl;
@@ -56,12 +56,12 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void loadWorld(final String filePath) {
-        final Map<Integer, BlockType> blocksMap = new HashMap<>();
-        blocksMap.put(1, BlockType.TERRAIN);
-        blocksMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
-        blocksMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
-        blocksMap.put(4, BlockType.RING);
-        blocksMap.put(5, BlockType.TRAP); //todo : me lo da magic number non so il perchè
+        final Map<Integer, GameEntityType> blocksMap = new HashMap<>();
+        blocksMap.put(1, GameEntityType.TERRAIN);
+        blocksMap.put(2, GameEntityType.LIFE_BOOST_POWER_UP);
+        blocksMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
+        blocksMap.put(4, GameEntityType.RING);
+        blocksMap.put(5, GameEntityType.DAMAGE_TRAP); //todo : me lo da magic number non so il perchè
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -78,9 +78,9 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                         this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
                     }
                     else { 
-                        Optional<BlockType> optionalType = Optional.ofNullable(blocksMap.get(worldElement));
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(blocksMap.get(worldElement));
                         optionalType.ifPresent(type -> {
-                            this.addBlock(pos, type);
+                            this.addBlock(pos);
                         });
                     }
                 }
@@ -97,8 +97,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * @param pos  The position where the block should be added.
      * @param type The type of the block to be added.
      */
-    private void addBlock(final Pos2d pos, final BlockType type) {
-        this.blocks.add(new TerrainImpl(pos, type));
+    private void addBlock(final Pos2d pos) {
+        this.blocks.add(new TerrainImpl(pos));
     }
 
     /**
