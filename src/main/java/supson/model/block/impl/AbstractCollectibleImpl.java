@@ -1,7 +1,7 @@
 package supson.model.block.impl;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.BlockType;
 import supson.model.block.api.Collectible;
 import supson.model.entity.impl.AbstractGameEntity;
 
@@ -20,7 +20,7 @@ public abstract class AbstractCollectibleImpl extends AbstractGameEntity impleme
      * @param pos  the position of the collectible block
      * @param type the type of the collectible block
      */
-    public AbstractCollectibleImpl(final Pos2d pos, final BlockType type) {
+    public AbstractCollectibleImpl(final Pos2d pos, final GameEntityType type) {
         super(pos, HEIGHT, WIDTH, type);
     }
 }

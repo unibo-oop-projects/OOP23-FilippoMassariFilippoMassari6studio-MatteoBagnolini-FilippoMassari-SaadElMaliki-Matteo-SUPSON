@@ -1,9 +1,9 @@
-package supson.model.block;
+package supson.common;
 
 /**
  * Enum representing different types of blocks in the game.
  */
-public enum BlockType {
+public enum GameEntityType {
     /**
      * Represents the player block.
      */

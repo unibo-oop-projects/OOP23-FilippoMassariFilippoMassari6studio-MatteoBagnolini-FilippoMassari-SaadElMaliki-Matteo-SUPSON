@@ -1,7 +1,7 @@
 package supson.model.entity.api;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.BlockType;
 import supson.model.hitbox.api.Hitbox;
 
 /**
@@ -28,7 +28,7 @@ public interface GameEntity {
     /**
      * @return the type of block that the entity is
      */
-    BlockType getBlockType();
+    GameEntityType getGameEntityType();
 
     /**
      * Check if the entity is colliding with another entity.

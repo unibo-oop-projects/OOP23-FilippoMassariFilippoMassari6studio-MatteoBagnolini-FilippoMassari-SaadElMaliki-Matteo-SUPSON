@@ -1,8 +1,8 @@
 package supson.model.entity.impl;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
-import supson.model.block.BlockType;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.physics.api.Physics;
 
@@ -28,7 +28,7 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
      * @param life the number of life of the entity
      */
     public AbstractMoveableEntity(final Pos2d pos, final int height, final int width, 
-    final BlockType type, final Vect2d vel, final int life, final Physics physics) {
+    final GameEntityType type, final Vect2d vel, final int life, final Physics physics) {
         super(pos, height, width,type);
         this.vel = vel;
         this.life = life;

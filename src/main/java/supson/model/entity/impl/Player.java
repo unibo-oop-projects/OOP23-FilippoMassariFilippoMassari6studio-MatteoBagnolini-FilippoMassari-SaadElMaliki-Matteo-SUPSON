@@ -1,8 +1,8 @@
 package supson.model.entity.impl;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
-import supson.model.block.BlockType;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -20,7 +20,7 @@ public final class Player extends AbstractMoveableEntity {
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
 
-    private static final BlockType TYPE = BlockType.PLAYER;
+    private static final GameEntityType TYPE = GameEntityType.PLAYER;
 
     private boolean left, right, jump;
     private boolean onGround;

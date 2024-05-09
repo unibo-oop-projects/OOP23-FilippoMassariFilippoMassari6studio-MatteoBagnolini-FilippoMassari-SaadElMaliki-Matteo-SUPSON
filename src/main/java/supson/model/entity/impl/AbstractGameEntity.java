@@ -1,7 +1,7 @@
 package supson.model.entity.impl;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.BlockType;
 import supson.model.entity.api.GameEntity;
 import supson.model.hitbox.api.Hitbox;
 import supson.model.hitbox.impl.RectHitbox;
@@ -15,7 +15,7 @@ public abstract class AbstractGameEntity implements GameEntity {
     private Pos2d position;
     private final int height;
     private final int width;
-    private final BlockType type;
+    private final GameEntityType type;
 
     /**
      * The constructor of a generic game entity.
@@ -23,7 +23,7 @@ public abstract class AbstractGameEntity implements GameEntity {
      * @param height the height of the entity
      * @param width the width of the entity
      */
-    public AbstractGameEntity(final Pos2d pos, final int height, final int width, final BlockType type) {
+    public AbstractGameEntity(final Pos2d pos, final int height, final int width, final GameEntityType type) {
         this.position = pos;
         this.height = height;
         this.width = width;
@@ -46,7 +46,7 @@ public abstract class AbstractGameEntity implements GameEntity {
     }
 
     @Override
-    public final BlockType getBlockType() {
+    public final GameEntityType getGameEntityType() {
         return this.type;
     }
 
