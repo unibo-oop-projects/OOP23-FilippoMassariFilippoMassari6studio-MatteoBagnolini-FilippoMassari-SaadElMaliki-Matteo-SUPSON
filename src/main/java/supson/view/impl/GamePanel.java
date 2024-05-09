@@ -32,11 +32,10 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Disegna le immagini sul canvas
         int y = 0;
         for (BufferedImage image : images) {
             g.drawImage(image, 0, y, getWidth(), image.getHeight(), this);
-            y += image.getHeight(); // Incrementa l'ordinata per disegnare la prossima immagine sotto
+            y += image.getHeight();
         }
     }
 

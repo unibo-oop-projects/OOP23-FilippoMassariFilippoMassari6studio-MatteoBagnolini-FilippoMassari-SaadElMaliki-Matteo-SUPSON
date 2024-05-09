@@ -1,8 +1,9 @@
 package supson.view.api;
 
+import supson.model.entity.api.GameEntity;
 import supson.view.impl.GamePanel;
 
-public interface GameEntityView<E> {
+public interface GameEntityView {
     
-    void renderGameEntity(E gameEntity, GamePanel gamePanel);
+    void renderGameEntity(GameEntity gameEntity, GamePanel gamePanel);
 }

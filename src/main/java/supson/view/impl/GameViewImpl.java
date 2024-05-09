@@ -9,28 +9,26 @@ import supson.model.entity.impl.Player;
 public class GameViewImpl{
 
     private final GamePanel gamePanel = new GamePanel();
-    private final BlockViewImpl blockView = new BlockViewImpl();
-    private final EnemyViewImpl enemyView = new EnemyViewImpl();
-    private final PlayerViewImpl playerView = new PlayerViewImpl();
+    private final GameEntityViewImpl gameEntityView = new GameEntityViewImpl();
 
     private void renderLevel(List<BlockEntity> blocks){
         for (BlockEntity block : blocks) {
-            this.blockView.renderGameEntity(block, this.gamePanel);
+            this.gameEntityView.renderGameEntity(block, this.gamePanel);
         }
     }
 
     private void renderEnemy(List<Enemy> enemies){
         for (Enemy enemy : enemies) {
-            this.enemyView.renderGameEntity(enemy, this.gamePanel);
+            this.gameEntityView.renderGameEntity(enemy, this.gamePanel);
         }
     }
 
     private void renderPlayer(Player player){
-        this.playerView.renderGameEntity(player,this.gamePanel);
+        this.gameEntityView.renderGameEntity(player,this.gamePanel);
     }
 
     private void renderHud(Player player){
-        this.playerView.renderHud(player,this.gamePanel);
+        this.gameEntityView.renderHud(player,this.gamePanel);
     }
 
     public void renderStartGame(){
