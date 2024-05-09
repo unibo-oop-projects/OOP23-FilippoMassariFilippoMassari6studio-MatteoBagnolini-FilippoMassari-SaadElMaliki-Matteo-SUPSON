@@ -10,15 +10,26 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * The GamePanel class represents a panel that displays images in a game.
+ */
 public class GamePanel extends JPanel {
     
     private final List<BufferedImage> images;
 
+    /**
+     * Constructs a new GamePanel object.
+     */
     public GamePanel() {
         setPreferredSize(new Dimension(800, 600));
         this.images = new ArrayList<BufferedImage>();
     }
 
+    /**
+     * Renders an image on the panel.
+     * 
+     * @param imagePaths the path of the image file to render
+     */
     public void renderImage(String imagePaths) {
         try {
             BufferedImage image = ImageIO.read(new File(imagePaths));
@@ -39,8 +50,11 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /**
+     * Starts the game by creating a window and adding the game panel to it.
+     */
     public void startGame() {
-        // Crea una finestra e aggiungi il pannello canvas
+        // Create a window and add the game panel to it
         JFrame frame = new JFrame("Game Panel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(new GamePanel());
