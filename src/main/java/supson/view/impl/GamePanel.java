@@ -2,35 +2,41 @@ package supson.view.impl;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class GamePanel extends JPanel {
-
-    private BufferedImage backgroundImage;
+    
+    private final List<BufferedImage> images;
 
     public GamePanel() {
-        // Imposta le dimensioni del pannello canvas
         setPreferredSize(new Dimension(800, 600));
+        this.images = new ArrayList<BufferedImage>();
+    }
 
-        // Carica l'immagine di sfondo da file locale
+    public void renderImage(String imagePaths) {
         try {
-            File imageFile = new File("C:\\Users\\fmass\\OneDrive\\Immagini\\Rullino\\mike-yukhtenko-a2kD4b0KK4s-unsplash.jpg");
-            backgroundImage = ImageIO.read(imageFile);
+            BufferedImage image = ImageIO.read(new File(imagePaths));
+            images.add(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Disegna l'immagine di sfondo sul canvas
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        // Disegna le immagini sul canvas
+        int y = 0;
+        for (BufferedImage image : images) {
+            g.drawImage(image, 0, y, getWidth(), image.getHeight(), this);
+            y += image.getHeight(); // Incrementa l'ordinata per disegnare la prossima immagine sotto
         }
     }
 
@@ -42,5 +48,5 @@ public class GamePanel extends JPanel {
         frame.pack();
         frame.setVisible(true);
     }
-}
 
+}
