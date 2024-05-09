@@ -16,7 +16,7 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
 
     private Vect2d vel;
     private int life;
-    private Physics physicsComponent;
+    private final Physics physicsComponent;
 
     /**
      * The constructor of a generic moveable entity.
@@ -27,10 +27,11 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
      * @param life the number of life of the entity
      */
     public AbstractMoveableEntity(final Pos2d pos, final int height, final int width,
-     final Vect2d vel, final int life) {
+     final Vect2d vel, final int life, final Physics physics) {
         super(pos, height, width);
         this.vel = vel;
         this.life = life;
+        this.physicsComponent = physics;
         }
 
     @Override
@@ -63,14 +64,6 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
      * This method should be overrided.
      */
     protected abstract void updateVelocity();
-
-    /**
-     * This method is used to set the physics component of the entity.
-     * @param physics the physics component
-     */
-    public void setPhysics(final Physics physics) {
-        this.physicsComponent = physics;
-    }
 
     /**
      * This method returns the physics component of the entity.

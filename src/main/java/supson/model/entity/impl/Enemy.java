@@ -33,8 +33,7 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param range the range of movement of the enemy
      */
     public Enemy(final Pos2d pos,final Vect2d vel, final int life, final int range) {
-        super(pos, HEIGHT, WIDTH, vel, life);
-        setPhysics(new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;
         this.range = range;
