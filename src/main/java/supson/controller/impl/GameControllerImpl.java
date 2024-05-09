@@ -41,23 +41,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void update(final long elapsed) {
-        final List<MoveableEntity> movEntities = List.copyOf(model.getEnemies());
-        movEntities.add(model.getPlayer());
-
-        movEntities.stream()
-        .forEach(e -> {
-            Pos2d oldPos = e.getPosition();
-            e.move(elapsed);
-            CollisionResolver.resolvePlatformCollisions(e, model.getBlocks(), oldPos);
-        });
-
-        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(model.getPlayer(), model.getEnemies());
-        killed.forEach(k -> model.removeEnemy(k));
-
-        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(model.getPlayer(),
-            model.getBlocks().stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
-            .collect(Collectors.toList()));
-        activated.forEach(k -> model.removeBlock(k));
+        this.model.updateGame(elapsed);
     }
 
     @Override
