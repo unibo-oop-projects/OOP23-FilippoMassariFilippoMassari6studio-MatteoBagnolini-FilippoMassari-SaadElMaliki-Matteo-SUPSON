@@ -9,6 +9,7 @@ import supson.model.entity.impl.Enemy;
 import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
+import supson.view.api.GameView;
 import supson.view.impl.GameViewImpl;
 import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
@@ -22,7 +23,7 @@ public final class GameControllerImpl implements GameController {
     private static final String WORLD_FILE_PATH = "src\\resources\\world.txt";
 
     private final World model;
-    private final GameViewImpl view;
+    private final GameView view;
 
     /**
      * This is the GameControllerImpl constructor.
