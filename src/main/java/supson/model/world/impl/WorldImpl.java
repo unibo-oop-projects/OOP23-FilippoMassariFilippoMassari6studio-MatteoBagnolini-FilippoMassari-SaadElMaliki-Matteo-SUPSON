@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,9 +16,12 @@ import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
+import supson.model.block.api.Collectible;
 import supson.model.block.impl.TerrainImpl;
+import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.world.api.World;
 
 /**
@@ -112,6 +116,27 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.enemies.clear();
         this.player.setPosition(DEFAULT_PLAYER_POSITION);
         this.loadWorld(filePath);
+    }
+
+    @Override
+    public void updateGame(long elapsed) {
+        final List<MoveableEntity> movEntities = List.copyOf(enemies);
+        movEntities.add(player);
+
+        movEntities.stream()
+        .forEach(e -> {
+            Pos2d oldPos = e.getPosition();
+            e.move(elapsed);
+            CollisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
+        });
+
+        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(player, enemies);
+        killed.forEach(k -> removeEnemy(k));
+
+        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(player,
+            blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
+            .collect(Collectors.toList()));
+        activated.forEach(k -> removeBlock(k));
     }
 
     @Override
