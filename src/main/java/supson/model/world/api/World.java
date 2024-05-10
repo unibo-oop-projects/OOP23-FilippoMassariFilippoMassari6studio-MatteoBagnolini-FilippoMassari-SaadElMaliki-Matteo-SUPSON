@@ -29,6 +29,7 @@ public interface World {
 
     /**
      * Updates every entity of the model based on time elapsed from last update.
+     *
      * @param elapsed time elapsed from last update
      */
     void updateGame(long elapsed);
@@ -62,9 +63,23 @@ public interface World {
     List<Enemy> getEnemies();
 
     /**
+     * Returns a list of blocks that are currently visible in the camera's view.
+     *
+     * @return a list of BlockEntity objects representing the visible blocks
+     */
+    List<BlockEntity> getCameraBlocks();
+
+    /**
+     * Returns a list of enemies that are currently visible in the camera's view.
+     *
+     * @return a list of Enemy objects representing the visible enemies
+     */
+    List<Enemy> getCameraEnemies();
+
+    /**
      * Returns the position of the player in the game world.
      *
-     * @return a Pos2d object representing the player's position
+     * @return a Player object representing the player's position
      */
     Player getPlayer();
 }

@@ -47,7 +47,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void render() {
-        this.view.renderGame(model.getBlocks(), model.getEnemies(), model.getPlayer());
+        this.view.renderGame(model.getCameraBlocks(), model.getCameraEnemies(), model.getPlayer());
     }
 
     @Override

@@ -40,5 +40,4 @@ public class GameViewImpl implements GameView{
         this.gameEntityView.renderGameEntity(camera,this.gamePanel);
         this.renderHud(player);
     }
-
 }
