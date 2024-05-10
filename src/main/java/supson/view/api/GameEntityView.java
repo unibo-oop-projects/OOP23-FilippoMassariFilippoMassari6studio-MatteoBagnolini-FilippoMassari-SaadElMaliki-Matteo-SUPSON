@@ -1,5 +1,7 @@
 package supson.view.api;
 
+import java.util.List;
+
 import supson.model.entity.api.GameEntity;
 import supson.view.impl.GamePanel;
 
@@ -15,5 +17,5 @@ public interface GameEntityView {
      * @param gameEntity the game entity to render
      * @param gamePanel the game panel on which to render the game entity
      */
-    void renderGameEntity(GameEntity gameEntity, GamePanel gamePanel);
+    void renderGameEntity(List<GameEntity> gameEntities, GamePanel gamePanel);
 }

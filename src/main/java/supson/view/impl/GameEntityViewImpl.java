@@ -4,8 +4,8 @@ import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
 import supson.view.SpriteMap;
 import supson.view.api.GameEntityView;
-
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the GameEntityView interface.
@@ -16,9 +16,13 @@ public class GameEntityViewImpl implements GameEntityView{
     private static final SpriteMap spriteMap = new SpriteMap();
 
     @Override
-    public void renderGameEntity(GameEntity gameEntity, GamePanel gamePanel) {
-        File playerFile = new File(spriteMap.getSpritePath(gameEntity.getGameEntityType()));
-        gamePanel.renderImage(playerFile.getAbsolutePath());
+    public void renderGameEntity(List<GameEntity> gameEntities, GamePanel gamePanel) {
+        final List<String> spriteList = new ArrayList<>();
+        for (GameEntity gameEntity : gameEntities) {
+            String spriteStr = new String(spriteMap.getSpritePath(gameEntity.getGameEntityType()));
+            spriteList.add(spriteStr);
+        }
+        gamePanel.renderCamera(spriteList);
     }
 
     /**

@@ -11,18 +11,18 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * The GamePanel class represents a panel that displays images in a game.
+ * The GamePanel class represents a panel that displays camera in a game.
  */
 public class GamePanel extends JPanel {
     
-    private final List<BufferedImage> images;
+    private final List<BufferedImage> camera;
 
     /**
      * Constructs a new GamePanel object.
      */
     public GamePanel() {
         setPreferredSize(new Dimension(800, 600));
-        this.images = new ArrayList<BufferedImage>();
+        this.camera = new ArrayList<BufferedImage>();
     }
 
     /**
@@ -30,12 +30,15 @@ public class GamePanel extends JPanel {
      * 
      * @param imagePaths the path of the image file to render
      */
-    public void renderImage(String imagePaths) {
-        try {
-            BufferedImage image = ImageIO.read(new File(imagePaths));
-            images.add(image);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void renderCamera(List<String> imagePathsList) {
+        camera.clear();
+        for (String imagePaths : imagePathsList) {
+            try {
+                BufferedImage image = ImageIO.read(new File(imagePaths));
+                camera.add(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         repaint();
     }
@@ -44,7 +47,7 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         int y = 0;
-        for (BufferedImage image : images) {
+        for (BufferedImage image : camera) {
             g.drawImage(image, 0, y, getWidth(), image.getHeight(), this);
             y += image.getHeight();
         }

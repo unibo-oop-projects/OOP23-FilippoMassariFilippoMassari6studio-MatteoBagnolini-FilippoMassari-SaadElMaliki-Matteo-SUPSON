@@ -1,8 +1,10 @@
 package supson.view.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import supson.model.block.api.BlockEntity;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.view.api.GameView;
@@ -14,37 +16,6 @@ public class GameViewImpl implements GameView{
 
     private final GamePanel gamePanel = new GamePanel();
     private final GameEntityViewImpl gameEntityView = new GameEntityViewImpl();
-
-    /**
-     * Renders the level by rendering each block entity on the game panel.
-     * 
-     * @param blocks the list of block entities to render
-     */
-    private void renderLevel(List<BlockEntity> blocks){
-        for (BlockEntity block : blocks) {
-            this.gameEntityView.renderGameEntity(block, this.gamePanel);
-        }
-    }
-
-    /**
-     * Renders the enemies by rendering each enemy entity on the game panel.
-     * 
-     * @param enemies the list of enemy entities to render
-     */
-    private void renderEnemy(List<Enemy> enemies){
-        for (Enemy enemy : enemies) {
-            this.gameEntityView.renderGameEntity(enemy, this.gamePanel);
-        }
-    }
-
-    /**
-     * Renders the player entity on the game panel.
-     * 
-     * @param player the player entity to render
-     */
-    private void renderPlayer(Player player){
-        this.gameEntityView.renderGameEntity(player,this.gamePanel);
-    }
 
     /**
      * Renders the HUD (Heads-Up Display) for the player on the game panel.
@@ -62,9 +33,11 @@ public class GameViewImpl implements GameView{
 
     @Override
     public void renderGame(List<BlockEntity> blocks, List<Enemy> enemies, Player player){
-        this.renderLevel(blocks);
-        this.renderEnemy(enemies);
-        this.renderPlayer(player);
+        final List<GameEntity> camera = new ArrayList<>();
+        camera.addAll(blocks);
+        camera.addAll(enemies);
+        camera.add(player);
+        this.gameEntityView.renderGameEntity(camera,this.gamePanel);
         this.renderHud(player);
     }
 
