@@ -1,7 +1,6 @@
 package supson.model.hitbox.impl;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import supson.common.GameEntityType;
@@ -78,19 +77,17 @@ public final class CollisionResolver {
      * @return the list of enemy killed
      */
     public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
-        Hitbox playerHitbox = player.getHitbox();
-        boolean playerInvulnerable = player.getIsJumping();
-        List<Enemy> killed = new ArrayList<>();
-        for (Enemy enemy : enemies) {
-            if (playerHitbox.isCollidingWith(enemy.getHitbox())) {
-                if (playerInvulnerable) {
-                    killed.add(enemy);
-                } else {
-                    player.setLife(player.getLife()-1);
-                }
-            }
+        final Hitbox playerHitbox = player.getHitbox();
+        if (player.getIsJumping()) {
+             return enemies.stream()
+            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
+            .collect(Collectors.toList());
+        } else {
+            enemies.stream()
+            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
+            .forEach(k -> k.getGameEntityType());   //TODO: here use the applyDamage method
+            return List.of();
         }
-        return killed;
     }
 
     /**
