@@ -3,9 +3,20 @@ package supson;
 import supson.core.api.GameEngine;
 import supson.core.impl.GameEngineImpl;
 
+/**
+ * This class is the entry point of the application.
+ */
 public final class SonicLaunch {
-    public static void main(String[] args) {
-        GameEngine ge = new GameEngineImpl();
+
+    private SonicLaunch() { }
+
+    /**
+     * This is the main method to start the game.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+        final GameEngine ge = new GameEngineImpl();
         ge.mainLoop();
     }
+
 }

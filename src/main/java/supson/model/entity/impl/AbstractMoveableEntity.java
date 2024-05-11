@@ -24,12 +24,14 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
      * @param pos the position of the entity
      * @param height the height of the entity
      * @param width the width of the entity
+     * @param type the type of the entity
      * @param vel the starting velocity of the entity
      * @param life the number of life of the entity
+     * @param physics the physic behavior of the entity
      */
-    public AbstractMoveableEntity(final Pos2d pos, final int height, final int width, 
-    final GameEntityType type, final Vect2d vel, final int life, final Physics physics) {
-        super(pos, height, width,type);
+    public AbstractMoveableEntity(final Pos2d pos, final int height, final int width,
+            final GameEntityType type, final Vect2d vel, final int life, final Physics physics) {
+        super(pos, height, width, type);
         this.vel = vel;
         this.life = life;
         this.physicsComponent = physics;

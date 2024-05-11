@@ -33,7 +33,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH,TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
@@ -105,7 +105,7 @@ public final class Player extends AbstractMoveableEntity {
      * This method sets the isJumping flag.
      * @param flag the boolean value representing if the player is jumping or not
     */
-    public void setIsJumping(boolean flag) {
+    public void setIsJumping(final boolean flag) {
         this.isJumping = flag;
     }
 
@@ -113,7 +113,7 @@ public final class Player extends AbstractMoveableEntity {
      * This method returns if the player is jumping.
      * @return true if the player is jumping, false otherwise
      */
-    public boolean getIsJumping() {
+    public boolean isJumping() {
         return this.isJumping;
     }
 

@@ -119,7 +119,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
-    public void updateGame(long elapsed) {
+    public void updateGame(final long elapsed) {
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
