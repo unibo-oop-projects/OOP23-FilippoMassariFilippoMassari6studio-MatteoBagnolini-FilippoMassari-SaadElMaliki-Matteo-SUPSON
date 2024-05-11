@@ -1,6 +1,7 @@
 package supson.model.hitbox.impl;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import supson.common.GameEntityType;
@@ -12,6 +13,7 @@ import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hitbox.api.Hitbox;
 
 /**
  * This class is an utility class which act as collision resolver. It is used to check
@@ -76,8 +78,19 @@ public final class CollisionResolver {
      * @return the list of enemy killed
      */
     public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resolveEnemiesCollisions'");
+        Hitbox playerHitbox = player.getHitbox();
+        boolean playerInvulnerable = player.getIsJumping();
+        List<Enemy> killed = new ArrayList<>();
+        for (Enemy enemy : enemies) {
+            if (playerHitbox.isCollidingWith(enemy.getHitbox())) {
+                if (playerInvulnerable) {
+                    killed.add(enemy);
+                } else {
+                    player.setLife(player.getLife()-1);
+                }
+            }
+        }
+        return killed;
     }
 
     /**
