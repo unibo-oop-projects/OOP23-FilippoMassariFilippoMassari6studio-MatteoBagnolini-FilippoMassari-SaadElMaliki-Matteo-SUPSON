@@ -120,7 +120,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void updateGame(long elapsed) {
-        final List<MoveableEntity> movEntities = List.copyOf(enemies);
+        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
         movEntities.stream()
