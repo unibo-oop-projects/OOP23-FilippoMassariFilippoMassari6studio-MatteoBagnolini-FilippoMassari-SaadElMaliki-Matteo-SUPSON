@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GamePanel {
+
+    private static final String ROOT = "supson/view/impl";
     
     private final JPanel pan = new JPanel();
     private final List<URL> camera;
@@ -25,7 +27,6 @@ public class GamePanel {
         frame.setVisible(true);
         frame.setSize(800, 600);
         frame.setResizable(false);
-        frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pan.setLayout(new GridLayout(4, 4));
     }
@@ -51,8 +52,10 @@ public class GamePanel {
             JLabel label = new JLabel();
             try {
                 // Carica l'immagine dall'URL
-                ImageIcon icon = new ImageIcon(imageUrl);
+                System.out.println("Image "+imageUrl);
+                ImageIcon icon = new ImageIcon(ROOT+imageUrl);
                 label.setIcon(icon);
+                System.out.println("Image loaded "+imageUrl);
             } catch (Exception e) {
                 e.printStackTrace();
                 // Gestisci eventuali errori durante il caricamento dell'immagine
