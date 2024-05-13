@@ -1,18 +1,10 @@
 package supson.controller.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import supson.common.api.Pos2d;
 import supson.controller.api.GameController;
-import supson.model.entity.impl.Enemy;
-import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameView;
 import supson.view.impl.GameViewImpl;
-import supson.model.block.api.Collectible;
-import supson.model.entity.api.MoveableEntity;
 
 /**
  * This class, which implements the GameController interface, models the game controller.

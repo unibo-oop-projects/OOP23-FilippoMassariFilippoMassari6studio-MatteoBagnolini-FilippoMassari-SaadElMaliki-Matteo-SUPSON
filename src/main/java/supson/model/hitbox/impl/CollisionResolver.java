@@ -12,6 +12,7 @@ import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hitbox.api.Hitbox;
 
 /**
  * This class is an utility class which act as collision resolver. It is used to check
@@ -76,8 +77,17 @@ public final class CollisionResolver {
      * @return the list of enemy killed
      */
     public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resolveEnemiesCollisions'");
+        final Hitbox playerHitbox = player.getHitbox();
+        if (player.isJumping()) {
+             return enemies.stream()
+            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
+            .collect(Collectors.toList());
+        } else {
+            enemies.stream()
+            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
+            .forEach(k -> k.getGameEntityType());   //TODO: here use the applyDamage method
+            return List.of();
+        }
     }
 
     /**
