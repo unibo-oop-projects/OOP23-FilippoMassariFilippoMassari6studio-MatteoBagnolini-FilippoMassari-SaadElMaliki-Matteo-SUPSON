@@ -28,6 +28,12 @@ public interface World {
     void reset(String filePath);
 
     /**
+     * Updates every entity of the model based on time elapsed from last update.
+     * @param elapsed time elapsed from last update
+     */
+    void updateGame(long elapsed);
+
+    /**
      * Removes the specified block from the game world.
      *
      * @param block the block to be removed

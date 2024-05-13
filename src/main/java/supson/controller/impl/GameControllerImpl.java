@@ -1,17 +1,9 @@
 package supson.controller.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import supson.common.api.Pos2d;
 import supson.controller.api.GameController;
-import supson.model.entity.impl.Enemy;
-import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.impl.GameViewImpl;
-import supson.model.block.api.Collectible;
-import supson.model.entity.api.MoveableEntity;
 
 /**
  * This class, which implements the GameController interface, models the game controller.
@@ -41,23 +33,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void update(final long elapsed) {
-        final List<MoveableEntity> movEntities = List.copyOf(model.getEnemies());
-        movEntities.add(model.getPlayer());
-
-        movEntities.stream()
-        .forEach(e -> {
-            Pos2d oldPos = e.getPosition();
-            e.move(elapsed);
-            CollisionResolver.resolvePlatformCollisions(e, model.getBlocks(), oldPos);
-        });
-
-        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(model.getPlayer(), model.getEnemies());
-        killed.forEach(k -> model.removeEnemy(k));
-
-        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(model.getPlayer(),
-            model.getBlocks().stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
-            .collect(Collectors.toList()));
-        activated.forEach(k -> model.removeBlock(k));
+        this.model.updateGame(elapsed);
     }
 
     @Override

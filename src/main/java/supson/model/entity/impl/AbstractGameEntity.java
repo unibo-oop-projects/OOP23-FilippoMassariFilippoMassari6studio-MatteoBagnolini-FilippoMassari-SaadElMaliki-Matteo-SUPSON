@@ -22,6 +22,7 @@ public abstract class AbstractGameEntity implements GameEntity {
      * @param pos the position of the entity
      * @param height the height of the entity
      * @param width the width of the entity
+     * @param type the type of the entity
      */
     public AbstractGameEntity(final Pos2d pos, final int height, final int width, final GameEntityType type) {
         this.position = pos;

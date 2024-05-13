@@ -23,7 +23,7 @@ public final class Player extends AbstractMoveableEntity {
     private static final GameEntityType TYPE = GameEntityType.PLAYER;
 
     private boolean left, right, jump;
-    private boolean onGround;
+    private boolean onGround, isJumping;
     private int score;
 
     /**
@@ -33,7 +33,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH,TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
@@ -48,6 +48,8 @@ public final class Player extends AbstractMoveableEntity {
         }
         if (jump && onGround) {
             physicsComponent.startJumping(this);
+            isJumping = true;
+            jump = false;
         }
         if (!onGround) {
             physicsComponent.applyGravity(this);
@@ -97,6 +99,22 @@ public final class Player extends AbstractMoveableEntity {
      */
     public void setOnGround(final boolean flag) {
         this.onGround = flag;
+    }
+
+    /**
+     * This method sets the isJumping flag.
+     * @param flag the boolean value representing if the player is jumping or not
+    */
+    public void setIsJumping(final boolean flag) {
+        this.isJumping = flag;
+    }
+
+    /**
+     * This method returns if the player is jumping.
+     * @return true if the player is jumping, false otherwise
+     */
+    public boolean isJumping() {
+        return this.isJumping;
     }
 
     /**
