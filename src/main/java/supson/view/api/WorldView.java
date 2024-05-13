@@ -2,7 +2,7 @@ package supson.view.api;
 
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
@@ -18,5 +18,5 @@ public interface WorldView {
      * @param player 
      * @param gameEntitiesList 
     */
-    void renderWorld(JPanel gamePanel, List<GameEntity> gameEntitiesList, Player player);
+    void renderWorld(JFrame gameFrame, List<GameEntity> gameEntitiesList, Player player);
 }
