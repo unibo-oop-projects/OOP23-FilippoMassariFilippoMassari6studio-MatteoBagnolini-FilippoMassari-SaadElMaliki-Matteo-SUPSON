@@ -4,8 +4,10 @@ import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
 import supson.view.SpriteMap;
 import supson.view.api.GameEntityView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
 
 /**
  * Implementation of the GameEntityView interface.
@@ -17,10 +19,10 @@ public class GameEntityViewImpl implements GameEntityView{
 
     @Override
     public void renderGameEntity(List<GameEntity> gameEntities, GamePanel gamePanel) {
-        final List<String> spriteList = new ArrayList<>();
+        final List<URL> spriteList = new ArrayList<>();
         for (GameEntity gameEntity : gameEntities) {
-            String spriteStr = new String(spriteMap.getSpritePath(gameEntity.getGameEntityType()));
-            spriteList.add(spriteStr);
+            URL imgURL = ClassLoader.getSystemResource(spriteMap.getSpritePath(gameEntity.getGameEntityType()));
+            spriteList.add(imgURL);
         }
         gamePanel.renderCamera(spriteList);
     }
@@ -32,7 +34,7 @@ public class GameEntityViewImpl implements GameEntityView{
      */
     public void renderHud(Player player, GamePanel gamePanel) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'renderHud'");
+        System.out.println("Rendering HUD");
     }
 
 }

@@ -33,11 +33,11 @@ public class GameViewImpl implements GameView{
 
     @Override
     public void renderGame(List<BlockEntity> blocks, List<Enemy> enemies, Player player){
-        final List<GameEntity> camera = new ArrayList<>();
-        camera.addAll(blocks);
-        camera.addAll(enemies);
-        camera.add(player);
-        this.gameEntityView.renderGameEntity(camera,this.gamePanel);
+        final List<GameEntity> cameraList = new ArrayList<>();
+        cameraList.addAll(blocks);
+        cameraList.addAll(enemies);
+        cameraList.add(player);
+        this.gameEntityView.renderGameEntity(cameraList,this.gamePanel);
         this.renderHud(player);
     }
 }

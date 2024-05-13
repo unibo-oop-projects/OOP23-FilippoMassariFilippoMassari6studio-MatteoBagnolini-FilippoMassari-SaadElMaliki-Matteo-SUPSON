@@ -23,13 +23,13 @@ public class SpriteMap {
      * Initializes the spritePaths map with the corresponding sprite paths for each game entity type.
      */
     private void initializeSpritePaths() {
-        spritePaths.put(GameEntityType.PLAYER, "src\\resources\\sprite\\player_sprite.jpg");
-        spritePaths.put(GameEntityType.ENEMY, "src\\resources\\sprite\\enemy_sprite.jpg");
-        spritePaths.put(GameEntityType.TERRAIN, "path_al_sprite_del_blocco.png");
-        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "path_al_sprite_del_blocco.png");
-        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "path_al_sprite_del_blocco.png");
-        spritePaths.put(GameEntityType.RING, "path_al_sprite_del_blocco.png");
-        spritePaths.put(GameEntityType.DAMAGE_TRAP, "path_al_sprite_del_blocco.png");
+        spritePaths.put(GameEntityType.PLAYER, "/sprite/player_sprite.jpg");
+        spritePaths.put(GameEntityType.ENEMY, "/sprite/enemy_sprite.jpg");
+        spritePaths.put(GameEntityType.TERRAIN, "/sprite/block_sprite.jpeg");
+        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "/sprite/block_sprite.jpeg");
+        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "/sprite/block_sprite.jpeg");
+        spritePaths.put(GameEntityType.RING, "/sprite/block_sprite.jpeg");
+        spritePaths.put(GameEntityType.DAMAGE_TRAP, "/sprite/block_sprite.jpeg");
     }
 
     /**
