@@ -23,11 +23,11 @@ public class Main {
                 gameView.initView();
                 List<GameEntity> gameEntities = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
-                    BlockEntity block = new TerrainImpl(new Pos2dImpl(0,0));
+                    BlockEntity block = new TerrainImpl(new Pos2dImpl(i,i));
                     gameEntities.add(block);
                 }
                 for (int i = 0; i < 3; i++) {
-                    Enemy enemy = new Enemy(new Pos2dImpl(0,0),new Vect2dImpl(0,0),3,5);
+                    Enemy enemy = new Enemy(new Pos2dImpl(i,i),new Vect2dImpl(0,0),3,5);
                     gameEntities.add(enemy);
                 }
                 Player player = new Player(new Pos2dImpl(0,0),new Vect2dImpl(0,0),3);

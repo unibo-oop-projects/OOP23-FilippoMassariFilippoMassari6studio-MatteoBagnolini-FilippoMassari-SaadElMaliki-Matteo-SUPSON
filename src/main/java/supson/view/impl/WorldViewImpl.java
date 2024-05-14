@@ -21,7 +21,6 @@ public class WorldViewImpl implements WorldView{
     private static final int CAMERA_RANGE = 5;
     private static final int DEFAULT_WIDTH = 50;
     private static final int DEFAULT_HEIGHT = 50;
-    private static final String BACKGROUND_STRING = "sprite/background.jpg";
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -34,6 +33,7 @@ public class WorldViewImpl implements WorldView{
                 this.cameraGameEntitiesList.add(gameEntity);
             }
         }
+        this.cameraGameEntitiesList.add(player);
     }
 
     private Optional<ImageIcon> getEntityImage(GameEntity gameEntity) {
@@ -46,15 +46,14 @@ public class WorldViewImpl implements WorldView{
     }
 
     private void addToPanel(JFrame gameFrame) {
-        JLabel backgrondLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource(BACKGROUND_STRING)));
-        //backgrondLabel.setBounds(0, 0, 100, 500);
-        gameFrame.add(backgrondLabel);
+        int i = 0;
         for (GameEntity gameEntity : cameraGameEntitiesList) {
+            i++;
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             JLabel label = new JLabel(icon.get());
-            //label.setBounds(gameEntity.getPosition().x(), gameEntity.getPosition().y(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            label.setBounds(10, 10, DEFAULT_WIDTH, DEFAULT_HEIGHT); //il get position è un double
+            label.setBounds(i*20, i*30, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             gameFrame.add(label);
+            //gameFrame.setComponentZOrder(label, 22);
         }
     }
 
