@@ -4,7 +4,7 @@ package supson.model.hud.api;
  * This interface models a hud. It is used to display info about the current level.
  */
 public interface Hud {
-    
+
     /**
      * This method returns the current score of the game.
      * @return the score of the game

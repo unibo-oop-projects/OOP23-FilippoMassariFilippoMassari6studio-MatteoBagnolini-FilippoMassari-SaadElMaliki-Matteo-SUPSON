@@ -5,12 +5,13 @@ import supson.model.hud.api.Hud;
 /**
  * This class, which implements Hud, models the hud of the game. It is used to display info
  * about the current level.
- * A new instance of this class should be created whenever the hud has to be updated, with newer info.
+ * A new instance of this class should be created whenever the hud has to be updated, with newer info. In fact 
+ * this class is immutable.
  */
 public final class HudImpl implements Hud {
 
-    private int score;
-    private int lives;
+    private final int score;
+    private final int lives;
 
     /**
      * This is the constructor of the class.
@@ -31,5 +32,5 @@ public final class HudImpl implements Hud {
     public int getLives() {
         return this.lives;
     }
-    
+
 }
