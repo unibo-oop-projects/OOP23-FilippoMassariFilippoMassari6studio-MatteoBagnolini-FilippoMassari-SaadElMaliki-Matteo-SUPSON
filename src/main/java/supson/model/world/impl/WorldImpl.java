@@ -22,6 +22,8 @@ import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.hitbox.impl.CollisionResolver;
+import supson.model.hud.api.Hud;
+import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
 
 /**
@@ -187,6 +189,11 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public Player getPlayer() {
         return this.player; //todo : non passo copia difensiva verificare che sia giusto
+    }
+
+    @Override
+    public Hud getHud() {
+        return new HudImpl(this.player.getScore(), this.player.getLife());
     }
 
 }
