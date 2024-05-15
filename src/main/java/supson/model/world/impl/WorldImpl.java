@@ -119,8 +119,13 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
         this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
     }
-
     
+    /**
+     * Adds a collectable to the world at the specified position.
+     * 
+     * @param pos  the position where the collectable should be added
+     * @param type the type of collectable to add
+     */
     private void addCollectable(Pos2d pos, GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
         switch (type) {
             case RING:
