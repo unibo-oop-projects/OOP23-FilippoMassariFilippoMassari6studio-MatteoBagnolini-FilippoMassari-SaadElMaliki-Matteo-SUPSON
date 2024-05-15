@@ -18,7 +18,7 @@ import supson.view.api.WorldView;
 
 public class WorldViewImpl implements WorldView{
 
-    private static final int CAMERA_RANGE = 5;
+    private static final int CAMERA_RANGE = 5000;
     private static final int DEFAULT_WIDTH = 50;
     private static final int DEFAULT_HEIGHT = 50;
 
@@ -28,8 +28,8 @@ public class WorldViewImpl implements WorldView{
 
     private void selectGameEntity(List<GameEntity> gameEntitiesList, Player player) {
         for (GameEntity gameEntity : gameEntitiesList) {
-            if (gameEntity.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
-                && gameEntity.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
+            if (gameEntity.getPosition().x() >= player.getPosition().x() - CAMERA_RANGE
+                && gameEntity.getPosition().x() <= player.getPosition().x() + CAMERA_RANGE) {
                 this.cameraGameEntitiesList.add(gameEntity);
             }
         }
@@ -51,9 +51,8 @@ public class WorldViewImpl implements WorldView{
             i++;
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             JLabel label = new JLabel(icon.get());
-            label.setBounds(i*20, i*30, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            label.setBounds((int)gameEntity.getPosition().x()*50+10+i, (int)gameEntity.getPosition().y()*50+10+i, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             gameFrame.add(label);
-            //gameFrame.setComponentZOrder(label, 22);
         }
     }
 

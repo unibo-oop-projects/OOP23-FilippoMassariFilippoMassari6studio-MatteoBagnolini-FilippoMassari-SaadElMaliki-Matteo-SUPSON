@@ -25,11 +25,11 @@ public class SpriteMap {
     private void initializeSpritePaths() {
         spritePaths.put(GameEntityType.PLAYER, "sprite/player_sprite.jpg");
         spritePaths.put(GameEntityType.ENEMY, "sprite/enemy_sprite.jpg");
-        spritePaths.put(GameEntityType.TERRAIN, "sprite/block_sprite.jpeg");
-        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/block_sprite.jpeg");
-        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/block_sprite.jpeg");
-        spritePaths.put(GameEntityType.RING, "sprite/block_sprite.jpeg");
-        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/block_sprite.jpeg");
+        spritePaths.put(GameEntityType.TERRAIN, "sprite/terrain_sprite.jpeg");
+        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
+        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
+        spritePaths.put(GameEntityType.RING, "sprite/ring_sprite.jpg");
+        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/terrain_sprite.jpeg");
     }
 
     /**
