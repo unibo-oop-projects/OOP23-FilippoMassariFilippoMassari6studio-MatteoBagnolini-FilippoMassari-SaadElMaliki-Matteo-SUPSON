@@ -4,7 +4,7 @@ import supson.controller.api.GameController;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameView;
-import supson.view.impl.GameViewImpl;
+//import supson.view.impl.GameViewImpl;
 
 /**
  * This class, which implements the GameController interface, models the game controller.
@@ -22,7 +22,7 @@ public final class GameControllerImpl implements GameController {
      */
     public GameControllerImpl() {
         this.model = new WorldImpl();
-        this.view = new GameViewImpl();
+        this.view = null;
     }
 
 

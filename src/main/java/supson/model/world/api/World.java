@@ -5,6 +5,7 @@ import java.util.List;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 
 /**
  * The World interface represents a game world.
@@ -82,4 +83,12 @@ public interface World {
      * @return a Player object representing the player's position
      */
     Player getPlayer();
+
+    /**
+     * Returns the hud of the current state of the game.
+     * 
+     * @return the hud of the current state of the game
+     */
+    Hud getHud();
+
 }

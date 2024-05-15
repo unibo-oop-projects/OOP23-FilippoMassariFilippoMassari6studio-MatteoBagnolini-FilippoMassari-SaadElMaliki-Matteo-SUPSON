@@ -12,7 +12,7 @@ plugins {
      * The runnable jar will be found in build/libs/projectname-all.jar
      */
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.danilopianini.gradle-java-qa") version "1.39.0"
+    id("org.danilopianini.gradle-java-qa") version "1.50.0"
 }
 
 repositories { // Where to search for dependencies
@@ -21,7 +21,7 @@ repositories { // Where to search for dependencies
 
 dependencies {
     // Suppressions for SpotBugs
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.3")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.5")
 
     implementation("org.jooq:jool:0.9.15")
 
