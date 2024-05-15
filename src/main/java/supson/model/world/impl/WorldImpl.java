@@ -17,6 +17,8 @@ import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.api.CollectibleFactory;
+import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
@@ -31,7 +33,9 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     private static final int CAMERA_RANGE = 5;
 
-    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
+    private final CollectibleFactory collectibleFactory;
+
+    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(5, 1);
     private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
     private static final int DEFAULT_PLAYER_LIFE = 3;
 
@@ -51,6 +55,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
+        this.collectibleFactory = new CollectibleFactoryImpl();
     }
 
     @Override
@@ -78,10 +83,15 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                             this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
                         });
                     }
-                    else { 
+                    else if(entityMap.get(worldElement).equals(GameEntityType.TERRAIN)){ 
                         Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addBlock(pos);
+                        });
+                    }else {
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                        optionalType.ifPresent(type -> {
+                            this.addCollectable(pos, type);
                         });
                     }
                 }
@@ -109,6 +119,23 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      */
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
         this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
+    }
+
+    
+    private void addCollectable(Pos2d pos, GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
+        switch (type) {
+            case RING:
+                this.blocks.add(collectibleFactory.createCollectibleRing(pos));
+                break;
+            case LIFE_BOOST_POWER_UP:
+                this.blocks.add(collectibleFactory.createCollectibleLifeBoostPowerUp(pos));
+                break;
+            case STRNGTH_BOOST_POWER_UP:
+                this.blocks.add(collectibleFactory.createCollectibleStrengthPowerUp(pos));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
