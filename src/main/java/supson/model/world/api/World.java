@@ -64,20 +64,6 @@ public interface World {
     List<Enemy> getEnemies();
 
     /**
-     * Returns a list of blocks that are currently visible in the camera's view.
-     *
-     * @return a list of BlockEntity objects representing the visible blocks
-     */
-    List<BlockEntity> getCameraBlocks();
-
-    /**
-     * Returns a list of enemies that are currently visible in the camera's view.
-     *
-     * @return a list of Enemy objects representing the visible enemies
-     */
-    List<Enemy> getCameraEnemies();
-
-    /**
      * Returns the position of the player in the game world.
      *
      * @return a Player object representing the player's position

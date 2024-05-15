@@ -33,8 +33,6 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
-    private static final int CAMERA_RANGE = 5;
-
     private final CollectibleFactory collectibleFactory;
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(5, 1);
@@ -68,7 +66,6 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         entityMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
         entityMap.put(4, GameEntityType.RING);
         entityMap.put(5, GameEntityType.DAMAGE_TRAP);
-        //entityMap.put(6, GameEntityType.PLAYER); non dovrebbe essere presente
         entityMap.put(6, GameEntityType.ENEMY);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -187,30 +184,6 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public List<Enemy> getEnemies() {
         return new ArrayList<Enemy>(this.enemies); 
-    }
-
-    @Override
-    public List<BlockEntity> getCameraBlocks() {
-        final List<BlockEntity> cameraBlockList = new ArrayList<BlockEntity>();
-        for (BlockEntity block : this.blocks) {
-            if (block.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
-                && block.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
-                cameraBlockList.add(block);
-            }
-        }
-        return cameraBlockList;
-    }
-
-    @Override
-    public List<Enemy> getCameraEnemies() {
-        final List<Enemy> cameraEnemyList = new ArrayList<Enemy>();
-        for (Enemy enemy : this.enemies) {
-            if (enemy.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
-                && enemy.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
-                cameraEnemyList.add(enemy);
-            }
-        }
-        return cameraEnemyList;
     }
 
     @Override
