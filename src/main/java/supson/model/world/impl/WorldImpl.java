@@ -2,10 +2,9 @@ package supson.model.world.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,6 +26,7 @@ import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
+import supson.view.impl.EntityMap;
 
 /**
  * Implementation of the World interface.
@@ -60,14 +60,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void loadWorld(final String filePath) {
-        final Map<Integer, GameEntityType> entityMap = new HashMap<>();
-        entityMap.put(1, GameEntityType.TERRAIN);
-        entityMap.put(2, GameEntityType.LIFE_BOOST_POWER_UP);
-        entityMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
-        entityMap.put(4, GameEntityType.RING);
-        entityMap.put(5, GameEntityType.DAMAGE_TRAP);
-        entityMap.put(6, GameEntityType.ENEMY);
-
+        final EntityMap entityMap = new EntityMap();
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             int y = 0;
@@ -76,19 +70,19 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    if (entityMap.get(worldElement).equals(GameEntityType.ENEMY)) { //ho tolto l'inserimento di player
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                    if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
-                            this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
+                            this.addEnemy(pos);
                         });
                     }
-                    else if(entityMap.get(worldElement).equals(GameEntityType.TERRAIN)){ 
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                    else if(entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN)){ 
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addBlock(pos);
                         });
                     }else {
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addCollectable(pos, type);
                         });
