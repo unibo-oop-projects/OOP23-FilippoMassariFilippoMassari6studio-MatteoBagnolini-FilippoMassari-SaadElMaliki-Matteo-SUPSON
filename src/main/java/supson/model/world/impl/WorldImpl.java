@@ -22,6 +22,8 @@ import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.hitbox.impl.CollisionResolver;
+import supson.model.hud.api.Hud;
+import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
 
 /**
@@ -29,8 +31,7 @@ import supson.model.world.api.World;
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
 
-    private static final int INT_OF_PLAYER = 6; //todo: soluzione potaenzialmente migliorabile
-    private static final int INT_OF_ENEMY = 7;
+    private static final int CAMERA_RANGE = 5;
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
     private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
@@ -56,12 +57,14 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void loadWorld(final String filePath) {
-        final Map<Integer, GameEntityType> blocksMap = new HashMap<>();
-        blocksMap.put(1, GameEntityType.TERRAIN);
-        blocksMap.put(2, GameEntityType.LIFE_BOOST_POWER_UP);
-        blocksMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
-        blocksMap.put(4, GameEntityType.RING);
-        blocksMap.put(5, GameEntityType.DAMAGE_TRAP); //todo : me lo da magic number non so il perchè
+        final Map<Integer, GameEntityType> entityMap = new HashMap<>();
+        entityMap.put(1, GameEntityType.TERRAIN);
+        entityMap.put(2, GameEntityType.LIFE_BOOST_POWER_UP);
+        entityMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
+        entityMap.put(4, GameEntityType.RING);
+        entityMap.put(5, GameEntityType.DAMAGE_TRAP);
+        //entityMap.put(6, GameEntityType.PLAYER); non dovrebbe essere presente
+        entityMap.put(6, GameEntityType.ENEMY);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -71,14 +74,14 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    if (worldElement == INT_OF_PLAYER) { //todo : graffe da verificare
-                        this.player.setPosition(pos);
-                    }
-                    else if (worldElement == INT_OF_ENEMY) {
-                        this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
+                    if (entityMap.get(worldElement).equals(GameEntityType.ENEMY)) { //ho tolto l'inserimento di player
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                        optionalType.ifPresent(type -> {
+                            this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
+                        });
                     }
                     else { 
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(blocksMap.get(worldElement));
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addBlock(pos);
                         });
@@ -160,8 +163,37 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
+    public List<BlockEntity> getCameraBlocks() {
+        final List<BlockEntity> cameraBlockList = new ArrayList<BlockEntity>();
+        for (BlockEntity block : this.blocks) {
+            if (block.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
+                && block.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
+                cameraBlockList.add(block);
+            }
+        }
+        return cameraBlockList;
+    }
+
+    @Override
+    public List<Enemy> getCameraEnemies() {
+        final List<Enemy> cameraEnemyList = new ArrayList<Enemy>();
+        for (Enemy enemy : this.enemies) {
+            if (enemy.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
+                && enemy.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
+                cameraEnemyList.add(enemy);
+            }
+        }
+        return cameraEnemyList;
+    }
+
+    @Override
     public Player getPlayer() {
         return this.player; //todo : non passo copia difensiva verificare che sia giusto
+    }
+
+    @Override
+    public Hud getHud() {
+        return new HudImpl(this.player.getScore(), this.player.getLife());
     }
 
 }
