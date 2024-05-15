@@ -1,6 +1,6 @@
 package supson.view.api;
 
-import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 
 public interface HudView {
     /**
@@ -8,5 +8,5 @@ public interface HudView {
     * 
     * @param player the player object to render the HUD for
     */
-    void renderHud(Player player);
+    void renderHud(Hud hud);
 }
