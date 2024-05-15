@@ -6,8 +6,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
@@ -62,10 +63,11 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     public void loadWorld(final String filePath) {
         final EntityMap entityMap = new EntityMap();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (InputStream inputStream = getClass().getResourceAsStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             int y = 0;
-            while ((line = reader.readLine()) != null) { //todo : cambiare readear per renderlo standard
+            while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
@@ -81,7 +83,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                         optionalType.ifPresent(type -> {
                             this.addBlock(pos);
                         });
-                    }else {
+                    } else {
                         Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addCollectable(pos, type);
