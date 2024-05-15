@@ -11,13 +11,17 @@ import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.AbstractMoveableEntity;
 import supson.model.physics.impl.PhysicsImpl; 
 
-
+/**
+ * THis class tests the Physics class.
+ */
 class TestPhysics {
 
-    private static long TIME = 1000;
+    // CHECKSTYLE: MagicNumber OFF
 
-    private AbstractMoveableEntity jumpingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0, GameEntityType.PLAYER,
-                            new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+    private static final long TIME = 1000;
+
+    private final AbstractMoveableEntity jumpingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -26,8 +30,8 @@ class TestPhysics {
 
     };
 
-    private AbstractMoveableEntity leftMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0, GameEntityType.PLAYER,
-                            new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+    private final AbstractMoveableEntity leftMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -36,8 +40,8 @@ class TestPhysics {
 
     };
 
-    private AbstractMoveableEntity rightMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0, GameEntityType.PLAYER,
-                            new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+    private final AbstractMoveableEntity rightMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -46,10 +50,10 @@ class TestPhysics {
 
     };
 
-    private AbstractMoveableEntity zigzagMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0, GameEntityType.PLAYER,
-                            new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+    private final AbstractMoveableEntity zigzagMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
 
-        private int count = 0;
+        private int count;
 
         @Override
         protected void updateVelocity() {
@@ -63,8 +67,8 @@ class TestPhysics {
 
     };
 
-    private AbstractMoveableEntity gravityMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0, GameEntityType.PLAYER,
-                            new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 1)) {
+    private final AbstractMoveableEntity gravityMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 1)) {
 
         @Override
         protected void updateVelocity() {
@@ -138,7 +142,7 @@ class TestPhysics {
 
     @Test
     void testMaxSpeed() {
-        for(int i = 0; i < 25; i++) {
+        for (int i = 0; i < 25; i++) {
             rightMovingEntity.move(TIME);
         }
         assertEquals(new Vect2dImpl(20, 0), rightMovingEntity.getVelocity());

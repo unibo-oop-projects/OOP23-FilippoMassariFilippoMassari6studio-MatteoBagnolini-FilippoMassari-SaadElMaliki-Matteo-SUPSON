@@ -12,11 +12,16 @@ import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.impl.Player;
 
-public class TestPlayer {
+/**
+ * This class tests the player class.
+ */
+class TestPlayer {
 
     private static final long FRAME_RATE = 20;
 
     private Player plr;
+
+    // CHECKSTYLE: MagicNumber OFF
 
     @BeforeEach
     void init() {
