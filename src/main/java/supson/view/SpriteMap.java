@@ -38,7 +38,7 @@ public class SpriteMap {
      * @param gameObjectType the game entity type
      * @return the sprite path for the given game entity type
      */
-    public String getSpritePath(GameEntityType gameObjectType) {
+    public String getSpritePath(final GameEntityType gameObjectType) {
         return spritePaths.get(gameObjectType);
     }
 }

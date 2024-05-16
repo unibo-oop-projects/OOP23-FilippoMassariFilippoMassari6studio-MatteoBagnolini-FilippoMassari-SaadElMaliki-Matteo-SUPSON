@@ -13,11 +13,10 @@ import supson.model.entity.impl.Player;
  */
 public interface WorldView {
     /**
-     * Renders the game entities in the world.
-     * @param gamePanel 
-     * @param player 
-     * @param gameEntitiesList 
-     * @param hud 
+    * Renders the game entities in the world.
+    * @param gameFrame the game frame to render the world on 
+    * @param gameEntitiesList the list of game entities to render in the world
+    * @param player the player entity to render the world around
     */
     void renderWorld(JFrame gameFrame, List<GameEntity> gameEntitiesList, Player player);
 }

@@ -11,12 +11,12 @@ import supson.model.hud.api.Hud;
  * It provides methods for initializing and rendering the game.
  */
 public interface GameView {
-    
+
     /**
      * Initializes the view.
      */
     void initView();
-    
+
     /**
      * Renders the view.
      * 
@@ -24,5 +24,5 @@ public interface GameView {
      * @param player the player object to render
      * @param hud the hud object to render
      */
-    void renderView(List<GameEntity> gameEntitiesList, Player players, Hud hud);
+    void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
 }

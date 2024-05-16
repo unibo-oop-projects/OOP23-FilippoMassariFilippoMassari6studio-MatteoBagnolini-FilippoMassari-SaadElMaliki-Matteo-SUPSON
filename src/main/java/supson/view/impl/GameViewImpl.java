@@ -13,26 +13,35 @@ import supson.view.api.HudView;
 import supson.view.api.WorldView;
 import javax.swing.JLabel;
 
-public class GameViewImpl implements GameView {
+/**
+ * Implementation of the {@link GameView} interface.
+ * This class is responsible for initializing and rendering the game view.
+ */
+public final class GameViewImpl implements GameView {
 
     //private static final String BACKGROUND_STRING = "sprite/background.jpg";
+    private static final int WHIDTH = 800;
+    private static final int HEIGHT = 600;
 
     private final WorldView worldView;
     private final HudView hudView;
     private final JFrame gameFrame;
 
+    /**
+     * Constructs a new instance of {@code GameViewImpl}.
+     * Initializes the world view, HUD view, and game frame.
+     */
     public GameViewImpl() {
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
         this.gameFrame = new JFrame("Game");
-
     }
 
     @Override
     public void initView() { 
         //this.gameFrame.getContentPane().add(this.pan);
         this.gameFrame.pack();
-        this.gameFrame.setSize(800, 600);
+        this.gameFrame.setSize(WHIDTH, HEIGHT);
         this.gameFrame.setResizable(false);
         JLabel backgroundLabel = new JLabel();
         backgroundLabel.setOpaque(true);
@@ -44,7 +53,7 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud) {
+    public void renderView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
         worldView.renderWorld(gameFrame, gameEntitiesList, player);
         hudView.renderHud(gameFrame, hud);
     }

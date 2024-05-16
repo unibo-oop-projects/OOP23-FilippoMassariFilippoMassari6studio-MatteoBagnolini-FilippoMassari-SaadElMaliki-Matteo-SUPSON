@@ -6,14 +6,18 @@ import supson.model.block.api.Trap;
 import supson.model.entity.impl.AbstractGameEntity;
 import supson.model.entity.impl.Player;
 
-public class DamageTrapImpl extends AbstractGameEntity implements Trap{
+/**
+ * Represents a damage trap in the game.
+ * This trap reduces the player's life by a specified amount when activated.
+ */
+public final class DamageTrapImpl extends AbstractGameEntity implements Trap{
 
     private static final int HEIGHT = 1;
     private static final int WIDTH = 1;
 
-    private static final GameEntityType TYPE = GameEntityType.DAMAGE_TRAP;
-
     private static final int DAMAGE = 1;
+
+    private static final GameEntityType TYPE = GameEntityType.DAMAGE_TRAP;
 
     /**
      * Constructs a new DamageTrapImpl object with the specified position.
@@ -25,7 +29,7 @@ public class DamageTrapImpl extends AbstractGameEntity implements Trap{
     }
 
     @Override
-    public void activate(Player player) {
+    public void activate(final Player player) {
         player.setLife(player.getLife() - DAMAGE);
     }
 

@@ -14,5 +14,4 @@ public interface Trap extends BlockEntity {
      * @param player the player affected by the trap
      */
     void activate(Player player);
-
 }

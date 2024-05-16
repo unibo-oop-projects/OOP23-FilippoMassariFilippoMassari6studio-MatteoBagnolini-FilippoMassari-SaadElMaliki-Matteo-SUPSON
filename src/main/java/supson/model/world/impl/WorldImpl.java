@@ -61,7 +61,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public void loadWorld(final String filePath) {
         final EntityMap entityMap = new EntityMap();
-        
+
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
@@ -78,7 +78,8 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                                 this.addEnemy(pos);
                             });
                         }
-                        else if(entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)){ 
+                        else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
+                                || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)) { 
                             Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                             optionalType.ifPresent(type -> {
                                 this.addBlock(pos);
@@ -102,7 +103,6 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
      * Adds a new block to the world at the specified position with the specified type.
      *
      * @param pos  The position where the block should be added.
-     * @param type The type of the block to be added.
      */
     private void addBlock(final Pos2d pos) {
         this.blocks.add(new TerrainImpl(pos));
@@ -116,14 +116,14 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
         this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
     }
-    
+
     /**
      * Adds a collectable to the world at the specified position.
      * 
      * @param pos  the position where the collectable should be added
      * @param type the type of collectable to add
      */
-    private void addCollectable(Pos2d pos, GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
+    private void addCollectable(final Pos2d pos, final GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
         switch (type) {
             case RING:
                 this.blocks.add(collectibleFactory.createCollectibleRing(pos));
