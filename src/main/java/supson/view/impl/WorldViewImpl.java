@@ -16,7 +16,7 @@ import supson.view.api.WorldView;
 
 public class WorldViewImpl implements WorldView{
 
-    private static final int CAMERA_RANGE = 5000;
+    private static final int CAMERA_RANGE = 10;
     private static final int DEFAULT_WIDTH = 50;
     private static final int DEFAULT_HEIGHT = 50;
 
@@ -44,12 +44,10 @@ public class WorldViewImpl implements WorldView{
     }
 
     private void addToPanel(JFrame gameFrame) {
-        int i = 0;
         for (GameEntity gameEntity : cameraGameEntitiesList) {
-            i++;
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             JLabel label = new JLabel(icon.get());
-            label.setBounds((int)gameEntity.getPosition().x()*50+100+i, (int)gameEntity.getPosition().y()*50+100+i, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            label.setBounds((int)gameEntity.getPosition().x()*DEFAULT_WIDTH, (int)gameEntity.getPosition().y()*DEFAULT_HEIGHT+270, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             gameFrame.add(label);
         }
     }

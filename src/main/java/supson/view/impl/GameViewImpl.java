@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 
 public class GameViewImpl implements GameView {
 
-    private static final String BACKGROUND_STRING = "sprite/background.jpg";
+    //private static final String BACKGROUND_STRING = "sprite/background.jpg";
 
     private final WorldView worldView;
     private final HudView hudView;
