@@ -1,6 +1,5 @@
 package supson.view.impl;
 
-import java.awt.Graphics;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
@@ -51,7 +49,7 @@ public class WorldViewImpl implements WorldView{
             i++;
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             JLabel label = new JLabel(icon.get());
-            label.setBounds((int)gameEntity.getPosition().x()*50+10+i, (int)gameEntity.getPosition().y()*50+10+i, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            label.setBounds((int)gameEntity.getPosition().x()*50+100+i, (int)gameEntity.getPosition().y()*50+100+i, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             gameFrame.add(label);
         }
     }

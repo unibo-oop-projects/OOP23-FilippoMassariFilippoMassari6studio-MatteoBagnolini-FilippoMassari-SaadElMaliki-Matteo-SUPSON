@@ -7,12 +7,16 @@ import java.util.List;
 import supson.view.api.GameView;
 import supson.model.entity.api.GameEntity;
 import supson.model.world.impl.WorldImpl;
+import supson.model.hud.api.Hud;
+import supson.model.hud.impl.HudImpl;
 
 public class Main {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+
+                Hud hud = new HudImpl(10,3);
 
                 GameView gameView = new GameViewImpl();
                 WorldImpl world = new WorldImpl();
@@ -26,7 +30,7 @@ public class Main {
                 gameEntities.addAll(world.getEnemies());
                 gameEntities.add(world.getPlayer());
 
-                gameView.renderView(gameEntities, world.getPlayer());
+                gameView.renderView(gameEntities, world.getPlayer(), hud);
             }
         });
     }

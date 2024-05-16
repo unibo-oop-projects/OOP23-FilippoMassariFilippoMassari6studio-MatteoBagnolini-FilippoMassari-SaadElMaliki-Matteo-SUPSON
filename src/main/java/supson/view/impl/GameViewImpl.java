@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;
 import supson.view.api.WorldView;
@@ -43,9 +44,9 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
-    public void renderView(List<GameEntity> gameEntitiesList, Player player) {
+    public void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud) {
         worldView.renderWorld(gameFrame, gameEntitiesList, player);
-        //hudView.renderHud(hudPanel, player);
+        hudView.renderHud(gameFrame, hud);
     }
 
 }

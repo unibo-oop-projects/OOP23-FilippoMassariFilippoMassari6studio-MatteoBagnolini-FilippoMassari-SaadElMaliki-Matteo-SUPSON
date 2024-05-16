@@ -17,6 +17,7 @@ public interface WorldView {
      * @param gamePanel 
      * @param player 
      * @param gameEntitiesList 
+     * @param hud 
     */
     void renderWorld(JFrame gameFrame, List<GameEntity> gameEntitiesList, Player player);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 
 /**
  * The GameView interface represents the view component of the game.
@@ -18,6 +19,10 @@ public interface GameView {
     
     /**
      * Renders the view.
+     * 
+     * @param gameEntitiesList the list of game entities to render
+     * @param player the player object to render
+     * @param hud the hud object to render
      */
-    void renderView(List<GameEntity> gameEntitiesList, Player players);
+    void renderView(List<GameEntity> gameEntitiesList, Player players, Hud hud);
 }

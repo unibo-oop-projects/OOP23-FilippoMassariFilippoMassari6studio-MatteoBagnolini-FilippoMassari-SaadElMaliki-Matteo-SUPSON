@@ -1,16 +1,24 @@
 package supson.view.impl;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
-import supson.model.entity.impl.Player;
 import supson.view.api.HudView;
+import supson.model.hud.api.Hud;
 
 public class HudViewImpl implements HudView {
 
     @Override
-    public void renderHud(JPanel hudPanel, Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'renderHud'");
+    public void renderHud(JFrame gameFrame, Hud hud) {
+        JLabel scoreLabel = new JLabel("Score: " + hud.getScore());
+        JLabel livesLabel = new JLabel("Lives: " + hud.getLives());
+        scoreLabel.setBounds(10, 10, 100, 20);
+        livesLabel.setBounds(10, 40, 100, 20);
+        gameFrame.add(scoreLabel);
+        gameFrame.add(livesLabel);
+        // Make sure the labels are visible
+        /*gameFrame.revalidate();
+        gameFrame.repaint();*/
     }
 
 }
