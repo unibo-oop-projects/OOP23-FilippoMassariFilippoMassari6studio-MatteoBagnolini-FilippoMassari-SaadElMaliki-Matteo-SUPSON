@@ -2,6 +2,8 @@ package supson;
 
 import supson.core.api.GameEngine;
 import supson.core.impl.GameEngineImpl;
+import supson.view.api.GameView;
+import supson.view.impl.GameViewImpl;
 
 /**
  * This class is the entry point of the application.
