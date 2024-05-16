@@ -2,13 +2,13 @@ package supson.model.world.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
@@ -27,13 +27,12 @@ import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
+import supson.view.impl.EntityMap;
 
 /**
  * Implementation of the World interface.
  */
 public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
-
-    private static final int CAMERA_RANGE = 5;
 
     private final CollectibleFactory collectibleFactory;
 
@@ -62,36 +61,30 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void loadWorld(final String filePath) {
-        final Map<Integer, GameEntityType> entityMap = new HashMap<>();
-        entityMap.put(1, GameEntityType.TERRAIN);
-        entityMap.put(2, GameEntityType.LIFE_BOOST_POWER_UP);
-        entityMap.put(3, GameEntityType.STRNGTH_BOOST_POWER_UP);
-        entityMap.put(4, GameEntityType.RING);
-        entityMap.put(5, GameEntityType.DAMAGE_TRAP);
-        //entityMap.put(6, GameEntityType.PLAYER); non dovrebbe essere presente
-        entityMap.put(6, GameEntityType.ENEMY);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        final EntityMap entityMap = new EntityMap();
+        
+        try (InputStream inputStream = getClass().getResourceAsStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             int y = 0;
-            while ((line = reader.readLine()) != null) { //todo : cambiare readear per renderlo standard
+            while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     int worldElement = Integer.parseInt(tokens[x]);
                     Pos2d pos = new Pos2dImpl(x, y);
-                    if (entityMap.get(worldElement).equals(GameEntityType.ENEMY)) { //ho tolto l'inserimento di player
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                    if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
-                            this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
+                            this.addEnemy(pos);
                         });
                     }
-                    else if(entityMap.get(worldElement).equals(GameEntityType.TERRAIN)){ 
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                    else if(entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN)){ 
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addBlock(pos);
                         });
-                    }else {
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.get(worldElement));
+                    } else {
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                         optionalType.ifPresent(type -> {
                             this.addCollectable(pos, type);
                         });
@@ -122,8 +115,13 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     private void addEnemy(final Pos2d pos) { //c'è un check stile da verificare qui
         this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
     }
-
     
+    /**
+     * Adds a collectable to the world at the specified position.
+     * 
+     * @param pos  the position where the collectable should be added
+     * @param type the type of collectable to add
+     */
     private void addCollectable(Pos2d pos, GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
         switch (type) {
             case RING:
@@ -187,30 +185,6 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public List<Enemy> getEnemies() {
         return new ArrayList<Enemy>(this.enemies); 
-    }
-
-    @Override
-    public List<BlockEntity> getCameraBlocks() {
-        final List<BlockEntity> cameraBlockList = new ArrayList<BlockEntity>();
-        for (BlockEntity block : this.blocks) {
-            if (block.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
-                && block.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
-                cameraBlockList.add(block);
-            }
-        }
-        return cameraBlockList;
-    }
-
-    @Override
-    public List<Enemy> getCameraEnemies() {
-        final List<Enemy> cameraEnemyList = new ArrayList<Enemy>();
-        for (Enemy enemy : this.enemies) {
-            if (enemy.getPosition().y() >= player.getPosition().y() - CAMERA_RANGE
-                && enemy.getPosition().y() <= player.getPosition().y() + CAMERA_RANGE) {
-                cameraEnemyList.add(enemy);
-            }
-        }
-        return cameraEnemyList;
     }
 
     @Override

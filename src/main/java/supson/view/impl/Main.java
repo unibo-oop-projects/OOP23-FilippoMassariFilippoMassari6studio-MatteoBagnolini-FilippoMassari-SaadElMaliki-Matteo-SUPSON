@@ -6,13 +6,7 @@ import java.util.List;
 
 import supson.view.api.GameView;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.Player;
 import supson.model.world.impl.WorldImpl;
-import supson.model.block.api.BlockEntity;
-import supson.model.block.impl.TerrainImpl;
-import supson.common.impl.Pos2dImpl;
-import supson.common.impl.Vect2dImpl;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,24 +20,44 @@ public class Main {
                 gameView.initView();
                 List<GameEntity> gameEntities = new ArrayList<>();
 
-                world.loadWorld("src/main/resources/world.txt");
+                world.loadWorld("/world.txt");
 
                 gameEntities.addAll(world.getBlocks());
                 gameEntities.addAll(world.getEnemies());
                 gameEntities.add(world.getPlayer());
-                Player player = world.getPlayer();
 
-                //System.out.println("gameEntities list : "+gameEntities);
-                gameView.renderView(gameEntities, player);
-
-                /*for (int i = 0; i < 1000; i++) {
-                    BlockEntity block = new TerrainImpl(new Pos2dImpl(10*i,500));
-                    gameEntities.add(block);
-                }
-                Player player = new Player(new Pos2dImpl(0,0),new Vect2dImpl(0,0),3);
-                gameView.renderView(gameEntities, player);
-                System.out.println("gameEntities list : "+gameEntities);*/
+                gameView.renderView(gameEntities, world.getPlayer());
             }
         });
     }
 }
+
+/*import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Ottenere un InputStream per il file di risorse
+            InputStream inputStream = Main.class.getResourceAsStream("/world.txt");
+
+            // Creare un BufferedReader per leggere i dati dall'InputStream
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            // Leggere il file riga per riga
+            String fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            
+            // Chiudere il BufferedReader
+            reader.close();
+
+            // Stampare il contenuto del file
+            System.out.println(fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}*/
+
