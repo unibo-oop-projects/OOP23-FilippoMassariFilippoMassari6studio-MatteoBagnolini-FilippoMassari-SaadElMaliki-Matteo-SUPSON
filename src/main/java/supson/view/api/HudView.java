@@ -1,14 +1,12 @@
 package supson.view.api;
 
-import javax.swing.JPanel;
-
-import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 
 public interface HudView {
     /**
     * Renders the HUD.
-     * @param hudPanel 
-     * @param player 
+    * 
+    * @param player the player object to render the HUD for
     */
-    void renderHud(JPanel hudPanel, Player player);
+    void renderHud(Hud hud);
 }
