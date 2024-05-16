@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.model.world.impl;
 
 import supson.common.GameEntityType;
 

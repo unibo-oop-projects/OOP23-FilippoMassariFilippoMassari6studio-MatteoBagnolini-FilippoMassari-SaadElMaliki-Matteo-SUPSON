@@ -27,7 +27,6 @@ import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
-import supson.view.impl.EntityMap;
 
 /**
  * Implementation of the World interface.
