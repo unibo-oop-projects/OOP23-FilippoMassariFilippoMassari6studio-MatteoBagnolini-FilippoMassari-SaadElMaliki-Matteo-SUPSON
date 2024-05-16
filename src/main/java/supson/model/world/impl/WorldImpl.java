@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
@@ -186,6 +189,15 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public List<Enemy> getEnemies() {
         return new ArrayList<Enemy>(this.enemies); 
+    }
+
+    @Override
+    public List<GameEntity> getGameEntities() {
+        final List<GameEntity> entities = new ArrayList<GameEntity>();
+        entities.addAll(this.blocks);
+        entities.addAll(this.enemies);
+        entities.add(this.player);
+        return entities;
     }
 
     @Override

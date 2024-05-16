@@ -28,9 +28,8 @@ public final class HudViewImpl implements HudView {
         livesLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
         gameFrame.add(scoreLabel);
         gameFrame.add(livesLabel);
-        // Make sure the labels are visible
-        /*gameFrame.revalidate();
-        gameFrame.repaint();*/
+        gameFrame.revalidate();
+        gameFrame.repaint();
     }
 
 }

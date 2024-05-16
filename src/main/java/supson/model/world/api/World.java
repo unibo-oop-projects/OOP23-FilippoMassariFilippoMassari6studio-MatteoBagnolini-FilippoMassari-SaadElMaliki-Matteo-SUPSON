@@ -3,6 +3,7 @@ package supson.model.world.api;
 import java.util.List;
 
 import supson.model.block.api.BlockEntity;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.hud.api.Hud;
@@ -62,6 +63,13 @@ public interface World {
      * @return a list of MoveableEntity objects representing the enemies
      */
     List<Enemy> getEnemies();
+
+    /**
+     * Returns a list of all the entities in the game world.
+     *
+     * @return a list of GameEntity objects representing the entities
+     */
+    List<GameEntity> getGameEntities();
 
     /**
      * Returns the position of the player in the game world.

@@ -4,7 +4,7 @@ import supson.controller.api.GameController;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameView;
-//import supson.view.impl.GameViewImpl;
+import supson.view.impl.GameViewImpl;
 
 /**
  * This class, which implements the GameController interface, models the game controller.
@@ -12,7 +12,7 @@ import supson.view.api.GameView;
  */
 public final class GameControllerImpl implements GameController {
 
-    private static final String WORLD_FILE_PATH = "src\\resources\\world.txt";
+    private static final String WORLD_FILE_PATH = "/world.txt";
 
     private final World model;
     private final GameView view;
@@ -22,7 +22,7 @@ public final class GameControllerImpl implements GameController {
      */
     public GameControllerImpl() {
         this.model = new WorldImpl();
-        this.view = null;
+        this.view = new GameViewImpl();
     }
 
 
@@ -39,13 +39,13 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void render() {
-        //this.view.renderGame(model.getCameraBlocks(), model.getCameraEnemies(), model.getPlayer());
+        this.view.renderView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
     }
 
     @Override
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
-        //this.view.renderStartGame();
+        this.view.initView();
     }
 
 }

@@ -2,8 +2,6 @@ package supson;
 
 import supson.core.api.GameEngine;
 import supson.core.impl.GameEngineImpl;
-import supson.view.api.GameView;
-import supson.view.impl.GameViewImpl;
 
 /**
  * This class is the entry point of the application.
@@ -18,6 +16,7 @@ public final class SonicLaunch {
      */
     public static void main(final String[] args) {
         final GameEngine ge = new GameEngineImpl();
+        ge.initGame();
         ge.mainLoop();
     }
 

@@ -44,8 +44,8 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                //TODO : Implement when setStatus is available
-                throw new UnsupportedOperationException("Unimplemented method 'collect'");
+                // TODO Auto-generated method stub
+                System.out.println("Strength power up collected");
             }
         };
     }

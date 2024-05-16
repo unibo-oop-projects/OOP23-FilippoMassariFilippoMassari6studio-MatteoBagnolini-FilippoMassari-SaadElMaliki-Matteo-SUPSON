@@ -80,8 +80,11 @@ public class WorldViewImpl implements WorldView {
     @Override
     public void renderWorld(final JFrame gameFrame, final List<GameEntity> gameEntitiesList, final Player player) {
         cameraGameEntitiesList.clear();
+        gameFrame.getContentPane().removeAll();
         selectGameEntity(gameEntitiesList, player);
         addToPanel(gameFrame);
+        gameFrame.revalidate();
+        gameFrame.repaint();
     }
 
 }

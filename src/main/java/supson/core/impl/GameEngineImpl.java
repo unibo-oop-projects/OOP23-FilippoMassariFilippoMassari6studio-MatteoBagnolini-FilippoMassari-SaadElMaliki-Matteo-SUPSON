@@ -31,7 +31,7 @@ public final class GameEngineImpl implements GameEngine {
         while (true) {
             final long currentCycleStartTime = System.currentTimeMillis();
             final long elapsed = currentCycleStartTime - previousCycleStartTime;
-            processInput();
+            //processInput(); //TODO: uncomment this line when the method is implemented
             updateGame(elapsed);
             render();
             waitForNextFrame(currentCycleStartTime);
