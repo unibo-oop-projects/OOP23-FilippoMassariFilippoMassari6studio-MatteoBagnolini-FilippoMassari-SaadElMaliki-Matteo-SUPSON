@@ -14,6 +14,8 @@ import supson.model.physics.api.Physics;
  */
 public final class PhysicsImpl implements Physics {
 
+    private static final double MAX_GRAVITY_SPEED = -10;
+
     private final int maxSpeed;
     private final double accSpeed;
     private final int jumpForce;
@@ -84,7 +86,9 @@ public final class PhysicsImpl implements Physics {
 
     @Override
     public void applyGravity(final MoveableEntity entity) {
-        entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), entity.getVelocity().y() - gravity));
+        if (entity.getVelocity().y() > MAX_GRAVITY_SPEED) {
+            entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), entity.getVelocity().y() - gravity));
+        }
     }
 
 }
