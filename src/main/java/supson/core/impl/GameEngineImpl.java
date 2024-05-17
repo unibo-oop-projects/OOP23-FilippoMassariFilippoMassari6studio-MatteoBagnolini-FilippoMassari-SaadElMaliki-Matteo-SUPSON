@@ -11,8 +11,6 @@ public final class GameEngineImpl implements GameEngine {
 
     private static final long REFRESH_RATE = 60;
 
-    private final Logger logger = Logger.getLogger("Game Engine");
-
     private final GameController controller;
 
     /**
