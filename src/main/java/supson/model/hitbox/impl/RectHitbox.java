@@ -32,8 +32,8 @@ public final class RectHitbox implements Hitbox {
         final Pos2d ll = getLLCorner();
         final Pos2d ur1 = box.getURCorner();
         final Pos2d ll1 = box.getLLCorner();
-        return  ll.x() <= ur1.x() && ll1.x() <= ur.x()
-            && ll.y() <= ur1.y() && ll1.y() <= ur.y();
+        return  ll.x() < ur1.x() && ll1.x() < ur.x()
+            && ll.y() < ur1.y() && ll1.y() < ur.y();
     }
 
     @Override
