@@ -38,6 +38,7 @@ public class WorldViewImpl implements WorldView {
      * @param player the player entity
      */
     private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player) {
+        cameraGameEntitiesList.clear();  // Clear the list to avoid duplications
         for (GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() >= player.getPosition().x() - CAMERA_RANGE
                 && gameEntity.getPosition().x() <= player.getPosition().x() + CAMERA_RANGE) {
@@ -68,24 +69,19 @@ public class WorldViewImpl implements WorldView {
      *
      * @param gameFrame the game frame
      */
-    private void addToPanel(final JFrame gameFrame) {
+    private void addToPanel(final JFrame gameFrame, final Player player) {
         int centerX = gameFrame.getWidth() / 2;
         int centerY = gameFrame.getHeight() / 2;
         for (GameEntity gameEntity : cameraGameEntitiesList) {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
-            JLabel label = new JLabel(icon.get());
-            Pos2d pos = gameEntity.getPosition();
-            int x;
-            int y;
-            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                x = (int) Math.round(centerX + (pos.x() * DEFAULT_WIDTH));
-                y = (int) Math.round(centerY - (pos.y() * DEFAULT_HEIGHT));
-            } else {
-                x = (int) Math.round(centerX + (pos.x() * DEFAULT_WIDTH));
-                y = (int) Math.round(centerY - (pos.y() * DEFAULT_HEIGHT));
+            if (icon.isPresent()) {
+                JLabel label = new JLabel(icon.get());
+                Pos2d pos = gameEntity.getPosition();
+                int x = (int) Math.round(centerX + (pos.x() - player.getPosition().x()) * DEFAULT_WIDTH);
+                int y = (int) Math.round(centerY - pos.y() * DEFAULT_HEIGHT);
+                label.setBounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                gameFrame.add(label);
             }
-            label.setBounds(x,y+270, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            gameFrame.add(label);
         }
     }
 
@@ -94,7 +90,7 @@ public class WorldViewImpl implements WorldView {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
         selectGameEntity(gameEntitiesList, player);
-        addToPanel(gameFrame);
+        addToPanel(gameFrame, player);
         gameFrame.revalidate();
         gameFrame.repaint();
     }
