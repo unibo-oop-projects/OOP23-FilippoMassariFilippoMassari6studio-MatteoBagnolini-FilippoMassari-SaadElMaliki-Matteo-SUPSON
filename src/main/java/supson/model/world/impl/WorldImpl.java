@@ -37,7 +37,7 @@ public final class WorldImpl implements World {
     private final CollectibleFactory collectibleFactory;
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(1, 7);
-    private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
+    private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(4, 0);
     private static final int DEFAULT_PLAYER_LIFE = 3;
 
     private static final Vect2d DEFAULT_ENEMY_VELOCITY = new Vect2dImpl(0, 0);
@@ -152,6 +152,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void updateGame(final long elapsed) {
+        this.player.setMoveRight(true);
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
