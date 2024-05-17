@@ -62,7 +62,7 @@ public final class CollisionResolver {
 
             if (!collidingVerticalBlocks.isEmpty()) {
 
-                adjustVerticalPos(entity, collidingOrizontalBlocks.get(0));   //possiamo prendere per semplicità il primo blocco
+                adjustVerticalPos(entity, collidingVerticalBlocks.get(0));   //possiamo prendere per semplicità il primo blocco
 
             }
 

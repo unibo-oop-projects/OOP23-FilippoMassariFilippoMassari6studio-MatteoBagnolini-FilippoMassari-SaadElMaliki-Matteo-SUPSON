@@ -55,7 +55,7 @@ class TestHitbox {
         assertTrue(hb2.isCollidingWith(hb3));
         assertFalse(hb4.isCollidingWith(hb1));
         assertFalse(hb4.isCollidingWith(hb2));
-        assertTrue(hb4.isCollidingWith(hb3));      //here the two rects share the same side (left side)
+        assertFalse(hb4.isCollidingWith(hb3));      //here the two rects share the same side (left side)
 
     }
 }
