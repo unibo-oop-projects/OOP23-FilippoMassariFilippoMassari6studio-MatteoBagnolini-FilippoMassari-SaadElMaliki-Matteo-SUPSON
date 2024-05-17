@@ -13,7 +13,7 @@ public record Pos2dImpl(double x, double y) implements Pos2d {
 
     @Override
     public double getdistance(final Pos2d p) {
-        return Math.sqrt((this.x - p.x()) + (this.y - p.y()));
+        return Math.sqrt((this.x - p.x())*(this.x - p.x()) + (this.y - p.y()*(this.y - p.y())));
     }
 
     @Override
