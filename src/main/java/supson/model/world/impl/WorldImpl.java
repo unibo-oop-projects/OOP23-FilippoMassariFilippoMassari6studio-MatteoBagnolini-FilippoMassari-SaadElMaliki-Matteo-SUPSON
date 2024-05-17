@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +32,12 @@ import supson.model.world.api.World;
 /**
  * Implementation of the World interface.
  */
-public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
+public final class WorldImpl implements World {
 
     private final CollectibleFactory collectibleFactory;
 
-    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(5, 1);
-    private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
+    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(1, 7);
+    private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(4, 0);
     private static final int DEFAULT_PLAYER_LIFE = 3;
 
     private static final Vect2d DEFAULT_ENEMY_VELOCITY = new Vect2dImpl(0, 0);
@@ -64,24 +62,26 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     @Override
     public void loadWorld(final String filePath) {
         final EntityMap entityMap = new EntityMap();
-
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            List<String> lines = new ArrayList<>();
             String line;
-            int y = 0;
             while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            for (int y = lines.size() - 1; y >= 0; y--) {
+                line = lines.get(y);
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     if (!tokens[x].equals("0")) {
                         int worldElement = Integer.parseInt(tokens[x]);
-                        Pos2d pos = new Pos2dImpl(x, y);
+                        Pos2d pos = new Pos2dImpl(x, lines.size() - 1 - y);
                         if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
                             Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                             optionalType.ifPresent(type -> {
                                 this.addEnemy(pos);
                             });
-                        }
-                        else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
+                        } else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
                                 || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)) { 
                             Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
                             optionalType.ifPresent(type -> {
@@ -95,12 +95,12 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
                         }
                     }
                 }
-                y++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Adds a new block to the world at the specified position with the specified type.
@@ -152,6 +152,7 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
 
     @Override
     public void updateGame(final long elapsed) {
+        this.player.setMoveRight(true);
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 

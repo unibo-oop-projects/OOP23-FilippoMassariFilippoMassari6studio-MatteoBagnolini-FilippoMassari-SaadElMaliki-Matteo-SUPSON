@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import supson.common.GameEntityType;
+import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
 import supson.view.SpriteMap;
@@ -21,9 +22,9 @@ import supson.view.api.WorldView;
  */
 public class WorldViewImpl implements WorldView {
 
-    private static final int CAMERA_RANGE = 10;
-    private static final int DEFAULT_WIDTH = 50;
-    private static final int DEFAULT_HEIGHT = 50;
+    private static final int CAMERA_RANGE = 100;
+    private static final int DEFAULT_WIDTH = 15;
+    private static final int DEFAULT_HEIGHT = 15;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -37,6 +38,7 @@ public class WorldViewImpl implements WorldView {
      * @param player the player entity
      */
     private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player) {
+        cameraGameEntitiesList.clear();  // Clear the list to avoid duplications
         for (GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() >= player.getPosition().x() - CAMERA_RANGE
                 && gameEntity.getPosition().x() <= player.getPosition().x() + CAMERA_RANGE) {
@@ -63,17 +65,23 @@ public class WorldViewImpl implements WorldView {
     }
 
     /**
-     * Adds game entities to the game frame panel.
+     * Adds the game entities to the game frame panel.
      *
-     * @param gameFrame the JFrame representing the game frame
+     * @param gameFrame the game frame
      */
-    private void addToPanel(final JFrame gameFrame) {
+    private void addToPanel(final JFrame gameFrame, final Player player) {
+        int centerX = gameFrame.getWidth() / 2;
+        int centerY = gameFrame.getHeight() / 2;
         for (GameEntity gameEntity : cameraGameEntitiesList) {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
-            JLabel label = new JLabel(icon.get());
-             //è troppo lungo bisogna sistemarla
-            label.setBounds((int)gameEntity.getPosition().x()*DEFAULT_WIDTH, (int)gameEntity.getPosition().y()*DEFAULT_HEIGHT+270, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            gameFrame.add(label);
+            if (icon.isPresent()) {
+                JLabel label = new JLabel(icon.get());
+                Pos2d pos = gameEntity.getPosition();
+                int x = (int) Math.round(centerX + (pos.x() - player.getPosition().x()) * DEFAULT_WIDTH);
+                int y = (int) Math.round(centerY - pos.y() * DEFAULT_HEIGHT);
+                label.setBounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                gameFrame.add(label);
+            }
         }
     }
 
@@ -82,7 +90,7 @@ public class WorldViewImpl implements WorldView {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
         selectGameEntity(gameEntitiesList, player);
-        addToPanel(gameFrame);
+        addToPanel(gameFrame, player);
         gameFrame.revalidate();
         gameFrame.repaint();
     }
