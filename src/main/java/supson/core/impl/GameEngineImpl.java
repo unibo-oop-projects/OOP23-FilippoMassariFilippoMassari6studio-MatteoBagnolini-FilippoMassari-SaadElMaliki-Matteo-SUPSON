@@ -3,7 +3,6 @@ package supson.core.impl;
 import supson.core.api.GameEngine;
 import supson.controller.api.GameController;
 import supson.controller.impl.GameControllerImpl;
-import java.util.logging.Logger;
 
 /**
  * This class represents the main engine of the game.
@@ -50,7 +49,6 @@ public final class GameEngineImpl implements GameEngine {
     @Override
     public void updateGame(final long elapsed) {
         this.controller.update(elapsed);
-        logger.info("FPS: " + elapsed);
     }
 
     @Override

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import supson.common.GameEntityType;
+import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
 import supson.view.SpriteMap;
@@ -21,9 +22,9 @@ import supson.view.api.WorldView;
  */
 public class WorldViewImpl implements WorldView {
 
-    private static final int CAMERA_RANGE = 10;
-    private static final int DEFAULT_WIDTH = 50;
-    private static final int DEFAULT_HEIGHT = 50;
+    private static final int CAMERA_RANGE = 100;
+    private static final int DEFAULT_WIDTH = 15;
+    private static final int DEFAULT_HEIGHT = 15;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -63,16 +64,27 @@ public class WorldViewImpl implements WorldView {
     }
 
     /**
-     * Adds game entities to the game frame panel.
+     * Adds the game entities to the game frame panel.
      *
-     * @param gameFrame the JFrame representing the game frame
+     * @param gameFrame the game frame
      */
     private void addToPanel(final JFrame gameFrame) {
+        int centerX = gameFrame.getWidth() / 2;
+        int centerY = gameFrame.getHeight() / 2;
         for (GameEntity gameEntity : cameraGameEntitiesList) {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             JLabel label = new JLabel(icon.get());
-             //è troppo lungo bisogna sistemarla
-            label.setBounds((int)gameEntity.getPosition().x()*DEFAULT_WIDTH, (int)gameEntity.getPosition().y()*DEFAULT_HEIGHT+270, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            Pos2d pos = gameEntity.getPosition();
+            int x;
+            int y;
+            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                x = (int) Math.round(centerX + (pos.x() * DEFAULT_WIDTH));
+                y = (int) Math.round(centerY - (pos.y() * DEFAULT_HEIGHT));
+            } else {
+                x = (int) Math.round(centerX + (pos.x() * DEFAULT_WIDTH));
+                y = (int) Math.round(centerY - (pos.y() * DEFAULT_HEIGHT));
+            }
+            label.setBounds(x,y+270, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             gameFrame.add(label);
         }
     }
