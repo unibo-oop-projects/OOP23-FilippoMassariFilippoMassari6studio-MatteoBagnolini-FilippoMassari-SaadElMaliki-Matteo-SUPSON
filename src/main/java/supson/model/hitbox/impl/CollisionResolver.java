@@ -14,11 +14,15 @@ import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
 import supson.model.hitbox.api.Hitbox;
 
+import java.util.logging.Logger;
+
 /**
  * This class is an utility class which act as collision resolver. It is used to check
  * and resolve collisions in the game.
  */
 public final class CollisionResolver {
+
+    private static final Logger log = Logger.getLogger("Collision");
 
     private static final int RENDER_DISTANCE = 50;
 
@@ -39,35 +43,32 @@ public final class CollisionResolver {
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> list, final Pos2d startingPos) {
-
-        final Pos2d actualPos = entity.getPosition();
-
-        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
-
+        Pos2d updatedPos = entity.getPosition();
+        double newX = updatedPos.x();
+        double newY = updatedPos.y();
+        List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
         if (!collidingBlocks.isEmpty()) {
-
-            entity.setPosition(new Pos2dImpl(actualPos.x(), startingPos.y()));
-
-            final List<BlockEntity> collidingOrizontalBlocks = getCollidingBlocks(entity, collidingBlocks);
-
-            if (!collidingOrizontalBlocks.isEmpty()) {
-
-                adjustOrizontalPos(entity, collidingOrizontalBlocks.get(0));
-
+            if (entity instanceof Player) {
+                log.info("player pos: " + entity.getPosition());
+                for (BlockEntity blockEntity : collidingBlocks) {
+                    log.info("pos: " + blockEntity.getPosition());
+                }
             }
-
-            entity.setPosition(new Pos2dImpl(entity.getPosition().x(), actualPos.y()));
-
-            final List<BlockEntity> collidingVerticalBlocks = getCollidingBlocks(entity, collidingBlocks);
-
-            if (!collidingVerticalBlocks.isEmpty()) {
-
-                adjustVerticalPos(entity, collidingVerticalBlocks.get(0));   //possiamo prendere per semplicità il primo blocco
-
+            entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
+            List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
+            if (!verticalColliding.isEmpty()) {
+                newY = startingPos.y();
+                //adjustVerticalPos(entity, verticalColliding.get(0));
             }
-
+            entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
+            List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
+            if (!orizontalColliding.isEmpty()) {
+                newX = startingPos.x();
+                log.info("vert coll");
+            }
+            entity.setPosition(new Pos2dImpl(newX, newY));
+            
         }
-
     }
 
     /**
