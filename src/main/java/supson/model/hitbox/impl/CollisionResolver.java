@@ -22,11 +22,11 @@ import java.util.logging.Logger;
  */
 public final class CollisionResolver {
 
-    private static final Logger log = Logger.getLogger("Collision");
+    private static final Logger LOGGER = Logger.getLogger("Collision");
 
     private static final int RENDER_DISTANCE = 10;
+    private static final double DELTA = 0.000_001;
 
-    private static final double DELTA = 0.000001;
 
     /**
      * The constructor of this class is final and empty, ensuring it cannot
@@ -45,32 +45,35 @@ public final class CollisionResolver {
      */
     public static void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> list, final Pos2d startingPos) {
-        Pos2d updatedPos = entity.getPosition();
+        final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
-        List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
+        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
         if (!collidingBlocks.isEmpty()) {
 
             //DEBUG---------------
             if (entity instanceof Player) {
-                log.info(" ENTRY player pos: " + entity.getPosition());
+                LOGGER.info(" ENTRY player pos: " + entity.getPosition());
             }
             //DEBUG---------------
 
             entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
-            List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!verticalColliding.isEmpty()) {
                 newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
-                log.info("vert coll");
+                //DEBUG
+                LOGGER.info("vert coll");
             }
             entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
-            List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!orizontalColliding.isEmpty()) {
                 newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
-                log.info("oriz coll");
+                //DEBUG
+                LOGGER.info("oriz coll");
             }
             entity.setPosition(new Pos2dImpl(newX, newY));
-            log.info(" EXIT player pos: " + entity.getPosition());   
+            //DEBUG
+            LOGGER.info(" EXIT player pos: " + entity.getPosition());
         }
     }
 
@@ -134,7 +137,6 @@ public final class CollisionResolver {
             newXPos = entity.getPosition().x()
                 - block.getHitbox().getURCorner().x() + entity.getHitbox().getLLCorner().x();
         }
-        log.info("new X pos: " + newXPos);
         return newXPos;
     }
 
@@ -158,7 +160,6 @@ public final class CollisionResolver {
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
             entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));        //
         }
-        log.info("new Y pos: " + newYPos);
         return newYPos;
     }
 

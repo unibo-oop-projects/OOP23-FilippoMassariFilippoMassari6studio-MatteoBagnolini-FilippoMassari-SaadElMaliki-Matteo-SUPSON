@@ -39,6 +39,7 @@ public final class Player extends AbstractMoveableEntity {
 
     @Override
     public void updateVelocity() {
+        right = true;
         final Physics physicsComponent = getPhysicsComponent();
         if (left) {
             physicsComponent.moveLeft(this);
