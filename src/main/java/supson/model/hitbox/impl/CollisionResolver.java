@@ -24,7 +24,9 @@ public final class CollisionResolver {
 
     private static final Logger log = Logger.getLogger("Collision");
 
-    private static final int RENDER_DISTANCE = 50;
+    private static final int RENDER_DISTANCE = 10;
+
+    private static final double DELTA = 0.000001;
 
     /**
      * The constructor of this class is final and empty, ensuring it cannot
@@ -48,26 +50,27 @@ public final class CollisionResolver {
         double newY = updatedPos.y();
         List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
         if (!collidingBlocks.isEmpty()) {
+
+            //DEBUG---------------
             if (entity instanceof Player) {
-                log.info("player pos: " + entity.getPosition());
-                for (BlockEntity blockEntity : collidingBlocks) {
-                    log.info("pos: " + blockEntity.getPosition());
-                }
+                log.info(" ENTRY player pos: " + entity.getPosition());
             }
+            //DEBUG---------------
+
             entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
             List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!verticalColliding.isEmpty()) {
-                newY = startingPos.y();
-                //adjustVerticalPos(entity, verticalColliding.get(0));
+                newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
+                log.info("vert coll");
             }
             entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
             List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!orizontalColliding.isEmpty()) {
-                newX = startingPos.x();
-                log.info("vert coll");
+                newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
+                log.info("oriz coll");
             }
             entity.setPosition(new Pos2dImpl(newX, newY));
-            
+            log.info(" EXIT player pos: " + entity.getPosition());   
         }
     }
 
@@ -113,29 +116,50 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static void adjustOrizontalPos(final MoveableEntity entity, final BlockEntity block) {
+    /**
+     * This method adjust the orizontal position of the entity colliding with a block in the x axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
+     * colliding with. The entity is moved perfectly to the right (or to the left) of the block, and a 
+     * delta is added to have the entity just ot the right (or to the left) of the colliding block.
+     * @param entity the entity which is colliding
+     * @param block one of the block the entity is colliding with
+     * @return the new x coordinate of the entity to be set
+     */
+    private static double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newXPos;
-        if (entity.getPosition().x() < block.getPosition().x()) {     //contatto da destra
+        if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
-        } else {                                                    //contatto da sinistra
+        } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
                 - block.getHitbox().getURCorner().x() + entity.getHitbox().getLLCorner().x();
         }
-        entity.setPosition(new Pos2dImpl(newXPos, entity.getPosition().y()));
+        log.info("new X pos: " + newXPos);
+        return newXPos;
     }
 
-    private static void adjustVerticalPos(final MoveableEntity entity, final BlockEntity block) {
+    /**
+     * This method adjust the vertical position of the entity colliding with a block in the y axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
+     * colliding with. The entity is moved perfectly above (or below) the block, and a delta is added
+     * to have the entity right over (or under) the colliding block.
+     * @param entity the entity which is colliding
+     * @param block one of the block the entity is colliding with
+     * @return the new y coordinate of the entity to be set
+     */
+    private static double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newYPos;
-        if (entity.getPosition().y() > block.getPosition().y()) {     //contatto da sopra 
+        // TODO: add an observer to notify the collision
+        if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y();
-        } else {                                                    //contatto da sotto
+                + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
+        } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
-            entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));        //velY è 0 perchè tocca il soffitto
+            entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));        //
         }
-        entity.setPosition(new Pos2dImpl(entity.getPosition().x(), newYPos));
+        log.info("new Y pos: " + newYPos);
+        return newYPos;
     }
 
 }
