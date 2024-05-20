@@ -13,9 +13,9 @@ import supson.model.physics.impl.PhysicsImpl;
 public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 10;
-    private static final double ACC_SPEED = 0.01;
+    private static final double ACC_SPEED = 0.02;
     private static final int JUMP_FORCE = 12;
-    private static final double GRAVITY = 0.05;
+    private static final double GRAVITY = 0.02;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
