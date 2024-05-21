@@ -24,7 +24,7 @@ public final class CollisionResolver {
 
     private static final Logger LOGGER = Logger.getLogger("Collision");
 
-    private static final int RENDER_DISTANCE = 10;
+    private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
 

@@ -23,8 +23,8 @@ import supson.view.api.WorldView;
 public class WorldViewImpl implements WorldView {
 
     private static final int CAMERA_RANGE = 100;
-    private static final int DEFAULT_WIDTH = 15;
-    private static final int DEFAULT_HEIGHT = 15;
+    private static final int DEFAULT_WIDTH = 25;
+    private static final int DEFAULT_HEIGHT = 25;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
