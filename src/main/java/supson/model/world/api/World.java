@@ -3,8 +3,10 @@ package supson.model.world.api;
 import java.util.List;
 
 import supson.model.block.api.BlockEntity;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hud.api.Hud;
 
 /**
  * The World interface represents a game world.
@@ -26,6 +28,13 @@ public interface World {
      * @param filePath the path of the file containing the game world data
      */
     void reset(String filePath);
+
+    /**
+     * Updates every entity of the model based on time elapsed from last update.
+     *
+     * @param elapsed time elapsed from last update
+     */
+    void updateGame(long elapsed);
 
     /**
      * Removes the specified block from the game world.
@@ -56,9 +65,24 @@ public interface World {
     List<Enemy> getEnemies();
 
     /**
+     * Returns a list of all the entities in the game world.
+     *
+     * @return a list of GameEntity objects representing the entities
+     */
+    List<GameEntity> getGameEntities();
+
+    /**
      * Returns the position of the player in the game world.
      *
-     * @return a Pos2d object representing the player's position
+     * @return a Player object representing the player's position
      */
     Player getPlayer();
+
+    /**
+     * Returns the hud of the current state of the game.
+     * 
+     * @return the hud of the current state of the game
+     */
+    Hud getHud();
+
 }

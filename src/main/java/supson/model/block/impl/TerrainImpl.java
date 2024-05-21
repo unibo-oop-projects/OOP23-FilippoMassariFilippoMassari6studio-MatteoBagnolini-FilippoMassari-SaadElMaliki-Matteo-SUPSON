@@ -1,40 +1,26 @@
 package supson.model.block.impl;
 
-import supson.common.api.Pos2d;
-import supson.model.block.BlockType;
-import supson.model.block.api.BlockEntity;
 import supson.model.entity.impl.AbstractGameEntity;
+import supson.common.GameEntityType;
+import supson.common.api.Pos2d;
+import supson.model.block.api.BlockEntity;
 
 /**
- * This is the abstract class AbstractBlockImpl that extends AbstractGameEntity and implements the Block interface.
- * It represents a block in the game with a specific type defined by BlockType.
+ * The TerrainImpl class represents a terrain block in the game.
+ * It extends the AbstractGameEntity class and implements the BlockEntity interface.
  */
-public class TerrainImpl extends AbstractGameEntity implements BlockEntity {
+public final class TerrainImpl extends AbstractGameEntity implements BlockEntity {
 
-    private static final int HEIGHT = 2;
-    private static final int WIDTH = 2;
+    private static final int HEIGHT = 1;
+    private static final int WIDTH = 1;
 
-    /**
-     * The type of block, defined as a BlockType value.
-     */
-    private final BlockType blockType;
+    private static final GameEntityType TYPE = GameEntityType.TERRAIN;
 
     /**
-     * Constructor for the AbstractBlockImpl class.
-     * 
-     * @param pos The position of the block to create.
-     * @param blockType The type of block to create.
+     * The constructor of the TerrainImpl class.
+     * @param pos the starting position of the terrain
      */
-    public TerrainImpl(final Pos2d pos, final BlockType blockType) {
-        super(pos, HEIGHT, WIDTH);
-        this.blockType = blockType;
+    public TerrainImpl(final Pos2d pos) {
+        super(pos, HEIGHT, WIDTH, TYPE);
     }
-
-    @Override
-    public final BlockType getBlockType() {
-        return this.blockType;
-    }
-
 }
-
-

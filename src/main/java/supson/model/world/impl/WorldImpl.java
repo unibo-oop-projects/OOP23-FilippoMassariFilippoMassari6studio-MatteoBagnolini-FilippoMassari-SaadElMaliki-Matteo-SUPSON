@@ -2,33 +2,41 @@ package supson.model.world.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.stream.Collectors;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
-import supson.model.block.BlockType;
 import supson.model.block.api.BlockEntity;
+import supson.model.block.api.Collectible;
+import supson.model.block.api.CollectibleFactory;
+import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
+import supson.model.entity.api.GameEntity;
+import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.impl.Player;
+import supson.model.hitbox.impl.CollisionResolver;
+import supson.model.hud.api.Hud;
+import supson.model.hud.impl.HudImpl;
 import supson.model.world.api.World;
 
 /**
  * Implementation of the World interface.
  */
-public final class WorldImpl implements World { //todo : rivederre metodi con classi che ancora non esistono mene enemy e trap
+public final class WorldImpl implements World {
 
-    private static final int INT_OF_PLAYER = 6; //todo: soluzione potaenzialmente migliorabile
-    private static final int INT_OF_ENEMY = 7;
+    private final CollectibleFactory collectibleFactory;
 
-    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 0);
+    private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(1, 7.5);
     private static final Vect2d DEFAULT_PLAYER_VELOCITY = new Vect2dImpl(0, 0);
     private static final int DEFAULT_PLAYER_LIFE = 3;
 
@@ -48,53 +56,59 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
+        this.collectibleFactory = new CollectibleFactoryImpl();
     }
 
     @Override
     public void loadWorld(final String filePath) {
-        final Map<Integer, BlockType> blocksMap = new HashMap<>();
-        blocksMap.put(1, BlockType.TERRAIN);
-        blocksMap.put(2, BlockType.LIFE_BOOST_POWER_UP);
-        blocksMap.put(3, BlockType.STRNGTH_BOOST_POWER_UP);
-        blocksMap.put(4, BlockType.RING);
-        blocksMap.put(5, BlockType.TRAP); //todo : me lo da magic number non so il perchè
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        final EntityMap entityMap = new EntityMap();
+        try (InputStream inputStream = getClass().getResourceAsStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            List<String> lines = new ArrayList<>();
             String line;
-            int y = 0;
-            while ((line = reader.readLine()) != null) { //todo : cambiare readear per renderlo standard
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            for (int y = lines.size() - 1; y >= 0; y--) {
+                line = lines.get(y);
                 String[] tokens = line.split(" ");
                 for (int x = 0; x < tokens.length; x++) {
-                    int worldElement = Integer.parseInt(tokens[x]);
-                    Pos2d pos = new Pos2dImpl(x, y);
-                    if (worldElement == INT_OF_PLAYER) { //todo : graffe da verificare
-                        this.player.setPosition(pos);
-                    }
-                    else if (worldElement == INT_OF_ENEMY) {
-                        this.addEnemy(pos); //todo : sicuramente il costuttotr di enmy cambierà
-                    }
-                    else { 
-                        Optional<BlockType> optionalType = Optional.ofNullable(blocksMap.get(worldElement));
-                        optionalType.ifPresent(type -> {
-                            this.addBlock(pos, type);
-                        });
+                    if (!tokens[x].equals("0")) {
+                        int worldElement = Integer.parseInt(tokens[x]);
+                        Pos2d pos = new Pos2dImpl(x, lines.size() - 1 - y);
+                        if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
+                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                            optionalType.ifPresent(type -> {
+                                this.addEnemy(pos);
+                            });
+                        } else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
+                                || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)) { 
+                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                            optionalType.ifPresent(type -> {
+                                this.addBlock(pos);
+                            });
+                        } else {
+                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                            optionalType.ifPresent(type -> {
+                                this.addCollectable(pos, type);
+                            });
+                        }
                     }
                 }
-                y++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
     /**
      * Adds a new block to the world at the specified position with the specified type.
      *
      * @param pos  The position where the block should be added.
-     * @param type The type of the block to be added.
      */
-    private void addBlock(final Pos2d pos, final BlockType type) {
-        this.blocks.add(new TerrainImpl(pos, type));
+    private void addBlock(final Pos2d pos) {
+        this.blocks.add(new TerrainImpl(pos));
     }
 
     /**
@@ -106,12 +120,55 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
         this.enemies.add(new Enemy(pos, DEFAULT_ENEMY_VELOCITY, DEFAULT_ENEMY_LIFE, DEFAUL_ENEMY_RANGE));
     }
 
+    /**
+     * Adds a collectable to the world at the specified position.
+     * 
+     * @param pos  the position where the collectable should be added
+     * @param type the type of collectable to add
+     */
+    private void addCollectable(final Pos2d pos, final GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
+        switch (type) {
+            case RING:
+                this.blocks.add(collectibleFactory.createCollectibleRing(pos));
+                break;
+            case LIFE_BOOST_POWER_UP:
+                this.blocks.add(collectibleFactory.createCollectibleLifeBoostPowerUp(pos));
+                break;
+            case STRNGTH_BOOST_POWER_UP:
+                this.blocks.add(collectibleFactory.createCollectibleStrengthPowerUp(pos));
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void reset(final String filePath) {
         this.blocks.clear();
         this.enemies.clear();
         this.player.setPosition(DEFAULT_PLAYER_POSITION);
         this.loadWorld(filePath);
+    }
+
+    @Override
+    public void updateGame(final long elapsed) {
+        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
+        movEntities.add(player);
+
+        movEntities.stream()
+        .forEach(e -> {
+            Pos2d oldPos = e.getPosition();
+            e.move(elapsed);
+            CollisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
+        });
+
+        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(player, enemies);
+        killed.forEach(k -> removeEnemy(k));
+
+        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(player,
+            blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
+            .collect(Collectors.toList()));
+        activated.forEach(k -> removeBlock(k));
     }
 
     @Override
@@ -135,8 +192,22 @@ public final class WorldImpl implements World { //todo : rivederre metodi con cl
     }
 
     @Override
+    public List<GameEntity> getGameEntities() {
+        final List<GameEntity> entities = new ArrayList<GameEntity>();
+        entities.addAll(this.blocks);
+        entities.addAll(this.enemies);
+        entities.add(this.player);
+        return entities;
+    }
+
+    @Override
     public Player getPlayer() {
         return this.player; //todo : non passo copia difensiva verificare che sia giusto
+    }
+
+    @Override
+    public Hud getHud() {
+        return new HudImpl(this.player.getScore(), this.player.getLife());
     }
 
 }

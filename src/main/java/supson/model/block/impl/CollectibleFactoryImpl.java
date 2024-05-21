@@ -1,7 +1,7 @@
 package supson.model.block.impl;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.BlockType;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
 import supson.model.entity.impl.Player;
@@ -14,7 +14,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
     public Collectible createCollectibleRing(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.RING) {
+        return new AbstractCollectibleImpl(pos, GameEntityType.RING) {
 
             private static final int RING_VALUE = 100;
 
@@ -22,13 +22,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
             public void collect(final Player player) {
                 player.setScore(player.getScore() + RING_VALUE);
             }
-
         };
     }
 
     @Override
     public Collectible createCollectibleLifeBoostPowerUp(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.LIFE_BOOST_POWER_UP) {
+        return new AbstractCollectibleImpl(pos, GameEntityType.LIFE_BOOST_POWER_UP) {
 
             private static final int LIFE_BOOST_VALUE = 1;
 
@@ -36,21 +35,18 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
             public void collect(final Player player) {
                 player.setLife(player.getLife() + LIFE_BOOST_VALUE);
             }
-
         };
     }
 
     @Override
     public Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
-        return new AbstractCollectibleImpl(pos, BlockType.STRNGTH_BOOST_POWER_UP) {
+        return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
             @Override
             public void collect(final Player player) {
-                //TODO : Implement when setStatus is available
-                throw new UnsupportedOperationException("Unimplemented method 'collect'");
+                // TODO Auto-generated method stub
+                System.out.println("Strength power up collected");
             }
-
         };
     }
-
 }
