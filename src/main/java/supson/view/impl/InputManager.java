@@ -1,27 +1,9 @@
 package supson.view.impl;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-
-public class GameFrame extends JFrame implements KeyListener{
-    private boolean right, left, jump;
-
-
-    public GameFrame(){
-        super("SuperSonic");
-        this.startView();
-    }
-
-    public void startView(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800,600);
-        this.setVisible(true);
-        this.addKeyListener(this);
-    }
+public class InputManager implements KeyListener {
+    public boolean left,right,jump;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -66,5 +48,6 @@ public class GameFrame extends JFrame implements KeyListener{
         }
         System.out.println(left+" "+jump+" "+right);
     }
+
 
 }
