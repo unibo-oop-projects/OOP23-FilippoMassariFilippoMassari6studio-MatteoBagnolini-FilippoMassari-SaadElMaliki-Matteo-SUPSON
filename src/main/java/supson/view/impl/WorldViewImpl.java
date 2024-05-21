@@ -49,6 +49,11 @@ public class WorldViewImpl implements WorldView {
             rightBoundary = mapWidth;
         }
 
+        if (playerX <= CAMERA_RANGE) {
+            leftBoundary = 0;
+            rightBoundary = 2 * CAMERA_RANGE;
+        }
+
         for (GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() >= leftBoundary
                 && gameEntity.getPosition().x() <= rightBoundary) {
@@ -95,7 +100,9 @@ public class WorldViewImpl implements WorldView {
 
                 if (playerX >= mapWidth - CAMERA_RANGE) {
                     x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_WIDTH);
-                } else {
+                } else if (playerX <= CAMERA_RANGE) {
+                    x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_WIDTH);
+                } else{
                     x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_WIDTH);
                 }
 
