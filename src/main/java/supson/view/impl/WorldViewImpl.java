@@ -23,8 +23,8 @@ import supson.view.api.WorldView;
 public class WorldViewImpl implements WorldView {
 
     private static final int CAMERA_RANGE = 20;
-    private static final int DEFAULT_WIDTH = 15;
-    private static final int DEFAULT_HEIGHT = 15;
+
+    private static final int DEFAULT_DIMENSION = 15;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -47,6 +47,11 @@ public class WorldViewImpl implements WorldView {
         if (playerX >= mapWidth - CAMERA_RANGE) {
             leftBoundary = mapWidth - 2 * CAMERA_RANGE;
             rightBoundary = mapWidth;
+        }
+
+        if (playerX <= CAMERA_RANGE) {
+            leftBoundary = 0;
+            rightBoundary = 2 * CAMERA_RANGE;
         }
 
         for (GameEntity gameEntity : gameEntitiesList) {
@@ -92,15 +97,20 @@ public class WorldViewImpl implements WorldView {
                 JLabel label = new JLabel(icon.get());
                 Pos2d pos = gameEntity.getPosition();
                 int x, y;
-
                 if (playerX >= mapWidth - CAMERA_RANGE) {
-                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_WIDTH);
-                } else {
-                    x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_WIDTH);
+                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_DIMENSION);
+                } else if (playerX <= CAMERA_RANGE) {
+                    x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_DIMENSION);
+                } else{
+                    x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_DIMENSION);
                 }
-
-                y = (int) Math.round(centerY - pos.y() * DEFAULT_HEIGHT);
-                label.setBounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                int gameEntityHeigth = DEFAULT_DIMENSION * gameEntity.getHeight();
+                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER) || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)){
+                    y = (int) Math.round((centerY - pos.y() * gameEntityHeigth) + DEFAULT_DIMENSION);
+                } else {
+                    y = (int) Math.round(centerY - pos.y() * gameEntityHeigth);
+                }
+                label.setBounds(x, y, DEFAULT_DIMENSION, gameEntityHeigth);
                 gameFrame.add(label);
             }
         }
