@@ -20,7 +20,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                player.setScore(player.getScore() + RING_VALUE);
+                player.incrementScore(RING_VALUE);
             }
         };
     }
@@ -33,7 +33,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                player.setLife(player.getLife() + LIFE_BOOST_VALUE);
+                player.incrementLife(LIFE_BOOST_VALUE);
             }
         };
     }

@@ -19,6 +19,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
+    private static final int MAX_LIVES = 3;
 
     private static final GameEntityType TYPE = GameEntityType.PLAYER;
 
@@ -119,11 +120,11 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method is used to set the score.
-     * @param score the score to be set
+     * This method is used to increment (or decrement) the score.
+     * @param score the score to be incremented
      */
-    public void setScore(final int score) {
-        this.score = score;
+    public void incrementScore(final int score) {
+        this.score += score;
     }
 
     /**
@@ -132,6 +133,16 @@ public final class Player extends AbstractMoveableEntity {
      */
     public int getScore() {
         return this.score;
+    }
+
+    /**
+     * This method increments (or decrements) the lives of the player. It does 
+     * nothing when the player has already the max number of lives.
+     */
+    public void incrementLife(final int lives) {
+        if (getLife() + lives < MAX_LIVES) {
+            this.setLife(getLife() + lives);
+        }
     }
 
 }

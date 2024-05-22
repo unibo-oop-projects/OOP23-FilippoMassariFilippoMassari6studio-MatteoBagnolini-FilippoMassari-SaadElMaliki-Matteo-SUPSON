@@ -77,8 +77,21 @@ class TestPlayer {
 
     @Test
     void testScore() {
-        plr.setScore(300);
+        plr.incrementScore(300);
         assertEquals(300, plr.getScore());
+        plr.incrementScore(500);
+        assertEquals(800, plr.getScore());
+        plr.incrementScore(-150);
+        assertEquals(650, plr.getScore());
+    }
+
+    @Test
+    void testLives() {
+        assertEquals(3, plr.getLife());
+        plr.incrementLife(1);
+        assertEquals(3, plr.getLife());
+        plr.incrementLife(-1);
+        assertEquals(2, plr.getLife());
     }
 
 }
