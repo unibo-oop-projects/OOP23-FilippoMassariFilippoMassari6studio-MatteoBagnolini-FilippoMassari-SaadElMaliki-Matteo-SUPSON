@@ -132,10 +132,10 @@ public final class CollisionResolver {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
-                - block.getHitbox().getURCorner().x() + entity.getHitbox().getLLCorner().x();
+                + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
         }
         entity.setVelocity(new Vect2dImpl(0, entity.getVelocity().y()));
         return newXPos;
@@ -158,7 +158,7 @@ public final class CollisionResolver {
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x();  
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;  
         }
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));
         return newYPos;
