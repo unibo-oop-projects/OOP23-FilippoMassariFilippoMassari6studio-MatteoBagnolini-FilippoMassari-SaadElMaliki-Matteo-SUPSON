@@ -9,7 +9,7 @@ import supson.controller.impl.GameControllerImpl;
  */
 public final class GameEngineImpl implements GameEngine {
 
-    private static final long REFRESH_RATE = 100;
+    private static final long REFRESH_RATE = 120;
 
     private final GameController controller;
 

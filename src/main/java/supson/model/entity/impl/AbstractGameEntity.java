@@ -32,6 +32,16 @@ public abstract class AbstractGameEntity implements GameEntity {
     }
 
     @Override
+    public final int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public final int getWidth() {
+        return this.width;
+    }
+
+    @Override
     public final Pos2d getPosition() {
         return this.position;
     }

@@ -12,15 +12,17 @@ public final class HudImpl implements Hud {
 
     private final int score;
     private final int lives;
+    private final double time;
 
     /**
      * This is the constructor of the class.
      * @param score the actual score of the game
      * @param lives the actual lives of the main character
      */
-    public HudImpl(final int score, final int lives) {
+    public HudImpl(final int score, final int lives, final double time) {
         this.score = score;
         this.lives = lives;
+        this.time = time;
     }
 
     @Override
@@ -31,6 +33,11 @@ public final class HudImpl implements Hud {
     @Override
     public int getLives() {
         return this.lives;
+    }
+
+    @Override
+    public double getTime() {
+        return this.time;
     }
 
 }
