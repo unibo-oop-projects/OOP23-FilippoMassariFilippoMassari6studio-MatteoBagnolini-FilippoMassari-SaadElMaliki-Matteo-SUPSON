@@ -27,6 +27,8 @@ import supson.model.entity.impl.Player;
 import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
+import supson.model.timer.api.GameTimer;
+import supson.model.timer.impl.GameTimerImpl;
 import supson.model.world.api.World;
 
 /**
@@ -47,6 +49,7 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
+    private final GameTimer gameTimer;
 
     /**
      * Constructs a new instance of the WorldImpl class.
@@ -57,10 +60,12 @@ public final class WorldImpl implements World {
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
         this.collectibleFactory = new CollectibleFactoryImpl();
+        this.gameTimer = new GameTimerImpl();
     }
 
     @Override
     public void loadWorld(final String filePath) {
+        this.gameTimer.start(); //for debug
         final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -184,7 +189,7 @@ public final class WorldImpl implements World {
 
     @Override
     public Hud getHud() {
-        return new HudImpl(this.player.getScore(), this.player.getLife());
+        return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
 
 }

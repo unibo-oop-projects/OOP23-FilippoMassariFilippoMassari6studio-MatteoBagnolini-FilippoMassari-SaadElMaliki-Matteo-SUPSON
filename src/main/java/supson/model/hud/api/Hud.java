@@ -17,4 +17,10 @@ public interface Hud {
      */
     int getLives();
 
+    /**
+     * This method returns the current time of the game.
+     * @return the time of the game
+     */
+    double getTime();
+
 }

@@ -24,10 +24,15 @@ public final class HudViewImpl implements HudView {
     public void renderHud(final JFrame gameFrame, final Hud hud) {
         JLabel scoreLabel = new JLabel("Score: " + hud.getScore());
         JLabel livesLabel = new JLabel("Lives: " + hud.getLives());
+        double time = hud.getTime();
+        String formattedTime = String.format("%.2f", time);
+        JLabel timeLabel = new JLabel("Time: " + formattedTime);
         scoreLabel.setBounds(SCORE_LABEL_X, SCORE_LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
         livesLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
+        timeLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y + 30, LABEL_WIDTH, LABEL_HEIGHT);
         gameFrame.add(scoreLabel);
         gameFrame.add(livesLabel);
+        gameFrame.add(timeLabel);
         gameFrame.revalidate();
         gameFrame.repaint();
     }
