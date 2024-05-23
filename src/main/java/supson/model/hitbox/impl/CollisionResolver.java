@@ -176,17 +176,17 @@ public final class CollisionResolver implements Observable {
     }
 
     @Override
-    public void register(Observer observer) {
+    public void register(final Observer observer) {
         observers.add(observer);
     }
 
     @Override
-    public void unregister(Observer observer) {
+    public void unregister(final Observer observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(CollisionEvents event) {
+    public void notifyObservers(final CollisionEvents event) {
         observers.forEach(o -> o.onNotify(event));
     }
 

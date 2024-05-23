@@ -56,7 +56,7 @@ public class PlayerManagerImpl implements PlayerManager, Observer {
     }
 
     @Override
-    public void onNotify(CollisionEvents event) {
+    public void onNotify(final CollisionEvents event) {
         switch (event) {
             case UPPER_COLLISION -> upperCollision();
             case LOWER_COLLISION -> lowerCollision();

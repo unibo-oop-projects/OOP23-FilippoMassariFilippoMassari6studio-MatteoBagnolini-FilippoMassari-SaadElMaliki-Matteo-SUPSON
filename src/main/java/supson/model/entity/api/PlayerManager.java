@@ -1,7 +1,7 @@
 package supson.model.entity.api;
 
 public interface PlayerManager {
-    
+
     /**
      * Set the player to move right.
      */
