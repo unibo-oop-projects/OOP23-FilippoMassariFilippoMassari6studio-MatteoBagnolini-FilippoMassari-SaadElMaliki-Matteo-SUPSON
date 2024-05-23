@@ -55,7 +55,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                player.setIsJumping(true);
+                player.setVulnerability(true);
             }
         };
     }
