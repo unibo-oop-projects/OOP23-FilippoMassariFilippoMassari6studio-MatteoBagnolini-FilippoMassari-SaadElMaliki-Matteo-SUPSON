@@ -52,11 +52,10 @@ public final class Player extends AbstractMoveableEntity {
         if (jump && onGround) {
             physicsComponent.startJumping(this);
             isJumping = true;
+            isInvulnerable = true;
             jump = false;
         }
-        if (!onGround) {
-            physicsComponent.applyGravity(this);
-        }
+        physicsComponent.applyGravity(this);
     }
 
     /**
