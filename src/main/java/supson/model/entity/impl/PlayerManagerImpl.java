@@ -1,8 +1,11 @@
 package supson.model.entity.impl;
 
+import supson.common.api.Observer;
+import supson.common.impl.Vect2dImpl;
 import supson.model.entity.api.PlayerManager;
+import supson.model.hitbox.impl.CollisionEvents;
 
-public class PlayerManagerImpl implements PlayerManager {
+public class PlayerManagerImpl implements PlayerManager, Observer {
 
     private final Player player;
 
@@ -51,5 +54,35 @@ public class PlayerManagerImpl implements PlayerManager {
     public void setVulnerable() {
         player.setVulnerability(false);
     }
-    
+
+    @Override
+    public void onNotify(CollisionEvents event) {
+        switch (event) {
+            case UPPER_COLLISION -> upperCollision();
+            case LOWER_COLLISION -> lowerCollision();
+            case RIGHT_COLLISION -> rightCollision();
+            case LEFT_COLLISION -> leftCollision();
+        }
+    }
+
+    private void leftCollision() {
+        player.setVelocity(new Vect2dImpl(0, player.getVelocity().y()));
+        stop();
+    }
+
+    private void rightCollision() {
+        player.setVelocity(new Vect2dImpl(0, player.getVelocity().y()));
+        stop();
+    }
+
+    private void lowerCollision() {
+        player.setVelocity(new Vect2dImpl(player.getVelocity().x(), 0));
+        player.setOnGround(true);
+        player.setJump(false);
+    }
+
+    private void upperCollision() {
+        player.setVelocity(new Vect2dImpl(player.getVelocity().x(), 0));
+    }
+
 }
