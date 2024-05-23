@@ -64,35 +64,24 @@ public final class WorldImpl implements World {
         final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            List<String> lines = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-            for (int y = lines.size() - 1; y >= 0; y--) {
-                line = lines.get(y);
-                String[] tokens = line.split(" ");
+            List<String> lines = reader.lines().collect(Collectors.toList());
+            int maxY = lines.size() - 1;
+            for (int y = maxY; y >= 0; y--) {
+                String[] tokens = lines.get(y).split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     if (!tokens[x].equals("0")) {
                         int worldElement = Integer.parseInt(tokens[x]);
-                        Pos2d pos = new Pos2dImpl(x, lines.size() - 1 - y);
-                        if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
+                        Pos2d pos = new Pos2dImpl(x, maxY - y);
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                        optionalType.ifPresent(type -> {
+                            if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);
-                            });
-                        } else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
-                                || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)) { 
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
+                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP)) {
                                 this.addBlock(pos);
-                            });
-                        } else {
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
+                            } else {
                                 this.addCollectable(pos, type);
-                            });
-                        }
+                            }
+                        });
                     }
                 }
             }
@@ -100,7 +89,6 @@ public final class WorldImpl implements World {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Adds a new block to the world at the specified position with the specified type.
