@@ -50,6 +50,7 @@ public final class WorldImpl implements World {
     private final List<Enemy> enemies;
     private final Player player;
     private final GameTimer gameTimer;
+    private final CollisionResolver collisionResolver;
 
     /**
      * Constructs a new instance of the WorldImpl class.
@@ -61,6 +62,7 @@ public final class WorldImpl implements World {
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
         this.collectibleFactory = new CollectibleFactoryImpl();
         this.gameTimer = new GameTimerImpl();
+        this.collisionResolver = new CollisionResolver();
     }
 
     @Override
@@ -141,13 +143,13 @@ public final class WorldImpl implements World {
         .forEach(e -> {
             Pos2d oldPos = e.getPosition();
             e.move(elapsed);
-            CollisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
+            collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
         });
 
-        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(player, enemies);
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
         killed.forEach(k -> removeEnemy(k));
 
-        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(player,
+        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
             blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
             .collect(Collectors.toList()));
         activated.forEach(k -> removeBlock(k));
