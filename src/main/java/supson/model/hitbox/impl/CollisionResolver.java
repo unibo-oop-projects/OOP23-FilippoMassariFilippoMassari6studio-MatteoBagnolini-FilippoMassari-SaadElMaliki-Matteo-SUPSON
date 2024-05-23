@@ -91,7 +91,7 @@ public final class CollisionResolver implements Observable {
      */
     public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
-        if (player.isJumping()) {
+        if (player.isInvulnerable()) {
              return enemies.stream()
             .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
             .collect(Collectors.toList());
