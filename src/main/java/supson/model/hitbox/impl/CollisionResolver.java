@@ -49,7 +49,7 @@ public final class CollisionResolver implements Observable {
      * @param list the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
-    public static void resolvePlatformCollisions(final MoveableEntity entity,
+    public void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> list, final Pos2d startingPos) {
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
@@ -89,7 +89,7 @@ public final class CollisionResolver implements Observable {
      * @param enemies the list of enemies in the level
      * @return the list of enemy killed
      */
-    public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
+    public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
         if (player.isJumping()) {
              return enemies.stream()
@@ -109,7 +109,7 @@ public final class CollisionResolver implements Observable {
      * @param collectibles the list of collectible entities
      * @return a list of collectible that have been collected and have to be removed
      */
-    public static List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
+    public List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
         return collectibles.stream()
         .filter(collectible -> collectible.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(collectible -> collectible.getHitbox().isCollidingWith(player.getHitbox()))
@@ -117,7 +117,7 @@ public final class CollisionResolver implements Observable {
         .collect(Collectors.toList());
     }
 
-    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
+    private List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
         return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
