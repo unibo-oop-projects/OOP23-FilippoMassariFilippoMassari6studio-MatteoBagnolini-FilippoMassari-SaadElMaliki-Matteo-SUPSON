@@ -25,6 +25,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private boolean left, right, jump;
     private boolean onGround, isJumping;
+    private boolean isInvulnerable;
     private int score;
 
     /**
@@ -117,6 +118,14 @@ public final class Player extends AbstractMoveableEntity {
      */
     public boolean isJumping() {
         return this.isJumping;
+    }
+
+    public void setVulnerability (final boolean flag) {
+        this.isInvulnerable = flag;
+    }
+
+    public boolean isInvulnerable() {
+        return this.isInvulnerable;
     }
 
     /**
