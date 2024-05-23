@@ -1,6 +1,5 @@
 package supson.model.block.impl;
 
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
@@ -56,8 +55,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                // TODO Auto-generated method stub
-                System.out.println("Strength power up collected");
+                player.setIsJumping(true);
             }
         };
     }
