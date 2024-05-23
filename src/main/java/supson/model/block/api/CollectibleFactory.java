@@ -1,5 +1,6 @@
 package supson.model.block.api;
 
+import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 
 /**
@@ -8,26 +9,12 @@ import supson.common.api.Pos2d;
 public interface CollectibleFactory {
 
     /**
-     * Creates a collectible ring object.
+     * Creates a collectible object.
      *
+     * @param type the type of the collectible.
      * @param pos the position of the collectible.
-     * @return the created Collectible object representing a ring.
+     * @return the created Collectible object.
      */
-    Collectible createCollectibleRing(Pos2d pos);
+    Collectible createCollectible(GameEntityType type, Pos2d pos);
 
-    /**
-     * Creates a collectible power-up object.
-     *
-     * @param pos the position of the collectible.
-     * @return the created Collectible object representing a life boost power-up.
-     */
-    Collectible createCollectibleLifeBoostPowerUp(Pos2d pos);
-
-    /**
-     * Creates a collectible power-up object.
-     *
-     * @param pos the position of the collectible.
-     * @return the created Collectible object representing a strength power-up.
-     */
-    Collectible createCollectibleStrengthPowerUp(Pos2d pos);
 }

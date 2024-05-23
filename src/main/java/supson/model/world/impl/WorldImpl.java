@@ -114,20 +114,9 @@ public final class WorldImpl implements World {
      * @param pos  the position where the collectable should be added
      * @param type the type of collectable to add
      */
-    private void addCollectable(final Pos2d pos, final GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
-        switch (type) {
-            case RING:
-                this.blocks.add(collectibleFactory.createCollectibleRing(pos));
-                break;
-            case LIFE_BOOST_POWER_UP:
-                this.blocks.add(collectibleFactory.createCollectibleLifeBoostPowerUp(pos));
-                break;
-            case STRNGTH_BOOST_POWER_UP:
-                this.blocks.add(collectibleFactory.createCollectibleStrengthPowerUp(pos));
-                break;
-            default:
-                break;
-        }
+    private void addCollectable(final Pos2d pos, final GameEntityType type) {
+        Collectible collectable = collectibleFactory.createCollectible(type, pos);
+        this.blocks.add(collectable);
     }
 
     @Override

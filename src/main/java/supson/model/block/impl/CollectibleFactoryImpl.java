@@ -1,5 +1,6 @@
 package supson.model.block.impl;
 
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
@@ -13,7 +14,20 @@ import supson.model.entity.impl.Player;
 public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
-    public Collectible createCollectibleRing(final Pos2d pos) {
+    public Collectible createCollectible(final GameEntityType type, final Pos2d pos) {
+        switch (type) {
+            case RING:
+                return createCollectibleRing(pos);
+            case LIFE_BOOST_POWER_UP:
+                return createCollectibleLifeBoostPowerUp(pos);
+            case STRNGTH_BOOST_POWER_UP:
+                return createCollectibleStrengthPowerUp(pos);
+            default:
+                throw new IllegalArgumentException("Invalid collectible type");
+        }
+    }
+
+    private Collectible createCollectibleRing(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.RING) {
 
             private static final int RING_VALUE = 100;
@@ -25,8 +39,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         };
     }
 
-    @Override
-    public Collectible createCollectibleLifeBoostPowerUp(final Pos2d pos) {
+    private Collectible createCollectibleLifeBoostPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.LIFE_BOOST_POWER_UP) {
 
             private static final int LIFE_BOOST_VALUE = 1;
@@ -38,8 +51,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         };
     }
 
-    @Override
-    public Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
+    private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
             @Override
