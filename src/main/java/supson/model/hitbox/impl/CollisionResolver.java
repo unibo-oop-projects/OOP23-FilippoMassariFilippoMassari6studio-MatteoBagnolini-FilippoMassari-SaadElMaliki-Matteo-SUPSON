@@ -1,9 +1,12 @@
 package supson.model.hitbox.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import supson.common.GameEntityType;
+import supson.common.api.Observable;
+import supson.common.api.Observer;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
@@ -17,22 +20,25 @@ import supson.model.hitbox.api.Hitbox;
 import java.util.logging.Logger;
 
 /**
- * This class is an utility class which act as collision resolver. It is used to check
+ * This class is a collision resolver. It is used to check
  * and resolve collisions in the game.
  */
-public final class CollisionResolver {
+public final class CollisionResolver implements Observable {
 
     private static final Logger LOGGER = Logger.getLogger("Collision");
 
     private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
+    private final List<Observer> observers;
 
     /**
      * The constructor of this class is final and empty, ensuring it cannot
      * be instantiated.
      */
-    private CollisionResolver() { }
+    public CollisionResolver() {
+        this.observers = new ArrayList<>();
+     }
 
     /**
      * This method resolves collisions between a moveable entity and the platform blocks.
@@ -128,15 +134,18 @@ public final class CollisionResolver {
      * @param block one of the block the entity is colliding with
      * @return the new x coordinate of the entity to be set
      */
-    private static double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+            notifyObservers(CollisionEvents.RIGHT_COLLISION);
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
+                notifyObservers(CollisionEvents.LEFT_COLLISION);
         }
+        //notifyOrizontalCollision(); --> setta la velocità = 0 e ferma il player
         entity.setVelocity(new Vect2dImpl(0, entity.getVelocity().y()));
         return newXPos;
     }
@@ -150,18 +159,35 @@ public final class CollisionResolver {
      * @param block one of the block the entity is colliding with
      * @return the new y coordinate of the entity to be set
      */
-    private static double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newYPos;
-        // TODO: add an observer to notify the collision
         if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
+                notifyObservers(CollisionEvents.LOWER_COLLISION);
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;  
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA; 
+            notifyObservers(CollisionEvents.UPPER_COLLISION); 
         }
+        //notifyVerticalCollision(); --> setta velocità = 0 e setta i vari flags di salto correttamente
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));
         return newYPos;
+    }
+
+    @Override
+    public void register(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregister(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(CollisionEvents event) {
+        observers.forEach(o -> o.onNotify(event));
     }
 
 }
