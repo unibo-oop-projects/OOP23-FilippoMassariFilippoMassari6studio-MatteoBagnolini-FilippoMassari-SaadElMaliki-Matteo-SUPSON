@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
+import supson.common.impl.Pos2dImpl;
+import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.Player;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.api.Collectible;
@@ -14,7 +16,7 @@ import supson.model.block.api.Collectible;
 /**
  * This class contains unit tests for the Collectible class.
  */
-public class TestCollectible {
+public class TestCollectable {
 
     private CollectibleFactoryImpl factory;
     private Player player;
@@ -25,7 +27,7 @@ public class TestCollectible {
     @BeforeEach
     public void setUp() {
         factory = new CollectibleFactoryImpl();
-        player = new Player(new Pos2d(0, 0), 100, 1);
+        player = new Player(new Pos2dImpl(0,0), new Vect2dImpl(0, 0), 1);
     }
 
     /**
@@ -33,14 +35,14 @@ public class TestCollectible {
      */
     @Test
     public void testCreateCollectibleRing() {
-        Pos2d pos = new Pos2d(0, 0);
+        Pos2d pos = new Pos2dImpl(0, 0);
         Collectible ring = factory.createCollectible(GameEntityType.RING, pos);
 
         assertNotNull(ring);
         assertEquals(GameEntityType.RING, ring.getGameEntityType());
 
         ring.collect(player);
-        assertEquals(200, player.getScore());
+        assertEquals(100, player.getScore());
     }
 
     /**
@@ -48,7 +50,7 @@ public class TestCollectible {
      */
     @Test
     public void testCreateCollectibleLifeBoost() {
-        Pos2d pos = new Pos2d(0, 0);
+        Pos2d pos = new Pos2dImpl(0, 0);
         Collectible lifeBoost = factory.createCollectible(GameEntityType.LIFE_BOOST_POWER_UP, pos);
 
         assertNotNull(lifeBoost);
@@ -63,14 +65,14 @@ public class TestCollectible {
      */
     @Test
     public void testCreateCollectibleStrengthBoost() {
-        Pos2d pos = new Pos2d(0, 0);
+        Pos2d pos = new Pos2dImpl(0, 0);
         Collectible strengthBoost = factory.createCollectible(GameEntityType.STRNGTH_BOOST_POWER_UP, pos);
 
         assertNotNull(strengthBoost);
         assertEquals(GameEntityType.STRNGTH_BOOST_POWER_UP, strengthBoost.getGameEntityType());
 
         strengthBoost.collect(player);
-        assertTrue(player.isVulnerable());
+        assertTrue(player.isInvulnerable());
     }
 
     /**
@@ -78,10 +80,10 @@ public class TestCollectible {
      */
     @Test
     public void testCreateInvalidCollectible() {
-        Pos2d pos = new Pos2d(0, 0);
+        Pos2d pos = new Pos2dImpl(0, 0);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            factory.createCollectible(null, pos);
+            factory.createCollectible(GameEntityType.ENEMY, pos);
         });
     }
 }
