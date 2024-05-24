@@ -15,7 +15,12 @@ public interface PlayerManager {
     /**
      * Stops the player to move right or left.
      */
-    void stop();
+    void stopOnOrizontal();
+
+    /**
+     * Stops the player to jump.
+     */
+    void stopOnVertical();
 
     /**
      * Sets the player to jump.

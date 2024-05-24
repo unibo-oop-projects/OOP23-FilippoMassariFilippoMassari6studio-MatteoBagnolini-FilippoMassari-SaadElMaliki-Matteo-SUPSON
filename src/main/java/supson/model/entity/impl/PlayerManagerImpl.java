@@ -4,55 +4,66 @@ import supson.common.api.Observer;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.api.PlayerManager;
 import supson.model.hitbox.impl.CollisionEvents;
+import supson.model.hitbox.impl.PlayerState;
 
 public class PlayerManagerImpl implements PlayerManager, Observer {
 
-    private final Player player;
+    private PlayerState state;
 
-    public PlayerManagerImpl(final Player player) {
-        this.player = player;
-    }
+    public PlayerManagerImpl() { }
 
     @Override
     public void moveRight() {
-        player.setMoveRight(true);
+        this.state = new PlayerState(state.vel(), true, state.left(),
+        state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
     }
 
     @Override
     public void moveLeft() {
-        player.setMoveRight(false);
-        player.setMoveLeft(true);
+        this.state = new PlayerState(state.vel(), state.right(), true,
+        state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
     }
 
     @Override
-    public void stop() {
-        player.setMoveLeft(false);
-        player.setMoveRight(false);
+    public void stopOnOrizontal() {
+        this.state = new PlayerState(new Vect2dImpl(0, state.vel().y()), false, false,
+        state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
+    }
+
+    @Override
+    public void stopOnVertical() {
+        this.state = new PlayerState(new Vect2dImpl(state.vel().x(), 0), state.right(),
+        state.left(), false, state.onGround(), state.isJumping(), state.isInvulnerable());
     }
 
     @Override
     public void jump() {
-        player.setIsJumping(true);
+        this.state = new PlayerState(state.vel(), state.right(), state.left(),
+        true, state.onGround(), state.isJumping(), state.isInvulnerable());
     }
 
     @Override
     public boolean isJumping() {
-        return player.isJumping();
+        return state.isJumping();
     }
 
     @Override
     public boolean isInvulnerable() {
-        return player.isInvulnerable();
+        return state.isInvulnerable();
     }
 
     @Override
     public void setInvulnerable() {
-        player.setVulnerability(true);
+        this.state = new PlayerState(state.vel(), state.right(), state.left(),
+        state.jump(), state.onGround(), state.isJumping(), true);
+
     }
 
     @Override
     public void setVulnerable() {
-        player.setVulnerability(false);
+        this.state = new PlayerState(state.vel(), state.right(), state.left(),
+        state.jump(), state.onGround(), state.isJumping(), false);
+
     }
 
     @Override
@@ -66,23 +77,29 @@ public class PlayerManagerImpl implements PlayerManager, Observer {
     }
 
     private void leftCollision() {
-        player.setVelocity(new Vect2dImpl(0, player.getVelocity().y()));
-        stop();
+        stopOnOrizontal();
     }
 
     private void rightCollision() {
-        player.setVelocity(new Vect2dImpl(0, player.getVelocity().y()));
-        stop();
+        stopOnOrizontal();
     }
 
     private void lowerCollision() {
-        player.setVelocity(new Vect2dImpl(player.getVelocity().x(), 0));
-        player.setOnGround(true);
-        player.setJump(false);
+        stopOnVertical();
+        this.state = new PlayerState(state.vel(), state.right(), state.left(),
+        state.jump(), true, false, state.isInvulnerable());
     }
 
     private void upperCollision() {
-        player.setVelocity(new Vect2dImpl(player.getVelocity().x(), 0));
+        stopOnVertical();
+    }
+
+    public void setState(PlayerState state) {
+        this.state = state;
+    }
+
+    public PlayerState getUpdatedState() {
+        return this.state;
     }
 
 }
