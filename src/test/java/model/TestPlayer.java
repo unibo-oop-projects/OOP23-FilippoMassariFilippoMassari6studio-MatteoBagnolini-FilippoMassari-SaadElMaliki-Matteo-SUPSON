@@ -32,15 +32,17 @@ class TestPlayer {
     void testMove1() {
         plr.setMoveRight(true);
         plr.move(FRAME_RATE);
+        final double acc = plr.getVelocity().x();
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
-        assertEquals(0.03, plr.getVelocity().x());
+        assertEquals(3*acc, plr.getVelocity().x());
         plr.setMoveRight(false);
         plr.setMoveLeft(true);
         plr.move(FRAME_RATE);           //player stops here (change in direction)
+        assertEquals(0.0, plr.getVelocity().x());
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
-        assertEquals(-0.02, plr.getVelocity().x());
+        assertEquals(-2*acc, plr.getVelocity().x());
     }
 
     @Test
