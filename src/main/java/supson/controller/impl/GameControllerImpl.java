@@ -5,6 +5,7 @@ import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameView;
 import supson.view.impl.GameViewImpl;
+import supson.view.impl.InputManager;
 
 /**
  * This class, which implements the GameController interface, models the game controller.
@@ -16,6 +17,7 @@ public final class GameControllerImpl implements GameController {
 
     private final World model;
     private final GameView view;
+    private final InputManager input;
 
     /**
      * This is the GameControllerImpl constructor.
@@ -23,13 +25,14 @@ public final class GameControllerImpl implements GameController {
     public GameControllerImpl() {
         this.model = new WorldImpl();
         this.view = new GameViewImpl();
+        this.input = new InputManager();
     }
 
 
     @Override
-    public void processInput() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'processInput'");
+    public void processInput() {    
+        this.model.getPlayer().setMoveRight(input.right ? true : false);
+        this.model.getPlayer().setMoveLeft(input.left ? true : false);
     }
 
     @Override
@@ -46,6 +49,7 @@ public final class GameControllerImpl implements GameController {
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
         this.view.initView();
+        this.view.getViewComponent().addKeyListener(input);
     }
 
 }

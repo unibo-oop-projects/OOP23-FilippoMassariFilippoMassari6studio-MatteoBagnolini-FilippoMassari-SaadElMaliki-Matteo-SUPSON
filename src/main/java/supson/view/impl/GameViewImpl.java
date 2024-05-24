@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyListener;
 
 import supson.model.entity.api.GameEntity;
@@ -28,9 +29,6 @@ public final class GameViewImpl implements GameView {
     private final HudView hudView;
     private final JFrame gameFrame;
 
-    private final InputManager inputmg;
-
-
     /**
      * Constructs a new instance of {@code GameViewImpl}.
      * Initializes the world view, HUD view, and game frame.
@@ -38,7 +36,6 @@ public final class GameViewImpl implements GameView {
     public GameViewImpl() {
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
-        this.inputmg = new InputManager();
         this.gameFrame = new JFrame("SUPREME SONIC");
     }
 
@@ -55,16 +52,16 @@ public final class GameViewImpl implements GameView {
         //this.gameFrame.setComponentZOrder(backgroundLabel, 0);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.gameFrame.setVisible(true);
-        this.gameFrame.addKeyListener(inputmg);
     }
 
     @Override
     public void renderView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
-    
-        player.setMoveRight(inputmg.right ? true : false);
-        player.setMoveLeft(inputmg.left ? true : false);
         worldView.renderWorld(gameFrame, gameEntitiesList, player);
         hudView.renderHud(gameFrame, hud);
+    }
+
+    public Component getViewComponent(){
+        return gameFrame;
     }
     
 }
