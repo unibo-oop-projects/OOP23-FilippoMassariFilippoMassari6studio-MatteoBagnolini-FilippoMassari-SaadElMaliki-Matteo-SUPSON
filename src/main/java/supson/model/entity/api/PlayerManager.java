@@ -1,6 +1,23 @@
 package supson.model.entity.api;
 
+import supson.model.hitbox.impl.PlayerState;
+
+/**
+ * This interface models a player manager.
+ */
 public interface PlayerManager {
+
+    /**
+     * This method set the state.
+     * @param state the state of the player
+     */
+    void setState(PlayerState state);
+
+    /**
+     * This method return the new updated state of the player.
+     * @return the updated state
+     */
+    PlayerState getUpdatedState();
 
     /**
      * Set the player to move right.

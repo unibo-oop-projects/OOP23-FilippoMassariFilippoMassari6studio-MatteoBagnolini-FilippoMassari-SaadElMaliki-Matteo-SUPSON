@@ -6,11 +6,22 @@ import supson.model.entity.api.PlayerManager;
 import supson.model.hitbox.impl.CollisionEvents;
 import supson.model.hitbox.impl.PlayerState;
 
+/**
+ * This class represents a player manager. It is used to update the state of 
+ * the player, based on events happening during collisions.
+ */
 public class PlayerManagerImpl implements PlayerManager, Observer {
 
     private PlayerState state;
 
-    public PlayerManagerImpl() { }
+    /**
+     * This is the cosntructor of this class. State attribute is initialized
+     * with the player state to avoid the attribute to be empty.
+     * @param player the player to manage
+     */
+    public PlayerManagerImpl(final Player player) {
+        this.state = player.getState();
+     }
 
     @Override
     public void moveRight() {
@@ -94,10 +105,12 @@ public class PlayerManagerImpl implements PlayerManager, Observer {
         stopOnVertical();
     }
 
+    @Override
     public void setState(PlayerState state) {
         this.state = state;
     }
 
+    @Override
     public PlayerState getUpdatedState() {
         return this.state;
     }
