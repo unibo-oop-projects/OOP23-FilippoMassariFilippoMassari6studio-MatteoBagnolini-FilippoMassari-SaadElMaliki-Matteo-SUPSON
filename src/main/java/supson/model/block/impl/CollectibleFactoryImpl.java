@@ -4,7 +4,7 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
-import supson.model.entity.impl.Player;
+import supson.model.entity.impl.player.Player;
 
 /**
  * An implementation of the CollectibleFactory interface.

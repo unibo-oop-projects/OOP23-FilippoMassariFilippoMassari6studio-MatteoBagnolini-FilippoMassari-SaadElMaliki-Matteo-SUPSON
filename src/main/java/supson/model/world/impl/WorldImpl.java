@@ -23,7 +23,7 @@ import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.Player;
+import supson.model.entity.impl.player.Player;
 import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;

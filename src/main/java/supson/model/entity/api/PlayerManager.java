@@ -1,6 +1,6 @@
 package supson.model.entity.api;
 
-import supson.model.hitbox.impl.PlayerState;
+import supson.model.entity.impl.player.PlayerState;
 
 /**
  * This interface models a player manager.

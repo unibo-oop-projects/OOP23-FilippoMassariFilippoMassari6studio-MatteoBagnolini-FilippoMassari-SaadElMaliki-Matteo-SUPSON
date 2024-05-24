@@ -1,6 +1,6 @@
 package supson.model.block.api;
 
-import supson.model.entity.impl.Player;
+import supson.model.entity.impl.player.Player;
 
 /**
  * The Collectible interface represents a block entity that can be collected.

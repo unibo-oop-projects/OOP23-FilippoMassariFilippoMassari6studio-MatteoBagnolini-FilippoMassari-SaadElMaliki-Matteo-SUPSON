@@ -1,4 +1,4 @@
-package supson.model.hitbox.impl;
+package supson.model.entity.impl.player;
 
 import supson.common.api.Vect2d;
 
