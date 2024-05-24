@@ -22,9 +22,9 @@ import supson.view.api.WorldView;
  */
 public class WorldViewImpl implements WorldView {
 
-    private static final int CAMERA_RANGE = 100;
-    private static final int DEFAULT_WIDTH = 25;
-    private static final int DEFAULT_HEIGHT = 25;
+    private static final int CAMERA_RANGE = 20;
+
+    private static final int DEFAULT_DIMENSION = 15;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -36,12 +36,27 @@ public class WorldViewImpl implements WorldView {
      *
      * @param gameEntitiesList the list of all game entities
      * @param player the player entity
+     * @param mapWidth the width of the map
      */
-    private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player) {
-        cameraGameEntitiesList.clear();  // Clear the list to avoid duplications
+    private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player, final int mapWidth) {
+        cameraGameEntitiesList.clear();
+        int playerX = (int) player.getPosition().x();
+        int leftBoundary = playerX - CAMERA_RANGE;
+        int rightBoundary = playerX + CAMERA_RANGE;
+
+        if (playerX >= mapWidth - CAMERA_RANGE) {
+            leftBoundary = mapWidth - 2 * CAMERA_RANGE;
+            rightBoundary = mapWidth;
+        }
+
+        if (playerX <= CAMERA_RANGE) {
+            leftBoundary = 0;
+            rightBoundary = 2 * CAMERA_RANGE;
+        }
+
         for (GameEntity gameEntity : gameEntitiesList) {
-            if (gameEntity.getPosition().x() >= player.getPosition().x() - CAMERA_RANGE
-                && gameEntity.getPosition().x() <= player.getPosition().x() + CAMERA_RANGE) {
+            if (gameEntity.getPosition().x() >= leftBoundary
+                && gameEntity.getPosition().x() <= rightBoundary) {
                 this.cameraGameEntitiesList.add(gameEntity);
             }
         }
@@ -68,18 +83,34 @@ public class WorldViewImpl implements WorldView {
      * Adds the game entities to the game frame panel.
      *
      * @param gameFrame the game frame
+     * @param player the player entity
+     * @param mapWidth the width of the map
      */
-    private void addToPanel(final JFrame gameFrame, final Player player) {
+    private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
         int centerX = gameFrame.getWidth() / 2;
         int centerY = gameFrame.getHeight() / 2;
+        int playerX = (int) player.getPosition().x();
+
         for (GameEntity gameEntity : cameraGameEntitiesList) {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             if (icon.isPresent()) {
                 JLabel label = new JLabel(icon.get());
                 Pos2d pos = gameEntity.getPosition();
-                int x = (int) Math.round(centerX + (pos.x() - player.getPosition().x()) * DEFAULT_WIDTH);
-                int y = (int) Math.round(centerY - pos.y() * DEFAULT_HEIGHT);
-                label.setBounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                int x, y;
+                if (playerX >= mapWidth - CAMERA_RANGE) {
+                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_DIMENSION);
+                } else if (playerX <= CAMERA_RANGE) {
+                    x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_DIMENSION);
+                } else{
+                    x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_DIMENSION);
+                }
+                int gameEntityHeigth = DEFAULT_DIMENSION * gameEntity.getHeight();
+                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER) || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)){
+                    y = (int) Math.round((centerY - pos.y() * gameEntityHeigth) + DEFAULT_DIMENSION);
+                } else {
+                    y = (int) Math.round(centerY - pos.y() * gameEntityHeigth);
+                }
+                label.setBounds(x, y, DEFAULT_DIMENSION, gameEntityHeigth);
                 gameFrame.add(label);
             }
         }
@@ -89,10 +120,15 @@ public class WorldViewImpl implements WorldView {
     public void renderWorld(final JFrame gameFrame, final List<GameEntity> gameEntitiesList, final Player player) {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
-        selectGameEntity(gameEntitiesList, player);
-        addToPanel(gameFrame, player);
+        int mapWidth = 0;
+        for (GameEntity gameEntity : gameEntitiesList) {
+            if (gameEntity.getPosition().x() > mapWidth){
+                mapWidth = (int) gameEntity.getPosition().x();
+            }
+        }
+        selectGameEntity(gameEntitiesList, player, mapWidth);
+        addToPanel(gameFrame, player, mapWidth);
         gameFrame.revalidate();
         gameFrame.repaint();
     }
-
 }
