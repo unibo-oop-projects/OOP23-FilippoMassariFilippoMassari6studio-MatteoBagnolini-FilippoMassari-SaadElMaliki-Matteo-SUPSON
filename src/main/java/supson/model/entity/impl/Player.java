@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.hitbox.impl.PlayerState;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -151,6 +152,21 @@ public final class Player extends AbstractMoveableEntity {
         if (getLife() + lives < MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
+    }
+
+    public PlayerState getState() {
+        return new PlayerState(this.getVelocity(), right, left, jump,
+        onGround, isJumping, isInvulnerable);
+    }
+
+    public void setState(PlayerState state) {
+        this.setVelocity(state.vel());
+        this.right = state.right();
+        this.left = state.left();
+        this.jump = state.jump();
+        this.onGround = state.onGround();
+        this.isJumping = state.isJumping();
+        this.isInvulnerable = state.isInvulnerable();
     }
 
 }
