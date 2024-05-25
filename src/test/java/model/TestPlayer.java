@@ -47,7 +47,9 @@ class TestPlayer {
         plr.setMoveRight(false);
         plr.move(FRAME_RATE);
         friction = acc - plr.getVelocity().x();
+        //ottieni la decelerazione qua
         plr.setVelocity(new Vect2dImpl(0, 0));
+
     }
 
     @Test
@@ -60,6 +62,7 @@ class TestPlayer {
         plr.setMoveRight(false);
         plr.setMoveLeft(true);
         plr.move(FRAME_RATE);                                   //player stops here (change in direction)
+        //aggiorna meglio in base alla decelerazione!!
         assertEquals(0.0, plr.getVelocity().x());
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);

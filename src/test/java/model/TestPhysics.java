@@ -21,11 +21,12 @@ class TestPhysics {
     private static final long TIME = 1000;
     private static final int MAX_SPEED = 20;
     private static final double ACC = 1;
+    private static final double DEC = 1;
     private static final double FRICTION = 1;
     private static final int JUMP_FORCE = 2;
 
     private final AbstractMoveableEntity jumpingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -35,7 +36,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity leftMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -45,7 +46,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity rightMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -55,7 +56,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity zigzagMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 0)) {
 
         private int count;
 
@@ -72,7 +73,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity frictionEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -82,7 +83,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity gravityMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 1)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, DEC, FRICTION, JUMP_FORCE, 1)) {
 
         @Override
         protected void updateVelocity() {
@@ -139,20 +140,20 @@ class TestPhysics {
         zigzagMovingEntity.move(TIME);
         assertEquals(new Vect2dImpl(3, 0), zigzagMovingEntity.getVelocity());
         assertEquals(new Pos2dImpl(6, 0), zigzagMovingEntity.getPosition());
-        //here the entity stops
+        //here the entity decelerate
+        zigzagMovingEntity.move(TIME);
+        assertEquals(new Vect2dImpl(2, 0), zigzagMovingEntity.getVelocity());
+        assertEquals(new Pos2dImpl(8, 0), zigzagMovingEntity.getPosition());
+        zigzagMovingEntity.move(TIME);
+        assertEquals(new Vect2dImpl(1, 0), zigzagMovingEntity.getVelocity());
+        assertEquals(new Pos2dImpl(9, 0), zigzagMovingEntity.getPosition());
         zigzagMovingEntity.move(TIME);
         assertEquals(new Vect2dImpl(0, 0), zigzagMovingEntity.getVelocity());
-        assertEquals(new Pos2dImpl(6, 0), zigzagMovingEntity.getPosition());
-        zigzagMovingEntity.move(TIME);
-        assertEquals(new Vect2dImpl(-1, 0), zigzagMovingEntity.getVelocity());
-        assertEquals(new Pos2dImpl(5, 0), zigzagMovingEntity.getPosition());
-        zigzagMovingEntity.move(TIME);
-        assertEquals(new Vect2dImpl(-2, 0), zigzagMovingEntity.getVelocity());
-        assertEquals(new Pos2dImpl(3, 0), zigzagMovingEntity.getPosition());
+        assertEquals(new Pos2dImpl(9, 0), zigzagMovingEntity.getPosition());
         //here the entity stops
         zigzagMovingEntity.move(TIME);
-        assertEquals(new Vect2dImpl(0, 0), zigzagMovingEntity.getVelocity());
-        assertEquals(new Pos2dImpl(3, 0), zigzagMovingEntity.getPosition());
+        assertEquals(new Vect2dImpl(1, 0), zigzagMovingEntity.getVelocity());
+        assertEquals(new Pos2dImpl(10, 0), zigzagMovingEntity.getPosition());
     }
 
     @Test

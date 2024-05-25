@@ -14,10 +14,8 @@ import supson.model.physics.api.Physics;
  */
 public final class PhysicsImpl implements Physics {
 
-    private final static int DEC_FACTOR = 3;
-
     private final int maxSpeed;
-    private final double accSpeed;
+    private final double acceleration;
     private final double deceleration;
     private final double friction;
     private final int jumpForce;
@@ -27,15 +25,16 @@ public final class PhysicsImpl implements Physics {
     /**
      * This is the constructor of the PhysicsImpl class.
      * @param maxSpeed the max speed of the entity
-     * @param accSpeed the acceleration factor of the entity
+     * @param acceleration the acceleration factor of the entity
      * @param jumpForce the jump force of the entity
      * @param gravity the gravity factor of the entity
      */
-    public PhysicsImpl(final int maxSpeed, final double accSpeed,
-        final double friction, final int jumpForce, final double gravity) {
+    public PhysicsImpl(final int maxSpeed, final double acceleration,
+            final double deceleration, final double friction,
+            final int jumpForce, final double gravity) {
         this.maxSpeed = maxSpeed;
-        this.accSpeed = accSpeed;
-        this.deceleration = DEC_FACTOR * accSpeed;
+        this.acceleration = acceleration;
+        this.deceleration = deceleration;
         this.friction = friction;
         this.jumpForce = jumpForce;
         this.gravity = gravity;
@@ -51,7 +50,7 @@ public final class PhysicsImpl implements Physics {
 
         } else if (oldVel.x() < maxSpeed) {
 
-            newXVel += accSpeed;  //accelerate
+            newXVel += acceleration;  //accelerate
 
             if (newXVel >= maxSpeed) {
 
@@ -72,7 +71,7 @@ public final class PhysicsImpl implements Physics {
 
         } else if (oldVel.x() > -maxSpeed) {
 
-            newXVel -= accSpeed;   //accelerate
+            newXVel -= acceleration;   //accelerate
 
             if (newXVel <= -maxSpeed) {
 
