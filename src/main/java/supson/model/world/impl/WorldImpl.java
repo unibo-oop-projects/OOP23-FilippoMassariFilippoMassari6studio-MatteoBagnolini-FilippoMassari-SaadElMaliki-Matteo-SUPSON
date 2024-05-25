@@ -23,8 +23,10 @@ import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.api.PlayerManager;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
+import supson.model.entity.player.PlayerManagerImpl;
 import supson.model.hitbox.impl.CollisionResolver;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
@@ -50,6 +52,7 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
+    private final PlayerManagerImpl playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
 
@@ -61,9 +64,11 @@ public final class WorldImpl implements World {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
+        this.playerManager = new PlayerManagerImpl(player);
         this.collectibleFactory = new CollectibleFactoryImpl();
         this.gameTimer = new GameTimerImpl();
         this.collisionResolver = new CollisionResolver();
+        collisionResolver.register(playerManager);
     }
 
     @Override
