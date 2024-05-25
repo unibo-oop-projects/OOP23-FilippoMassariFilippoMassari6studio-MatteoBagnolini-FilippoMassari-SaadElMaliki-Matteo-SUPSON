@@ -4,14 +4,26 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class InputManager implements KeyListener {
-    public boolean left,right,jump;
+    private boolean left, right, jump;
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isJump() {
+        return jump;
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyTyped(final KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(final KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
@@ -27,11 +39,10 @@ public class InputManager implements KeyListener {
             default:
                 break;
         }
-        System.out.println(left+" "+jump+" "+right);
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(final KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
@@ -47,7 +58,6 @@ public class InputManager implements KeyListener {
             default:
                 break;
         }
-        System.out.println(left+" "+jump+" "+right);
     }
 
 
