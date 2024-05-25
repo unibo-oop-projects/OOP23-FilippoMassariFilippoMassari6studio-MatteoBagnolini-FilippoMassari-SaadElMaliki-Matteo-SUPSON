@@ -12,7 +12,7 @@ import supson.model.hitbox.impl.CollisionEvents;
  */
 public final class PlayerManagerImpl implements PlayerManager, Observer {
 
-    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(5, 3);
+    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(15, 3);
     
     private PlayerState state;
 
