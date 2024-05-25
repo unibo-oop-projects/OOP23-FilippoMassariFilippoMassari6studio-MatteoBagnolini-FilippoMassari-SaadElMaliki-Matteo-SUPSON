@@ -14,8 +14,11 @@ import supson.model.physics.api.Physics;
  */
 public final class PhysicsImpl implements Physics {
 
+    private final static int DEC_FACTOR = 3;
+
     private final int maxSpeed;
     private final double accSpeed;
+    private final double deceleration;
     private final double friction;
     private final int jumpForce;
     private final double gravity;
@@ -32,6 +35,7 @@ public final class PhysicsImpl implements Physics {
         final double friction, final int jumpForce, final double gravity) {
         this.maxSpeed = maxSpeed;
         this.accSpeed = accSpeed;
+        this.deceleration = DEC_FACTOR * accSpeed;
         this.friction = friction;
         this.jumpForce = jumpForce;
         this.gravity = gravity;
@@ -43,7 +47,7 @@ public final class PhysicsImpl implements Physics {
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
 
-            newXVel = 0;        //the player stops moving
+            newXVel += deceleration;        //the player decelerate
 
         } else if (oldVel.x() < maxSpeed) {
 
@@ -64,7 +68,7 @@ public final class PhysicsImpl implements Physics {
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
 
-            newXVel = 0;        //the player stops moving
+            newXVel -= deceleration;        //the player decelerate
 
         } else if (oldVel.x() > -maxSpeed) {
 
