@@ -9,7 +9,6 @@ import supson.common.api.Observable;
 import supson.common.api.Observer;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.Trap;
@@ -161,7 +160,6 @@ public final class CollisionResolver implements Observable {
                     notifyObservers(CollisionEvents.BLOCK_LEFT_COLLISION);
                 }
         }
-        entity.setVelocity(new Vect2dImpl(0, entity.getVelocity().y()));
         return newXPos;
     }
 
@@ -189,7 +187,6 @@ public final class CollisionResolver implements Observable {
                     notifyObservers(CollisionEvents.BLOCK_UPPER_COLLISION);
                 }
         }
-        entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));
         return newYPos;
     }
 

@@ -23,7 +23,6 @@ import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.api.PlayerManager;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
 import supson.model.entity.player.PlayerManagerImpl;
@@ -150,10 +149,11 @@ public final class WorldImpl implements World {
         .forEach(e -> {
             Pos2d oldPos = e.getPosition();
             e.move(elapsed);
+            if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                playerManager.setState(player.getState());
+            }
             collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
         });
-
-        playerManager.setState(player.getState());
 
         final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
         killed.forEach(k -> removeEnemy(k));
