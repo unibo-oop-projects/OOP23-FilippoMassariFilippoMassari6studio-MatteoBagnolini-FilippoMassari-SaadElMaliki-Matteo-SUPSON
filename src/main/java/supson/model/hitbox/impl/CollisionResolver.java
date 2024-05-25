@@ -60,7 +60,7 @@ public final class CollisionResolver implements Observable {
 
             //DEBUG---------------
             if (entity instanceof Player) {
-                LOGGER.info(" ENTRY player pos: " + entity.getPosition());
+                //LOGGER.info(" ENTRY player pos: " + entity.getPosition());
             }
             //DEBUG---------------
 
@@ -69,18 +69,18 @@ public final class CollisionResolver implements Observable {
             if (!verticalColliding.isEmpty()) {
                 newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
                 //DEBUG
-                LOGGER.info("vert coll");
+                if (entity instanceof Player) LOGGER.info("vert coll pl " + entity.getPosition().y() + "block " + verticalColliding.get(0).getPosition().y());
             }
             entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
             final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!orizontalColliding.isEmpty()) {
                 newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
                 //DEBUG
-                LOGGER.info("oriz coll");
+                if (entity instanceof Player) LOGGER.info("oriz coll pl ");
             }
             entity.setPosition(new Pos2dImpl(newX, newY));
             //DEBUG
-            LOGGER.info(" EXIT player pos: " + entity.getPosition());
+            //LOGGER.info(" EXIT player pos: " + entity.getPosition());
         }
     }
 
@@ -101,12 +101,16 @@ public final class CollisionResolver implements Observable {
         final Hitbox playerHitbox = player.getHitbox();
         if (player.isInvulnerable()) {
              return enemies.stream()
-            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
+            .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .collect(Collectors.toList());
         } else {
             enemies.stream()
-            .filter(k -> playerHitbox.isCollidingWith(k.getHitbox()))
-            .forEach(k -> k.getGameEntityType());   //TODO: here use the applyDamage method
+            .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
+            .forEach(e -> {
+                player.incrementLife(-1);    //TODO: here use the applyDamage method
+                notifyObservers(e.getPosition().x() > player.getPosition().x()
+                ? CollisionEvents.OBSTACLE_RIGHT_COLLISION : CollisionEvents.OBSTACLE_LEFT_COLLISION);
+            });
             return List.of();
         }
     }
@@ -147,13 +151,16 @@ public final class CollisionResolver implements Observable {
         if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
-            notifyObservers(CollisionEvents.RIGHT_COLLISION);
+                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                    notifyObservers(CollisionEvents.BLOCK_RIGHT_COLLISION);
+                }
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
-                notifyObservers(CollisionEvents.LEFT_COLLISION);
+                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                    notifyObservers(CollisionEvents.BLOCK_LEFT_COLLISION);
+                }
         }
-        //notifyOrizontalCollision(); --> setta la velocità = 0 e ferma il player
         entity.setVelocity(new Vect2dImpl(0, entity.getVelocity().y()));
         return newXPos;
     }
@@ -172,13 +179,16 @@ public final class CollisionResolver implements Observable {
         if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
-                notifyObservers(CollisionEvents.LOWER_COLLISION);
+                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                    notifyObservers(CollisionEvents.BLOCK_LOWER_COLLISION);
+                }
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA; 
-            notifyObservers(CollisionEvents.UPPER_COLLISION); 
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                    notifyObservers(CollisionEvents.BLOCK_UPPER_COLLISION);
+                }
         }
-        //notifyVerticalCollision(); --> setta velocità = 0 e setta i vari flags di salto correttamente
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));
         return newYPos;
     }
