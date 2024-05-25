@@ -12,6 +12,7 @@ import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.api.Trap;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
@@ -81,6 +82,13 @@ public final class CollisionResolver implements Observable {
             //DEBUG
             LOGGER.info(" EXIT player pos: " + entity.getPosition());
         }
+    }
+
+    public void resolveTrapCollisions(final Player player, final List<Trap> traps) {
+        traps.stream()
+        .filter(trap -> trap.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(trap -> trap.getHitbox().isCollidingWith(player.getHitbox()))
+        .forEach(trap -> trap.activate(player));
     }
 
     /**

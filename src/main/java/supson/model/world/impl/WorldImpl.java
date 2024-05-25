@@ -18,6 +18,7 @@ import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
+import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.entity.api.GameEntity;
@@ -148,6 +149,9 @@ public final class WorldImpl implements World {
 
         final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
         killed.forEach(k -> removeEnemy(k));
+
+        collisionResolver.resolveTrapCollisions(player,
+            blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
 
         final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
             blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
