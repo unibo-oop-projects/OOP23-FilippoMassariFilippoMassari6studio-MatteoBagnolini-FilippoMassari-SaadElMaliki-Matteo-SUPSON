@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.player.Player;
+import supson.model.entity.player.Player;
 
 /**
  * The WorldView interface represents the view of the game world.

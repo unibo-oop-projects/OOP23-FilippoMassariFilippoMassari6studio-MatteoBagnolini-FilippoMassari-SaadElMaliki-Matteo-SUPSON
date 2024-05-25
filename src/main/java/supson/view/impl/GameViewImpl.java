@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import java.awt.Color;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.player.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;

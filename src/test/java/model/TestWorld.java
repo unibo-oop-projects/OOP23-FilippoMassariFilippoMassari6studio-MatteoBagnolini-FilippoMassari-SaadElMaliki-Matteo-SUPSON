@@ -13,7 +13,7 @@ import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;

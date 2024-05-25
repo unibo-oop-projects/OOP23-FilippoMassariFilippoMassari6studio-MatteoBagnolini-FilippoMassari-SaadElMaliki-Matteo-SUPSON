@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.player.Player;
+import supson.model.entity.player.Player;
 import supson.view.SpriteMap;
 import supson.view.api.WorldView;
 

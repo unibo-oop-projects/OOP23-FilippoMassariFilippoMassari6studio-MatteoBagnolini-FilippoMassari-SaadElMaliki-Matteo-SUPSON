@@ -14,7 +14,7 @@ import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.player.Player;
+import supson.model.entity.player.Player;
 import supson.model.hitbox.api.Hitbox;
 
 import java.util.logging.Logger;

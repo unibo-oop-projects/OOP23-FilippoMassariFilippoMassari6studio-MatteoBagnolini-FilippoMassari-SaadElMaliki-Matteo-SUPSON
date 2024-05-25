@@ -9,7 +9,7 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.api.Collectible;
 

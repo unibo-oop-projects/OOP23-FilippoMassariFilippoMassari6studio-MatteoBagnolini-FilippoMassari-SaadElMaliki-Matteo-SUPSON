@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.impl.player.Player;
+import supson.model.entity.player.Player;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
