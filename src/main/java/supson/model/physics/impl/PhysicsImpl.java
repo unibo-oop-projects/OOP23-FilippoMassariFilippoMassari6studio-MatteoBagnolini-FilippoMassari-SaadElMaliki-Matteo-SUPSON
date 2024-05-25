@@ -16,6 +16,7 @@ public final class PhysicsImpl implements Physics {
 
     private final int maxSpeed;
     private final double accSpeed;
+    private final double friction;
     private final int jumpForce;
     private final double gravity;
 
@@ -28,9 +29,10 @@ public final class PhysicsImpl implements Physics {
      * @param gravity the gravity factor of the entity
      */
     public PhysicsImpl(final int maxSpeed, final double accSpeed,
-        final int jumpForce, final double gravity) {
+        final double friction, final int jumpForce, final double gravity) {
         this.maxSpeed = maxSpeed;
         this.accSpeed = accSpeed;
+        this.friction = friction;
         this.jumpForce = jumpForce;
         this.gravity = gravity;
     }
@@ -75,6 +77,12 @@ public final class PhysicsImpl implements Physics {
             }
         }
         entity.setVelocity(new Vect2dImpl(newXVel, oldVel.y()));
+    }
+
+    public void applyFriction(MoveableEntity entity) {
+        final Vect2d initialVel = entity.getVelocity();
+        final double newXVel = initialVel.x() - Math.min(Math.abs(initialVel.x()), friction) * Math.signum(initialVel.x());
+        entity.setVelocity(new Vect2dImpl(newXVel, initialVel.y()));
     }
 
     @Override

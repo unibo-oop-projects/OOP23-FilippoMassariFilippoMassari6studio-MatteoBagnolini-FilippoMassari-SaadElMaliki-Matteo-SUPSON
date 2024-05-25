@@ -14,6 +14,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 8;
     private static final double ACC_SPEED = 0.4;
+    private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
     private static final double GRAVITY = 0.2;
 
@@ -35,19 +36,22 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
     @Override
     public void updateVelocity() {
-        right = true;
+        //right = true;
         final Physics physicsComponent = getPhysicsComponent();
         if (left) {
             physicsComponent.moveLeft(this);
         }
         if (right) {
             physicsComponent.moveRight(this);
+        }
+        if (!left && !right) {
+            physicsComponent.applyFriction(this);
         }
         if (jump && onGround) {
             physicsComponent.startJumping(this);
