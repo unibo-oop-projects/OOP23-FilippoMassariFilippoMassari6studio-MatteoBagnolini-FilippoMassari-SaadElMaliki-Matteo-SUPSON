@@ -1,6 +1,7 @@
 package supson.model.entity.player;
 
 import supson.common.api.Observer;
+import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.api.PlayerManager;
 import supson.model.hitbox.impl.CollisionEvents;
@@ -11,6 +12,8 @@ import supson.model.hitbox.impl.CollisionEvents;
  */
 public final class PlayerManagerImpl implements PlayerManager, Observer {
 
+    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(5, 3);
+    
     private PlayerState state;
 
     /**
@@ -79,10 +82,12 @@ public final class PlayerManagerImpl implements PlayerManager, Observer {
     @Override
     public void onNotify(final CollisionEvents event) {
         switch (event) {
-            case UPPER_COLLISION -> upperCollision();
-            case LOWER_COLLISION -> lowerCollision();
-            case RIGHT_COLLISION -> rightCollision();
-            case LEFT_COLLISION -> leftCollision();
+            case BLOCK_UPPER_COLLISION -> upperCollision();
+            case BLOCK_LOWER_COLLISION -> lowerCollision();
+            case BLOCK_RIGHT_COLLISION -> rightCollision();
+            case BLOCK_LEFT_COLLISION -> leftCollision();
+            case OBSTACLE_LEFT_COLLISION -> pushBackLeft();
+            case OBSTACLE_RIGHT_COLLISION -> pushBackRight();
         }
     }
 
@@ -102,6 +107,19 @@ public final class PlayerManagerImpl implements PlayerManager, Observer {
 
     private void upperCollision() {
         stopOnVertical();
+    }
+
+    private void pushBackRight() {
+        moveLeft();
+        final Vect2d vel = new Vect2dImpl(-PUSH_BACK_VEL.x(), PUSH_BACK_VEL.y());
+        this.state = new PlayerState(vel, isInvulnerable(), isInvulnerable(),
+        isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
+    }
+
+    private void pushBackLeft() {
+        moveRight();
+        this.state = new PlayerState(PUSH_BACK_VEL, isInvulnerable(), isInvulnerable(),
+        isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
     }
 
     @Override
