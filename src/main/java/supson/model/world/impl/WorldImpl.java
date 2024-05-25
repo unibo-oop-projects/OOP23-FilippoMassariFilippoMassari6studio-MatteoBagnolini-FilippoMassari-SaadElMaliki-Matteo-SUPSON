@@ -52,7 +52,7 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
-    private final PlayerManagerImpl playerManager;
+    private final PlayerManagerImpl playerManager;          //TODO change to PLayerManager by deleting PlayerManager interface
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
 
@@ -142,6 +142,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void updateGame(final long elapsed) {
+
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
@@ -151,6 +152,8 @@ public final class WorldImpl implements World {
             e.move(elapsed);
             collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
         });
+
+        playerManager.setState(player.getState());
 
         final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
         killed.forEach(k -> removeEnemy(k));
@@ -162,6 +165,8 @@ public final class WorldImpl implements World {
             blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
             .collect(Collectors.toList()));
         activated.forEach(k -> removeBlock(k));
+
+        player.setState(playerManager.getUpdatedState());
     }
 
     @Override
