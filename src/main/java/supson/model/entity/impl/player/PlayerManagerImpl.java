@@ -9,7 +9,7 @@ import supson.model.hitbox.impl.CollisionEvents;
  * This class represents a player manager. It is used to update the state of 
  * the player, based on events happening during collisions.
  */
-public class PlayerManagerImpl implements PlayerManager, Observer {
+public final class PlayerManagerImpl implements PlayerManager, Observer {
 
     private PlayerState state;
 
@@ -20,7 +20,7 @@ public class PlayerManagerImpl implements PlayerManager, Observer {
      */
     public PlayerManagerImpl(final Player player) {
         this.state = player.getState();
-     }
+    }
 
     @Override
     public void moveRight() {
