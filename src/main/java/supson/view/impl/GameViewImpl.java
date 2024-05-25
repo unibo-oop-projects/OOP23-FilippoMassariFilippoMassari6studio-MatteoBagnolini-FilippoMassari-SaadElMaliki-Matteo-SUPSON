@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.KeyListener;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Player;
