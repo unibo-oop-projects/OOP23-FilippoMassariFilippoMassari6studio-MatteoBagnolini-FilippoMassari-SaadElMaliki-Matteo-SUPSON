@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.util.List;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 
 /**

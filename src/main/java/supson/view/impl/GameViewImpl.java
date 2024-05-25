@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;

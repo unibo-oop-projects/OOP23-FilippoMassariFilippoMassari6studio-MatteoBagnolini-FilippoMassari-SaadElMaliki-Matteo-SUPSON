@@ -1,38 +1,45 @@
 package supson.model.hitbox.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import supson.common.GameEntityType;
+import supson.common.api.Observable;
+import supson.common.api.Observer;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.api.Trap;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hitbox.api.Hitbox;
 
 import java.util.logging.Logger;
 
 /**
- * This class is an utility class which act as collision resolver. It is used to check
+ * This class is a collision resolver. It is used to check
  * and resolve collisions in the game.
  */
-public final class CollisionResolver {
+public final class CollisionResolver implements Observable {
 
     private static final Logger LOGGER = Logger.getLogger("Collision");
 
     private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
+    private final List<Observer> observers;
 
     /**
      * The constructor of this class is final and empty, ensuring it cannot
      * be instantiated.
      */
-    private CollisionResolver() { }
+    public CollisionResolver() {
+        this.observers = new ArrayList<>();
+     }
 
     /**
      * This method resolves collisions between a moveable entity and the platform blocks.
@@ -43,7 +50,7 @@ public final class CollisionResolver {
      * @param list the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
-    public static void resolvePlatformCollisions(final MoveableEntity entity,
+    public void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> list, final Pos2d startingPos) {
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
@@ -77,13 +84,20 @@ public final class CollisionResolver {
         }
     }
 
+    public void resolveTrapCollisions(final Player player, final List<Trap> traps) {
+        traps.stream()
+        .filter(trap -> trap.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(trap -> trap.getHitbox().isCollidingWith(player.getHitbox()))
+        .forEach(trap -> trap.activate(player));
+    }
+
     /**
      * This method resolves collisions between the player and the enemies.
      * @param player the player
      * @param enemies the list of enemies in the level
      * @return the list of enemy killed
      */
-    public static List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
+    public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
         if (player.isInvulnerable()) {
              return enemies.stream()
@@ -103,7 +117,7 @@ public final class CollisionResolver {
      * @param collectibles the list of collectible entities
      * @return a list of collectible that have been collected and have to be removed
      */
-    public static List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
+    public List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
         return collectibles.stream()
         .filter(collectible -> collectible.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(collectible -> collectible.getHitbox().isCollidingWith(player.getHitbox()))
@@ -111,7 +125,7 @@ public final class CollisionResolver {
         .collect(Collectors.toList());
     }
 
-    private static List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
+    private List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
         return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
@@ -128,15 +142,18 @@ public final class CollisionResolver {
      * @param block one of the block the entity is colliding with
      * @return the new x coordinate of the entity to be set
      */
-    private static double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+            notifyObservers(CollisionEvents.RIGHT_COLLISION);
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
+                notifyObservers(CollisionEvents.LEFT_COLLISION);
         }
+        //notifyOrizontalCollision(); --> setta la velocità = 0 e ferma il player
         entity.setVelocity(new Vect2dImpl(0, entity.getVelocity().y()));
         return newXPos;
     }
@@ -150,18 +167,35 @@ public final class CollisionResolver {
      * @param block one of the block the entity is colliding with
      * @return the new y coordinate of the entity to be set
      */
-    private static double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
         final double newYPos;
-        // TODO: add an observer to notify the collision
         if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
+                notifyObservers(CollisionEvents.LOWER_COLLISION);
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;  
+                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA; 
+            notifyObservers(CollisionEvents.UPPER_COLLISION); 
         }
+        //notifyVerticalCollision(); --> setta velocità = 0 e setta i vari flags di salto correttamente
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), 0));
         return newYPos;
+    }
+
+    @Override
+    public void register(final Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregister(final Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(final CollisionEvents event) {
+        observers.forEach(o -> o.onNotify(event));
     }
 
 }

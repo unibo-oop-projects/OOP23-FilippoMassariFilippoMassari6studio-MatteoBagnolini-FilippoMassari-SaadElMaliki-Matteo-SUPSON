@@ -7,10 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import supson.common.impl.Vect2dImpl;
+import supson.model.entity.player.Player;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.entity.impl.Player;
 
 /**
  * This class tests the player class.
@@ -20,29 +20,67 @@ class TestPlayer {
     private static final long FRAME_RATE = 20;
 
     private Player plr;
+    private double acc, friction;
 
     // CHECKSTYLE: MagicNumber OFF
 
+    // @BeforeAll
+    // void init() {
+    //     this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
+    //     plr.setMoveRight(true);
+    //     plr.move(FRAME_RATE);
+    //     acc = plr.getVelocity().x();
+    //     plr.setMoveRight(false);
+    //     plr.move(FRAME_RATE);
+    //     friction = acc - plr.getVelocity().x();
+
+    //     assertEquals(0, friction);
+    //     assertEquals(0, acc);
+    // }
+
     @BeforeEach
-    void init() {
+    void getMovingValues() {
         this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
+        plr.setMoveRight(true);
+        plr.move(FRAME_RATE);
+        acc = plr.getVelocity().x();
+        plr.setMoveRight(false);
+        plr.move(FRAME_RATE);
+        friction = acc - plr.getVelocity().x();
+        plr.setVelocity(new Vect2dImpl(0, 0));
     }
 
     @Test
     void testMove1() {
         plr.setMoveRight(true);
         plr.move(FRAME_RATE);
-        final double acc = plr.getVelocity().x();
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
         assertEquals(3*acc, plr.getVelocity().x());
         plr.setMoveRight(false);
         plr.setMoveLeft(true);
-        plr.move(FRAME_RATE);           //player stops here (change in direction)
+        plr.move(FRAME_RATE);                                   //player stops here (change in direction)
         assertEquals(0.0, plr.getVelocity().x());
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
         assertEquals(-2*acc, plr.getVelocity().x());
+    }
+
+    @Test
+    void testMove2() {
+        plr.setMoveLeft(false);
+        plr.setMoveRight(false);
+        plr.move(FRAME_RATE);
+        assertEquals(0.0, plr.getVelocity().x());
+        plr.setMoveLeft(true);
+        plr.move(FRAME_RATE);
+        plr.move(FRAME_RATE);
+        assertEquals(-2*acc, plr.getVelocity().x());
+        plr.setMoveLeft(false);                 //here both flags are false, so friction is applied
+        plr.move(FRAME_RATE);
+        assertEquals(-2*acc + friction, plr.getVelocity().x());
+        plr.move(FRAME_RATE);
+        assertEquals(-2*acc +2*friction, plr.getVelocity().x());
     }
 
     @Test

@@ -1,8 +1,9 @@
-package supson.model.entity.impl;
+package supson.model.entity.player;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.entity.impl.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -14,6 +15,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 8;
     private static final double ACC_SPEED = 0.4;
+    private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
     private static final double GRAVITY = 0.2;
 
@@ -35,7 +37,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
@@ -48,6 +50,9 @@ public final class Player extends AbstractMoveableEntity {
         }
         if (right) {
             physicsComponent.moveRight(this);
+        }
+        if (!left && !right) {
+            physicsComponent.applyFriction(this);
         }
         if (jump && onGround) {
             physicsComponent.startJumping(this);
@@ -151,6 +156,21 @@ public final class Player extends AbstractMoveableEntity {
         if (getLife() + lives < MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
+    }
+
+    public PlayerState getState() {
+        return new PlayerState(this.getVelocity(), right, left, jump,
+        onGround, isJumping, isInvulnerable);
+    }
+
+    public void setState(PlayerState state) {
+        this.setVelocity(state.vel());
+        this.right = state.right();
+        this.left = state.left();
+        this.jump = state.jump();
+        this.onGround = state.onGround();
+        this.isJumping = state.isJumping();
+        this.isInvulnerable = state.isInvulnerable();
     }
 
 }

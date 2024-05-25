@@ -24,6 +24,13 @@ public interface Physics {
     void moveLeft(MoveableEntity entity);
 
     /**
+     * This method applies friction to the character. It should be called when
+     * the entity's movement flags are false to  decelerate.
+     * @param entity the entity to apply friction to
+     */
+    void applyFriction(MoveableEntity entity);
+
+    /**
      * This method begins the jumping action of the character, modifying the
      * velocity vector of the attached entity.
      * @param entity the entity to move.

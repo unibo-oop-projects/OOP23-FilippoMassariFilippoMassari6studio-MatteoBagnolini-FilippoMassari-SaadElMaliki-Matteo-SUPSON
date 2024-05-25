@@ -9,7 +9,7 @@ import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.AbstractMoveableEntity;
-import supson.model.physics.impl.PhysicsImpl; 
+import supson.model.physics.impl.PhysicsImpl;
 
 /**
  * THis class tests the Physics class.
@@ -19,9 +19,13 @@ class TestPhysics {
     // CHECKSTYLE: MagicNumber OFF
 
     private static final long TIME = 1000;
+    private static final int MAX_SPEED = 20;
+    private static final double ACC = 1;
+    private static final double FRICTION = 1;
+    private static final int JUMP_FORCE = 2;
 
     private final AbstractMoveableEntity jumpingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -31,7 +35,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity leftMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -41,7 +45,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity rightMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
 
         @Override
         protected void updateVelocity() {
@@ -51,7 +55,7 @@ class TestPhysics {
     };
 
     private final AbstractMoveableEntity zigzagMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 0)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
 
         private int count;
 
@@ -67,8 +71,18 @@ class TestPhysics {
 
     };
 
+    private final AbstractMoveableEntity frictionEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 0)) {
+
+        @Override
+        protected void updateVelocity() {
+            getPhysicsComponent().applyFriction(this);
+        }
+
+    };
+
     private final AbstractMoveableEntity gravityMovingEntity = new AbstractMoveableEntity(new Pos2dImpl(0, 0), 0, 0,
-            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(20, 1, 2, 1)) {
+            GameEntityType.PLAYER, new Vect2dImpl(0, 0), 0, new PhysicsImpl(MAX_SPEED, ACC, FRICTION, JUMP_FORCE, 1)) {
 
         @Override
         protected void updateVelocity() {
@@ -84,6 +98,7 @@ class TestPhysics {
         rightMovingEntity.setPosition(new Pos2dImpl(0, 0));
         zigzagMovingEntity.setPosition(new Pos2dImpl(0, 0));
         gravityMovingEntity.setPosition(new Pos2dImpl(0, 0));
+        frictionEntity.setVelocity(new Vect2dImpl(MAX_SPEED, 0));
         jumpingEntity.setVelocity(new Vect2dImpl(0, 0));
         leftMovingEntity.setVelocity(new Vect2dImpl(0, 0));
         rightMovingEntity.setVelocity(new Vect2dImpl(0, 0));
@@ -150,6 +165,16 @@ class TestPhysics {
             rightMovingEntity.move(TIME);
         }
         assertEquals(new Vect2dImpl(20, 0), rightMovingEntity.getVelocity());
+    }
+
+    @Test
+    void testFriction() {
+        frictionEntity.move(TIME);
+        assertEquals(MAX_SPEED - FRICTION, frictionEntity.getVelocity().x());
+        frictionEntity.move(TIME);
+        assertEquals(MAX_SPEED - 2*FRICTION, frictionEntity.getVelocity().x());
+        frictionEntity.move(TIME);
+        assertEquals(MAX_SPEED - 3*FRICTION, frictionEntity.getVelocity().x());
     }
 
     @Test

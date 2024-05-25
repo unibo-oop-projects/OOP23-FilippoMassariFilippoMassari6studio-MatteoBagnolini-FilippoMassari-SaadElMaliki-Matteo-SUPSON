@@ -13,6 +13,7 @@ public final class Enemy extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 5;
     private static final double ACC_SPEED = 0.01;
+    private static final double FRICTION = 0.01;
     private static final int JUMP_FORCE = 0;
     private static final double GRAVITY = 0.05;
 
@@ -34,7 +35,7 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param range the range of movement of the enemy
      */
     public Enemy(final Pos2d pos,final Vect2d vel, final int life, final int range) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, FRICTION, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;
         this.range = range;
