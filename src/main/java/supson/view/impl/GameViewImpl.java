@@ -40,7 +40,6 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void initView() { 
-        //this.gameFrame.getContentPane().add(this.pan);
         this.gameFrame.pack();
         this.gameFrame.setSize(WHIDTH, HEIGHT);
         this.gameFrame.setResizable(false);
@@ -48,7 +47,6 @@ public final class GameViewImpl implements GameView {
         backgroundLabel.setOpaque(true);
         backgroundLabel.setBackground(Color.BLUE);
         this.gameFrame.setContentPane(backgroundLabel);
-        //this.gameFrame.setComponentZOrder(backgroundLabel, 0);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.gameFrame.setVisible(true);
     }
