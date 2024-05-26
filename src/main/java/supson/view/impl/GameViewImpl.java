@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 public final class GameViewImpl implements GameView {
 
     //private static final String BACKGROUND_STRING = "sprite/background.jpg";
-    private static final int WHIDTH = 960;
+    private static final int WHIDTH = 948;
     private static final int HEIGHT = 720;
 
     private final WorldView worldView;

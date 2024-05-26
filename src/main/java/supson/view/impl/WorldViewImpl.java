@@ -24,7 +24,7 @@ public class WorldViewImpl implements WorldView {
 
     private static final int CAMERA_RANGE = 20;
 
-    private static final int DEFAULT_DIMENSION = 15;
+    private static final int DEFAULT_DIMENSION = 24;
 
     private final SpriteMap spriteMap = new SpriteMap();
 
@@ -87,7 +87,7 @@ public class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map
      */
     private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
-        int centerX = gameFrame.getWidth() / 2;
+        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4) ; //questo andrebbe normalizzato una volta che sàrà presente il fine gioco
         int centerY = gameFrame.getHeight() / 2;
         int playerX = (int) player.getPosition().x();
 
@@ -98,7 +98,7 @@ public class WorldViewImpl implements WorldView {
                 Pos2d pos = gameEntity.getPosition();
                 int x, y;
                 if (playerX >= mapWidth - CAMERA_RANGE) {
-                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_DIMENSION);
+                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE )) * DEFAULT_DIMENSION);
                 } else if (playerX <= CAMERA_RANGE) {
                     x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_DIMENSION);
                 } else{
