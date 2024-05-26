@@ -2,6 +2,7 @@ package supson.model.collisions;
 
 /**
  * This enums represent all the notifiable events occuring during collisions.
+ * @see supson.model.collisions.CollisionObserver
  */
 public enum CollisionEvent {
 

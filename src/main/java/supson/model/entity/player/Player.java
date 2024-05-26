@@ -134,6 +134,9 @@ public final class Player extends AbstractMoveableEntity {
         this.isInvulnerable = flag;
     }
 
+    /**
+     * @return true if the player is invulnerable, false otherwise
+     */
     public boolean isInvulnerable() {
         return this.isInvulnerable;
     }
