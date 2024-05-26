@@ -1,12 +1,10 @@
-package supson.model.hitbox.impl;
+package supson.model.collisions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import supson.common.GameEntityType;
-import supson.common.api.Observable;
-import supson.common.api.Observer;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.model.block.api.BlockEntity;
@@ -23,14 +21,14 @@ import java.util.logging.Logger;
  * This class is a collision resolver. It is used to check
  * and resolve collisions in the game.
  */
-public final class CollisionResolver implements Observable {
+public final class CollisionResolver implements CollisionObservable {
 
     private static final Logger LOGGER = Logger.getLogger("Collision");
 
     private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
-    private final List<Observer> observers;
+    private final List<CollisionObserver> observers;
 
     /**
      * The constructor of this class is final and empty, ensuring it cannot
@@ -108,7 +106,7 @@ public final class CollisionResolver implements Observable {
             .forEach(e -> {
                 player.incrementLife(-1);    //TODO: here use the applyDamage method
                 notifyObservers(e.getPosition().x() > player.getPosition().x()
-                ? CollisionEvents.OBSTACLE_RIGHT_COLLISION : CollisionEvents.OBSTACLE_LEFT_COLLISION);
+                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
             });
             return List.of();
         }
@@ -151,13 +149,13 @@ public final class CollisionResolver implements Observable {
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvents.BLOCK_RIGHT_COLLISION);
+                    notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION);
                 }
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
                 + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvents.BLOCK_LEFT_COLLISION);
+                    notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION);
                 }
         }
         return newXPos;
@@ -178,30 +176,30 @@ public final class CollisionResolver implements Observable {
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvents.BLOCK_LOWER_COLLISION);
+                    notifyObservers(CollisionEvent.BLOCK_LOWER_COLLISION);
                 }
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
                 + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvents.BLOCK_UPPER_COLLISION);
+                    notifyObservers(CollisionEvent.BLOCK_UPPER_COLLISION);
                 }
         }
         return newYPos;
     }
 
     @Override
-    public void register(final Observer observer) {
+    public void register(final CollisionObserver observer) {
         observers.add(observer);
     }
 
     @Override
-    public void unregister(final Observer observer) {
+    public void unregister(final CollisionObserver observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(final CollisionEvents event) {
+    public void notifyObservers(final CollisionEvent event) {
         observers.forEach(o -> o.onNotify(event));
     }
 

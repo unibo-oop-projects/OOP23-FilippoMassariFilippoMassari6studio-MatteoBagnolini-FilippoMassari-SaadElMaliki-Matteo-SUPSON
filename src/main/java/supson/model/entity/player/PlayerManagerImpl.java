@@ -1,16 +1,16 @@
 package supson.model.entity.player;
 
-import supson.common.api.Observer;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
+import supson.model.collisions.CollisionEvent;
+import supson.model.collisions.CollisionObserver;
 import supson.model.entity.api.PlayerManager;
-import supson.model.hitbox.impl.CollisionEvents;
 
 /**
  * This class represents a player manager. It is used to update the state of 
  * the player, based on events happening during collisions.
  */
-public final class PlayerManagerImpl implements PlayerManager, Observer {
+public final class PlayerManagerImpl implements PlayerManager, CollisionObserver {
 
     private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(15, 3);
     
@@ -80,7 +80,7 @@ public final class PlayerManagerImpl implements PlayerManager, Observer {
     }
 
     @Override
-    public void onNotify(final CollisionEvents event) {
+    public void onNotify(final CollisionEvent event) {
         switch (event) {
             case BLOCK_UPPER_COLLISION -> upperCollision();
             case BLOCK_LOWER_COLLISION -> lowerCollision();
