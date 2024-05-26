@@ -26,6 +26,8 @@ public final class PhysicsImpl implements Physics {
      * This is the constructor of the PhysicsImpl class.
      * @param maxSpeed the max speed of the entity
      * @param acceleration the acceleration factor of the entity
+     * @param deceleration te deceleration factor of the entity
+     * @param friction the friction factor of the entity
      * @param jumpForce the jump force of the entity
      * @param gravity the gravity factor of the entity
      */
@@ -81,8 +83,8 @@ public final class PhysicsImpl implements Physics {
         }
         entity.setVelocity(new Vect2dImpl(newXVel, oldVel.y()));
     }
-
-    public void applyFriction(MoveableEntity entity) {
+    @Override
+    public void applyFriction(final MoveableEntity entity) {
         final Vect2d initialVel = entity.getVelocity();
         final double newXVel = initialVel.x() - Math.min(Math.abs(initialVel.x()), friction) * Math.signum(initialVel.x());
         entity.setVelocity(new Vect2dImpl(newXVel, initialVel.y()));

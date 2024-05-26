@@ -14,5 +14,5 @@ import supson.common.api.Vect2d;
  * @param isJumping bool flag representing if the player is jumping
  * @param isInvulnerable bool flag representing if the player is invulnerable
  */
-public final record PlayerState(Vect2d vel,boolean right, boolean left, boolean jump,
+public record PlayerState(Vect2d vel, boolean right, boolean left, boolean jump,
         boolean onGround, boolean isJumping, boolean isInvulnerable) { }

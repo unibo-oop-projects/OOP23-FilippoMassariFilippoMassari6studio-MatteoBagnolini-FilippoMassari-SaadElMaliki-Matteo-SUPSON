@@ -140,7 +140,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void updateGame(final long elapsed) {
+    public void updateGame(final long elapsed) {        //TODO dividere in più metodi privati per rendere più ordinato
 
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);

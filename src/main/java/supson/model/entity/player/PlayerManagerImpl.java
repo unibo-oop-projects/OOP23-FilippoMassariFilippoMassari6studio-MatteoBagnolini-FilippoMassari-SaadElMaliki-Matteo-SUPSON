@@ -13,7 +13,7 @@ import supson.model.entity.api.PlayerManager;
 public final class PlayerManagerImpl implements PlayerManager, CollisionObserver {
 
     private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(15, 3);
-    
+
     private PlayerState state;
 
     /**
@@ -123,7 +123,7 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     @Override
-    public void setState(PlayerState state) {
+    public void setState(final PlayerState state) {
         this.state = state;
     }
 

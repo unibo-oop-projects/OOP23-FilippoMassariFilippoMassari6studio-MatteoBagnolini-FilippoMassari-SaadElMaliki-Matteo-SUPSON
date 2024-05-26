@@ -18,6 +18,7 @@ public final class HudImpl implements Hud {
      * This is the constructor of the class.
      * @param score the actual score of the game
      * @param lives the actual lives of the main character
+     * @param time the actual game time
      */
     public HudImpl(final int score, final int lives, final double time) {
         this.score = score;

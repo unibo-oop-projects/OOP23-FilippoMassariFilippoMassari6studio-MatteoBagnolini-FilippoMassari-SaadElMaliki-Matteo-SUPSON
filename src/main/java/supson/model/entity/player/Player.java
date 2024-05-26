@@ -15,7 +15,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 8;
     private static final double ACC_SPEED = 0.4;
-    private static double DEC_SPEED = 3.5*ACC_SPEED;
+    private static final double DEC_SPEED = 1.2;
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
     private static final double GRAVITY = 0.2;
@@ -126,7 +126,11 @@ public final class Player extends AbstractMoveableEntity {
         return this.isJumping;
     }
 
-    public void setVulnerability (final boolean flag) {
+    /**
+     * This method sets the vulnerable flag of the player. 
+     * @param flag bool value representing if the player is vulnerable or not
+     */
+    public void setVulnerability(final boolean flag) {
         this.isInvulnerable = flag;
     }
 
@@ -153,6 +157,7 @@ public final class Player extends AbstractMoveableEntity {
     /**
      * This method increments (or decrements) the lives of the player. It does 
      * nothing when the player has already the max number of lives.
+     * @param lives an integer representing how many lives to increment
      */
     public void incrementLife(final int lives) {
         if (getLife() + lives < MAX_LIVES) {
@@ -160,12 +165,20 @@ public final class Player extends AbstractMoveableEntity {
         }
     }
 
+    /**
+     * This method returns the current player state.
+     * @return the player current state
+     */
     public PlayerState getState() {
         return new PlayerState(this.getVelocity(), right, left, jump,
         onGround, isJumping, isInvulnerable);
     }
 
-    public void setState(PlayerState state) {
+    /**
+     * This method set the state of the player.
+     * @param state the state to be set
+     */
+    public void setState(final PlayerState state) {
         this.setVelocity(state.vel());
         this.right = state.right();
         this.left = state.left();
