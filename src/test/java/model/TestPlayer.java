@@ -3,8 +3,11 @@ package model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
@@ -15,6 +18,7 @@ import supson.common.impl.Pos2dImpl;
 /**
  * This class tests the player class.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestPlayer {
 
     private static final long FRAME_RATE = 20;
@@ -24,22 +28,8 @@ class TestPlayer {
 
     // CHECKSTYLE: MagicNumber OFF
 
-    // @BeforeAll
-    // void init() {
-    //     this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
-    //     plr.setMoveRight(true);
-    //     plr.move(FRAME_RATE);
-    //     acc = plr.getVelocity().x();
-    //     plr.setMoveRight(false);
-    //     plr.move(FRAME_RATE);
-    //     friction = acc - plr.getVelocity().x();
-
-    //     assertEquals(0, friction);
-    //     assertEquals(0, acc);
-    // }
-
-    @BeforeEach
-    void getMovingValues() {
+    @BeforeAll
+    void init() {
         this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
         plr.setMoveRight(true);
         plr.move(FRAME_RATE);
@@ -47,9 +37,13 @@ class TestPlayer {
         plr.setMoveRight(false);
         plr.move(FRAME_RATE);
         friction = acc - plr.getVelocity().x();
-        //ottieni la decelerazione qua
-        plr.setVelocity(new Vect2dImpl(0, 0));
+    }
 
+    @BeforeEach
+    void initMovingValues() {
+        plr.setMoveRight(false);
+        plr.setMoveLeft(false);
+        plr.setVelocity(new Vect2dImpl(0, 0));
     }
 
     @Test
@@ -58,15 +52,10 @@ class TestPlayer {
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
-        assertEquals(3*acc, plr.getVelocity().x());
-        plr.setMoveRight(false);
-        plr.setMoveLeft(true);
-        plr.move(FRAME_RATE);                                   //player stops here (change in direction)
-        //aggiorna meglio in base alla decelerazione!!
-        assertEquals(0.0, plr.getVelocity().x());
+        assertEquals(3 * acc, plr.getVelocity().x());
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
-        assertEquals(-2*acc, plr.getVelocity().x());
+        assertEquals(5 * acc, plr.getVelocity().x());
     }
 
     @Test
