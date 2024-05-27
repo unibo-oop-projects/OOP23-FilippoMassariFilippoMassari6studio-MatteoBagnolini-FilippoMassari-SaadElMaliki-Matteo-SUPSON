@@ -104,11 +104,7 @@ public class WorldViewImpl implements WorldView {
                     x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_DIMENSION);
                 }
                 int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
-                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER) || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)) {
-                    y = (int) Math.round(centerY - (pos.y() - playerY) * DEFAULT_DIMENSION);
-                } else {
-                    y = (int) Math.round(centerY - (pos.y() - playerY) * gameEntityHeight);
-                }
+                y = (int) Math.round(centerY - (pos.y() - playerY) * DEFAULT_DIMENSION);
                 label.setBounds(x, y, DEFAULT_DIMENSION, gameEntityHeight);
                 gameFrame.add(label);
             }
