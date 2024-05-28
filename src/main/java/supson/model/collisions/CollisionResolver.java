@@ -15,8 +15,6 @@ import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
 import supson.model.hitbox.api.Hitbox;
 
-import java.util.logging.Logger;
-
 /**
  * This class is a collision resolver. It is used to check
  * and resolve collisions in the game.
@@ -24,7 +22,7 @@ import java.util.logging.Logger;
 public final class CollisionResolver implements CollisionObservable {
 
     private static final int RENDER_DISTANCE = 10;
-    private static final double DELTA = 0.00_001;
+    private static final double DELTA = 0.00_000_1;
 
     private final List<CollisionObserver> observers;
 
@@ -93,7 +91,7 @@ public final class CollisionResolver implements CollisionObservable {
             enemies.stream()
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .forEach(e -> {
-                e.applyDamage(player);    //TODO: here use the applyDamage method
+                e.applyDamage(player);
                 notifyObservers(e.getPosition().x() > player.getPosition().x()
                 ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
             });
