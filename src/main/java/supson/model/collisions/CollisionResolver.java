@@ -96,15 +96,15 @@ public final class CollisionResolver implements CollisionObservable {
      */
     public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
-        if (player.isInvulnerable()) {
-             return enemies.stream()
+        if (player.isInvulnerable() || player.isJumping()) {
+            return enemies.stream()
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .collect(Collectors.toList());
         } else {
             enemies.stream()
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .forEach(e -> {
-                player.incrementLife(-1);    //TODO: here use the applyDamage method
+                e.applyDamage(player);    //TODO: here use the applyDamage method
                 notifyObservers(e.getPosition().x() > player.getPosition().x()
                 ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
             });
