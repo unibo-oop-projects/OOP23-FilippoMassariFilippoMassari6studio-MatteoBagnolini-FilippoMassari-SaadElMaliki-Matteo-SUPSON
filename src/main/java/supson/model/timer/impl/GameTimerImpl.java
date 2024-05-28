@@ -2,12 +2,20 @@ package supson.model.timer.impl;
 
 import supson.model.timer.api.GameTimer;
 
+/**
+ * Implementation of the {@link GameTimer} interface.
+ * This class provides functionality to measure elapsed time for a game.
+ */
 public class GameTimerImpl implements GameTimer {
     
     private long startTime;
     private long elapsedTime;
     private boolean running;
 
+    /**
+     * Constructs a new instance of the {@code GameTimerImpl} class.
+     * The timer is initially not running and the elapsed time is set to zero.
+     */
     public GameTimerImpl() {
         this.startTime = 0;
         this.elapsedTime = 0;
