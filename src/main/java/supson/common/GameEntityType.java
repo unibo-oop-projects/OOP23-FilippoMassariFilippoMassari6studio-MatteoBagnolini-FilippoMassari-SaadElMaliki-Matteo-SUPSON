@@ -11,6 +11,11 @@ public enum GameEntityType {
     PLAYER,
 
     /**
+     * Represents the jumping player block.
+     */
+    //JUMPING_PLAYER,
+
+    /**
      * Represents the enemy block.
      */
     ENEMY,

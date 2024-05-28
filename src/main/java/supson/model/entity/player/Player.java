@@ -192,4 +192,16 @@ public final class Player extends AbstractMoveableEntity {
         this.isInvulnerable = state.isInvulnerable();
     }
 
+    /**
+     * This method returns the player status enum.
+     * @return the player status enum
+     */
+    /*public GameEntityType getStatus() {
+        if (isJumping) {
+            return GameEntityType.JUMPING_PLAYER;
+        }else {
+            return GameEntityType.PLAYER;
+        }
+    }*/
+
 }

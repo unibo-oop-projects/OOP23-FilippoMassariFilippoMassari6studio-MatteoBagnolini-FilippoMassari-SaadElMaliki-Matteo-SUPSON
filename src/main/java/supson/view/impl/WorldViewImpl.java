@@ -69,7 +69,12 @@ public class WorldViewImpl implements WorldView {
      */
     private Optional<ImageIcon> getEntityImage(final GameEntity gameEntity) {
         final GameEntityType type = gameEntity.getGameEntityType();
-        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(spriteMap.getSpritePath(type)));
+        /*Optional<URL> imgURL;
+        if (type.equals(GameEntityType.PLAYER)){     
+            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(spriteMap.getSpritePath(((Player) gameEntity).getStatus())));
+        }else {
+            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(spriteMap.getSpritePath(type)));
+        }*/
         try {
             return Optional.of(new ImageIcon(imgURL.get()));
         } catch (Exception e) {
@@ -85,7 +90,7 @@ public class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map
      */
     private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
-        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);
+        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4); //TODO refactor
         int centerY = gameFrame.getHeight() / 2;
         double playerX = player.getPosition().x();
         double playerY = player.getPosition().y();
