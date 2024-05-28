@@ -23,10 +23,8 @@ import java.util.logging.Logger;
  */
 public final class CollisionResolver implements CollisionObservable {
 
-    private static final Logger LOGGER = Logger.getLogger("Collision");
-
-    private static final int RENDER_DISTANCE = 5;
-    private static final double DELTA = 0.000_001;
+    private static final int RENDER_DISTANCE = 10;
+    private static final double DELTA = 0.00_001;
 
     private final List<CollisionObserver> observers;
 
@@ -48,36 +46,23 @@ public final class CollisionResolver implements CollisionObservable {
      * @param startingPos the initial position of the entity, before it has move
      */
     public void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<BlockEntity> list, final Pos2d startingPos) {
+            final List<BlockEntity> blocks, final Pos2d startingPos) {
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
-        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, list);
+        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
         if (!collidingBlocks.isEmpty()) {
-
-            //DEBUG---------------
-            if (entity instanceof Player) {
-                //LOGGER.info(" ENTRY player pos: " + entity.getPosition());
-            }
-            //DEBUG---------------
-
             entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
             final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!verticalColliding.isEmpty()) {
                 newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
-                //DEBUG
-                if (entity instanceof Player) LOGGER.info("vert coll pl " + entity.getPosition().y() + "block " + verticalColliding.get(0).getPosition().y());
             }
             entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
             final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
             if (!orizontalColliding.isEmpty()) {
                 newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
-                //DEBUG
-                if (entity instanceof Player) LOGGER.info("oriz coll pl ");
             }
             entity.setPosition(new Pos2dImpl(newX, newY));
-            //DEBUG
-            //LOGGER.info(" EXIT player pos: " + entity.getPosition());
         }
     }
 
@@ -184,7 +169,7 @@ public final class CollisionResolver implements CollisionObservable {
                 }
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+                + block.getHitbox().getLLCorner().y() - entity.getHitbox().getURCorner().y() - DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_UPPER_COLLISION);
                 }
