@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
@@ -76,7 +77,7 @@ public final class WorldImpl implements World {
         this.gameTimer.start(); //TODO : for debug
         final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             List<String> lines = reader.lines().collect(Collectors.toList());
             int maxY = lines.size() - 1;
             for (int y = maxY; y >= 0; y--) {
@@ -106,6 +107,7 @@ public final class WorldImpl implements World {
     /**
      * Adds a new block to the world at the specified position with the specified type.
      *
+     * @param type The type of block to add.
      * @param pos  The position where the block should be added.
      */
     private void addBlock(final GameEntityType type, final Pos2d pos) {

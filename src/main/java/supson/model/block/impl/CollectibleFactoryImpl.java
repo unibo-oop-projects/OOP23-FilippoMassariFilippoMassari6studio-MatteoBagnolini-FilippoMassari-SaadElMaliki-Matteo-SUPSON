@@ -58,7 +58,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                Thread timer = new Thread (new StrengthPowerUpTimerImpl(DURATION, player));
+                Thread timer = new Thread(new StrengthPowerUpTimerImpl(DURATION, player));
                 timer.start();
             }
         };

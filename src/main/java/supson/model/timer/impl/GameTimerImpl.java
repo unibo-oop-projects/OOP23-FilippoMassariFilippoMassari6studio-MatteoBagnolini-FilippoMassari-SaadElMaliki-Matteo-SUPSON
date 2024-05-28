@@ -6,8 +6,10 @@ import supson.model.timer.api.GameTimer;
  * Implementation of the {@link GameTimer} interface.
  * This class provides functionality to measure elapsed time for a game.
  */
-public class GameTimerImpl implements GameTimer {
-    
+public final class GameTimerImpl implements GameTimer {
+
+    private static final double NANOSECONDS_TO_SECONDS = 1_000_000_000.0;
+
     private long startTime;
     private long elapsedTime;
     private boolean running;
@@ -56,6 +58,6 @@ public class GameTimerImpl implements GameTimer {
 
     @Override
     public double getElapsedTimeInSeconds() {
-        return getElapsedTime() / 1_000_000_000.0;
+        return getElapsedTime() / NANOSECONDS_TO_SECONDS;
     }
 }

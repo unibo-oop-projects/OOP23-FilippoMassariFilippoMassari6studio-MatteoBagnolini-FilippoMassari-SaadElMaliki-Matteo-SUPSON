@@ -16,7 +16,7 @@ public final class StrengthPowerUpTimerImpl extends AbstractCollectibleTimer {
      * @param duration the duration of the timer in milliseconds
      * @param player the player associated with the timer
      */
-    public StrengthPowerUpTimerImpl(long duration, Player player) {
+    public StrengthPowerUpTimerImpl(final long duration, final Player player) { //TODO : ai check non piace il player assato cosi
         super(duration);
         this.player = player;
     }

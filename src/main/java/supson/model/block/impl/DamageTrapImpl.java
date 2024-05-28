@@ -10,7 +10,7 @@ import supson.model.entity.player.Player;
  * Represents a damage trap in the game.
  * This trap reduces the player's life by a specified amount when activated.
  */
-public final class DamageTrapImpl extends AbstractGameEntity implements Trap{
+public final class DamageTrapImpl extends AbstractGameEntity implements Trap {
 
     private static final int HEIGHT = 1;
     private static final int WIDTH = 1;

@@ -57,8 +57,8 @@ public final class GameViewImpl implements GameView {
         hudView.renderHud(gameFrame, hud);
     }
 
-    public Component getViewComponent(){
-        return gameFrame;
+    public Component getViewComponent() {
+        return gameFrame; //TODO : passando il game frame i check sgrifdano provare a valutare una soluzione
     }
-    
+
 }

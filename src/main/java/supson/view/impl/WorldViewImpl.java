@@ -36,7 +36,7 @@ public class WorldViewImpl implements WorldView {
      * @param player the player entity
      * @param mapWidth the width of the map
      */
-    private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player, final int mapWidth) {
+    private final void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player, final int mapWidth) {
         cameraGameEntitiesList.clear();
         int playerX = (int) player.getPosition().x();
         int leftBoundary = playerX - CAMERA_RANGE;
@@ -104,7 +104,8 @@ public class WorldViewImpl implements WorldView {
                     x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_DIMENSION);
                 }
                 int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
-                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER) || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)) {
+                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
+                    || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)) {
                     y = (int) Math.round(centerY - (pos.y() - playerY) * DEFAULT_DIMENSION - (DEFAULT_DIMENSION / 2));
                 } else {
                     y = (int) Math.round(centerY - (pos.y() - playerY) * gameEntityHeight);

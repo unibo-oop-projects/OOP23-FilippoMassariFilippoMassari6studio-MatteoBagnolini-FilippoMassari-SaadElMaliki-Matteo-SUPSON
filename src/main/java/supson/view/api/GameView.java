@@ -27,5 +27,10 @@ public interface GameView {
      */
     void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
 
+    /**
+     * Returns the view component.
+     * 
+     * @return the view component
+     */
     Component getViewComponent();
 }

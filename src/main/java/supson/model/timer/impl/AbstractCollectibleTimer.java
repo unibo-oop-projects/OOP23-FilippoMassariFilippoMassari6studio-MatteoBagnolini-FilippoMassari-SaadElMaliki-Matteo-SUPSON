@@ -15,12 +15,12 @@ public abstract class AbstractCollectibleTimer implements CollectibleTimer {
      *
      * @param duration the duration of the timer in milliseconds
      */
-    public AbstractCollectibleTimer(long duration) {
+    public AbstractCollectibleTimer(final long duration) {
         this.duration = duration;
     }
 
-    @Override
-    public void run() {
+    @Override //TODO : i check dicono che non c'è java doc non so il motivo
+    public final void run() { //TODO : ho messo final per il todo sopra vediamo se va vene
         try {
             this.activateEffect();
             Thread.sleep(duration);

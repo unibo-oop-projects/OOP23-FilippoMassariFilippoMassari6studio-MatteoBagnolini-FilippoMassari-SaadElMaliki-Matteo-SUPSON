@@ -29,7 +29,7 @@ public final class HudViewImpl implements HudView {
         JLabel timeLabel = new JLabel("Time: " + formattedTime);
         scoreLabel.setBounds(SCORE_LABEL_X, SCORE_LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
         livesLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
-        timeLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y + 30, LABEL_WIDTH, LABEL_HEIGHT);
+        timeLabel.setBounds(LIVES_LABEL_X, LIVES_LABEL_Y + 30, LABEL_WIDTH, LABEL_HEIGHT); //TODO : rimuovi magic number
         gameFrame.add(scoreLabel);
         gameFrame.add(livesLabel);
         gameFrame.add(timeLabel);
