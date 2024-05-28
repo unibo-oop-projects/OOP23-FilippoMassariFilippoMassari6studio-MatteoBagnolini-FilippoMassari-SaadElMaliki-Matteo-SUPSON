@@ -13,12 +13,12 @@ import supson.model.physics.impl.PhysicsImpl;
  */
 public final class Player extends AbstractMoveableEntity {
 
-    private static final int MAX_SPEED = 8;
+    private static final int MAX_SPEED = 12;
     private static final double ACC_SPEED = 0.4;
     private static final double DEC_SPEED = 1.2;
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
-    private static final double GRAVITY = 0.2;
+    private static final double GRAVITY = 0.8;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
@@ -45,7 +45,6 @@ public final class Player extends AbstractMoveableEntity {
 
     @Override
     public void updateVelocity() {
-        //right = true;
         final Physics physicsComponent = getPhysicsComponent();
         if (left) {
             physicsComponent.moveLeft(this);
@@ -59,8 +58,8 @@ public final class Player extends AbstractMoveableEntity {
         if (jump && onGround) {
             physicsComponent.startJumping(this);
             isJumping = true;
-            isInvulnerable = true;
             jump = false;
+            onGround = false;
         }
         physicsComponent.applyGravity(this);
     }
@@ -127,8 +126,10 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method sets the vulnerable flag of the player. 
+     * This method sets the vulnerable flag of the player.
      * @param flag bool value representing if the player is vulnerable or not
+     * if the flag is true , then the invulnerable flag is set to true.
+     * False otherwise.
      */
     public void setVulnerability(final boolean flag) {
         this.isInvulnerable = flag;
