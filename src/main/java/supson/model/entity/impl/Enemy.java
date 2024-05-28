@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.entity.player.Player;
 import supson.model.physics.impl.PhysicsImpl;
 
 /**
@@ -52,6 +53,10 @@ public final class Enemy extends AbstractMoveableEntity {
         getPhysicsComponent().moveRight(this);
         forward = getXDistanceFromSpawn() > range ? false : true;
         }
+    }
+
+    public void applyDamage(Player player){
+        player.setLife(player.getLife()-1);
     }
 
     private double getXDistanceFromSpawn() {
