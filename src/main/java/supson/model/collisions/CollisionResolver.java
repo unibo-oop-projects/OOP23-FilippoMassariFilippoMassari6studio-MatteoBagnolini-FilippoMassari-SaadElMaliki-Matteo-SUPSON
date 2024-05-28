@@ -53,12 +53,12 @@ public final class CollisionResolver implements CollisionObservable {
         final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
         if (!collidingBlocks.isEmpty()) {
             entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
-            final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
             if (!verticalColliding.isEmpty()) {
                 newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
             }
             entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
-            final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, collidingBlocks);
+            final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
             if (!orizontalColliding.isEmpty()) {
                 newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
             }
