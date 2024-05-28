@@ -1,4 +1,4 @@
-package supson.model.collisions;
+package supson.model.collisions.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,10 @@ import supson.common.impl.Pos2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.Trap;
+import supson.model.collisions.CollisionEvent;
+import supson.model.collisions.api.CollisionManager;
+import supson.model.collisions.api.CollisionObservable;
+import supson.model.collisions.api.CollisionObserver;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
@@ -19,7 +23,7 @@ import supson.model.hitbox.api.Hitbox;
  * This class is a collision resolver. It is used to check
  * and resolve collisions in the game.
  */
-public final class CollisionResolver implements CollisionObservable {
+public final class CollisionResolver implements CollisionManager, CollisionObservable {
 
     private static final int RENDER_DISTANCE = 10;
     private static final double DELTA = 0.00_000_1;
@@ -32,38 +36,26 @@ public final class CollisionResolver implements CollisionObservable {
      */
     public CollisionResolver() {
         this.observers = new ArrayList<>();
-     }
+    }
 
-    /**
-     * This method resolves collisions between a moveable entity and the platform blocks.
-     * It modifies the position of the entity in order to avoid the hitbox of the entity
-     * and the hitbox of the colliding block to overlap. This create the effect of "solid"
-     * blocks.
-     * @param entity the entity that is moving
-     * @param list the list of blocks in the level
-     * @param startingPos the initial position of the entity, before it has move
-     */
+    @Override
     public void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> blocks, final Pos2d startingPos) {
+        
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
+
         final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
         if (!collidingBlocks.isEmpty()) {
-            entity.setPosition(new Pos2dImpl(startingPos.x(), updatedPos.y()));
-            final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
-            if (!verticalColliding.isEmpty()) {
-                newY = getAdjustedVerticalCoord(entity, verticalColliding.get(0));
-            }
-            entity.setPosition(new Pos2dImpl(updatedPos.x(), newY));
-            final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
-            if (!orizontalColliding.isEmpty()) {
-                newX = getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
-            }
-            entity.setPosition(new Pos2dImpl(newX, newY));
+            newY = resolveVerticalCollision(entity, blocks, startingPos, newY);
+            newX = resolveHorizontalCollision(entity, blocks, updatedPos, newY);
         }
+
+        entity.setPosition(new Pos2dImpl(newX, newY));
     }
 
+    @Override
     public void resolveTrapCollisions(final Player player, final List<Trap> traps) {
         traps.stream()
         .filter(t -> t.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
@@ -75,12 +67,7 @@ public final class CollisionResolver implements CollisionObservable {
         });
     }
 
-    /**
-     * This method resolves collisions between the player and the enemies.
-     * @param player the player
-     * @param enemies the list of enemies in the level
-     * @return the list of enemy killed
-     */
+    @Override
     public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
         if (player.isInvulnerable() || player.isJumping()) {
@@ -99,12 +86,7 @@ public final class CollisionResolver implements CollisionObservable {
         }
     }
 
-    /**
-     * This method resolves collisions between the player and the collectible entities.
-     * @param player the player
-     * @param collectibles the list of collectible entities
-     * @return a list of collectible that have been collected and have to be removed
-     */
+    @Override
     public List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
         return collectibles.stream()
         .filter(collectible -> collectible.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
@@ -119,6 +101,26 @@ public final class CollisionResolver implements CollisionObservable {
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
         .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
         .collect(Collectors.toList());
+    }
+    
+    private double resolveVerticalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
+        final Pos2d startingPos , double updatedY) {
+        entity.setPosition(new Pos2dImpl(startingPos.x(), updatedY));
+        final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
+        if (!verticalColliding.isEmpty()) {
+            return getAdjustedVerticalCoord(entity, verticalColliding.get(0));
+        }
+        return updatedY;
+    }
+
+    private double resolveHorizontalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
+        final Pos2d updatedPos, double adjustedY) {
+        entity.setPosition(new Pos2dImpl(updatedPos.x(), adjustedY));
+        final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
+        if (!orizontalColliding.isEmpty()) {
+            return getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
+        }
+        return updatedPos.x();
     }
 
     /**

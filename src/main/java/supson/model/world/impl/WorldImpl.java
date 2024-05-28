@@ -23,7 +23,7 @@ import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.DamageTrapImpl;
 import supson.model.block.impl.TerrainImpl;
-import supson.model.collisions.CollisionResolver;
+import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;

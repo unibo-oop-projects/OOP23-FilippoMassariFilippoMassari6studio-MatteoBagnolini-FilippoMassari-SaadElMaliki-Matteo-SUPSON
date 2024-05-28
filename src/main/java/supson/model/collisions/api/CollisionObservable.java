@@ -1,9 +1,11 @@
-package supson.model.collisions;
+package supson.model.collisions.api;
+
+import supson.model.collisions.CollisionEvent;
 
 /**
  * This is an interface to implement an observer design pattern for collisions.
  * It represents an observable, that can be observed.
- * @see supson.model.collisions.CollisionObserver
+ * @see supson.model.collisions.api.CollisionObserver
  */
 public interface CollisionObservable {
     

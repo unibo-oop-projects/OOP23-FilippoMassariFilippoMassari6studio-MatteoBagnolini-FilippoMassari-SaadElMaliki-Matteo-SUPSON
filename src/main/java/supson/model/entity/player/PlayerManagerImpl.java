@@ -3,7 +3,7 @@ package supson.model.entity.player;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
 import supson.model.collisions.CollisionEvent;
-import supson.model.collisions.CollisionObserver;
+import supson.model.collisions.api.CollisionObserver;
 import supson.model.entity.api.PlayerManager;
 
 /**
