@@ -13,7 +13,7 @@ import supson.view.impl.InputManager;
  */
 public final class GameControllerImpl implements GameController {
 
-    private static final String WORLD_FILE_PATH = "/level_1.txt";
+    private static final String WORLD_FILE_PATH = "/world.txt";
 
     private final World model;
     private final GameView view;
