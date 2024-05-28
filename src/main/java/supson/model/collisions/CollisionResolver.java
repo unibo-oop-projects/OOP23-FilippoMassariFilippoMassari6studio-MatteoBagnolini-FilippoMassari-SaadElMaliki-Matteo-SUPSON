@@ -83,9 +83,13 @@ public final class CollisionResolver implements CollisionObservable {
 
     public void resolveTrapCollisions(final Player player, final List<Trap> traps) {
         traps.stream()
-        .filter(trap -> trap.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
-        .filter(trap -> trap.getHitbox().isCollidingWith(player.getHitbox()))
-        .forEach(trap -> trap.activate(player));
+        .filter(t -> t.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(t -> t.getHitbox().isCollidingWith(player.getHitbox()))
+        .forEach(t -> {
+            t.activate(player);
+            notifyObservers(t.getPosition().x() > player.getPosition().x()
+                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
+        });
     }
 
     /**
