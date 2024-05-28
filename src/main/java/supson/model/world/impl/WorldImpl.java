@@ -73,7 +73,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void loadWorld(final String filePath) {
-        this.gameTimer.start(); //for debug
+        this.gameTimer.start(); //TODO : for debug
         final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

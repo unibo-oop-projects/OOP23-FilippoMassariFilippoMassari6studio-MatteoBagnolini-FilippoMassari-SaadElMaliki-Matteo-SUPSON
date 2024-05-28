@@ -5,6 +5,7 @@ import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
 import supson.model.entity.player.Player;
+import supson.model.timer.impl.StrengthPowerUpTimerImpl;
 
 /**
  * An implementation of the CollectibleFactory interface.
@@ -53,9 +54,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
+            private static final long DURATION = 2000;
+
             @Override
             public void collect(final Player player) {
-                player.setVulnerability(true);
+                Thread timer = new Thread (new StrengthPowerUpTimerImpl(DURATION, player));
+                timer.start();
             }
         };
     }
