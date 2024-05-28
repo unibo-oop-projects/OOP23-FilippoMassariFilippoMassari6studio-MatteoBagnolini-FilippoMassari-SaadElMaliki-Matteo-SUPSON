@@ -20,6 +20,7 @@ import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
 import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
+import supson.model.block.impl.DamageTrapImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.collisions.CollisionResolver;
 import supson.model.entity.api.GameEntity;
@@ -89,7 +90,7 @@ public final class WorldImpl implements World {
                             if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);
                             } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP)) {
-                                this.addBlock(pos);
+                                this.addBlock(type, pos);
                             } else {
                                 this.addCollectable(pos, type);
                             }
@@ -107,8 +108,12 @@ public final class WorldImpl implements World {
      *
      * @param pos  The position where the block should be added.
      */
-    private void addBlock(final Pos2d pos) {
-        this.blocks.add(new TerrainImpl(pos));
+    private void addBlock(final GameEntityType type, final Pos2d pos) {
+        if (type.equals(GameEntityType.DAMAGE_TRAP)) {
+            this.blocks.add(new DamageTrapImpl(pos));
+        } else {
+            this.blocks.add(new TerrainImpl(pos));
+        }
     }
 
     /**
