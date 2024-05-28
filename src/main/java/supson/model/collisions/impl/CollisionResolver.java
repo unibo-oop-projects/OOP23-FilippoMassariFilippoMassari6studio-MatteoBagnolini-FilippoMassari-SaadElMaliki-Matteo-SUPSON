@@ -70,7 +70,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     @Override
     public List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies) {
         final Hitbox playerHitbox = player.getHitbox();
-        if (player.isInvulnerable() || player.isJumping()) {
+        if (player.getState().isInvulnerable() || player.getState().isJumping()) {
             return enemies.stream()
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .collect(Collectors.toList());
