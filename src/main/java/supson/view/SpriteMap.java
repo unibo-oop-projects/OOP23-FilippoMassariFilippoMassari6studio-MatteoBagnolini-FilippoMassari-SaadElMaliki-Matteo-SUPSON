@@ -28,7 +28,7 @@ public class SpriteMap {
         spritePaths.put(GameEntityType.TERRAIN, "sprite/terrain_sprite.jpeg");
         spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
         spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
-        spritePaths.put(GameEntityType.RING, "sprite/ring_sprite.jpg");
+        spritePaths.put(GameEntityType.RING, "sprite/ring_sprite.png");
         spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/terrain_sprite.jpeg");
     }
 

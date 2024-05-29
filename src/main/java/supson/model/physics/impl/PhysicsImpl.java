@@ -15,7 +15,9 @@ import supson.model.physics.api.Physics;
 public final class PhysicsImpl implements Physics {
 
     private final int maxSpeed;
-    private final double accSpeed;
+    private final double acceleration;
+    private final double deceleration;
+    private final double friction;
     private final int jumpForce;
     private final double gravity;
 
@@ -23,14 +25,19 @@ public final class PhysicsImpl implements Physics {
     /**
      * This is the constructor of the PhysicsImpl class.
      * @param maxSpeed the max speed of the entity
-     * @param accSpeed the acceleration factor of the entity
+     * @param acceleration the acceleration factor of the entity
+     * @param deceleration te deceleration factor of the entity
+     * @param friction the friction factor of the entity
      * @param jumpForce the jump force of the entity
      * @param gravity the gravity factor of the entity
      */
-    public PhysicsImpl(final int maxSpeed, final double accSpeed,
-        final int jumpForce, final double gravity) {
+    public PhysicsImpl(final int maxSpeed, final double acceleration,
+            final double deceleration, final double friction,
+            final int jumpForce, final double gravity) {
         this.maxSpeed = maxSpeed;
-        this.accSpeed = accSpeed;
+        this.acceleration = acceleration;
+        this.deceleration = deceleration;
+        this.friction = friction;
         this.jumpForce = jumpForce;
         this.gravity = gravity;
     }
@@ -41,11 +48,11 @@ public final class PhysicsImpl implements Physics {
         double newXVel = oldVel.x();
         if (oldVel.x() < 0) {   //were moving left
 
-            newXVel = 0;        //the player stops moving
+            newXVel += deceleration;        //the player decelerate
 
         } else if (oldVel.x() < maxSpeed) {
 
-            newXVel += accSpeed;  //accelerate
+            newXVel += acceleration;  //accelerate
 
             if (newXVel >= maxSpeed) {
 
@@ -62,11 +69,11 @@ public final class PhysicsImpl implements Physics {
         double newXVel = oldVel.x();
         if (oldVel.x() > 0) {   //were moving right
 
-            newXVel = 0;        //the player stops moving
+            newXVel -= deceleration;        //the player decelerate
 
         } else if (oldVel.x() > -maxSpeed) {
 
-            newXVel -= accSpeed;   //accelerate
+            newXVel -= acceleration;   //accelerate
 
             if (newXVel <= -maxSpeed) {
 
@@ -75,6 +82,12 @@ public final class PhysicsImpl implements Physics {
             }
         }
         entity.setVelocity(new Vect2dImpl(newXVel, oldVel.y()));
+    }
+    @Override
+    public void applyFriction(final MoveableEntity entity) {
+        final Vect2d initialVel = entity.getVelocity();
+        final double newXVel = initialVel.x() - Math.min(Math.abs(initialVel.x()), friction) * Math.signum(initialVel.x());
+        entity.setVelocity(new Vect2dImpl(newXVel, initialVel.y()));
     }
 
     @Override

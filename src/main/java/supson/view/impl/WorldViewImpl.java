@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.view.SpriteMap;
 import supson.view.api.WorldView;
 
@@ -23,11 +23,9 @@ import supson.view.api.WorldView;
 public class WorldViewImpl implements WorldView {
 
     private static final int CAMERA_RANGE = 20;
-    private static final int DEFAULT_WIDTH = 15;
-    private static final int DEFAULT_HEIGHT = 15;
+    private static final int DEFAULT_DIMENSION = 24;
 
     private final SpriteMap spriteMap = new SpriteMap();
-
     private final List<GameEntity> cameraGameEntitiesList = new ArrayList<>();
 
     /**
@@ -38,7 +36,7 @@ public class WorldViewImpl implements WorldView {
      * @param player the player entity
      * @param mapWidth the width of the map
      */
-    private void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player, final int mapWidth) {
+    private final void selectGameEntity(final List<GameEntity> gameEntitiesList, final Player player, final int mapWidth) {
         cameraGameEntitiesList.clear();
         int playerX = (int) player.getPosition().x();
         int leftBoundary = playerX - CAMERA_RANGE;
@@ -87,27 +85,33 @@ public class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map
      */
     private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
-        int centerX = gameFrame.getWidth() / 2;
+        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);
         int centerY = gameFrame.getHeight() / 2;
-        int playerX = (int) player.getPosition().x();
+        double playerX = player.getPosition().x();
+        double playerY = player.getPosition().y();
 
         for (GameEntity gameEntity : cameraGameEntitiesList) {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             if (icon.isPresent()) {
                 JLabel label = new JLabel(icon.get());
+                label.setOpaque(false);
                 Pos2d pos = gameEntity.getPosition();
                 int x, y;
-
                 if (playerX >= mapWidth - CAMERA_RANGE) {
-                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_WIDTH);
+                    x = (int) Math.round(centerX + (pos.x() - (mapWidth - CAMERA_RANGE)) * DEFAULT_DIMENSION);
                 } else if (playerX <= CAMERA_RANGE) {
-                    x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_WIDTH);
-                } else{
-                    x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_WIDTH);
+                    x = (int) Math.round(centerX + (pos.x() - CAMERA_RANGE) * DEFAULT_DIMENSION);
+                } else {
+                    x = (int) Math.round(centerX + (pos.x() - playerX) * DEFAULT_DIMENSION);
                 }
-
-                y = (int) Math.round(centerY - pos.y() * DEFAULT_HEIGHT);
-                label.setBounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
+                if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
+                    || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)) {
+                    y = (int) Math.round(centerY - (pos.y() - playerY) * DEFAULT_DIMENSION - (DEFAULT_DIMENSION / 2));
+                } else {
+                    y = (int) Math.round(centerY - (pos.y() - playerY) * gameEntityHeight);
+                }
+                label.setBounds(x, y, DEFAULT_DIMENSION, gameEntityHeight);
                 gameFrame.add(label);
             }
         }
@@ -118,8 +122,8 @@ public class WorldViewImpl implements WorldView {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
         int mapWidth = 0;
-        for (GameEntity gameEntity : gameEntitiesList) {
-            if (gameEntity.getPosition().x() > mapWidth){
+        for (GameEntity gameEntity : gameEntitiesList) { //todo refactor
+            if (gameEntity.getPosition().x() > mapWidth) {
                 mapWidth = (int) gameEntity.getPosition().x();
             }
         }

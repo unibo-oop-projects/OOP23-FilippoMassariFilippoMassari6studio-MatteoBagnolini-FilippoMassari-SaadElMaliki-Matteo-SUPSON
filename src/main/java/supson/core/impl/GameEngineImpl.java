@@ -9,7 +9,7 @@ import supson.controller.impl.GameControllerImpl;
  */
 public final class GameEngineImpl implements GameEngine {
 
-    private static final long REFRESH_RATE = 120;
+    private static final long REFRESH_RATE = 30;
 
     private final GameController controller;
 
@@ -31,7 +31,7 @@ public final class GameEngineImpl implements GameEngine {
         while (true) {
             final long currentCycleStartTime = System.currentTimeMillis();
             final long elapsed = currentCycleStartTime - previousCycleStartTime;
-            //processInput(); //TODO: uncomment this line when the method is implemented
+            processInput();
             updateGame(elapsed);
             render();
             waitForNextFrame(currentCycleStartTime);

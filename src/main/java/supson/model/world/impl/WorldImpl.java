@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
@@ -18,15 +19,20 @@ import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
+import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
+import supson.model.block.impl.DamageTrapImpl;
 import supson.model.block.impl.TerrainImpl;
+import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
-import supson.model.entity.impl.Player;
-import supson.model.hitbox.impl.CollisionResolver;
+import supson.model.entity.player.Player;
+import supson.model.entity.player.PlayerManagerImpl;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
+import supson.model.timer.api.GameTimer;
+import supson.model.timer.impl.GameTimerImpl;
 import supson.model.world.api.World;
 
 /**
@@ -47,6 +53,9 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
+    private final PlayerManagerImpl playerManager;          //TODO change to PLayerManager by deleting PlayerManager interface
+    private final GameTimer gameTimer;
+    private final CollisionResolver collisionResolver;
 
     /**
      * Constructs a new instance of the WorldImpl class.
@@ -56,43 +65,37 @@ public final class WorldImpl implements World {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
+        this.playerManager = new PlayerManagerImpl(player);
         this.collectibleFactory = new CollectibleFactoryImpl();
+        this.gameTimer = new GameTimerImpl();
+        this.collisionResolver = new CollisionResolver();
+        collisionResolver.register(playerManager);
     }
 
     @Override
     public void loadWorld(final String filePath) {
+        this.gameTimer.start(); //TODO : for debug
         final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            List<String> lines = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-            for (int y = lines.size() - 1; y >= 0; y--) {
-                line = lines.get(y);
-                String[] tokens = line.split(" ");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            List<String> lines = reader.lines().collect(Collectors.toList());
+            int maxY = lines.size() - 1;
+            for (int y = maxY; y >= 0; y--) {
+                String[] tokens = lines.get(y).split(" ");
                 for (int x = 0; x < tokens.length; x++) {
                     if (!tokens[x].equals("0")) {
                         int worldElement = Integer.parseInt(tokens[x]);
-                        Pos2d pos = new Pos2dImpl(x, lines.size() - 1 - y);
-                        if (entityMap.getEntityType(worldElement).equals(GameEntityType.ENEMY)) {
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
+                        Pos2d pos = new Pos2dImpl(x, maxY - y);
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                        optionalType.ifPresent(type -> {
+                            if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);
-                            });
-                        } else if (entityMap.getEntityType(worldElement).equals(GameEntityType.TERRAIN) 
-                                || entityMap.getEntityType(worldElement).equals(GameEntityType.DAMAGE_TRAP)) { 
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
-                                this.addBlock(pos);
-                            });
-                        } else {
-                            Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
-                            optionalType.ifPresent(type -> {
+                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP)) {
+                                this.addBlock(type, pos);
+                            } else {
                                 this.addCollectable(pos, type);
-                            });
-                        }
+                            }
+                        });
                     }
                 }
             }
@@ -101,14 +104,18 @@ public final class WorldImpl implements World {
         }
     }
 
-
     /**
      * Adds a new block to the world at the specified position with the specified type.
      *
+     * @param type The type of block to add.
      * @param pos  The position where the block should be added.
      */
-    private void addBlock(final Pos2d pos) {
-        this.blocks.add(new TerrainImpl(pos));
+    private void addBlock(final GameEntityType type, final Pos2d pos) {
+        if (type.equals(GameEntityType.DAMAGE_TRAP)) {
+            this.blocks.add(new DamageTrapImpl(pos));
+        } else {
+            this.blocks.add(new TerrainImpl(pos));
+        }
     }
 
     /**
@@ -126,20 +133,9 @@ public final class WorldImpl implements World {
      * @param pos  the position where the collectable should be added
      * @param type the type of collectable to add
      */
-    private void addCollectable(final Pos2d pos, final GameEntityType type) { //todo : da rivedere facendo lo swich denyto la factory
-        switch (type) {
-            case RING:
-                this.blocks.add(collectibleFactory.createCollectibleRing(pos));
-                break;
-            case LIFE_BOOST_POWER_UP:
-                this.blocks.add(collectibleFactory.createCollectibleLifeBoostPowerUp(pos));
-                break;
-            case STRNGTH_BOOST_POWER_UP:
-                this.blocks.add(collectibleFactory.createCollectibleStrengthPowerUp(pos));
-                break;
-            default:
-                break;
-        }
+    private void addCollectable(final Pos2d pos, final GameEntityType type) {
+        Collectible collectable = collectibleFactory.createCollectible(type, pos);
+        this.blocks.add(collectable);
     }
 
     @Override
@@ -151,7 +147,8 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void updateGame(final long elapsed) {
+    public void updateGame(final long elapsed) {        //TODO dividere in più metodi privati per rendere più ordinato
+
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
@@ -159,16 +156,24 @@ public final class WorldImpl implements World {
         .forEach(e -> {
             Pos2d oldPos = e.getPosition();
             e.move(elapsed);
-            CollisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
+            if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                playerManager.setState(player.getState());
+            }
+            collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
         });
 
-        final List<Enemy> killed = CollisionResolver.resolveEnemiesCollisions(player, enemies);
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
         killed.forEach(k -> removeEnemy(k));
 
-        final List<Collectible> activated = CollisionResolver.resolveCollectibleCollisions(player,
+        collisionResolver.resolveTrapCollisions(player,
+            blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
+
+        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
             blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
             .collect(Collectors.toList()));
         activated.forEach(k -> removeBlock(k));
+
+        player.setState(playerManager.getUpdatedState());
     }
 
     @Override
@@ -207,7 +212,7 @@ public final class WorldImpl implements World {
 
     @Override
     public Hud getHud() {
-        return new HudImpl(this.player.getScore(), this.player.getLife());
+        return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
 
 }

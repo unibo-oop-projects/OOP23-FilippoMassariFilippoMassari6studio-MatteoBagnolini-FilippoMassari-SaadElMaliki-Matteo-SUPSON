@@ -1,8 +1,9 @@
-package supson.model.entity.impl;
+package supson.model.entity.player;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.model.entity.impl.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -12,18 +13,22 @@ import supson.model.physics.impl.PhysicsImpl;
  */
 public final class Player extends AbstractMoveableEntity {
 
-    private static final int MAX_SPEED = 8;
+    private static final int MAX_SPEED = 12;
     private static final double ACC_SPEED = 0.4;
+    private static final double DEC_SPEED = 1.2;
+    private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
-    private static final double GRAVITY = 0.2;
+    private static final double GRAVITY = 0.8;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
+    private static final int MAX_LIVES = 3;
 
     private static final GameEntityType TYPE = GameEntityType.PLAYER;
 
     private boolean left, right, jump;
     private boolean onGround, isJumping;
+    private boolean isInvulnerable;
     private int score;
 
     /**
@@ -33,13 +38,13 @@ public final class Player extends AbstractMoveableEntity {
      * @param life the number of life of the player
      */
     public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, JUMP_FORCE, GRAVITY));
+        super(pos, HEIGHT, WIDTH, TYPE, vel, life,
+            new PhysicsImpl(MAX_SPEED, ACC_SPEED, DEC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
 
     @Override
     public void updateVelocity() {
-        right = true;
         final Physics physicsComponent = getPhysicsComponent();
         if (left) {
             physicsComponent.moveLeft(this);
@@ -47,14 +52,16 @@ public final class Player extends AbstractMoveableEntity {
         if (right) {
             physicsComponent.moveRight(this);
         }
+        if (!left && !right) {
+            physicsComponent.applyFriction(this);
+        }
         if (jump && onGround) {
             physicsComponent.startJumping(this);
             isJumping = true;
             jump = false;
+            onGround = false;
         }
-        if (!onGround) {
-            physicsComponent.applyGravity(this);
-        }
+        physicsComponent.applyGravity(this);
     }
 
     /**
@@ -119,11 +126,28 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method is used to set the score.
-     * @param score the score to be set
+     * This method sets the vulnerable flag of the player.
+     * @param flag bool value representing if the player is vulnerable or not
+     * if the flag is true , then the invulnerable flag is set to true.
+     * False otherwise.
      */
-    public void setScore(final int score) {
-        this.score = score;
+    public void setVulnerability(final boolean flag) {
+        this.isInvulnerable = flag;
+    }
+
+    /**
+     * @return true if the player is invulnerable, false otherwise
+     */
+    public boolean isInvulnerable() {
+        return this.isInvulnerable;
+    }
+
+    /**
+     * This method is used to increment (or decrement) the score.
+     * @param score the score to be incremented
+     */
+    public void incrementScore(final int score) {
+        this.score += score;
     }
 
     /**
@@ -132,6 +156,40 @@ public final class Player extends AbstractMoveableEntity {
      */
     public int getScore() {
         return this.score;
+    }
+
+    /**
+     * This method increments (or decrements) the lives of the player. It does 
+     * nothing when the player has already the max number of lives.
+     * @param lives an integer representing how many lives to increment
+     */
+    public void incrementLife(final int lives) {
+        if (getLife() + lives < MAX_LIVES) {
+            this.setLife(getLife() + lives);
+        }
+    }
+
+    /**
+     * This method returns the current player state.
+     * @return the player current state
+     */
+    public PlayerState getState() {
+        return new PlayerState(this.getVelocity(), right, left, jump,
+        onGround, isJumping, isInvulnerable);
+    }
+
+    /**
+     * This method set the state of the player.
+     * @param state the state to be set
+     */
+    public void setState(final PlayerState state) {
+        this.setVelocity(state.vel());
+        this.right = state.right();
+        this.left = state.left();
+        this.jump = state.jump();
+        this.onGround = state.onGround();
+        this.isJumping = state.isJumping();
+        this.isInvulnerable = state.isInvulnerable();
     }
 
 }

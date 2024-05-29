@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.awt.Component;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;
@@ -20,7 +21,7 @@ import javax.swing.JLabel;
 public final class GameViewImpl implements GameView {
 
     //private static final String BACKGROUND_STRING = "sprite/background.jpg";
-    private static final int WHIDTH = 960;
+    private static final int WHIDTH = 948;
     private static final int HEIGHT = 720;
 
     private final WorldView worldView;
@@ -39,7 +40,6 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void initView() { 
-        //this.gameFrame.getContentPane().add(this.pan);
         this.gameFrame.pack();
         this.gameFrame.setSize(WHIDTH, HEIGHT);
         this.gameFrame.setResizable(false);
@@ -47,7 +47,6 @@ public final class GameViewImpl implements GameView {
         backgroundLabel.setOpaque(true);
         backgroundLabel.setBackground(Color.BLUE);
         this.gameFrame.setContentPane(backgroundLabel);
-        //this.gameFrame.setComponentZOrder(backgroundLabel, 0);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.gameFrame.setVisible(true);
     }
@@ -56,6 +55,10 @@ public final class GameViewImpl implements GameView {
     public void renderView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
         worldView.renderWorld(gameFrame, gameEntitiesList, player);
         hudView.renderHud(gameFrame, hud);
+    }
+
+    public Component getViewComponent() {
+        return gameFrame; //TODO : passando il game frame i check sgrifdano provare a valutare una soluzione
     }
 
 }

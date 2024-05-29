@@ -1,9 +1,10 @@
 package supson.view.api;
 
+import java.awt.Component;
 import java.util.List;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Player;
+import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 
 /**
@@ -25,4 +26,11 @@ public interface GameView {
      * @param hud the hud object to render
      */
     void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
+
+    /**
+     * Returns the view component.
+     * 
+     * @return the view component
+     */
+    Component getViewComponent();
 }
