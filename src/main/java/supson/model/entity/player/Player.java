@@ -55,7 +55,7 @@ public final class Player extends AbstractMoveableEntity {
         if (!left && !right) {
             physicsComponent.applyFriction(this);
         }
-        if (jump && onGround) {
+        if (canJump()) {
             physicsComponent.startJumping(this);
             isJumping = true;
             jump = false;
@@ -190,6 +190,10 @@ public final class Player extends AbstractMoveableEntity {
         this.onGround = state.onGround();
         this.isJumping = state.isJumping();
         this.isInvulnerable = state.isInvulnerable();
+    }
+
+    private boolean canJump() {
+        return jump && onGround && getVelocity().y() == 0;
     }
 
 }
