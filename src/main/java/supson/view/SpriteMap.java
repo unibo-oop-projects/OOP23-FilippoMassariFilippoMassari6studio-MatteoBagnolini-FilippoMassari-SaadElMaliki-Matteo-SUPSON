@@ -29,7 +29,7 @@ public class SpriteMap {
         spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/life_powerUp_sprite.png");
         spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/strengt_powerUp_sprite.png");
         spritePaths.put(GameEntityType.RING, "sprite/ring_sprite.png");
-        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/damage_trap_sprite_g.png");
+        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/damage_trap_sprite.png");
     }
 
     /**
