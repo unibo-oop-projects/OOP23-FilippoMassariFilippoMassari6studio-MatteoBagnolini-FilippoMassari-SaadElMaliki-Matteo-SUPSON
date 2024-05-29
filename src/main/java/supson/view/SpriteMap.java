@@ -26,10 +26,10 @@ public class SpriteMap {
         spritePaths.put(GameEntityType.PLAYER, "sprite/player_sprite.jpg");
         spritePaths.put(GameEntityType.ENEMY, "sprite/enemy_sprite.jpg");
         spritePaths.put(GameEntityType.TERRAIN, "sprite/terrain_sprite.jpg");
-        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
-        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/powerUp_sprite.jpg");
+        spritePaths.put(GameEntityType.LIFE_BOOST_POWER_UP, "sprite/life_powerUp_sprite.png");
+        spritePaths.put(GameEntityType.STRNGTH_BOOST_POWER_UP, "sprite/strengt_powerUp_sprite.png");
         spritePaths.put(GameEntityType.RING, "sprite/ring_sprite.png");
-        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/terrain_sprite.jpeg");
+        spritePaths.put(GameEntityType.DAMAGE_TRAP, "sprite/damage_trap_sprite_g.png");
     }
 
     /**
