@@ -94,6 +94,7 @@ public class WorldViewImpl implements WorldView {
             Optional<ImageIcon> icon = getEntityImage(gameEntity);
             if (icon.isPresent()) {
                 JLabel label = new JLabel(icon.get());
+                label.setOpaque(false);
                 Pos2d pos = gameEntity.getPosition();
                 int x, y;
                 if (playerX >= mapWidth - CAMERA_RANGE) {
