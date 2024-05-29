@@ -75,7 +75,6 @@ public final class WorldImpl implements World {
     @Override
     public void loadWorld(final String filePath) {
         this.gameTimer.start(); //TODO : for debug
-        final EntityMap entityMap = new EntityMap();
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             List<String> lines = reader.lines().collect(Collectors.toList());
@@ -86,7 +85,7 @@ public final class WorldImpl implements World {
                     if (!tokens[x].equals("0")) {
                         int worldElement = Integer.parseInt(tokens[x]);
                         Pos2d pos = new Pos2dImpl(x, maxY - y);
-                        Optional<GameEntityType> optionalType = Optional.ofNullable(entityMap.getEntityType(worldElement));
+                        Optional<GameEntityType> optionalType = Optional.ofNullable(GameEntityType.getType(worldElement));
                         optionalType.ifPresent(type -> {
                             if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);

@@ -13,7 +13,6 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
-import supson.view.SpriteMap;
 import supson.view.api.WorldView;
 
 /**
@@ -25,7 +24,6 @@ public class WorldViewImpl implements WorldView {
     private static final int CAMERA_RANGE = 20;
     private static final int DEFAULT_DIMENSION = 24;
 
-    private final SpriteMap spriteMap = new SpriteMap();
     private final List<GameEntity> cameraGameEntitiesList = new ArrayList<>();
 
     /**
@@ -69,7 +67,7 @@ public class WorldViewImpl implements WorldView {
      */
     private Optional<ImageIcon> getEntityImage(final GameEntity gameEntity) {
         final GameEntityType type = gameEntity.getGameEntityType();
-        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(spriteMap.getSpritePath(type)));
+        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
         try {
             return Optional.of(new ImageIcon(imgURL.get()));
         } catch (Exception e) {
