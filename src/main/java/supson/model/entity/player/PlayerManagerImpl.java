@@ -12,7 +12,7 @@ import supson.model.entity.api.PlayerManager;
  */
 public final class PlayerManagerImpl implements PlayerManager, CollisionObserver {
 
-    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(15, 3);
+    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(25, 10);
 
     private PlayerState state;
 
@@ -112,14 +112,14 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     private void pushBackRight() {
         moveLeft();
         final Vect2d vel = new Vect2dImpl(-PUSH_BACK_VEL.x(), PUSH_BACK_VEL.y());
-        this.state = new PlayerState(vel, isInvulnerable(), isInvulnerable(),
-        isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
+        this.state = new PlayerState(vel, state.right(), state.left(),
+        false, false, false, isInvulnerable());
     }
 
     private void pushBackLeft() {
         moveRight();
-        this.state = new PlayerState(PUSH_BACK_VEL, isInvulnerable(), isInvulnerable(),
-        isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
+        this.state = new PlayerState(PUSH_BACK_VEL, state.right(), state.left(),
+        false, false, false, isInvulnerable());
     }
 
     @Override
