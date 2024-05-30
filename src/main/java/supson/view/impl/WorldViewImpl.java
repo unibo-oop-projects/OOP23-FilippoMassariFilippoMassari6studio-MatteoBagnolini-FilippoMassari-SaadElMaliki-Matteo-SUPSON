@@ -83,7 +83,7 @@ public class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map
      */
     private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
-        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);
+        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4); //TODO : refactor
         int centerY = gameFrame.getHeight() / 2;
         double playerX = player.getPosition().x();
         double playerY = player.getPosition().y();
@@ -120,7 +120,7 @@ public class WorldViewImpl implements WorldView {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
         int mapWidth = 0;
-        for (GameEntity gameEntity : gameEntitiesList) { //todo refactor
+        for (GameEntity gameEntity : gameEntitiesList) { //TODO : refactor
             if (gameEntity.getPosition().x() > mapWidth) {
                 mapWidth = (int) gameEntity.getPosition().x();
             }
