@@ -100,4 +100,12 @@ public final class PhysicsImpl implements Physics {
         entity.setVelocity(new Vect2dImpl(entity.getVelocity().x(), entity.getVelocity().y() - gravity));
     }
 
+    @Override
+    public void adjustAirSpeed(MoveableEntity entity) {
+        Vect2d vel = entity.getVelocity();
+        if (Math.abs(vel.x()) > maxSpeed/2) {
+            entity.setVelocity(new Vect2dImpl(Math.signum(vel.x())*maxSpeed/2, vel.y()));
+        } 
+    }
+
 }
