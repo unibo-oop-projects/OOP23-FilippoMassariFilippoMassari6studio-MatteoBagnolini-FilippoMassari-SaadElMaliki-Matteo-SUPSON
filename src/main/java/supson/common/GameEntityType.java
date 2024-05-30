@@ -13,7 +13,7 @@ public enum GameEntityType {
     /**
      * Represents the enemy block.
      */
-    ENEMY("sprite/enemy_sprite_4.png", 6),
+    ENEMY("sprite/enemy_sprite.png", 6),
 
     /**
      * Represents terrain blocks.
