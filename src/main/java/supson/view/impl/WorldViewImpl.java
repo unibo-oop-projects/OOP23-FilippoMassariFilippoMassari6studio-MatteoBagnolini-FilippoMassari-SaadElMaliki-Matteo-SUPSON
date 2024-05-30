@@ -13,6 +13,7 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
+import supson.model.entity.player.PlayerState;
 import supson.view.api.WorldView;
 
 /**
@@ -67,7 +68,14 @@ public class WorldViewImpl implements WorldView {
      */
     private Optional<ImageIcon> getEntityImage(final GameEntity gameEntity) {
         final GameEntityType type = gameEntity.getGameEntityType();
-        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
+        Optional<URL> imgURL;
+        if (type.equals(GameEntityType.PLAYER)){
+            PlayerState ps = ((Player)gameEntity).getState();
+            String playerPath = "sprite/player/player_sprite_"+ps.left()+"_"+ps.right()+"_"+ps.isJumping()+"_"+ps.isInvulnerable()+".png";
+            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(playerPath));
+        } else {
+            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
+        }
         try {
             return Optional.of(new ImageIcon(imgURL.get()));
         } catch (Exception e) {
