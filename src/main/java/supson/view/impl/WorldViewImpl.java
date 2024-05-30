@@ -13,7 +13,6 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
 import supson.view.api.WorldView;
 
 /**
@@ -68,14 +67,23 @@ public class WorldViewImpl implements WorldView {
      */
     private Optional<ImageIcon> getEntityImage(final GameEntity gameEntity) {
         final GameEntityType type = gameEntity.getGameEntityType();
-        Optional<URL> imgURL;
-        if (type.equals(GameEntityType.PLAYER)){
-            PlayerState ps = ((Player)gameEntity).getState();
-            String playerPath = "sprite/player/player_sprite_"+ps.left()+"_"+ps.right()+"_"+ps.isJumping()+"_"+ps.isInvulnerable()+".png";
-            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(playerPath));
-        } else {
-            imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
+        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
+        try {
+            return Optional.of(new ImageIcon(imgURL.get()));
+        } catch (Exception e) {
+            return Optional.empty();
         }
+    }
+
+    /**
+     * Retrieves the image icon for the player entity.
+     *
+     * @param player the player entity
+     * @return an Optional containing the image icon if found, or an empty Optional if not found
+     */
+    private Optional<ImageIcon> getPlayerImage(final Player player) {
+        PlayerPathSelector pps = new PlayerPathSelector();
+        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(pps.selectPath(player)));
         try {
             return Optional.of(new ImageIcon(imgURL.get()));
         } catch (Exception e) {
@@ -97,7 +105,12 @@ public class WorldViewImpl implements WorldView {
         double playerY = player.getPosition().y();
 
         for (GameEntity gameEntity : cameraGameEntitiesList) {
-            Optional<ImageIcon> icon = getEntityImage(gameEntity);
+            Optional<ImageIcon> icon;
+            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                icon = getPlayerImage(player);
+            }else {
+                icon = getEntityImage(gameEntity);
+            }
             if (icon.isPresent()) {
                 JLabel label = new JLabel(icon.get());
                 label.setOpaque(false);
