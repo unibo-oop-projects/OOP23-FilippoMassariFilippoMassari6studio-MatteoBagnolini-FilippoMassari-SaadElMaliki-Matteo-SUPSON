@@ -10,6 +10,10 @@ import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
 
+/**
+ * This interface represent a collision manager. It is used to manage the collisions
+ * occuring in the game.
+ */
 public interface CollisionManager {
 
     /**
@@ -18,7 +22,7 @@ public interface CollisionManager {
      * and the hitbox of the colliding block to overlap. This create the effect of "solid"
      * blocks.
      * @param entity the entity that is moving
-     * @param list the list of blocks in the level
+     * @param blocks the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
     void resolvePlatformCollisions(MoveableEntity entity, List<BlockEntity> blocks, Pos2d startingPos);
@@ -29,14 +33,14 @@ public interface CollisionManager {
      * @param enemies the list of enemies in the level
      * @return the list of enemy killed
      */
-    List<Enemy> resolveEnemiesCollisions(final Player player, final List<Enemy> enemies);
+    List<Enemy> resolveEnemiesCollisions(Player player, List<Enemy> enemies);
 
     /**
      * This method resolve collisions between the player and the traps.
      * @param player the player
      * @param traps a list containing the traps in the level
      */
-    void resolveTrapCollisions(final Player player, final List<Trap> traps);
+    void resolveTrapCollisions(Player player, List<Trap> traps);
 
     /**
      * This method resolves collisions between the player and the collectible entities.
@@ -44,6 +48,6 @@ public interface CollisionManager {
      * @param collectibles the list of collectible entities
      * @return a list of collectible that have been collected and have to be removed
      */
-    List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles);
+    List<Collectible> resolveCollectibleCollisions(Player player, List<Collectible> collectibles);
 
 }
