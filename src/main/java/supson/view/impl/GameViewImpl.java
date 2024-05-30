@@ -35,7 +35,7 @@ public final class GameViewImpl implements GameView {
     public GameViewImpl() {
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
-        this.gameFrame = new JFrame("SUPREME SONIC");
+        this.gameFrame = new JFrame("SUPER-SONIC");
     }
 
     @Override
