@@ -13,8 +13,8 @@ import supson.model.physics.impl.PhysicsImpl;
  */
 public final class Player extends AbstractMoveableEntity {
 
-    private static final int MAX_SPEED = 12;
-    private static final double ACC_SPEED = 0.4;
+    private static final int MAX_SPEED = 20;
+    private static final double ACC_SPEED = 0.8;
     private static final double DEC_SPEED = 1.2;
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
@@ -60,6 +60,9 @@ public final class Player extends AbstractMoveableEntity {
             isJumping = true;
             jump = false;
             onGround = false;
+        }
+        if (!onGround) {
+            physicsComponent.adjustAirSpeed(this);
         }
         physicsComponent.applyGravity(this);
     }

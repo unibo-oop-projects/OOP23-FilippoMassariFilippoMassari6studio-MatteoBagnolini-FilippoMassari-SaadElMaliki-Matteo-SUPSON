@@ -8,7 +8,7 @@ import supson.model.collisions.CollisionEvent;
  * @see supson.model.collisions.api.CollisionObserver
  */
 public interface CollisionObservable {
-    
+
     /**
      * This method registers a new observer, which will be notified
      * about collision events.

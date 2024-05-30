@@ -44,4 +44,10 @@ public interface Physics {
      */
     void applyGravity(MoveableEntity entity);
 
+    /**
+     * This method adjust the speed of the entity when it is in air.
+     * @param entity the entity to adjust speed to
+     */
+    void adjustAirSpeed(MoveableEntity entity);
+
 }
