@@ -67,7 +67,6 @@ public final class Player extends AbstractMoveableEntity {
         physicsComponent.applyGravity(this);
     }
 
-
     /**
      * This method sets the right flag. It should be used when 
      * the player moves right.
@@ -94,16 +93,6 @@ public final class Player extends AbstractMoveableEntity {
     public void setJump(final boolean flag) {
         this.jump = flag;
     }
-
-    /**
-     * This method sets the vulnerable flag of the player.
-     * @param flag bool value representing if the player is vulnerable or not
-     * if the flag is true , then the invulnerable flag is set to true.
-     * False otherwise.
-     */
-    // public void setVulnerability(final boolean flag) {
-    //     this.isInvulnerable = flag;
-    // }
 
     /**
      * This method is used to increment (or decrement) the score.
