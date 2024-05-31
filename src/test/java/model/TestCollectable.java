@@ -72,7 +72,7 @@ public class TestCollectable {
         assertEquals(GameEntityType.STRNGTH_BOOST_POWER_UP, strengthBoost.getGameEntityType());
 
         strengthBoost.collect(player);
-        assertTrue(player.isInvulnerable());
+        assertTrue(player.getState().isInvulnerable());
     }
 
     /**

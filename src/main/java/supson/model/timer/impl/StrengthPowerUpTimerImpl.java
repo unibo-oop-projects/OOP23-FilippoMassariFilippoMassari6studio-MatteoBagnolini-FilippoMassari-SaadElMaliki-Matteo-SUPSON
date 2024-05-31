@@ -1,6 +1,7 @@
 package supson.model.timer.impl;
 
 import supson.model.entity.player.Player;
+import supson.model.entity.player.PlayerState;
 
 /**
  * This class represents a timer for the strength power-up effect in the game.
@@ -23,12 +24,16 @@ public final class StrengthPowerUpTimerImpl extends AbstractCollectibleTimer {
 
     @Override
     public void activateEffect() {
-        this.player.setVulnerability(true);
+        final var state = player.getState();
+        this.player.setState(new PlayerState(state.vel(), state.right(), state.left(),
+        state.jump(), state.onGround(), state.isJumping(), true));
     }
 
     @Override
     public void terminateEffect() {
-        this.player.setVulnerability(false);
+        final var state = player.getState();
+        this.player.setState(new PlayerState(state.vel(), state.right(), state.left(),
+        state.jump(), state.onGround(), state.isJumping(), false));
     }
 
 }
