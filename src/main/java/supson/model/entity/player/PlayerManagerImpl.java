@@ -81,6 +81,9 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     @Override
     public void onNotify(final CollisionEvent event) {
+        // CHECKSTYLE: MissingSwitchDefault OFF
+        //Shouldn't be a default case. All events must be handled by the manager.
+        //In addition, a warning should be raised when not all events are handled.
         switch (event) {
             case BLOCK_UPPER_COLLISION -> upperCollision();
             case BLOCK_LOWER_COLLISION -> lowerCollision();
@@ -89,6 +92,7 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
             case OBSTACLE_LEFT_COLLISION -> pushBackLeft();
             case OBSTACLE_RIGHT_COLLISION -> pushBackRight();
         }
+        // CHECKSTYLE: MissignSwitchDefault ON
     }
 
     private void leftCollision() {
