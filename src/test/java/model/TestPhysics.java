@@ -173,9 +173,9 @@ class TestPhysics {
         frictionEntity.move(TIME);
         assertEquals(MAX_SPEED - FRICTION, frictionEntity.getVelocity().x());
         frictionEntity.move(TIME);
-        assertEquals(MAX_SPEED - 2*FRICTION, frictionEntity.getVelocity().x());
+        assertEquals(MAX_SPEED -2 * FRICTION, frictionEntity.getVelocity().x());
         frictionEntity.move(TIME);
-        assertEquals(MAX_SPEED - 3*FRICTION, frictionEntity.getVelocity().x());
+        assertEquals(MAX_SPEED -3 * FRICTION, frictionEntity.getVelocity().x());
     }
 
     @Test
