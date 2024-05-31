@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
+import supson.model.entity.player.PlayerState;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;
@@ -23,87 +24,60 @@ class TestPlayer {
     private static final long FRAME_RATE = 20;
 
     private Player plr;
-    private double acc, friction;
+    private double acc;
 
     // CHECKSTYLE: MagicNumber OFF
 
     @BeforeAll
     void init() {
         this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
-        plr.setMoveRight(true);
+        plr.setState(new PlayerState(plr.getState().vel(), true, false,
+        false, false, false, false));
         plr.move(FRAME_RATE);
         acc = plr.getVelocity().x();
-        plr.setMoveRight(false);
-        plr.move(FRAME_RATE);
-        friction = acc - plr.getVelocity().x();
     }
 
     @BeforeEach
     void initMovingValues() {
-        plr.setMoveRight(false);
-        plr.setMoveLeft(false);
-        plr.setVelocity(new Vect2dImpl(0, 0));
+        plr.setState(new PlayerState(new Vect2dImpl(0, 0), false, false,
+        false, false, false, false));
     }
 
     @Test
-    void testMove1() {
-        plr.setMoveRight(true);
+    void testMove() {
+        // move right
+        plr.setState(new PlayerState(plr.getState().vel(), true, false,
+        false, false, false, false));
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
         assertEquals(3 * acc, plr.getVelocity().x());
+        //move left
+        plr.setState(new PlayerState(new Vect2dImpl(0, 0), false, true,
+        false, false, false, false));
         plr.move(FRAME_RATE);
         plr.move(FRAME_RATE);
-        assertEquals(5 * acc, plr.getVelocity().x());
-    }
-
-    @Test
-    void testMove2() {
-        plr.setMoveLeft(false);
-        plr.setMoveRight(false);
         plr.move(FRAME_RATE);
-        assertEquals(0.0, plr.getVelocity().x());
-        plr.setMoveLeft(true);
-        plr.move(FRAME_RATE);
-        plr.move(FRAME_RATE);
-        assertEquals(-2*acc, plr.getVelocity().x());
-        plr.setMoveLeft(false);                 //here both flags are false, so friction is applied
-        plr.move(FRAME_RATE);
-        assertEquals(-2*acc + friction, plr.getVelocity().x());
-        plr.move(FRAME_RATE);
-        assertEquals(-2*acc +2*friction, plr.getVelocity().x());
+        assertEquals(-3 * acc, plr.getVelocity().x());
     }
 
     @Test
     void testJump() {
         Pos2d initialPos = plr.getPosition();
-        Vect2d initialVel = plr.getVelocity(); 
-        plr.setJump(true);
-        plr.setOnGround(true);
+        Vect2d initialVel = plr.getVelocity();
+        plr.setState(new PlayerState(plr.getState().vel(), false, false,
+        true, true, false, false));
         plr.move(FRAME_RATE);
         assertTrue(plr.getPosition().y() > initialPos.y());
         assertTrue(plr.getVelocity().y() > initialVel.y());     //player can jump
 
         initialPos = plr.getPosition();
         initialVel = plr.getVelocity();
-        plr.setJump(true);
-        plr.setOnGround(false);
+        plr.setState(new PlayerState(new Vect2dImpl(0, 0), false, false,
+        true, false, false, false));
         plr.move(FRAME_RATE);
-        assertTrue(plr.getVelocity().y() > initialPos.y());  //player cannot jump, but move up beacuse of initial vel
-        assertTrue(plr.getVelocity().y() < initialVel.y());  //player velocity has decreased
-
-        //again no jump
-        plr.move(FRAME_RATE);
-        assertTrue(plr.getVelocity().y() > initialPos.y());  //player cannot jump, but move up beacuse of initial vel
-        assertTrue(plr.getVelocity().y() < initialVel.y());  //player velocity has decreased
-
-        initialPos = plr.getPosition();
-        initialVel = plr.getVelocity();
-        plr.setJump(true);
-        plr.setOnGround(true);
-        plr.move(FRAME_RATE);
-        assertTrue(plr.getPosition().y() > initialPos.y());
-        assertTrue(plr.getVelocity().y() > initialVel.y());
+        assertTrue(plr.getVelocity().y() < initialPos.y());  //player cannot jump, and falls because of gravity
+        assertTrue(plr.getVelocity().y() < initialVel.y());  //player velocity has decreased because of gravity
     }
 
     @Test
