@@ -24,16 +24,14 @@ public final class StrengthPowerUpTimerImpl extends AbstractCollectibleTimer {
 
     @Override
     public void activateEffect() {
-        final var state = player.getState();
-        this.player.setState(new PlayerState(state.vel(), state.right(), state.left(),
-        state.jump(), state.onGround(), state.isJumping(), true));
+        this.player.setState(new PlayerState.Builder(
+            player.getState()).isInvulnerable(true).build());
     }
 
     @Override
     public void terminateEffect() {
-        final var state = player.getState();
-        this.player.setState(new PlayerState(state.vel(), state.right(), state.left(),
-        state.jump(), state.onGround(), state.isJumping(), false));
+        this.player.setState(new PlayerState.Builder(
+            player.getState()).isInvulnerable(false).build());
     }
 
 }
