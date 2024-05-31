@@ -27,36 +27,26 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     @Override
     public void moveRight() {
-        // this.state = new PlayerState(state.vel(), true, state.left(),
-        // state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
         this.state = new PlayerState.Builder(state).right(true).build();
     }
 
     @Override
     public void moveLeft() {
-        // this.state = new PlayerState(state.vel(), state.right(), true,
-        // state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
         this.state = new PlayerState.Builder(state).left(true).build();
     }
 
     @Override
     public void stopOnOrizontal() {
-        // this.state = new PlayerState(new Vect2dImpl(0, state.vel().y()), false, false,
-        // state.jump(), state.onGround(), state.isJumping(), state.isInvulnerable());
         this.state = new PlayerState.Builder(state).left(false).right(false).build();
     }
 
     @Override
     public void stopOnVertical() {
-        // this.state = new PlayerState(new Vect2dImpl(state.vel().x(), 0), state.right(),
-        // state.left(), false, state.onGround(), state.isJumping(), state.isInvulnerable());
         this.state = new PlayerState.Builder(state).vel(new Vect2dImpl(state.vel().x(), 0)).jump(false).build();
     }
 
     @Override
     public void jump() {
-        // this.state = new PlayerState(state.vel(), state.right(), state.left(),
-        // true, state.onGround(), state.isJumping(), state.isInvulnerable());
         this.state = new PlayerState.Builder(state).jump(true).build();
     }
 
@@ -72,15 +62,11 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     @Override
     public void setInvulnerable() {
-        // this.state = new PlayerState(state.vel(), state.right(), state.left(),
-        // state.jump(), state.onGround(), state.isJumping(), true);
         this.state = new PlayerState.Builder(state).isInvulnerable(true).build();
     }
 
     @Override
     public void setVulnerable() {
-        // this.state = new PlayerState(state.vel(), state.right(), state.left(),
-        // state.jump(), state.onGround(), state.isJumping(), false);
         this.state = new PlayerState.Builder(state).isInvulnerable(false).build();
     }
 
@@ -110,8 +96,6 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     private void lowerCollision() {
         stopOnVertical();
-        // this.state = new PlayerState(state.vel(), state.right(), state.left(),
-        // state.jump(), true, false, state.isInvulnerable());
         this.state = new PlayerState.Builder(state).onGround(true).isJumping(false).build();
     }
 
