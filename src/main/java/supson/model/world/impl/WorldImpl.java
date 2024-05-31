@@ -71,7 +71,7 @@ public final class WorldImpl implements World {
         this.collectibleFactory = new CollectibleFactoryImpl();
         this.gameTimer = new GameTimerImpl();
         this.collisionResolver = new CollisionResolver();
-        collisionResolver.register((CollisionObserver)playerManager);
+        collisionResolver.register((CollisionObserver) playerManager);
     }
 
     @Override
