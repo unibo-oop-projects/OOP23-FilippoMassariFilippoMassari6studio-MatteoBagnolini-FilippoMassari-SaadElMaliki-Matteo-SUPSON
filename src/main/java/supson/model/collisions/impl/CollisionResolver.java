@@ -26,7 +26,7 @@ import supson.model.hitbox.api.Hitbox;
 public final class CollisionResolver implements CollisionManager, CollisionObservable {
 
     private static final int RENDER_DISTANCE = 10;
-    private static final double DELTA = 0.00_000_1;
+    private static final double DELTA = 0.000_001;
 
     private final List<CollisionObserver> observers;
 
@@ -41,7 +41,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     @Override
     public void resolvePlatformCollisions(final MoveableEntity entity,
             final List<BlockEntity> blocks, final Pos2d startingPos) {
-        
+
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
@@ -102,9 +102,9 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
         .collect(Collectors.toList());
     }
-    
+
     private double resolveVerticalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
-        final Pos2d startingPos , double updatedY) {
+        final Pos2d startingPos, final double updatedY) {
         entity.setPosition(new Pos2dImpl(startingPos.x(), updatedY));
         final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
         if (!verticalColliding.isEmpty()) {
@@ -114,7 +114,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     }
 
     private double resolveHorizontalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
-        final Pos2d updatedPos, double adjustedY) {
+        final Pos2d updatedPos, final double adjustedY) {
         entity.setPosition(new Pos2dImpl(updatedPos.x(), adjustedY));
         final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
         if (!orizontalColliding.isEmpty()) {

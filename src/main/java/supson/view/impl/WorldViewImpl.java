@@ -13,7 +13,6 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
-import supson.view.SpriteMap;
 import supson.view.api.WorldView;
 
 /**
@@ -25,7 +24,6 @@ public class WorldViewImpl implements WorldView {
     private static final int CAMERA_RANGE = 20;
     private static final int DEFAULT_DIMENSION = 24;
 
-    private final SpriteMap spriteMap = new SpriteMap();
     private final List<GameEntity> cameraGameEntitiesList = new ArrayList<>();
 
     /**
@@ -69,7 +67,23 @@ public class WorldViewImpl implements WorldView {
      */
     private Optional<ImageIcon> getEntityImage(final GameEntity gameEntity) {
         final GameEntityType type = gameEntity.getGameEntityType();
-        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(spriteMap.getSpritePath(type)));
+        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(type.getSpritePath()));
+        try {
+            return Optional.of(new ImageIcon(imgURL.get()));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Retrieves the image icon for the player entity.
+     *
+     * @param player the player entity
+     * @return an Optional containing the image icon if found, or an empty Optional if not found
+     */
+    private Optional<ImageIcon> getPlayerImage(final Player player) {
+        PlayerPathSelector pps = new PlayerPathSelector();
+        Optional<URL> imgURL = Optional.ofNullable(ClassLoader.getSystemResource(pps.selectPath(player)));
         try {
             return Optional.of(new ImageIcon(imgURL.get()));
         } catch (Exception e) {
@@ -85,13 +99,18 @@ public class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map
      */
     private void addToPanel(final JFrame gameFrame, final Player player, final int mapWidth) {
-        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);
+        int centerX = (gameFrame.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4); //TODO : refactor
         int centerY = gameFrame.getHeight() / 2;
         double playerX = player.getPosition().x();
         double playerY = player.getPosition().y();
 
         for (GameEntity gameEntity : cameraGameEntitiesList) {
-            Optional<ImageIcon> icon = getEntityImage(gameEntity);
+            Optional<ImageIcon> icon;
+            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                icon = getPlayerImage(player);
+            }else {
+                icon = getEntityImage(gameEntity);
+            }
             if (icon.isPresent()) {
                 JLabel label = new JLabel(icon.get());
                 label.setOpaque(false);
@@ -122,7 +141,7 @@ public class WorldViewImpl implements WorldView {
         cameraGameEntitiesList.clear();
         gameFrame.getContentPane().removeAll();
         int mapWidth = 0;
-        for (GameEntity gameEntity : gameEntitiesList) { //todo refactor
+        for (GameEntity gameEntity : gameEntitiesList) { //TODO : refactor
             if (gameEntity.getPosition().x() > mapWidth) {
                 mapWidth = (int) gameEntity.getPosition().x();
             }

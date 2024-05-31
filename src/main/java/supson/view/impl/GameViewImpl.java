@@ -35,7 +35,7 @@ public final class GameViewImpl implements GameView {
     public GameViewImpl() {
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
-        this.gameFrame = new JFrame("SUPREME SONIC");
+        this.gameFrame = new JFrame("SUPER-SONIC");
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class GameViewImpl implements GameView {
     }
 
     public Component getViewComponent() {
-        return gameFrame; //TODO : passando il game frame i check sgrifdano provare a valutare una soluzione
+        return gameFrame; //TODO : passando il game frame i check sgridano provare a valutare una soluzione
     }
 
 }

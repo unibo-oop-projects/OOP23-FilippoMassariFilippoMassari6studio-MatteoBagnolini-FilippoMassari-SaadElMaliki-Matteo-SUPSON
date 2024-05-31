@@ -12,7 +12,7 @@ import supson.model.entity.api.PlayerManager;
  */
 public final class PlayerManagerImpl implements PlayerManager, CollisionObserver {
 
-    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(15, 3);
+    private static final Vect2d PUSH_BACK_VEL = new Vect2dImpl(25, 10);
 
     private PlayerState state;
 
@@ -86,6 +86,9 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     @Override
     public void onNotify(final CollisionEvent event) {
+        // CHECKSTYLE: MissingSwitchDefault OFF
+        //Shouldn't be a default case. All events must be handled by the manager.
+        //In addition, a warning should be raised when not all events are handled.
         switch (event) {
             case BLOCK_UPPER_COLLISION -> upperCollision();
             case BLOCK_LOWER_COLLISION -> lowerCollision();
@@ -94,6 +97,7 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
             case OBSTACLE_LEFT_COLLISION -> pushBackLeft();
             case OBSTACLE_RIGHT_COLLISION -> pushBackRight();
         }
+        // CHECKSTYLE: MissignSwitchDefault ON
     }
 
     private void leftCollision() {
@@ -118,16 +122,14 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     private void pushBackRight() {
         moveLeft();
         final Vect2d vel = new Vect2dImpl(-PUSH_BACK_VEL.x(), PUSH_BACK_VEL.y());
-        // this.state = new PlayerState(vel, isInvulnerable(), isInvulnerable(),
-        // isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
-        this.state = new PlayerState.Builder(state).vel(vel).build();
+        this.state = new PlayerState.Builder(state).vel(vel).jump(false)
+            .onGround(false).isJumping(false).build();
     }
 
     private void pushBackLeft() {
         moveRight();
-        // this.state = new PlayerState(PUSH_BACK_VEL, isInvulnerable(), isInvulnerable(),
-        // isJumping(), isInvulnerable(), isJumping(), isInvulnerable());
-        this.state = new PlayerState.Builder(state).vel(PUSH_BACK_VEL).build();
+        this.state = new PlayerState.Builder(state).vel(PUSH_BACK_VEL).jump(false)
+            .onGround(false).isJumping(false).build();
     }
 
     @Override
