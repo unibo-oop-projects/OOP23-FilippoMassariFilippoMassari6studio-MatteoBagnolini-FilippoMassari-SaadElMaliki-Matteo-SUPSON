@@ -204,12 +204,12 @@ public final class WorldImpl implements World {
             if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
                 playerManager.setState(player.getState());
             }
-            collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
+            collisionResolver.resolvePlatformCollisions(e, List.copyOf(blocks), oldPos);
         });
     }
 
     private void handleCollisions() {
-        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
         killed.forEach(k -> removeEnemy(k));
 
         collisionResolver.resolveTrapCollisions(player,
