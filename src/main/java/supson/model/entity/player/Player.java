@@ -13,8 +13,8 @@ import supson.model.physics.impl.PhysicsImpl;
  */
 public final class Player extends AbstractMoveableEntity {
 
-    private static final int MAX_SPEED = 12;
-    private static final double ACC_SPEED = 0.4;
+    private static final int MAX_SPEED = 20;
+    private static final double ACC_SPEED = 0.8;
     private static final double DEC_SPEED = 1.2;
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
@@ -61,17 +61,10 @@ public final class Player extends AbstractMoveableEntity {
             jump = false;
             onGround = false;
         }
+        if (!onGround) {
+            physicsComponent.adjustAirSpeed(this);
+        }
         physicsComponent.applyGravity(this);
-    }
-
-    /**
-     * This method set all the movement flags to false.
-     * This method should be called by the controller when the player
-     * stops moving in the X axis.
-     */
-    public void setMovesToFalse() {
-        this.left = false;
-        this.right = false;
     }
 
     /**
@@ -99,47 +92,6 @@ public final class Player extends AbstractMoveableEntity {
      */
     public void setJump(final boolean flag) {
         this.jump = flag;
-    }
-
-    /**
-     * This method sets the on ground flag. 
-     * @param flag the boolean value representing if the player is on ground or not
-     */
-    public void setOnGround(final boolean flag) {
-        this.onGround = flag;
-    }
-
-    /**
-     * This method sets the isJumping flag.
-     * @param flag the boolean value representing if the player is jumping or not
-    */
-    public void setIsJumping(final boolean flag) {
-        this.isJumping = flag;
-    }
-
-    /**
-     * This method returns if the player is jumping.
-     * @return true if the player is jumping, false otherwise
-     */
-    public boolean isJumping() {
-        return this.isJumping;
-    }
-
-    /**
-     * This method sets the vulnerable flag of the player.
-     * @param flag bool value representing if the player is vulnerable or not
-     * if the flag is true , then the invulnerable flag is set to true.
-     * False otherwise.
-     */
-    public void setVulnerability(final boolean flag) {
-        this.isInvulnerable = flag;
-    }
-
-    /**
-     * @return true if the player is invulnerable, false otherwise
-     */
-    public boolean isInvulnerable() {
-        return this.isInvulnerable;
     }
 
     /**
