@@ -22,6 +22,7 @@ import supson.model.block.api.CollectibleFactory;
 import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.DamageTrapImpl;
+import supson.model.block.impl.SubTerrainImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
@@ -89,7 +90,7 @@ public final class WorldImpl implements World {
                         optionalType.ifPresent(type -> {
                             if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);
-                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP)) {
+                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP) || type.equals(GameEntityType.SUBTERRAIN)) {
                                 this.addBlock(type, pos);
                             } else {
                                 this.addCollectable(pos, type);
@@ -112,6 +113,8 @@ public final class WorldImpl implements World {
     private void addBlock(final GameEntityType type, final Pos2d pos) {
         if (type.equals(GameEntityType.DAMAGE_TRAP)) {
             this.blocks.add(new DamageTrapImpl(pos));
+        } else if (type.equals(GameEntityType.SUBTERRAIN)){
+            this.blocks.add(new SubTerrainImpl(pos));
         } else {
             this.blocks.add(new TerrainImpl(pos));
         }
