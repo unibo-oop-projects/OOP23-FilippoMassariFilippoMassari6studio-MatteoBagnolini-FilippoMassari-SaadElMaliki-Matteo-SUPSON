@@ -4,14 +4,16 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
+import supson.model.effect.impl.StrengthPowerUpEffectImpl;
 import supson.model.entity.player.Player;
-import supson.model.timer.impl.StrengthPowerUpTimerImpl;
 
 /**
  * An implementation of the CollectibleFactory interface.
  * This class provides a factory for creating collectible objects.
  */
 public final class CollectibleFactoryImpl implements CollectibleFactory {
+
+    private final Object lock = new Object();
 
     @Override
     public Collectible createCollectible(final GameEntityType type, final Pos2d pos) {
@@ -54,11 +56,11 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
-            private static final long DURATION = 2000;
+            private static final long DURATION = 8000;
 
             @Override
             public void collect(final Player player) {
-                Thread timer = new Thread(new StrengthPowerUpTimerImpl(DURATION, player));
+                Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
                 timer.start();
             }
         };

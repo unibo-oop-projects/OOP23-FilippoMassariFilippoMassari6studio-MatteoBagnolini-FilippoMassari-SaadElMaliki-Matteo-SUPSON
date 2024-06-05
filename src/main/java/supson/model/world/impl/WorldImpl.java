@@ -60,10 +60,6 @@ public final class WorldImpl implements World {
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
 
-    /**
-     * Constructs a new instance of the WorldImpl class.
-     * Initializes the lists for blocks, enemies and player.
-     */
     public WorldImpl() {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
@@ -74,6 +70,7 @@ public final class WorldImpl implements World {
         this.collisionResolver = new CollisionResolver();
         collisionResolver.register((CollisionObserver) playerManager);
     }
+    
 
     @Override
     public void loadWorld(final String filePath) {
