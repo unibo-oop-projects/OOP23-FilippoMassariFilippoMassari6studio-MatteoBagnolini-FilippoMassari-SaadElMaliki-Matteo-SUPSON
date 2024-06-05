@@ -17,9 +17,11 @@ public final class GameViewImpl implements GameView {
 
     private final WorldView worldView;
     private final HudView hudView;
+    private final JFrame gameFrame;
     private final JPanel mainPanel; // Aggiunto il JPanel
 
-    public GameViewImpl() {
+    public GameViewImpl(JFrame frame) {
+        this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
         this.mainPanel = new JPanel(); // Inizializzato il JPanel
@@ -32,8 +34,6 @@ public final class GameViewImpl implements GameView {
         mainPanel.setLayout(new BorderLayout()); // Impostato il layout del JPanel
 
         // Aggiunto il JPanel al JFrame
-        JFrame gameFrame = new JFrame("SUPER-SONIC");
-        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setContentPane(mainPanel);
         gameFrame.pack();
         gameFrame.setResizable(false);
@@ -49,7 +49,4 @@ public final class GameViewImpl implements GameView {
         mainPanel.repaint(); // Ridisegnato il JPanel
     }
 
-    public Component getViewComponent() {
-        return mainPanel; // Restituito il JPanel anziché il JFrame
-    }
 }

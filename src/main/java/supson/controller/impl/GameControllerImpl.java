@@ -1,5 +1,7 @@
 package supson.controller.impl;
 
+import javax.swing.JFrame;
+
 import supson.controller.api.GameController;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
@@ -18,14 +20,18 @@ public final class GameControllerImpl implements GameController {
     private final World model;
     private final GameView view;
     private final InputManager input;
+    private final JFrame mainFrame;
 
     /**
      * This is the GameControllerImpl constructor.
      */
     public GameControllerImpl() {
         this.model = new WorldImpl();
-        this.view = new GameViewImpl();
+        this.mainFrame = new JFrame("SUPER-SONIC");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.view = new GameViewImpl(mainFrame);
         this.input = new InputManager();
+        this.mainFrame.addKeyListener(input);
     }
 
 
@@ -50,7 +56,6 @@ public final class GameControllerImpl implements GameController {
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
         this.view.initView();
-        this.view.getViewComponent().addKeyListener(input);
     }
 
 }
