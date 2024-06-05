@@ -1,64 +1,55 @@
 package supson.view.impl;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
-
-import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.Component;
-
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;
 import supson.view.api.WorldView;
-import javax.swing.JLabel;
 
-/**
- * Implementation of the {@link GameView} interface.
- * This class is responsible for initializing and rendering the game view.
- */
 public final class GameViewImpl implements GameView {
 
-    //private static final String BACKGROUND_STRING = "sprite/background.jpg";
-    private static final int WHIDTH = 948;
+    private static final int WIDTH = 948;
     private static final int HEIGHT = 720;
 
     private final WorldView worldView;
     private final HudView hudView;
-    private final JFrame gameFrame;
+    private final JPanel mainPanel; // Aggiunto il JPanel
 
-    /**
-     * Constructs a new instance of {@code GameViewImpl}.
-     * Initializes the world view, HUD view, and game frame.
-     */
     public GameViewImpl() {
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
-        this.gameFrame = new JFrame("SUPER-SONIC");
+        this.mainPanel = new JPanel(); // Inizializzato il JPanel
     }
 
     @Override
-    public void initView() { 
-        this.gameFrame.pack();
-        this.gameFrame.setSize(WHIDTH, HEIGHT);
-        this.gameFrame.setResizable(false);
-        JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setOpaque(true);
-        backgroundLabel.setBackground(Color.BLUE);
-        this.gameFrame.setContentPane(backgroundLabel);
-        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.gameFrame.setVisible(true);
+    public void initView() {
+        mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT)); // Impostato le dimensioni del JPanel
+        mainPanel.setBackground(Color.BLUE); // Impostato il colore di sfondo
+        mainPanel.setLayout(new BorderLayout()); // Impostato il layout del JPanel
+
+        // Aggiunto il JPanel al JFrame
+        JFrame gameFrame = new JFrame("SUPER-SONIC");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setContentPane(mainPanel);
+        gameFrame.pack();
+        gameFrame.setResizable(false);
+        gameFrame.setVisible(true);
     }
 
     @Override
     public void renderView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
-        worldView.renderWorld(gameFrame, gameEntitiesList, player);
-        hudView.renderHud(gameFrame, hud);
+        mainPanel.removeAll(); // Rimossi i componenti dal JPanel
+        worldView.renderWorld(mainPanel, gameEntitiesList, player);
+        hudView.renderHud(mainPanel, hud);
+        //mainPanel.revalidate(); // Aggiornato il JPanel
+        mainPanel.repaint(); // Ridisegnato il JPanel
     }
 
     public Component getViewComponent() {
-        return gameFrame; //TODO : passando il game frame i check sgridano provare a valutare una soluzione
+        return mainPanel; // Restituito il JPanel anziché il JFrame
     }
-
 }
