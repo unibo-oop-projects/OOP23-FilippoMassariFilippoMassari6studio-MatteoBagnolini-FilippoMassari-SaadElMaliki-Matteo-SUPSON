@@ -10,6 +10,7 @@ import supson.view.impl.GameStateManagerImpl;
 import supson.view.impl.GameViewImpl;
 import supson.view.impl.InputManager;
 import supson.view.impl.PlayState;
+import supson.view.impl.ScoreState;
 import supson.view.impl.StartState;
 
 /**
@@ -45,6 +46,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void update(final long elapsed) {
         this.model.updateGame(elapsed);
+        this.stateManager.getState().render();
     }
 
     @Override
@@ -55,10 +57,24 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
-        this.stateManager.setState(new StartState(stateManager, model, input));
+        this.stateManager.setState(new StartState(this));
         //this.view2.initView();
         //this.view.initView();
         //this.view.getViewComponent().addKeyListener(input);
+    }
+
+    @Override
+    public void startGame() {
+        this.stateManager.setState(new PlayState(stateManager, model, input));
+    }
+
+    @Override
+    public void showScores() {
+        this.stateManager.setState(new ScoreState());
+    }
+
+    @Override
+    public void quitGame() {
     }
 
 }
