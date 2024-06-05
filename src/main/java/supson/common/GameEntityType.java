@@ -11,11 +11,6 @@ public enum GameEntityType {
     PLAYER("sprite/player_sprite.jpg", 0),
 
     /**
-     * Represents the enemy block.
-     */
-    ENEMY("sprite/enemy_sprite.png", 6),
-
-    /**
      * Represents terrain blocks.
      */
     TERRAIN("sprite/terrain_sprite.jpg", 1),
@@ -38,7 +33,14 @@ public enum GameEntityType {
     /**
      * Represents damage trap blocks.
      */
-    DAMAGE_TRAP("sprite/damage_trap_sprite.png", 5);
+    DAMAGE_TRAP("sprite/damage_trap_sprite.png", 5),
+
+    /**
+     * Represents the enemy block.
+     */
+    ENEMY("sprite/enemy_sprite.png", 6),
+
+    SUBTERRAIN("sprite/subterrain_sprite.png", 7);
 
     private final String spritePath;
     private final int index;

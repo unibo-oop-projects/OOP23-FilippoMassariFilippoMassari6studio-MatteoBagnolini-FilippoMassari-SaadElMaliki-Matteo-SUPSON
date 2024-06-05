@@ -68,16 +68,6 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method set all the movement flags to false.
-     * This method should be called by the controller when the player
-     * stops moving in the X axis.
-     */
-    public void setMovesToFalse() {
-        this.left = false;
-        this.right = false;
-    }
-
-    /**
      * This method sets the right flag. It should be used when 
      * the player moves right.
      * @param flag the boolean value representing right move
@@ -102,47 +92,6 @@ public final class Player extends AbstractMoveableEntity {
      */
     public void setJump(final boolean flag) {
         this.jump = flag;
-    }
-
-    /**
-     * This method sets the on ground flag. 
-     * @param flag the boolean value representing if the player is on ground or not
-     */
-    public void setOnGround(final boolean flag) {
-        this.onGround = flag;
-    }
-
-    /**
-     * This method sets the isJumping flag.
-     * @param flag the boolean value representing if the player is jumping or not
-    */
-    public void setIsJumping(final boolean flag) {
-        this.isJumping = flag;
-    }
-
-    /**
-     * This method returns if the player is jumping.
-     * @return true if the player is jumping, false otherwise
-     */
-    public boolean isJumping() {
-        return this.isJumping;
-    }
-
-    /**
-     * This method sets the vulnerable flag of the player.
-     * @param flag bool value representing if the player is vulnerable or not
-     * if the flag is true , then the invulnerable flag is set to true.
-     * False otherwise.
-     */
-    public void setVulnerability(final boolean flag) {
-        this.isInvulnerable = flag;
-    }
-
-    /**
-     * @return true if the player is invulnerable, false otherwise
-     */
-    public boolean isInvulnerable() {
-        return this.isInvulnerable;
     }
 
     /**

@@ -15,6 +15,7 @@ public final class SonicLaunch {
      * @param args the arguments
      */
     public static void main(final String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
         final GameEngine ge = new GameEngineImpl();
         ge.initGame();
         ge.mainLoop();

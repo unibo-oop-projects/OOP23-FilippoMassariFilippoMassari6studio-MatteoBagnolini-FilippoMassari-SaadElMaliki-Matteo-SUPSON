@@ -22,10 +22,13 @@ import supson.model.block.api.CollectibleFactory;
 import supson.model.block.api.Trap;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.impl.DamageTrapImpl;
+import supson.model.block.impl.SubTerrainImpl;
 import supson.model.block.impl.TerrainImpl;
+import supson.model.collisions.api.CollisionObserver;
 import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.api.PlayerManager;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
 import supson.model.entity.player.PlayerManagerImpl;
@@ -53,7 +56,7 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
-    private final PlayerManagerImpl playerManager;          //TODO change to PLayerManager by deleting PlayerManager interface
+    private final PlayerManager playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
 
@@ -69,7 +72,7 @@ public final class WorldImpl implements World {
         this.collectibleFactory = new CollectibleFactoryImpl();
         this.gameTimer = new GameTimerImpl();
         this.collisionResolver = new CollisionResolver();
-        collisionResolver.register(playerManager);
+        collisionResolver.register((CollisionObserver) playerManager);
     }
 
     @Override
@@ -89,7 +92,7 @@ public final class WorldImpl implements World {
                         optionalType.ifPresent(type -> {
                             if (type.equals(GameEntityType.ENEMY)) {
                                 this.addEnemy(pos);
-                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP)) {
+                            } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP) || type.equals(GameEntityType.SUBTERRAIN)) {
                                 this.addBlock(type, pos);
                             } else {
                                 this.addCollectable(pos, type);
@@ -112,6 +115,8 @@ public final class WorldImpl implements World {
     private void addBlock(final GameEntityType type, final Pos2d pos) {
         if (type.equals(GameEntityType.DAMAGE_TRAP)) {
             this.blocks.add(new DamageTrapImpl(pos));
+        } else if (type.equals(GameEntityType.SUBTERRAIN)){
+            this.blocks.add(new SubTerrainImpl(pos));
         } else {
             this.blocks.add(new TerrainImpl(pos));
         }
@@ -146,32 +151,9 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void updateGame(final long elapsed) {        //TODO dividere in più metodi privati per rendere più ordinato
-
-        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
-        movEntities.add(player);
-
-        movEntities.stream()
-        .forEach(e -> {
-            Pos2d oldPos = e.getPosition();
-            e.move(elapsed);
-            if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                playerManager.setState(player.getState());
-            }
-            collisionResolver.resolvePlatformCollisions(e, blocks, oldPos);
-        });
-
-        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, enemies);
-        killed.forEach(k -> removeEnemy(k));
-
-        collisionResolver.resolveTrapCollisions(player,
-            blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
-
-        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
-            blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
-            .collect(Collectors.toList()));
-        activated.forEach(k -> removeBlock(k));
-
+    public void updateGame(final long elapsed) {
+        updateEntities(elapsed);
+        handleCollisions();
         player.setState(playerManager.getUpdatedState());
     }
 
@@ -212,6 +194,34 @@ public final class WorldImpl implements World {
     @Override
     public Hud getHud() {
         return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
+    }
+
+    private void updateEntities(final long elapsed) {
+        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
+        movEntities.add(player);
+
+        movEntities.stream()
+        .forEach(e -> {
+            final Pos2d oldPos = e.getPosition();
+            e.move(elapsed);
+            if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
+                playerManager.setState(player.getState());
+            }
+            collisionResolver.resolvePlatformCollisions(e, List.copyOf(blocks), oldPos);
+        });
+    }
+
+    private void handleCollisions() {
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
+        killed.forEach(k -> removeEnemy(k));
+
+        collisionResolver.resolveTrapCollisions(player,
+            blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
+
+        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
+            blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
+            .collect(Collectors.toList()));
+        activated.forEach(k -> removeBlock(k));
     }
 
 }

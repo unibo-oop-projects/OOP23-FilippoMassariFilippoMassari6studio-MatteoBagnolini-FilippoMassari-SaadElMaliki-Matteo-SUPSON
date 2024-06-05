@@ -18,7 +18,7 @@ import supson.view.impl.StartState;
  */
 public final class GameControllerImpl implements GameController {
 
-    private static final String WORLD_FILE_PATH = "/world.txt";
+    private static final String WORLD_FILE_PATH = "/level_1.txt";
 
     private final World model;
     private final GameStateManager stateManager;
