@@ -25,7 +25,7 @@ public class WorldViewImpl implements WorldView {
     public void renderWorld(final JPanel gamePanel, final List<GameEntity> gameEntitiesList, final Player player) {
         cameraGameEntitiesList.clear();
         int mapWidth = 0;
-        for (GameEntity gameEntity : gameEntitiesList) {
+        for (GameEntity gameEntity : gameEntitiesList) { //TODO : refactor
             if (gameEntity.getPosition().x() > mapWidth) {
                 mapWidth = (int) gameEntity.getPosition().x();
             }
@@ -60,7 +60,7 @@ public class WorldViewImpl implements WorldView {
     }
 
     private void addToPanel(final JPanel gamePanel, final Player player, final int mapWidth) {
-        int centerX = (gamePanel.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);
+        int centerX = (gamePanel.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);//TODO : refactor
         int centerY = gamePanel.getHeight() / 2;
         double playerX = player.getPosition().x();
         double playerY = player.getPosition().y();
