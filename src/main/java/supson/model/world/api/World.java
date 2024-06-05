@@ -85,4 +85,6 @@ public interface World {
      */
     Hud getHud();
 
+    boolean isGameOver();
+
 }
