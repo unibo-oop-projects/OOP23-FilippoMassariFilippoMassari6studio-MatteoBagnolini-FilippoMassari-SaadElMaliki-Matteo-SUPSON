@@ -2,7 +2,6 @@ package supson.view.api;
 
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import supson.model.entity.api.GameEntity;

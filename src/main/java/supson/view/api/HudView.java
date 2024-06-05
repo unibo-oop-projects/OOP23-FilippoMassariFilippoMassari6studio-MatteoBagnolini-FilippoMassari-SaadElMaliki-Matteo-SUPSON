@@ -1,6 +1,5 @@
 package supson.view.api;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import supson.model.hud.api.Hud;

@@ -1,6 +1,5 @@
 package supson.view.api;
 
-import java.awt.Component;
 import java.util.List;
 
 import supson.model.entity.api.GameEntity;
