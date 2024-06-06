@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.world;
 
 import java.util.ArrayList;
 import java.util.List;

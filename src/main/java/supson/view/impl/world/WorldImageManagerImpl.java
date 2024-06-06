@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.world;
 
 import java.net.URL;
 import java.util.Optional;

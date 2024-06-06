@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.world;
 
 import javax.swing.JLabel;
 
