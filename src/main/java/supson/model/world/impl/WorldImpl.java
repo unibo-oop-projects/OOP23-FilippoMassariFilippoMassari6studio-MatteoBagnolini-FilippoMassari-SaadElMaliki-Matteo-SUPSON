@@ -59,8 +59,10 @@ public final class WorldImpl implements World {
     private final PlayerManager playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
+    private boolean gameOver;
 
     public WorldImpl() {
+        this.gameOver = false;
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_LIFE);
@@ -152,6 +154,9 @@ public final class WorldImpl implements World {
         updateEntities(elapsed);
         handleCollisions();
         player.setState(playerManager.getUpdatedState());
+        if(player.getLife()<0){
+            this.gameOver = true;
+        }
     }
 
     @Override
@@ -219,6 +224,12 @@ public final class WorldImpl implements World {
             blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
             .collect(Collectors.toList()));
         activated.forEach(k -> removeBlock(k));
+    }
+
+
+    @Override
+    public boolean isGameOver() {
+        return gameOver;
     }
 
 }

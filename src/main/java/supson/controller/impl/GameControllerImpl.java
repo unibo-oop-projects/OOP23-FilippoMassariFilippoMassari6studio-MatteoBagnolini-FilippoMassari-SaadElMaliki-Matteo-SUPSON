@@ -49,6 +49,9 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void update(final long elapsed) {
         this.model.updateGame(elapsed);
+        if(this.model.isGameOver()){
+            System.out.println("Game Over");
+        }
     }
 
     @Override
