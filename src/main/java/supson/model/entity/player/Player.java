@@ -3,6 +3,7 @@ package supson.model.entity.player;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
@@ -15,6 +16,7 @@ public final class Player extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 20;
     private static final double ACC_SPEED = 0.8;
+    private static final Vect2d VELOCITY = new Vect2dImpl(0, 0);
     private static final double DEC_SPEED = 1.2;
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 12;
@@ -37,8 +39,8 @@ public final class Player extends AbstractMoveableEntity {
      * @param vel the starting velocity of the player
      * @param life the number of life of the player
      */
-    public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life,
+    public Player(final Pos2d pos) {
+        super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, MAX_LIVES,
             new PhysicsImpl(MAX_SPEED, ACC_SPEED, DEC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 

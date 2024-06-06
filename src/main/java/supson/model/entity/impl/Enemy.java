@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -14,10 +15,13 @@ public final class Enemy extends AbstractMoveableEntity {
 
     private static final int MAX_SPEED = 5;
     private static final double ACC_SPEED = 0.4;
+    private static final Vect2d VELOCITY = new Vect2dImpl(0, 0);
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 0;
     private static final double GRAVITY = 0.05;
-
+    
+    private static final int LIFE = 1;
+    private static final int RANGE = 1;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
@@ -35,12 +39,12 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param life the number of life of the enemy
      * @param range the range of movement of the enemy
      */
-    public Enemy(Pos2d pos, Vect2d vel, int life, final int range) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life, new PhysicsImpl(MAX_SPEED, ACC_SPEED, 0,
+    public Enemy(Pos2d pos) {
+        super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, 0,
                                                     FRICTION, JUMP_FORCE, GRAVITY));
         this.forward = true;
         this.initialPos = pos;
-        this.range = range;
+        this.range = RANGE;
     }
 
 

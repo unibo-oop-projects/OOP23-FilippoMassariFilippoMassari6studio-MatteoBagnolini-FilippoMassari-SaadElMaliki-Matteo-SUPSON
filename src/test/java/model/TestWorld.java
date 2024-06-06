@@ -9,7 +9,6 @@ import java.util.List;
 
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
@@ -108,7 +107,7 @@ public class TestWorld {
         // Adding an enemy for the purpose of the test
         Pos2d enemyPos = new Pos2dImpl(2, 2);
         world.loadWorld(FILE_PATH);
-        world.getEnemies().add(new Enemy(enemyPos, new Vect2dImpl(0, 0), 1, 0));
+        world.getEnemies().add(new Enemy(enemyPos));
         List<Enemy> enemies = world.getEnemies();
         int initialEnemyCount = enemies.size();
         if (initialEnemyCount > 0) {
