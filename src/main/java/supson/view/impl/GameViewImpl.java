@@ -9,6 +9,7 @@ import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;
 import supson.view.api.WorldView;
+import supson.view.impl.world.WorldViewImpl;
 
 public final class GameViewImpl implements GameView {
 
