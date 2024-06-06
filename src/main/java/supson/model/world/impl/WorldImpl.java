@@ -48,6 +48,7 @@ public final class WorldImpl implements World {
     private final List<BlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
+    private Optional<Integer> mapWidth;
     private final PlayerManager playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
@@ -58,6 +59,7 @@ public final class WorldImpl implements World {
         this.blocks = new ArrayList<BlockEntity>();
         this.enemies = new ArrayList<Enemy>();
         this.player = new Player(DEFAULT_PLAYER_POSITION);
+        this.mapWidth = Optional.empty();
         this.playerManager = new PlayerManagerImpl(player);
         this.collectibleFactory = new CollectibleFactoryImpl();
         this.gameTimer = new GameTimerImpl();
@@ -72,12 +74,12 @@ public final class WorldImpl implements World {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
             List<String> lines = reader.lines().collect(Collectors.toList());
-            int maxY = lines.size() - 1;
+            mapWidth = Optional.of(lines.size() - 1);
 
-            IntStream.rangeClosed(0, maxY)
-                    .map(y -> maxY - y)  // Inverti l'ordine degli indici y
+            IntStream.rangeClosed(0, mapWidth.get())
+                    .map(y -> mapWidth.get() - y)
                     .forEach(y -> {
-                        String[] tokens = lines.get(maxY - y).split(" ");
+                        String[] tokens = lines.get(mapWidth.get() - y).split(" ");
                         IntStream.range(0, tokens.length)
                                 .filter(x -> !tokens[x].equals(EMPTY))
                                 .forEach(x -> {
@@ -91,7 +93,7 @@ public final class WorldImpl implements World {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Adds a new entity to the world at the specified position with the specified type.
      *
@@ -201,6 +203,11 @@ public final class WorldImpl implements World {
         return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
 
+    @Override
+    public Integer getMapWidth() {
+        return mapWidth.get();
+    }
+
     private void updateEntities(final long elapsed) {
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
@@ -228,7 +235,6 @@ public final class WorldImpl implements World {
             .collect(Collectors.toList()));
         activated.forEach(k -> removeBlock(k));
     }
-
 
     @Override
     public boolean isGameOver() {
