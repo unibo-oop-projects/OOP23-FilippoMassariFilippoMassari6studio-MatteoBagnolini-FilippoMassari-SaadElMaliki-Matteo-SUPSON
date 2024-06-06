@@ -17,8 +17,11 @@ import supson.view.api.WorldView;
 
 public class WorldViewImpl implements WorldView {
 
-    private static final int CAMERA_RANGE = 20;
+    private static final int CAMERA_RANGE = 21;
     private static final int DEFAULT_DIMENSION = 24;
+
+    private static final int PIXELS_CORRECTOR = 3;
+
     private final List<GameEntity> cameraGameEntitiesList = new ArrayList<>();
 
     @Override
@@ -60,7 +63,7 @@ public class WorldViewImpl implements WorldView {
     }
 
     private void addToPanel(final JPanel gamePanel, final Player player, final int mapWidth) {
-        int centerX = (gamePanel.getWidth() / 2) - (3 * DEFAULT_DIMENSION / 4);//TODO : refactor
+        int centerX = (gamePanel.getWidth() / 2) + PIXELS_CORRECTOR;//TODO : refactor
         int centerY = gamePanel.getHeight() / 2;
         double playerX = player.getPosition().x();
         double playerY = player.getPosition().y();

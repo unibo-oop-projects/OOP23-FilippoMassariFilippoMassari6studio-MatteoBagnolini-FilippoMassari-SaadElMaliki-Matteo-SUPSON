@@ -18,22 +18,21 @@ public final class GameViewImpl implements GameView {
     private final WorldView worldView;
     private final HudView hudView;
     private final JFrame gameFrame;
-    private final JPanel mainPanel; // Aggiunto il JPanel
+    private final JPanel mainPanel;
 
     public GameViewImpl(JFrame frame) {
         this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
-        this.mainPanel = new JPanel(); // Inizializzato il JPanel
+        this.mainPanel = new JPanel();
     }
 
     @Override
     public void initView() {
-        mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT)); // Impostato le dimensioni del JPanel
-        mainPanel.setBackground(Color.BLUE); // Impostato il colore di sfondo
-        mainPanel.setLayout(new BorderLayout()); // Impostato il layout del JPanel
+        mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        mainPanel.setBackground(Color.BLUE);
+        mainPanel.setLayout(new BorderLayout());
 
-        // Aggiunto il JPanel al JFrame
         gameFrame.setContentPane(mainPanel);
         gameFrame.pack();
         gameFrame.setResizable(false);
@@ -42,11 +41,10 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void renderView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
-        mainPanel.removeAll(); // Rimossi i componenti dal JPanel
+        mainPanel.removeAll();
         worldView.renderWorld(mainPanel, gameEntitiesList, player);
         hudView.renderHud(mainPanel, hud);
-        //mainPanel.revalidate(); // Aggiornato il JPanel
-        mainPanel.repaint(); // Ridisegnato il JPanel
+        mainPanel.repaint();
     }
 
 }

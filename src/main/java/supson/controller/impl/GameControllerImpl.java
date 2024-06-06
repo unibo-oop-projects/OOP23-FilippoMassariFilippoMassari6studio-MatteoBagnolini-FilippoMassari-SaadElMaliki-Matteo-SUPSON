@@ -18,7 +18,7 @@ public final class GameControllerImpl implements GameController {
     private static final int WHIDTH = 948;
     private static final int HEIGHT = 720;
 
-    private static final String WORLD_FILE_PATH = "/world.txt";
+    private static final String WORLD_FILE_PATH = "/level_1.txt";
 
     private final World model;
     private final GameView view;
