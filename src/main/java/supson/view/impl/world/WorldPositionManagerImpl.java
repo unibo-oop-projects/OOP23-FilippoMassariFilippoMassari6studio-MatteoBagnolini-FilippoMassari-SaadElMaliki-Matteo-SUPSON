@@ -52,13 +52,14 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
      * @return the calculated y position.
      */
     private int calculateYPosition(final double entityY, final double playerY, final int centerY, final GameEntity gameEntity) {
+        final int offSet = 6;
         int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
         if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
                 || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)
                 || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN)) {
-            return (int) Math.round(centerY - (entityY - playerY) * DEFAULT_DIMENSION - (DEFAULT_DIMENSION / 2));
+            return (int) Math.round(centerY - (entityY - (offSet + playerY)) * DEFAULT_DIMENSION - (DEFAULT_DIMENSION / 2));
         } else {
-            return (int) Math.round(centerY - (entityY - playerY) * gameEntityHeight);
+            return (int) Math.round(centerY - (entityY - (offSet + playerY)) * gameEntityHeight);
         }
     }
 
