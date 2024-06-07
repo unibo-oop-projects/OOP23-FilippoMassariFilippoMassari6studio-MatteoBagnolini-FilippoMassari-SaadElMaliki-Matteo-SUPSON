@@ -1,17 +1,18 @@
 package supson.view.impl;
 
 import javax.swing.*;
+import java.awt.*;
 import supson.model.hud.api.Hud;
 import supson.view.api.HudView;
 
 public final class HudViewImpl implements HudView {
 
-    private static final int LABEL_WIDTH = 100;
-    private static final int LABEL_HEIGHT = 20;
+    private static final int LABEL_WIDTH = 150;
+    private static final int LABEL_HEIGHT = 30;
     private static final int LABEL_X = 10;
     private static final int SCORE_LABEL_Y = 10;
-    private static final int LIVES_LABEL_Y = 40;
-    private static final int TIME_LABEL_Y = 70;
+    private static final int LIVES_LABEL_Y = 50;
+    private static final int TIME_LABEL_Y = 90;
 
     @Override
     public void renderHud(final JPanel gamePanel, final Hud hud) {
@@ -35,6 +36,13 @@ public final class HudViewImpl implements HudView {
     private JLabel createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setForeground(Color.WHITE);
+        label.setBackground(new Color(0, 0, 0, 150));
+        label.setOpaque(true);
+        label.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
         return label;
     }
 }
