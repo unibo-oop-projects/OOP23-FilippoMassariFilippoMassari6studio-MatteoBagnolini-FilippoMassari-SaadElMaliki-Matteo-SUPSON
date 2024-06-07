@@ -104,6 +104,8 @@ class TestPlayer {
         assertEquals(3, plr.getLife());
         plr.incrementLife(-1);
         assertEquals(2, plr.getLife());
+        plr.incrementLife(1);
+        assertEquals(3, plr.getLife());
     }
 
 }
