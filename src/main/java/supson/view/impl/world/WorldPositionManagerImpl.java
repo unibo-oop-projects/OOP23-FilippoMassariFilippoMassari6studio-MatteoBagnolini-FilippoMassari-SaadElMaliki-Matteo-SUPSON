@@ -7,7 +7,11 @@ import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.view.api.WorldPositionManager;
 
-public class WorldPositionManagerImpl implements WorldPositionManager {
+/**
+ * Implementation of the {@link WorldPositionManager} interface.
+ * This class manages the positioning of game entities on the game panel.
+ */
+public final class WorldPositionManagerImpl implements WorldPositionManager {
 
     private static final int CAMERA_RANGE = 21;
     private static final int DEFAULT_DIMENSION = 24;
@@ -61,10 +65,10 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
                 || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN);
         final int entityHeight = isSpecialEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
         return (int) Math.round(centerY - relativeY * entityHeight - (isSpecialEntity ? (DEFAULT_DIMENSION / 2) : 0));
-    }    
+    }
 
     @Override
-    public int calculateLeftBoundary(final int playerX, final int mapWidth) {
+    public final int calculateLeftBoundary(final int playerX, final int mapWidth) {
         if (playerX >= mapWidth - CAMERA_RANGE) {
             return mapWidth - 2 * CAMERA_RANGE;
         }
@@ -72,7 +76,7 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
     }
 
     @Override
-    public int calculateRightBoundary(final int playerX, final int mapWidth) {
+    public final int calculateRightBoundary(final int playerX, final int mapWidth) {
         if (playerX <= CAMERA_RANGE) {
             return 2 * CAMERA_RANGE;
         }
@@ -80,9 +84,8 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
     }
 
     @Override
-    public boolean isWithinCameraRange(final GameEntity gameEntity, final int leftBoundary, final int rightBoundary) {
+    public final boolean isWithinCameraRange(final GameEntity gameEntity, final int leftBoundary, final int rightBoundary) {
         final double entityX = gameEntity.getPosition().x();
         return entityX >= leftBoundary && entityX <= rightBoundary;
     }
-
 }

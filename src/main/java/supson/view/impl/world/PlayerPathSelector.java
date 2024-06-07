@@ -3,6 +3,9 @@ package supson.view.impl.world;
 import supson.model.entity.player.Player;
 import supson.model.entity.player.PlayerState;
 
+/*
+ * this class procuce the tring that rapresent the sprite player
+ */
 public final class PlayerPathSelector {
 
     private String lastPlayerPath;
@@ -22,10 +25,12 @@ public final class PlayerPathSelector {
      */
     public String selectPath(final Player player) {
         PlayerState ps = player.getState();
-        /*if (!ps.left() && !ps.right()) { //TODO : non funziona perche questo oggetto viene dealocato tutte le volte
-            return lastPlayerPath;
-        }*/
-        lastPlayerPath = "sprite/player/player_sprite_"+ps.left()+"_"+ps.right()+"_"+ps.isJumping()+"_"+ps.isInvulnerable()+".png";
+        lastPlayerPath = "sprite/player/player_sprite_" 
+                          + ps.left() + "_" 
+                          + ps.right() + "_" 
+                          + ps.isJumping() + "_" 
+                          + ps.isInvulnerable() 
+                          + ".png";
         return lastPlayerPath;
     }
 }

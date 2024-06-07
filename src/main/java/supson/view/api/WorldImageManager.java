@@ -7,6 +7,9 @@ import javax.swing.ImageIcon;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
 
+/**
+ * Manages image icons for game entities in the world.
+ */
 public interface WorldImageManager {
 
     /**
@@ -16,6 +19,6 @@ public interface WorldImageManager {
      * @param player the player.
      * @return an optional containing the image icon if present, otherwise an empty optional.
      */
-    public Optional<ImageIcon> getImageIcon(GameEntity gameEntity, Player player);
+    Optional<ImageIcon> getImageIcon(GameEntity gameEntity, Player player);
 
 }

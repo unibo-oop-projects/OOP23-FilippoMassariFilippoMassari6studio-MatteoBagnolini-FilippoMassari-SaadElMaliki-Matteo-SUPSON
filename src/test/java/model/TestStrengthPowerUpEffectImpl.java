@@ -2,7 +2,8 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import supson.common.impl.Pos2dImpl;
 import supson.model.effect.api.CollectibleEffect;
@@ -10,7 +11,10 @@ import supson.model.effect.impl.StrengthPowerUpEffectImpl;
 import supson.model.entity.player.Player;
 import supson.model.entity.player.PlayerState;
 
-public class TestStrengthPowerUpEffectImpl {
+/*
+ * This class contains unit tests for the Strength PowerUp Effect class.
+ */
+public final class TestStrengthPowerUpEffectImpl {
 
     private Player player;
     private Object lock;

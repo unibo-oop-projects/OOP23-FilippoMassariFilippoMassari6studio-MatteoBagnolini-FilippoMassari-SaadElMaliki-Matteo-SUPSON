@@ -10,11 +10,15 @@ public interface CollectibleEffect extends Runnable {
 
     /**
      * Activates the effect associated with this timer.
+     * 
+     * @param player the taget of the effect
      */
     void activateEffect(Player player);
 
     /**
      * Terminates the effect associated with this timer.
+     * 
+     * @param player the taget of the effect
      */
     void terminateEffect(Player player);
 

@@ -10,7 +10,10 @@ import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
 import supson.view.api.WorldImageManager;
 
-public class WorldImageManagerImpl implements WorldImageManager {
+/**
+ * Manages image icons for game entities in the world.
+ */
+public final class WorldImageManagerImpl implements WorldImageManager {
 
     @Override
     public Optional<ImageIcon> getImageIcon(final GameEntity gameEntity, final Player player) {
