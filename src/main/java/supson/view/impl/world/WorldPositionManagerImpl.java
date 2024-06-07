@@ -33,13 +33,15 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
      * @return the calculated x position.
      */
     private int calculateXPosition(final double entityX, final double playerX, final int centerX, final int mapWidth) {
+        double referencePoint;
         if (playerX >= mapWidth - CAMERA_RANGE) {
-            return (int) Math.round(centerX + (entityX - (mapWidth - CAMERA_RANGE)) * DEFAULT_DIMENSION);
+            referencePoint = mapWidth - CAMERA_RANGE;
         } else if (playerX <= CAMERA_RANGE) {
-            return (int) Math.round(centerX + (entityX - CAMERA_RANGE) * DEFAULT_DIMENSION);
+            referencePoint = CAMERA_RANGE;
         } else {
-            return (int) Math.round(centerX + (entityX - playerX) * DEFAULT_DIMENSION);
+            referencePoint = playerX;
         }
+        return (int) Math.round(centerX + (entityX - referencePoint) * DEFAULT_DIMENSION);
     }
 
     /**
@@ -53,15 +55,13 @@ public class WorldPositionManagerImpl implements WorldPositionManager {
      */
     private int calculateYPosition(final double entityY, final double playerY, final int centerY, final GameEntity gameEntity) {
         final int offSet = 6;
-        int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
-        if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
+        final double relativeY = entityY - (offSet + playerY);
+        final boolean isSpecialEntity = gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
                 || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)
-                || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN)) {
-            return (int) Math.round(centerY - (entityY - (offSet + playerY)) * DEFAULT_DIMENSION - (DEFAULT_DIMENSION / 2));
-        } else {
-            return (int) Math.round(centerY - (entityY - (offSet + playerY)) * gameEntityHeight);
-        }
-    }
+                || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN);
+        final int entityHeight = isSpecialEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
+        return (int) Math.round(centerY - relativeY * entityHeight - (isSpecialEntity ? (DEFAULT_DIMENSION / 2) : 0));
+    }    
 
     @Override
     public int calculateLeftBoundary(final int playerX, final int mapWidth) {
