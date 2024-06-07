@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import supson.controller.api.GameController;
-import supson.model.world.api.World;
-import supson.view.api.GameStateManager;
 import supson.view.api.StartView;
 
 public class StartViewImpl implements StartView {
@@ -24,22 +22,17 @@ public class StartViewImpl implements StartView {
 
     private final GameController controller;
 
-/*     private final GameStateManager stateManager;
-    private final World world;
-    private final InputManager inputManager; */
-
-
     public StartViewImpl(JFrame gameFrame, GameController controller){
         this.gameFrame = gameFrame;
         this.controller = controller;
         startButton = new JButton("Start");
         startButton.addActionListener(e -> {
-            this.gameFrame.setVisible(false);
-            this.gameFrame.dispose();
-            controller.startGame();
+            this.controller.startGame();
         });
         scoreButton = new JButton("Scores");
-        scoreButton.addActionListener(e -> {});
+        scoreButton.addActionListener(e -> {
+            this.controller.showScores();
+        });
         quitButton = new JButton("Quit");
         quitButton.addActionListener(e->{
             System.exit(0);

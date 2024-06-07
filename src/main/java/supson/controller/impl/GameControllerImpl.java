@@ -6,10 +6,7 @@ import supson.controller.api.GameController;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameStateManager;
-import supson.view.api.GameView;
-import supson.view.api.StartView;
 import supson.view.impl.GameStateManagerImpl;
-import supson.view.impl.GameViewImpl;
 import supson.view.impl.InputManager;
 import supson.view.impl.PlayState;
 import supson.view.impl.ScoreState;
@@ -28,7 +25,6 @@ public final class GameControllerImpl implements GameController {
 
     private final World model;
     private final GameStateManager stateManager;
-    private final GameView view;
     private final InputManager input;
     private final JFrame mainFrame;
 
@@ -40,9 +36,7 @@ public final class GameControllerImpl implements GameController {
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WHIDTH, HEIGHT);
-        this.view = new GameViewImpl(mainFrame);
         this.input = new InputManager();
-        this.mainFrame.addKeyListener(input);
         stateManager = new GameStateManagerImpl();
     }
 
@@ -67,14 +61,13 @@ public final class GameControllerImpl implements GameController {
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
         this.stateManager.setState(new StartState(this,mainFrame));
-        //this.view2.initView();
-        //this.view.initView();
-        //this.view.getViewComponent().addKeyListener(input);
     }
 
     @Override
     public void startGame() {
-        this.stateManager.setState(new PlayState(mainFrame,model,input));
+        this.mainFrame.addKeyListener(input);
+        this.mainFrame.requestFocusInWindow();
+        this.stateManager.setState(new PlayState(mainFrame,model));
     }
 
     @Override

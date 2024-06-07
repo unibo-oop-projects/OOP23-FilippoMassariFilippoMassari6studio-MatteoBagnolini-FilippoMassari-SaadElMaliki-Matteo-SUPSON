@@ -3,15 +3,12 @@ package supson.view.impl;
 import javax.swing.JFrame;
 
 import supson.controller.api.GameController;
-import supson.model.world.api.World;
 import supson.view.api.GameState;
-import supson.view.api.GameStateManager;
 import supson.view.api.StartView;
 
 public class StartState implements GameState {
     private StartView view;
     private JFrame gameFrame;
-    private GameStateManager stateManager;
     private GameController controller;
 
     public StartState(GameController controller, JFrame gameFrame){
