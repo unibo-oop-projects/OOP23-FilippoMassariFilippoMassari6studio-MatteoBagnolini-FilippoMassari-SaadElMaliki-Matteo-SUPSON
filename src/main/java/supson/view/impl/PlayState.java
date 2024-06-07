@@ -23,7 +23,6 @@ public class PlayState implements GameState{
     public void enter() {
         view.initView();
         view.getViewComponent().addKeyListener(input);
-        this.render();
     }
 
     @Override
