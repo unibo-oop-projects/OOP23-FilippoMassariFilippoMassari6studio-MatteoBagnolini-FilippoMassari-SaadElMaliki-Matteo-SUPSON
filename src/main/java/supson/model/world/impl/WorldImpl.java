@@ -66,7 +66,7 @@ public final class WorldImpl implements World {
         this.collisionResolver = new CollisionResolver();
         collisionResolver.register((CollisionObserver) playerManager);
     }
-    
+
     @Override
     public void loadWorld(final String filePath) {
         this.gameTimer.start(); // For debug
@@ -93,17 +93,19 @@ public final class WorldImpl implements World {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Adds a new entity to the world at the specified position with the specified type.
      *
      * @param type The type of entity to add.
      * @param pos  The position where the entity should be added.
      */
-    private void addEntityToWorld(GameEntityType type, Pos2d pos) {
+    private void addEntityToWorld(final GameEntityType type, final Pos2d pos) {
         if (type.equals(GameEntityType.ENEMY)) {
             this.addEnemy(pos);
-        } else if (type.equals(GameEntityType.TERRAIN) || type.equals(GameEntityType.DAMAGE_TRAP) || type.equals(GameEntityType.SUBTERRAIN)) {
+        } else if (type.equals(GameEntityType.TERRAIN) 
+                  || type.equals(GameEntityType.DAMAGE_TRAP) 
+                  || type.equals(GameEntityType.SUBTERRAIN)) {
             this.addBlock(type, pos);
         } else {
             this.addCollectable(pos, type);
@@ -119,7 +121,7 @@ public final class WorldImpl implements World {
     private void addBlock(final GameEntityType type, final Pos2d pos) {
         if (type.equals(GameEntityType.DAMAGE_TRAP)) {
             this.blocks.add(new DamageTrapImpl(pos));
-        } else if (type.equals(GameEntityType.SUBTERRAIN)){
+        } else if (type.equals(GameEntityType.SUBTERRAIN)) {
             this.blocks.add(new SubTerrainImpl(pos));
         } else {
             this.blocks.add(new TerrainImpl(pos));
@@ -159,7 +161,7 @@ public final class WorldImpl implements World {
         updateEntities(elapsed);
         handleCollisions();
         player.setState(playerManager.getUpdatedState());
-        if(player.getLife()<0){
+        if (player.getLife() < 0) {
             this.gameOver = true;
         }
     }

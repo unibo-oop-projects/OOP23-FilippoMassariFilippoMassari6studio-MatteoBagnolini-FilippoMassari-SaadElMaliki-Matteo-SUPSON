@@ -4,6 +4,9 @@ import javax.swing.JLabel;
 
 import supson.model.entity.api.GameEntity;
 
+/**
+ * Manages the positioning of game entities in the world.
+ */
 public interface WorldPositionManager {
 
     /**
@@ -17,7 +20,7 @@ public interface WorldPositionManager {
      * @param centerY the center y position of the game panel.
      * @param mapWidth the width of the map.
      */
-    public void setPosition(JLabel label, GameEntity gameEntity, double playerX, double playerY,
+    void setPosition(JLabel label, GameEntity gameEntity, double playerX, double playerY,
             int centerX, int centerY, int mapWidth);
 
     /**
@@ -27,7 +30,7 @@ public interface WorldPositionManager {
      * @param mapWidth the width of the map.
      * @return the left boundary.
      */
-    public int calculateLeftBoundary(int playerX, int mapWidth);
+    int calculateLeftBoundary(int playerX, int mapWidth);
 
     /**
      * Calculates the right boundary of the camera view.
@@ -36,7 +39,7 @@ public interface WorldPositionManager {
      * @param mapWidth the width of the map.
      * @return the right boundary.
      */
-    public int calculateRightBoundary(int playerX, int mapWidth);
+    int calculateRightBoundary(int playerX, int mapWidth);
 
     /**
      * Checks if a game entity is within the camera range.
@@ -46,6 +49,6 @@ public interface WorldPositionManager {
      * @param rightBoundary the right boundary of the camera view.
      * @return true if the game entity is within the camera range, false otherwise.
      */
-    public boolean isWithinCameraRange(GameEntity gameEntity, int leftBoundary, int rightBoundary);
+    boolean isWithinCameraRange(GameEntity gameEntity, int leftBoundary, int rightBoundary);
 
 }

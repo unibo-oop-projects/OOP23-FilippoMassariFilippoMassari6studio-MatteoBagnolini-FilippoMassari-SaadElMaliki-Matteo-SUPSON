@@ -20,7 +20,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     private final Map<GameEntityType, Function<Pos2d, Collectible>> collectibleCreators;
     private final Object lock = new Object();
-
+    
+    /**
+     * Constructs a new instance of the CollectibleFactoryImpl class.
+     * This factory is responsible for creating different types of collectibles in the game.
+     * The constructor initializes an EnumMap with GameEntityType as the key.
+     */
     public CollectibleFactoryImpl() {
         collectibleCreators = new EnumMap<>(GameEntityType.class);
         collectibleCreators.put(GameEntityType.RING, this::createCollectibleRing);

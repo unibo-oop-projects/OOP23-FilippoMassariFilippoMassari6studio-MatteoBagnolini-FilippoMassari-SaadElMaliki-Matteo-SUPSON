@@ -1,8 +1,14 @@
 package supson.view.impl;
 
-import javax.swing.*;
-import java.awt.*;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.player.Player;
 import supson.model.hud.api.Hud;
@@ -11,6 +17,9 @@ import supson.view.api.HudView;
 import supson.view.api.WorldView;
 import supson.view.impl.world.WorldViewImpl;
 
+/**
+ * Represents the main game view that displays the game world and HUD.
+ */
 public final class GameViewImpl implements GameView {
 
     private static final String BG_PATH = "sprite/background.jpg";
@@ -23,7 +32,12 @@ public final class GameViewImpl implements GameView {
     private final JPanel mainPanel;
     private final ImagePanel backgroundPanel;
 
-    public GameViewImpl(JFrame frame) {
+    /**
+     * Constructs a new `GameViewImpl` with the specified main game frame.
+     *
+     * @param frame The main game frame.
+     */
+    public GameViewImpl(final JFrame frame) {
         this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();

@@ -13,7 +13,11 @@ import supson.view.api.WorldView;
 import supson.view.api.WorldImageManager;
 import supson.view.api.WorldPositionManager;
 
-public class WorldViewImpl implements WorldView {
+/**
+ * Implementation of the {@link WorldView} interface.
+ * This class manages the rendering of the game world onto a game panel.
+ */
+public final class WorldViewImpl implements WorldView {
 
     private static final int PIXELS_CORRECTOR = 3;
 
@@ -35,7 +39,7 @@ public class WorldViewImpl implements WorldView {
      * @param gameEntitiesList the list of game entities.
      * @return the width of the map.
      */
-    private int getMapWidth(final List<GameEntity> gameEntitiesList) { //TODO :  da calcolare nel loadworld della map
+    private int getMapWidth(final List<GameEntity> gameEntitiesList) { //TODO:  da calcolare nel loadworld della map
         int mapWidth = 0;
         for (GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() > mapWidth) {
