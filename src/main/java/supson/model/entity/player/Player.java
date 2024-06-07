@@ -118,7 +118,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param lives an integer representing how many lives to increment
      */
     public void incrementLife(final int lives) {
-        if (getLife() + lives < MAX_LIVES) {
+        if (getLife() + lives <= MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
     }
