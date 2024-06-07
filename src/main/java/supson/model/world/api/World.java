@@ -85,4 +85,18 @@ public interface World {
      */
     Hud getHud();
 
+    /**
+     * Returns the height of the map.
+     * 
+     * @return the height of the map
+     */
+    Integer getMapWidth();
+
+    /**
+     * Returns whether the game is over.
+     * 
+     * @return whether the game is over
+     */
+    boolean isGameOver();
+
 }

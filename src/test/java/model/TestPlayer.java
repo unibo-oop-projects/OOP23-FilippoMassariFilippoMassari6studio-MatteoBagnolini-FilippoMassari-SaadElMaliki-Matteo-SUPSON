@@ -30,7 +30,7 @@ class TestPlayer {
 
     @BeforeAll
     void init() {
-        this.plr = new Player(new Pos2dImpl(0, 0), new Vect2dImpl(0, 0), 3);
+        this.plr = new Player(new Pos2dImpl(0, 0));
         plr.setState(new PlayerState(plr.getState().vel(), true, false,
         false, false, false, false));
         plr.move(FRAME_RATE);
@@ -104,6 +104,8 @@ class TestPlayer {
         assertEquals(3, plr.getLife());
         plr.incrementLife(-1);
         assertEquals(2, plr.getLife());
+        plr.incrementLife(1);
+        assertEquals(3, plr.getLife());
     }
 
 }

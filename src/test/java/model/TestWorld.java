@@ -7,9 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.common.impl.Vect2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
@@ -65,7 +63,7 @@ public class TestWorld {
     void testGetPlayer() {
         Player player = world.getPlayer();
         assertNotNull(player);
-        assertEquals(new Pos2dImpl(1, 7.5), player.getPosition());
+        assertEquals(new Pos2dImpl(0, 7), player.getPosition());
     }
 
     /**
@@ -80,7 +78,7 @@ public class TestWorld {
         assertFalse(world.getBlocks().isEmpty());
         assertFalse(world.getEnemies().isEmpty());
         assertNotNull(world.getPlayer());
-        assertEquals(new Pos2dImpl(1, 7.5), world.getPlayer().getPosition());
+        assertEquals(new Pos2dImpl(0, 7), world.getPlayer().getPosition());
     }
 
     /**
@@ -105,10 +103,6 @@ public class TestWorld {
      */
     @Test
     void testRemoveEnemy() {
-        // Adding an enemy for the purpose of the test
-        Pos2d enemyPos = new Pos2dImpl(2, 2);
-        world.loadWorld(FILE_PATH);
-        world.getEnemies().add(new Enemy(enemyPos, new Vect2dImpl(0, 0), 1, 0));
         List<Enemy> enemies = world.getEnemies();
         int initialEnemyCount = enemies.size();
         if (initialEnemyCount > 0) {
@@ -123,12 +117,10 @@ public class TestWorld {
      */
     @Test
     void testUpdateGame() {
-        long elapsed = 1000; // Simulating 1 second of game time
+        long elapsed = 1000;
         world.updateGame(elapsed);
-        // Check if player and enemies have moved and collisions resolved correctly
         Player player = world.getPlayer();
         assertNotNull(player);
-        // Additional checks can be added based on the specific behavior expected after update
     }
 
     /**
@@ -154,6 +146,32 @@ public class TestWorld {
         assertNotNull(hud);
         assertEquals(world.getPlayer().getScore(), hud.getScore());
         assertEquals(world.getPlayer().getLife(), hud.getLives());
-        // Elapsed time in seconds can be tested after simulating game time
+    }
+
+    /**
+     * Tests the isGameOver() method of the World class.
+     * It checks if the game over condition is correctly identified.
+     */
+    @Test
+    void testIsGameOver() {
+        Player player = world.getPlayer();
+        player.setLife(-1);
+        world.updateGame(0);
+        assertTrue(world.isGameOver());
+    }
+
+    /**
+     * Tests the loadWorld() method of the World class.
+     * It checks if the world is loaded correctly from the file.
+     */
+    @Test
+    void testLoadWorld() {
+        world.loadWorld(FILE_PATH);
+        List<BlockEntity> blocks = world.getBlocks();
+        List<Enemy> enemies = world.getEnemies();
+        assertNotNull(blocks);
+        assertFalse(blocks.isEmpty());
+        assertNotNull(enemies);
+        assertFalse(enemies.isEmpty());
     }
 }

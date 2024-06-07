@@ -4,8 +4,13 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.CollectibleFactory;
+import supson.model.effect.impl.StrengthPowerUpEffectImpl;
 import supson.model.entity.player.Player;
-import supson.model.timer.impl.StrengthPowerUpTimerImpl;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * An implementation of the CollectibleFactory interface.
@@ -13,17 +18,23 @@ import supson.model.timer.impl.StrengthPowerUpTimerImpl;
  */
 public final class CollectibleFactoryImpl implements CollectibleFactory {
 
+    private final Map<GameEntityType, Function<Pos2d, Collectible>> collectibleCreators;
+    private final Object lock = new Object();
+
+    public CollectibleFactoryImpl() {
+        collectibleCreators = new EnumMap<>(GameEntityType.class);
+        collectibleCreators.put(GameEntityType.RING, this::createCollectibleRing);
+        collectibleCreators.put(GameEntityType.LIFE_BOOST_POWER_UP, this::createCollectibleLifeBoostPowerUp);
+        collectibleCreators.put(GameEntityType.STRNGTH_BOOST_POWER_UP, this::createCollectibleStrengthPowerUp);
+    }
+
     @Override
     public Collectible createCollectible(final GameEntityType type, final Pos2d pos) {
-        switch (type) {
-            case RING:
-                return createCollectibleRing(pos);
-            case LIFE_BOOST_POWER_UP:
-                return createCollectibleLifeBoostPowerUp(pos);
-            case STRNGTH_BOOST_POWER_UP:
-                return createCollectibleStrengthPowerUp(pos);
-            default:
-                throw new IllegalArgumentException("Invalid collectible type");
+        Optional<Function<Pos2d, Collectible>> creator = Optional.ofNullable(collectibleCreators.get(type));
+        if (creator.isPresent()) {
+            return creator.get().apply(pos);
+        } else {
+            throw new IllegalArgumentException("Invalid collectible type: " + type);
         }
     }
 
@@ -54,11 +65,11 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
-            private static final long DURATION = 2000;
+            private static final long DURATION = 8000;
 
             @Override
             public void collect(final Player player) {
-                Thread timer = new Thread(new StrengthPowerUpTimerImpl(DURATION, player));
+                Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
                 timer.start();
             }
         };
