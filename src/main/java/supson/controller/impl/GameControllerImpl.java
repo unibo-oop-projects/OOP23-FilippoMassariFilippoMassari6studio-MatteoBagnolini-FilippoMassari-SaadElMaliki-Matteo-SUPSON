@@ -66,7 +66,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
-        this.stateManager.setState(new StartState(this));
+        this.stateManager.setState(new StartState(this,mainFrame));
         //this.view2.initView();
         //this.view.initView();
         //this.view.getViewComponent().addKeyListener(input);
@@ -74,7 +74,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void startGame() {
-        this.stateManager.setState(new PlayState(stateManager, model, input));
+        this.stateManager.setState(new PlayState(mainFrame,model,input));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package supson.view.impl;
 
+import javax.swing.JFrame;
+
 import supson.model.world.api.World;
 import supson.view.api.GameState;
 import supson.view.api.GameStateManager;
@@ -12,17 +14,16 @@ public class PlayState implements GameState{
     GameStateManager stateManager;
 
 
-    public PlayState(GameStateManager s, World m, InputManager i){
-        view = new GameViewImpl();
-        world = m;
-        input = i;
-        stateManager = s;
+    public PlayState(JFrame gameFrame, World world, InputManager input){
+        this.world = world;
+        gameFrame.addKeyListener(input);
+        view = new GameViewImpl(gameFrame);
     }
 
     @Override
     public void enter() {
         view.initView();
-        view.getViewComponent().addKeyListener(input);
+        
     }
 
     @Override

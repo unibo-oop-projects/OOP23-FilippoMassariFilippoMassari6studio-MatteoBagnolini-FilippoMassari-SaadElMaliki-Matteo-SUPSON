@@ -29,9 +29,9 @@ public class StartViewImpl implements StartView {
     private final InputManager inputManager; */
 
 
-    public StartViewImpl(GameController controller){
+    public StartViewImpl(JFrame gameFrame, GameController controller){
+        this.gameFrame = gameFrame;
         this.controller = controller;
-        this.gameFrame = new JFrame("SUPER-SONIC");
         startButton = new JButton("Start");
         startButton.addActionListener(e -> {
             this.gameFrame.setVisible(false);
