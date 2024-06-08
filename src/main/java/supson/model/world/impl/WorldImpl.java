@@ -42,7 +42,7 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
-    public WorldImpl() {
+    public WorldImpl() { //TODO : mettere i metodi protected
         this.gameOver = false;
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
