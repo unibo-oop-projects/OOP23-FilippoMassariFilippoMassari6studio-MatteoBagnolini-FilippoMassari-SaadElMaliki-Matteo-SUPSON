@@ -1,8 +1,12 @@
 package supson.model.world.api;
 
 import java.util.List;
+import java.util.Optional;
 
+import supson.common.GameEntityType;
+import supson.common.api.Pos2d;
 import supson.model.block.api.BlockEntity;
+import supson.model.block.api.Collectible;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
@@ -93,10 +97,38 @@ public interface World {
     Integer getMapWidth();
 
     /**
+     * Sets the width of the map.
+     * 
+     * @param mapWidth the width of the map
+     */
+    void setMapWidth(Optional<Integer> mapWidth);
+
+    /**
+     * Adds a new block to the world at the specified position with the specified type.
+     *
+     * @param type The type of block to add.
+     * @param pos  The position where the block should be added.
+     */
+    void addBlock(GameEntityType type, Pos2d pos);
+
+    /**
+     * Adds a new enemy to the world at the specified position.
+     *
+     * @param enemy The enemy to add.
+     */
+    void addEnemy(Enemy enemy);
+
+    /**
+     * Adds a collectible to the world at the specified position.
+     * 
+     * @param collectible The collectible to add.
+     */
+    void addCollectible(Collectible collectible);
+
+    /**
      * Returns whether the game is over.
      * 
      * @return whether the game is over
      */
     boolean isGameOver();
-
 }

@@ -2,8 +2,10 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -63,7 +65,8 @@ public class TestWorld {
     void testGetPlayer() {
         Player player = world.getPlayer();
         assertNotNull(player);
-        assertEquals(new Pos2dImpl(0, 7), player.getPosition());
+        final int y = 7;
+        assertEquals(new Pos2dImpl(0, y), player.getPosition());
     }
 
     /**
@@ -78,7 +81,8 @@ public class TestWorld {
         assertFalse(world.getBlocks().isEmpty());
         assertFalse(world.getEnemies().isEmpty());
         assertNotNull(world.getPlayer());
-        assertEquals(new Pos2dImpl(0, 7), world.getPlayer().getPosition());
+        final int y = 7;
+        assertEquals(new Pos2dImpl(0, y), world.getPlayer().getPosition());
     }
 
     /**

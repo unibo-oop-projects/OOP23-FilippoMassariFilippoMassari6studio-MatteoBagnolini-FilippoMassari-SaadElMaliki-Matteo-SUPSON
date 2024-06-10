@@ -37,7 +37,8 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     @Override
     public void stopOnOrizontal() {
-        this.state = new PlayerState.Builder(state).left(false).right(false).build();
+        this.state = new PlayerState.Builder(state).left(false).right(false)
+                .vel(new Vect2dImpl(0, state.vel().y())).build();
     }
 
     @Override

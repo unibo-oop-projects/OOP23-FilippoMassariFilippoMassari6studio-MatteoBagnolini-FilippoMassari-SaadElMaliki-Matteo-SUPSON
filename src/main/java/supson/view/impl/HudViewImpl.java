@@ -1,10 +1,20 @@
 package supson.view.impl;
 
-import javax.swing.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import supson.model.hud.api.Hud;
 import supson.view.api.HudView;
 
+/**
+ * Represents the main hud view that displays the HUD.
+ */
 public final class HudViewImpl implements HudView {
 
     private static final int LABEL_WIDTH = 150;
@@ -33,7 +43,7 @@ public final class HudViewImpl implements HudView {
      * @param y the y-coordinate of the label's top-left corner
      * @return the created JLabel
      */
-    private JLabel createLabel(String text, int x, int y) {
+    private JLabel createLabel(final String text, final int x, final int y) {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
         label.setFont(new Font("Arial", Font.BOLD, 16));

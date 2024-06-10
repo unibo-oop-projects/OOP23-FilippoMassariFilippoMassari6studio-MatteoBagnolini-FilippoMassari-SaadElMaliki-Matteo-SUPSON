@@ -6,12 +6,17 @@ import org.junit.jupiter.api.Test;
 import supson.model.timer.api.GameTimer;
 import supson.model.timer.impl.GameTimerImpl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class contains unit tests for the GameTimerImpl class.
  */
-public class TestGameTimerImpl {
+public final class TestGameTimerImpl {
+
+    private static final int NANO_SEC = 100_000_000;
+    private static final double MICRO_SEC = 0.1;
+    private static final int SLEEP_SEC = 100;
 
     private GameTimer timer;
 
@@ -37,10 +42,10 @@ public class TestGameTimerImpl {
     @Test
     void testStop() throws InterruptedException {
         timer.start();
-        Thread.sleep(100); // Sleep for 100 milliseconds
+        Thread.sleep(SLEEP_SEC);
         timer.stop();
         long elapsedTime = timer.getElapsedTime();
-        assertTrue(elapsedTime >= 100_000_000); // 100 milliseconds in nanoseconds
+        assertTrue(elapsedTime >= NANO_SEC);
     }
 
     /**
@@ -63,10 +68,10 @@ public class TestGameTimerImpl {
     @Test
     void testGetElapsedTime() throws InterruptedException {
         timer.start();
-        Thread.sleep(200); // Sleep for 200 milliseconds
+        Thread.sleep(2 * SLEEP_SEC);
         timer.stop();
         long elapsedTime = timer.getElapsedTime();
-        assertTrue(elapsedTime >= 200_000_000); // 200 milliseconds in nanoseconds
+        assertTrue(elapsedTime >= 2 * NANO_SEC);
     }
 
     /**
@@ -76,10 +81,10 @@ public class TestGameTimerImpl {
     @Test
     void testGetElapsedTimeInSeconds() throws InterruptedException {
         timer.start();
-        Thread.sleep(300); // Sleep for 300 milliseconds
+        Thread.sleep(3 * SLEEP_SEC);
         timer.stop();
         double elapsedTimeInSeconds = timer.getElapsedTimeInSeconds();
-        assertTrue(elapsedTimeInSeconds >= 0.3); // 300 milliseconds in seconds
+        assertTrue(elapsedTimeInSeconds >= 3 * MICRO_SEC);
     }
 
     /**
@@ -89,17 +94,13 @@ public class TestGameTimerImpl {
     @Test
     void testStartStopStart() throws InterruptedException {
         timer.start();
-        Thread.sleep(100); // Sleep for 100 milliseconds
+        Thread.sleep(SLEEP_SEC);
         timer.stop();
-        
         long firstElapsedTime = timer.getElapsedTime();
-        
         timer.start();
-        Thread.sleep(100); // Sleep for another 100 milliseconds
+        Thread.sleep(SLEEP_SEC);
         timer.stop();
-        
         long secondElapsedTime = timer.getElapsedTime();
-        
-        assertTrue(secondElapsedTime >= firstElapsedTime + 100_000_000); // 100 milliseconds in nanoseconds
+        assertTrue(secondElapsedTime >= firstElapsedTime + MICRO_SEC);
     }
 }
