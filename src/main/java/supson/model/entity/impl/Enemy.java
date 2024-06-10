@@ -5,6 +5,7 @@ import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
+import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
 /**
@@ -21,7 +22,7 @@ public final class Enemy extends AbstractMoveableEntity {
     private static final double GRAVITY = 0.05;
     
     private static final int LIFE = 1;
-    private static final int RANGE = 1;
+    private static final int RANGE = 2;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
@@ -29,7 +30,7 @@ public final class Enemy extends AbstractMoveableEntity {
     private static final GameEntityType TYPE = GameEntityType.ENEMY;
 
     private boolean forward;
-    private Pos2d initialPos;
+    private final Pos2d initialPos;
     private double range;
 
     /**
@@ -40,9 +41,9 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param range the range of movement of the enemy
      */
     public Enemy(Pos2d pos) {
-        super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, 0,
+        super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, ACC_SPEED,
                                                     FRICTION, JUMP_FORCE, GRAVITY));
-        this.forward = true;
+        this.forward = false;
         this.initialPos = pos;
         this.range = RANGE;
     }
@@ -50,21 +51,23 @@ public final class Enemy extends AbstractMoveableEntity {
 
     @Override
     protected void updateVelocity() {
-        if (forward) {
-            getPhysicsComponent().moveLeft(this);
-            forward = getXDistanceFromSpawn() > range ? true : false;
+        final Physics physicComponent = getPhysicsComponent();
+        if (this.forward) {
+            physicComponent.moveLeft(this);
+            if (this.initialPos.x() - this.getPosition().x() >= range) {
+                this.forward = false;
+            }
         } else {
-        getPhysicsComponent().moveRight(this);
-        forward = getXDistanceFromSpawn() > range ? false : true;
+            physicComponent.moveRight(this);
+            if (this.initialPos.x() - this.getPosition().x() <= 0) {
+                this.forward = true;
+            }
         }
+        //physicComponent.applyGravity(this);
     }
 
     public void applyDamage(Player player){
         player.setLife(player.getLife()-1);
-    }
-
-    private double getXDistanceFromSpawn() {
-        return Math.abs(this.getPosition().x() - initialPos.x());
     }
 
 }
