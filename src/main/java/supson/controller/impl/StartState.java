@@ -15,11 +15,11 @@ public class StartState implements GameState {
     public StartState(GameController controller, JFrame gameFrame){
         this.gameFrame = gameFrame;
         this.controller = controller;
+        view = new StartViewImpl(gameFrame, controller);
     } 
 
     @Override
     public void enter() {
-        view = new StartViewImpl(gameFrame, controller);
         view.initView();
     }
 

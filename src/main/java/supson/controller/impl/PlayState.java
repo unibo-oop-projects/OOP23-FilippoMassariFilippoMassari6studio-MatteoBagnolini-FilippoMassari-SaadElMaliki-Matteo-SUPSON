@@ -16,11 +16,11 @@ public class PlayState implements GameState{
     public PlayState(JFrame gameFrame, World world){
         this.world = world;
         this.gameFrame = gameFrame;
+        view = new GameViewImpl(gameFrame);
     }
 
     @Override
     public void enter() {
-        view = new GameViewImpl(gameFrame);
         view.initView();
     }
 
