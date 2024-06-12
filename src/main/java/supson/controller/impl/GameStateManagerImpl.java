@@ -1,7 +1,7 @@
-package supson.view.impl;
+package supson.controller.impl;
 
-import supson.view.api.GameState;
-import supson.view.api.GameStateManager;
+import supson.controller.api.GameState;
+import supson.controller.api.GameStateManager;
 
 public class GameStateManagerImpl implements GameStateManager{
     private GameState currState;

@@ -1,10 +1,11 @@
-package supson.view.impl;
+package supson.controller.impl;
 
 import javax.swing.JFrame;
 
+import supson.controller.api.GameState;
 import supson.model.world.api.World;
-import supson.view.api.GameState;
 import supson.view.api.GameView;
+import supson.view.impl.GameViewImpl;
 
 public class PlayState implements GameState{
     JFrame gameFrame;
@@ -15,11 +16,11 @@ public class PlayState implements GameState{
     public PlayState(JFrame gameFrame, World world){
         this.world = world;
         this.gameFrame = gameFrame;
-        view = new GameViewImpl(gameFrame);
     }
 
     @Override
     public void enter() {
+        view = new GameViewImpl(gameFrame);
         view.initView();
     }
 

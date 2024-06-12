@@ -14,6 +14,7 @@ import supson.view.api.StartView;
 public class StartViewImpl implements StartView {
     private static final int WIDTH = 948;
     private static final int HEIGHT = 720;
+    private static final String BG_PATH = "sprite/menubackground.jpg";
 
     private final JFrame gameFrame;
     private final JButton startButton;

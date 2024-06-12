@@ -1,4 +1,4 @@
-package supson.view.api;
+package supson.controller.api;
 
 public interface GameStateManager {
     GameState getState();

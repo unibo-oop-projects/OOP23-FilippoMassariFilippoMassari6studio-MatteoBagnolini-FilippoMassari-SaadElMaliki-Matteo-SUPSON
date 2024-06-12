@@ -1,6 +1,6 @@
-package supson.view.impl;
+package supson.controller.impl;
 
-import supson.view.api.GameState;
+import supson.controller.api.GameState;
 
 public class ScoreState implements GameState{
 

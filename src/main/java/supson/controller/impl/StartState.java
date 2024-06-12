@@ -1,10 +1,11 @@
-package supson.view.impl;
+package supson.controller.impl;
 
 import javax.swing.JFrame;
 
 import supson.controller.api.GameController;
-import supson.view.api.GameState;
+import supson.controller.api.GameState;
 import supson.view.api.StartView;
+import supson.view.impl.StartViewImpl;
 
 public class StartState implements GameState {
     private StartView view;

@@ -3,14 +3,10 @@ package supson.controller.impl;
 import javax.swing.JFrame;
 
 import supson.controller.api.GameController;
+import supson.controller.api.GameStateManager;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
-import supson.view.api.GameStateManager;
-import supson.view.impl.GameStateManagerImpl;
 import supson.view.impl.InputManager;
-import supson.view.impl.PlayState;
-import supson.view.impl.ScoreState;
-import supson.view.impl.StartState;
 
 /**
  * This class, which implements the GameController interface, models the game controller.
