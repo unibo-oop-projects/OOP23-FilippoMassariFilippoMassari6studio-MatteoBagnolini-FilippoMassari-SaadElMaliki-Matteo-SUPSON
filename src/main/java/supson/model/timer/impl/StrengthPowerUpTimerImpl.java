@@ -24,14 +24,16 @@ public final class StrengthPowerUpTimerImpl extends AbstractCollectibleTimer {
 
     @Override
     public void activateEffect() {
-        this.player.setState(new PlayerState.Builder(
-            player.getState()).isInvulnerable(true).build());
+        // this.player.setState(new PlayerState.Builder(
+        //     player.getState()).isInvulnerable(true).build());
+        this.player.setState(player.getState().setInvulnerable());
     }
 
     @Override
     public void terminateEffect() {
-        this.player.setState(new PlayerState.Builder(
-            player.getState()).isInvulnerable(false).build());
+        // this.player.setState(new PlayerState.Builder(
+        //     player.getState()).isInvulnerable(false).build());
+        this.player.setState(player.getState().setNotInvulnerable());
     }
 
 }
