@@ -15,71 +15,58 @@ import supson.common.api.Vect2d;
  * @param isInvulnerable bool flag representing if the player is invulnerable
  */
 public record PlayerState(Vect2d vel, boolean right, boolean left,
-    boolean jump, boolean onGround, boolean isJumping, boolean isInvulnerable) { 
+    boolean jump, boolean onGround, boolean isJumping, boolean isInvulnerable) {
 
-    public PlayerState(final Builder builder) {
-        this(builder.vel, builder.right, builder.left, builder.jump,
-        builder.onGround, builder.isJumping, builder.isInvulnerable);
+    public PlayerState withVelocity(final Vect2d velocity) {
+        return new PlayerState(velocity, right, left, jump, onGround, isJumping, isInvulnerable);
     }
 
-    public static final class Builder {
-        private Vect2d vel;
-        private boolean right;
-        private boolean left;
-        private boolean jump;
-        private boolean onGround;
-        private boolean isJumping;
-        private boolean isInvulnerable;
+    public PlayerState setRight() {
+        return new PlayerState(vel, true, left, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder(final PlayerState state) {
-            this.vel = state.vel;
-            this.right = state.right;
-            this.left = state.left;
-            this.jump = state.jump;
-            this.onGround = state.onGround;
-            this.isJumping = state.isJumping;
-            this.isInvulnerable = state.isInvulnerable;
-        }
+    public PlayerState setNotRight() {
+        return new PlayerState(vel, false, left, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder vel(final Vect2d vel) {
-            this.vel = vel;
-            return this;
-        }
+    public PlayerState setLeft() {
+        return new PlayerState(vel, right, true, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder right(final boolean right) {
-            this.right = right;
-            return this;
-        }
+    public PlayerState setNotLeft() {
+        return new PlayerState(vel, right, false, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder left(final boolean left) {
-            this.left = left;
-            return this;
-        }
+    public PlayerState setJump() {
+        return new PlayerState(vel, right, left, true, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder jump(final boolean jump) {
-            this.jump = jump;
-            return this;
-        }
+    public PlayerState setNotJump() {
+        return new PlayerState(vel, right, left, false, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder onGround(final boolean onGround) {
-            this.onGround = onGround;
-            return this;
-        }
+    public PlayerState setOnGround() {
+        return new PlayerState(vel, right, left, jump, true, isJumping, isInvulnerable);
+    }
 
-        public Builder isJumping(final boolean isJumping) {
-            this.isJumping = isJumping;
-            return this;
-        }
+    public PlayerState setNotOnGround() {
+        return new PlayerState(vel, right, left, jump, false, isJumping, isInvulnerable);
+    }
 
-        public Builder isInvulnerable(final boolean isInvulnerable) {
-            this.isInvulnerable = isInvulnerable;
-            return this;
-        }
+    public PlayerState setIsJumping() {
+        return new PlayerState(vel, right, left, jump, onGround, true, isInvulnerable);
+    }
 
-        public PlayerState build() {
-            return new PlayerState(this);
-        }
+    public PlayerState setNotIsJumping() {
+        return new PlayerState(vel, right, left, jump, onGround, false, isInvulnerable);
+    }
 
+    public PlayerState setInvulnerable() {
+        return new PlayerState(vel, right, left, jump, onGround, isJumping, true);
+    }
+
+    public PlayerState setNotInvulnerable() {
+        return new PlayerState(vel, right, left, jump, onGround, isJumping, false);
     }
 
 }
