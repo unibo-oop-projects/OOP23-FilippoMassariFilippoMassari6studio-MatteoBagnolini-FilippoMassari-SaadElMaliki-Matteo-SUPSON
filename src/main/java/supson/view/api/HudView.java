@@ -1,6 +1,6 @@
 package supson.view.api;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import supson.model.hud.api.Hud;
 
@@ -16,5 +16,5 @@ public interface HudView {
     * @param gameFrame the frame to render the HUD on
     * @param hud the hud object to render the HUD for
     */
-    void renderHud(JFrame gameFrame, Hud hud);
+    void renderHud(JPanel gameFrame, Hud hud);
 }

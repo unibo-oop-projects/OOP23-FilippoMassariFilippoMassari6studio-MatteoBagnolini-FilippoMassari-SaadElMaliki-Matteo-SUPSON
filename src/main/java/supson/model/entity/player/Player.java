@@ -2,7 +2,7 @@ package supson.model.entity.player;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.common.api.Vect2d;
+import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
@@ -34,11 +34,9 @@ public final class Player extends AbstractMoveableEntity {
     /**
      * The constructor of the player class.
      * @param pos the starting positon of the player
-     * @param vel the starting velocity of the player
-     * @param life the number of life of the player
      */
-    public Player(final Pos2d pos, final Vect2d vel, final int life) {
-        super(pos, HEIGHT, WIDTH, TYPE, vel, life,
+    public Player(final Pos2d pos) {
+        super(pos, HEIGHT, WIDTH, TYPE, new Vect2dImpl(0, 0), MAX_LIVES,
             new PhysicsImpl(MAX_SPEED, ACC_SPEED, DEC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
     } 
@@ -116,7 +114,7 @@ public final class Player extends AbstractMoveableEntity {
      * @param lives an integer representing how many lives to increment
      */
     public void incrementLife(final int lives) {
-        if (getLife() + lives < MAX_LIVES) {
+        if (getLife() + lives <= MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
     }

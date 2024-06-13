@@ -1,14 +1,15 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
 import supson.model.block.impl.CollectibleFactoryImpl;
 import supson.model.block.api.Collectible;
@@ -27,7 +28,7 @@ public class TestCollectable {
     @BeforeEach
     public void setUp() {
         factory = new CollectibleFactoryImpl();
-        player = new Player(new Pos2dImpl(0,0), new Vect2dImpl(0, 0), 1);
+        player = new Player(new Pos2dImpl(0, 0));
     }
 
     /**
