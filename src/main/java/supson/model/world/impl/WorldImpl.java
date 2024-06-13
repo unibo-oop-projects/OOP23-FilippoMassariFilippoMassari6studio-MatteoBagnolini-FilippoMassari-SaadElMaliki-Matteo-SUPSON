@@ -80,11 +80,11 @@ public final class WorldImpl implements World {
     }
 
     private void updateEntities(final long elapsed) {
-        List<MoveableEntity> movEntities = new ArrayList<>(enemies);
+        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
         movEntities.forEach(e -> {
-            Pos2d oldPos = e.getPosition();
+            final Pos2d oldPos = e.getPosition();
             e.move(elapsed);
             if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
                 playerManager.setState(player.getState());
@@ -94,13 +94,13 @@ public final class WorldImpl implements World {
     }
 
     private void handleCollisions() {
-        List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
         killed.forEach(this::removeEnemy);
 
         collisionResolver.resolveTrapCollisions(player,
                 blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
 
-        List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
+        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
                 blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
                         .collect(Collectors.toList()));
         activated.forEach(this::removeBlock);
@@ -155,7 +155,7 @@ public final class WorldImpl implements World {
 
     @Override
     public List<GameEntity> getGameEntities() {
-        List<GameEntity> entities = new ArrayList<>();
+        final List<GameEntity> entities = new ArrayList<>();
         entities.addAll(this.blocks);
         entities.addAll(this.enemies);
         entities.add(this.player);
