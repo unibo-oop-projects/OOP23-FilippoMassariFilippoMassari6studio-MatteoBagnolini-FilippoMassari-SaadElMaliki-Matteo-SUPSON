@@ -46,6 +46,10 @@ Ad ogni ciclo del game loop, per ogni `MoveableEntity` verrà prima chiamato `up
 
 **Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (ad esempio forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità) che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco personalizzata. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
 
+### Gestione delle collisioni
+
+**Problema:** Bisogna gestire le collisioni tra il giocatore e le entità di gioco. 
+
 ### Massari Filippo
 
 ### Gestione e riconoscimento delle entità di gioco
