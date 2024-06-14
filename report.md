@@ -63,7 +63,7 @@ classDiagram
         + applyDamage()
     }
 
-    AbstractGameEntity ..|> GameEntity
+    GameEntity <|.. AbstractGameEntity
     AbstractGameEntity <|-- AbstractMoveableEntity
     AbstractGameEntity <|-- AbstractCollectible
     AbstractGameEntity <|-- AbstractMoveableEntity
