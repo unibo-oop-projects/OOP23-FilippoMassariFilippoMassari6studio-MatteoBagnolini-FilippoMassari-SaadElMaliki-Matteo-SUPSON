@@ -70,7 +70,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player moves right.
      * @param flag the boolean value representing right move
      */
-    public void setMoveRight(final boolean flag) {
+    public void setMoveRight(final boolean flag) { // TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.right = flag;
     }
 
@@ -79,7 +79,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player moves left.
      * @param flag the boolean value representing left move
      */
-    public void setMoveLeft(final boolean flag) {
+    public void setMoveLeft(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.left = flag;
     }
 
@@ -88,7 +88,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player jumps.
      * @param flag the boolean value representing jump
      */
-    public void setJump(final boolean flag) {
+    public void setJump(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.jump = flag;
     }
 
