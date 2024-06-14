@@ -9,6 +9,7 @@ import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.api.Finishline;
 import supson.model.block.api.Trap;
 import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionManager;
@@ -18,6 +19,7 @@ import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
 import supson.model.hitbox.api.Hitbox;
+import supson.model.world.api.World;
 
 /**
  * This class is a collision resolver. It is used to check
@@ -53,6 +55,17 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         }
 
         entity.setPosition(new Pos2dImpl(newX, newY));
+    }
+
+    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, World world) {
+        finishlines.stream()
+        .filter(f -> f.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(f -> f.getHitbox().isCollidingWith(player.getHitbox()))
+        .forEach(f -> {
+            f.endGame(world);
+            /*notifyObservers(f.getPosition().x()>player.getPosition().x()
+                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);*/
+        });
     }
 
     @Override

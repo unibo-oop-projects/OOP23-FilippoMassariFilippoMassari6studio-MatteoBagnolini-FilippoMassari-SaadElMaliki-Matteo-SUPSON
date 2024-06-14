@@ -10,8 +10,10 @@ import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
+import supson.model.block.api.Finishline;
 import supson.model.block.api.Trap;
 import supson.model.block.impl.DamageTrapImpl;
+import supson.model.block.impl.FinishlineImpl;
 import supson.model.block.impl.SubTerrainImpl;
 import supson.model.block.impl.TerrainImpl;
 import supson.model.collisions.api.CollisionObserver;
@@ -104,6 +106,9 @@ public final class WorldImpl implements World {
                 blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
                         .collect(Collectors.toList()));
         activated.forEach(this::removeBlock);
+
+        collisionResolver.resolveFinishlineCollision(player, 
+                blocks.stream().filter(b -> b instanceof Finishline).map(Finishline.class::cast).collect(Collectors.toList()), this);
     }
 
     @Override
@@ -125,6 +130,9 @@ public final class WorldImpl implements World {
                 break;
             case SUBTERRAIN:
                 block = new SubTerrainImpl(pos);
+                break;
+            case FINISHLINE:
+                block = new FinishlineImpl(pos);
                 break;
             default:
                 block = new TerrainImpl(pos);
@@ -186,4 +194,10 @@ public final class WorldImpl implements World {
     public boolean isGameOver() {
         return gameOver;
     }
+
+    @Override
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+    
 }

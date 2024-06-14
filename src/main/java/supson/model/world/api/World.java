@@ -131,4 +131,6 @@ public interface World {
      * @return whether the game is over
      */
     boolean isGameOver();
+
+    void setGameOver(boolean gameOver);
 }

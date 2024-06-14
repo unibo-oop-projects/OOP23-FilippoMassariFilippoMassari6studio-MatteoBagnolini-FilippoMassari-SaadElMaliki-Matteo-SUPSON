@@ -62,7 +62,8 @@ public final class WorldLoaderImpl implements WorldLoader {
             world.addEnemy(new Enemy(pos));
         } else if (type.equals(GameEntityType.TERRAIN) 
                    || type.equals(GameEntityType.DAMAGE_TRAP) 
-                   || type.equals(GameEntityType.SUBTERRAIN)) {
+                   || type.equals(GameEntityType.SUBTERRAIN)
+                   || type.equals(GameEntityType.FINISHLINE)) {
             world.addBlock(type, pos);
         } else {
             world.addCollectible(collectibleFactory.createCollectible(type, pos));
