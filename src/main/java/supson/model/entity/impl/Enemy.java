@@ -3,6 +3,7 @@ package supson.model.entity.impl;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
+import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.player.Player;
 import supson.model.physics.api.Physics;
@@ -14,7 +15,7 @@ import supson.model.physics.impl.PhysicsImpl;
  */
 public final class Enemy extends AbstractMoveableEntity {
 
-    private static final int MAX_SPEED = 5;
+    private static final int MAX_SPEED = 2;
     private static final double ACC_SPEED = 0.4;
     private static final Vect2d VELOCITY = new Vect2dImpl(0, 0);
     private static final double FRICTION = 0.4;
@@ -22,7 +23,7 @@ public final class Enemy extends AbstractMoveableEntity {
     private static final double GRAVITY = 0.05;
     
     private static final int LIFE = 1;
-    private static final int RANGE = 2;
+    private static final int RANGE = 3;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
@@ -66,8 +67,10 @@ public final class Enemy extends AbstractMoveableEntity {
         //physicComponent.applyGravity(this);
     }
 
-    public void applyDamage(Player player){
+    public void applyDamage(Player player){     // TODO: codice momentaneo, sarebbe meglio fare thread con sleep per rendere l'enemy innuocuo
         player.setLife(player.getLife()-1);
+        forward = player.getVelocity().x() < 0;
+        this.setPosition(new Pos2dImpl(getPosition().x()+0.4, getPosition().y()));
     }
 
 }
