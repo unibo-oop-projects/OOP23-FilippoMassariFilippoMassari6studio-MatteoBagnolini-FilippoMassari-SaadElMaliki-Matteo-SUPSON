@@ -163,12 +163,8 @@ classDiagram
 
     class CollisionEvent {
         <<enumeration>>
-        BLOCK_UPPER_COLLISION
-        BLOCK_LOWER_COLLISION
-        BLOCK_RIGHT_COLLISION
-        BLOCK_LEFT_COLLISION
-        OBSTACLE_LEFT_COLLISION
-        OBSTACLE_RIGHT_COLLISION
+        BLOCK_COLLISION
+        OBSTACLE_COLLISION
     }
 
     CollisionObservable <|.. CollisionResolver
