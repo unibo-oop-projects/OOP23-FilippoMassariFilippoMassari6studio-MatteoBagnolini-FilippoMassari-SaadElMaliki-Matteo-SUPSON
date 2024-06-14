@@ -25,7 +25,7 @@ import supson.model.hitbox.api.Hitbox;
  */
 public final class CollisionResolver implements CollisionManager, CollisionObservable {
 
-    private static final int RENDER_DISTANCE = 10;
+    private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
     private final List<CollisionObserver> observers;
