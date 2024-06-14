@@ -34,15 +34,15 @@ Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano
 classDiagram
     class AbstractGameEntity {
         <<abstract>>
-        + getPosition()
-        + setPosition()
+        + getPosition() : Pos2d
+        + setPosition(pos : Pos2d)
     }
     
     class AbstractMoveableEntity {
         <<abstract>>
-        + getVelocity()
-        + setVelocity()
-        + move()
+        + getVelocity() : Vect2d
+        + setVelocity(vel : Vect2d)
+        + move(elapsed : long)
     }
 
     class Player {
@@ -56,17 +56,16 @@ classDiagram
 
     class AbstractCollectible {
         <<Abstract>>
-        + collect()
+        + collect(player : Player)
     }
 
     class Enemy {
-        + applyDamage()
+        + applyDamage(player: Player)
     }
 
     GameEntity <|.. AbstractGameEntity
     AbstractGameEntity <|-- AbstractMoveableEntity
     AbstractGameEntity <|-- AbstractCollectible
-    AbstractGameEntity <|-- AbstractMoveableEntity
     AbstractMoveableEntity <|-- Player
     AbstractMoveableEntity <|-- Enemy
 ```
@@ -78,6 +77,48 @@ In questo modo ho ridotto la ripetizione di codice non necessario, poichè le cl
 
 ### Movimento delle entità
 
+```mermaid
+classDiagram
+    class AbstractMoveableEntity {
+        <<Abstract>>
+        - physicsComponent
+        + move(elapsed : long)
+        + updateVelocity() *
+    }
+
+    class Player {
+        + updateVelocity()
+    }
+
+    class Enemy {
+        + updateVelocity()
+    }
+
+    class Physics {
+        <<Interface>>
+        + moveRight(entity : MoveableEntity)
+        + moveLeft(entity : MoveableEntity)
+        + jump(entity : MoveableEntity)
+        + applyGravity(entity : MoveableEntity)
+        + applyFriction(entity : MoveableEntity)
+    }
+
+    class PhysicsImpl {
+        - acceleration : double
+        - deceleration : double
+        - maxSpeed : int
+        - friction : double
+        - jumpForce : int
+        - gravity : double
+    }
+
+    AbstractMoveableEntity <|-- Player
+    AbstractMoveableEntity <|-- Enemy
+    AbstractMoveableEntity *-- Physics
+    PhysicsImpl --|> Physics
+
+```
+
 **Problema:** Ogni `MoveableEntity` deve potersi muovere, e ogni entità dovrebbe avere la sua logica di movimento.
 
 **Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()` della classe stessa. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. In questo modo si rende possibile il riuso del codice per entità che si muovono ognuna con una propria logica differente.
@@ -88,11 +129,99 @@ In questo modo ho ridotto la ripetizione di codice non necessario, poichè le cl
 
 ### Gestione delle collisioni
 
+```mermaid
+classDiagram
+    
+    class CollisionObservable {
+        <<Interface>>
+        + register(obs : CollisionObserver)
+        + unregister(obs : CollisionObserver)
+        + notifyObservers(event : CollisionEvent)
+    }
+
+    class CollisionObserver {
+        <<Interface>>
+        + onNotify(event : CollisionEvent)
+    }
+
+    class CollisionResolver {
+        - observers : List~CollisionObserver~
+        + resolvePlatformCollisions(entity : MoveableGameEntity, blocks : List~Blocks~,startingPos : Pos2d)
+        + resolveTrapCollisions(player : Player, traps : List~Trap~)
+        + resolveEnemiesCollisions(player : Player,enemies : List~Enemy~)
+        + resolveCollectibleCollisions(player : Player, collectibles : List~Collectible~)
+    }
+
+    class PlayerManagerImpl {
+        + onNotify(event : CollisionEvent)
+        - leftCollision()
+        - rightCollision()
+        - upperCollision()
+        - lowerCollision()
+        - pushback()
+    }
+
+    class CollisionEvent {
+        <<enumeration>>
+        BLOCK_UPPER_COLLISION
+        BLOCK_LOWER_COLLISION
+        BLOCK_RIGHT_COLLISION
+        BLOCK_LEFT_COLLISION
+        OBSTACLE_LEFT_COLLISION
+        OBSTACLE_RIGHT_COLLISION
+    }
+
+    CollisionObservable <|.. CollisionResolver
+    CollisionObserver <|.. PlayerManagerImpl
+    CollisionResolver *-- PlayerManagerImpl
+    CollisionResolver --> CollisionEvent : Produces
+    PlayerManagerImpl --> CollisionEvent : Uses
+
+```
+
 **Problema:** Bisogna gestire le collisioni tra il giocatore e le entità di gioco. Ogni entità con cui il giocatore collide provoca effetti differenti.
 
 **Soluzione:** Per gestire le collisioni ho utilizzato il pattern Observer: la classe `CollisionResolver` funge da osservabile, che viene osservato da `PlayerManagerImpl`. Dopo ogni collisione tra il giocatore e specifiche entità di gioco (come blocchi e nemici), `CollisionResolver` notifica a `PlayerManagerImpl` l'evento (un enum di tipo `CollisionEvent`). Questo evento viene poi gestito tramite la specifica routine all'interno della classe manager. Ho voluto implementare questo pattern sia per rendere più manutenibile il codice, sia per renderlo aperto a future modifiche e migliorie. Ad esempio l'observer potrebbe essere usato per aggiungere elementi sonori al gioco semplicemente creando una classe che osserva il `CollisionResolver` e definendo delle specifiche subroutine per ogni evento.
 
 ### Stato del giocatore
+
+```mermaid
+classDiagram
+    class Player {
+        - right : boolean
+        - left : boolean
+        - jump : boolean
+        - isJumping : boolean
+        - onGround : boolean
+        - invulnerable : boolean
+        + getState() : PlayerState
+        + setState(state : PlayerState)
+    }
+
+    class PlayerState {
+        - vel : Vect2d
+        - right : boolean
+        - left : boolean
+        - jump : boolean
+        - isJumping : boolean
+        - onGround : boolean
+        - invulnerable : boolean
+        + withVelocity(vel : Vect2d) : PlayerState
+        + setRight() : PlayerState
+        + setNotRight() : PlayerState
+    }
+    note for PlayerState "Sono presenti anche gli altri metodi set corrispettivi di tutti i campi"
+
+    class PlayerManagerImpl {
+        - state : PlayerState
+        + getUpdatedState() state : PlayerState
+        + setState(state : PlayerState)
+    }
+
+    PlayerManagerImpl *-- PlayerState
+    Player -- PlayerManagerImpl
+
+```
 
 **Problema:** Bisogna trovare un modo per rappresentare lo stato interno del giocatore, rappresentato dai vari campi della classe `Player`, tramite una classe apposita. Inoltre si vuole trovare un modo per creare istanze di questa classe in maniera linguisticamente efficiente.
 
