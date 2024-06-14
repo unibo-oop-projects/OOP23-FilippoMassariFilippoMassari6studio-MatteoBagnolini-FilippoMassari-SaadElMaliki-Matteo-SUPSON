@@ -30,6 +30,47 @@ Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano
 ### Bagnolini Matteo
 ### Gerarchia di entità di gioco
 
+```mermaid
+classDiagram
+    class AbstractGameEntity {
+        <<abstract>>
+        + getPosition()
+        + setPosition()
+    }
+    
+    class AbstractMoveableEntity {
+        <<abstract>>
+        + getVelocity()
+        + setVelocity()
+        + move()
+    }
+
+    class Player {
+        + getLife() : int
+        + getScore() : int
+    }
+
+    class GameEntity {
+        <<interface>>
+    }
+
+    class AbstractCollectible {
+        <<Abstract>>
+        + collect()
+    }
+
+    class Enemy {
+        + applyDamage()
+    }
+
+    AbstractGameEntity ..|> GameEntity
+    AbstractGameEntity <|-- AbstractMoveableEntity
+    AbstractGameEntity <|-- AbstractCollectible
+    AbstractGameEntity <|-- AbstractMoveableEntity
+    AbstractMoveableEntity <|-- Player
+    AbstractMoveableEntity <|-- Enemy
+```
+
 **Problema:** Gestire la definizione di varie entità di gioco, dotate di caratteristiche differenti. Si vuole minimizzare la ripetizione di codice e garantire estendibilità per future modifiche e feature aggiuntive.
 
 **Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, anello e power-up (foglie dell'albero) e `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (foglie dell'albero).
