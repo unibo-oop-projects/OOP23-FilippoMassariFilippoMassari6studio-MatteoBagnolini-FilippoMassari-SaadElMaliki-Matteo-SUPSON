@@ -146,9 +146,9 @@ classDiagram
 
     class CollisionResolver {
         - observers : List~CollisionObserver~
-        + resolvePlatformCollisions(entity : MoveableGameEntity, blocks : List~Blocks~,startingPos : Pos2d)
+        + resolvePlatformCollisions(entity : MoveableGameEntity, blocks : List~Blocks~, startingPos : Pos2d)
         + resolveTrapCollisions(player : Player, traps : List~Trap~)
-        + resolveEnemiesCollisions(player : Player,enemies : List~Enemy~)
+        + resolveEnemiesCollisions(player : Player, enemies : List~Enemy~)
         + resolveCollectibleCollisions(player : Player, collectibles : List~Collectible~)
     }
 
