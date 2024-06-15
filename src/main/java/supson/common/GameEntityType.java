@@ -48,7 +48,7 @@ public enum GameEntityType {
     /*
      * Represents the finihline blocks. 
      */
-    FINISHLINE("sprite/enemy_sprite.png", 8);
+    FINISHLINE("sprite/finishline_sprite.png", 8);
 
     private final String spritePath;
     private final int index;
