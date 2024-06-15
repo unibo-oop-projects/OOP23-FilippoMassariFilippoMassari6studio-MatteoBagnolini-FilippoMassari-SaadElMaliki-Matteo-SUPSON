@@ -9,7 +9,7 @@ import supson.model.world.api.World;
 
 public class FinishlineImpl extends AbstractGameEntity implements Finishline {
 
-    private static final int HEIGHT = 4;
+    private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
 
     private static final GameEntityType TYPE = GameEntityType.FINISHLINE;
