@@ -1,6 +1,6 @@
 package supson.model.effect.api;
 
-import supson.model.entity.player.Player;
+import supson.model.entity.impl.player.Player;
 
 /**
  * The CollectibleTimer interface represents a timer that can activate and terminate effects.

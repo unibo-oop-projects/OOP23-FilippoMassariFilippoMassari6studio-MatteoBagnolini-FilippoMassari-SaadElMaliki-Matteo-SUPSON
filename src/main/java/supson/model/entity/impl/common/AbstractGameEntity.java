@@ -1,8 +1,8 @@
-package supson.model.entity.impl;
+package supson.model.entity.impl.common;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.entity.api.GameEntity;
+import supson.model.entity.api.common.GameEntity;
 import supson.model.hitbox.api.Hitbox;
 import supson.model.hitbox.impl.RectHitbox;
 

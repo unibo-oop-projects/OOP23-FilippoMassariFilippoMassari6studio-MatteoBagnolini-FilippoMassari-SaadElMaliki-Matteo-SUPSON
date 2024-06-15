@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.entity.api.GameEntity;
+import supson.model.entity.api.common.GameEntity;
 import supson.view.api.WorldPositionManager;
 
 /**

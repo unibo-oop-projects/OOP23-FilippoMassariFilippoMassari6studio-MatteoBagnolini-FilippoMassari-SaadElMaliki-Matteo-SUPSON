@@ -1,4 +1,4 @@
-package supson.model.entity.api;
+package supson.model.entity.api.common;
 
 import supson.common.api.Vect2d;
 

@@ -6,8 +6,8 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 
 import supson.common.GameEntityType;
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.player.Player;
 import supson.view.api.WorldImageManager;
 
 /**

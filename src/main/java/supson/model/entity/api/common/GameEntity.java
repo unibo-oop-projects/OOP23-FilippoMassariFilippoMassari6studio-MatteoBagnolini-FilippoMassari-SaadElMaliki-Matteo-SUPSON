@@ -1,4 +1,4 @@
-package supson.model.entity.api;
+package supson.model.entity.api.common;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;

@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.collectible.Collectible;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.enemy.Enemy;
+import supson.model.entity.impl.player.Player;
 import supson.model.hud.api.Hud;
 
 /**

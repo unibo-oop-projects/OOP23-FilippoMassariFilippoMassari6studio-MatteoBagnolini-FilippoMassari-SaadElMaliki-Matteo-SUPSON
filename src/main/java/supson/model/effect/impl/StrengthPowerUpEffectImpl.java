@@ -1,7 +1,7 @@
 package supson.model.effect.impl;
 
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.player.Player;
+import supson.model.entity.impl.player.PlayerState;
 
 /**
  * Represents a strength power-up effect that makes the player invulnerable.

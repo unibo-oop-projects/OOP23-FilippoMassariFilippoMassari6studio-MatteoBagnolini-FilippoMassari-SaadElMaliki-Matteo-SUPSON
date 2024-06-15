@@ -13,9 +13,9 @@ import java.util.stream.IntStream;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.CollectibleFactory;
-import supson.model.block.impl.CollectibleFactoryImpl;
-import supson.model.entity.impl.Enemy;
+import supson.model.entity.api.collectible.CollectibleFactory;
+import supson.model.entity.impl.collectible.CollectibleFactoryImpl;
+import supson.model.entity.impl.enemy.Enemy;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 

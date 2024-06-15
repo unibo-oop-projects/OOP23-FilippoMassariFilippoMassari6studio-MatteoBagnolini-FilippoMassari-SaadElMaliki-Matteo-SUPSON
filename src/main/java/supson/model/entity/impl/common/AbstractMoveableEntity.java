@@ -1,9 +1,9 @@
-package supson.model.entity.impl;
+package supson.model.entity.impl.common;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.api.common.MoveableEntity;
 import supson.model.physics.api.Physics;
 
 /**

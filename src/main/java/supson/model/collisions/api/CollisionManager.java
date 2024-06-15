@@ -3,12 +3,12 @@ package supson.model.collisions.api;
 import java.util.List;
 
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.Trap;
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.Trap;
+import supson.model.entity.api.collectible.Collectible;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.api.common.MoveableEntity;
+import supson.model.entity.impl.enemy.Enemy;
+import supson.model.entity.impl.player.Player;
 
 /**
  * This interface represent a collision manager. It is used to manage the collisions

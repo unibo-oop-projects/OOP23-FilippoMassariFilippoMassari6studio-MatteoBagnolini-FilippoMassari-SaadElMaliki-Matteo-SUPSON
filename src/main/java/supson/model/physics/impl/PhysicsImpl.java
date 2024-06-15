@@ -2,7 +2,7 @@ package supson.model.physics.impl;
 
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.api.common.MoveableEntity;
 import supson.model.physics.api.Physics;
 
 /**

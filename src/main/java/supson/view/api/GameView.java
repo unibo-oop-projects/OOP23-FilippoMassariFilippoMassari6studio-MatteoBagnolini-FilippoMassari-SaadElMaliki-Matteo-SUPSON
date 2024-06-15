@@ -2,8 +2,8 @@ package supson.view.api;
 
 import java.util.List;
 
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.player.Player;
 import supson.model.hud.api.Hud;
 
 /**

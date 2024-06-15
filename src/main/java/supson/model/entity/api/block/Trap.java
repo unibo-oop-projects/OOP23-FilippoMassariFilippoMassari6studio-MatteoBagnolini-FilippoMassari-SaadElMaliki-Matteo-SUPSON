@@ -1,7 +1,7 @@
-package supson.model.block.api;
+package supson.model.entity.api.block;
 
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.player.Player;
 
 /**
  * The Trap interface represents a block entity that can trap the player.

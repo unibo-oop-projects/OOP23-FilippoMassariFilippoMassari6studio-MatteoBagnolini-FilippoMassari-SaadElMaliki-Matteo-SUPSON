@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import javax.swing.ImageIcon;
 
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.player.Player;
 
 /**
  * Manages image icons for game entities in the world.

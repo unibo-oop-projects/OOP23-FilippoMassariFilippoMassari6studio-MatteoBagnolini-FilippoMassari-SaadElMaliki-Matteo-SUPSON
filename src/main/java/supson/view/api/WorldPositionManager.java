@@ -2,7 +2,7 @@ package supson.view.api;
 
 import javax.swing.JLabel;
 
-import supson.model.entity.api.GameEntity;
+import supson.model.entity.api.common.GameEntity;
 
 /**
  * Manages the positioning of game entities in the world.

@@ -1,7 +1,7 @@
 package supson.view.impl.world;
 
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.player.Player;
+import supson.model.entity.impl.player.PlayerState;
 
 /*
  * this class procuce the tring that rapresent the sprite player

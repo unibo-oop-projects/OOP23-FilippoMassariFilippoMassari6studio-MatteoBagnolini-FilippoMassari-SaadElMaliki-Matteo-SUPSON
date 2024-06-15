@@ -7,8 +7,9 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+
+import supson.model.entity.api.common.GameEntity;
+import supson.model.entity.impl.player.Player;
 import supson.view.api.WorldView;
 import supson.view.api.WorldImageManager;
 import supson.view.api.WorldPositionManager;

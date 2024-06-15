@@ -1,8 +1,8 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block;
 
-import supson.model.entity.impl.AbstractGameEntity;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
+import supson.model.entity.impl.common.AbstractGameEntity;
 
 /**
  * The SubTerrainImpl class represents une of the type of terrain block in the game.

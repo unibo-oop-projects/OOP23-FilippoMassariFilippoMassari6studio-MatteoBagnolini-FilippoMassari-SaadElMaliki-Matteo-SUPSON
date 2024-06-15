@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.entity.player.Player;
-import supson.model.block.impl.CollectibleFactoryImpl;
-import supson.model.block.api.Collectible;
+import supson.model.entity.api.collectible.Collectible;
+import supson.model.entity.impl.collectible.CollectibleFactoryImpl;
+import supson.model.entity.impl.player.Player;
 
 /**
  * This class contains unit tests for the Collectible class.
