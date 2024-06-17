@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.Trap;
 import supson.model.block.impl.DamageTrapImpl;
@@ -33,7 +32,7 @@ public final class WorldImpl implements World {
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 7);
 
-    private final List<BlockEntity> blocks;
+    private final List<GameEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
     private Optional<Integer> mapWidth;
@@ -80,11 +79,11 @@ public final class WorldImpl implements World {
     }
 
     private void updateEntities(final long elapsed) {
-        List<MoveableEntity> movEntities = new ArrayList<>(enemies);
+        final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
 
         movEntities.forEach(e -> {
-            Pos2d oldPos = e.getPosition();
+            final Pos2d oldPos = e.getPosition();
             e.move(elapsed);
             if (e.getGameEntityType().equals(GameEntityType.PLAYER)) {
                 playerManager.setState(player.getState());
@@ -94,20 +93,20 @@ public final class WorldImpl implements World {
     }
 
     private void handleCollisions() {
-        List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
+        final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
         killed.forEach(this::removeEnemy);
 
         collisionResolver.resolveTrapCollisions(player,
                 blocks.stream().filter(b -> b instanceof Trap).map(Trap.class::cast).collect(Collectors.toList()));
 
-        List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
+        final List<Collectible> activated = collisionResolver.resolveCollectibleCollisions(player,
                 blocks.stream().filter(k -> k instanceof Collectible).map(Collectible.class::cast)
                         .collect(Collectors.toList()));
         activated.forEach(this::removeBlock);
     }
 
     @Override
-    public void removeBlock(final BlockEntity block) {
+    public void removeBlock(final GameEntity block) {
         this.blocks.remove(block);
     }
 
@@ -118,7 +117,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void addBlock(final GameEntityType type, final Pos2d pos) {
-        BlockEntity block;
+        GameEntity block;
         switch (type) {
             case DAMAGE_TRAP:
                 block = new DamageTrapImpl(pos);
@@ -144,7 +143,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public List<BlockEntity> getBlocks() {
+    public List<GameEntity> getBlocks() {
         return new ArrayList<>(this.blocks);
     }
 
@@ -155,7 +154,7 @@ public final class WorldImpl implements World {
 
     @Override
     public List<GameEntity> getGameEntities() {
-        List<GameEntity> entities = new ArrayList<>();
+        final List<GameEntity> entities = new ArrayList<>();
         entities.addAll(this.blocks);
         entities.addAll(this.enemies);
         entities.add(this.player);

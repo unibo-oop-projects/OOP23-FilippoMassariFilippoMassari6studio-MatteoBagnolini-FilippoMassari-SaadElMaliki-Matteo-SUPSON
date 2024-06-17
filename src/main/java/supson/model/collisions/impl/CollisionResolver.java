@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.BlockEntity;
 import supson.model.block.api.Collectible;
 import supson.model.block.api.Trap;
 import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionManager;
 import supson.model.collisions.api.CollisionObservable;
 import supson.model.collisions.api.CollisionObserver;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.MoveableEntity;
 import supson.model.entity.impl.Enemy;
 import supson.model.entity.player.Player;
@@ -40,13 +40,13 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
 
     @Override
     public void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<BlockEntity> blocks, final Pos2d startingPos) {
+            final List<GameEntity> blocks, final Pos2d startingPos) {
 
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
 
-        final List<BlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<GameEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
         if (!collidingBlocks.isEmpty()) {
             newY = resolveVerticalCollision(entity, blocks, startingPos, newY);
             newX = resolveHorizontalCollision(entity, blocks, updatedPos, newY);
@@ -95,7 +95,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .collect(Collectors.toList());
     }
 
-    private List<BlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<BlockEntity> collidingBlocks) {
+    private List<GameEntity> getCollidingBlocks(final MoveableEntity entity, final List<GameEntity> collidingBlocks) {
         return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
@@ -103,20 +103,20 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .collect(Collectors.toList());
     }
 
-    private double resolveVerticalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
+    private double resolveVerticalCollision(final MoveableEntity entity, final List<GameEntity> blocks,
         final Pos2d startingPos, final double updatedY) {
         entity.setPosition(new Pos2dImpl(startingPos.x(), updatedY));
-        final List<BlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
+        final List<GameEntity> verticalColliding = getCollidingBlocks(entity, blocks);
         if (!verticalColliding.isEmpty()) {
             return getAdjustedVerticalCoord(entity, verticalColliding.get(0));
         }
         return updatedY;
     }
 
-    private double resolveHorizontalCollision(final MoveableEntity entity, final List<BlockEntity> blocks,
+    private double resolveHorizontalCollision(final MoveableEntity entity, final List<GameEntity> blocks,
         final Pos2d updatedPos, final double adjustedY) {
         entity.setPosition(new Pos2dImpl(updatedPos.x(), adjustedY));
-        final List<BlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
+        final List<GameEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
         if (!orizontalColliding.isEmpty()) {
             return getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
         }
@@ -132,7 +132,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
      * @param block one of the block the entity is colliding with
      * @return the new x coordinate of the entity to be set
      */
-    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final GameEntity block) {
         final double newXPos;
         if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
@@ -159,7 +159,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
      * @param block one of the block the entity is colliding with
      * @return the new y coordinate of the entity to be set
      */
-    private double getAdjustedVerticalCoord(final MoveableEntity entity, final BlockEntity block) {
+    private double getAdjustedVerticalCoord(final MoveableEntity entity, final GameEntity block) {
         final double newYPos;
         if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
