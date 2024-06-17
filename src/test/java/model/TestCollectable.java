@@ -57,6 +57,7 @@ public class TestCollectable {
         assertNotNull(lifeBoost);
         assertEquals(GameEntityType.LIFE_BOOST_POWER_UP, lifeBoost.getGameEntityType());
 
+        player.setLife(1);
         lifeBoost.collect(player);
         assertEquals(2, player.getLife());
     }
@@ -73,6 +74,11 @@ public class TestCollectable {
         assertEquals(GameEntityType.STRNGTH_BOOST_POWER_UP, strengthBoost.getGameEntityType());
 
         strengthBoost.collect(player);
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(player.getState().isInvulnerable());
     }
 

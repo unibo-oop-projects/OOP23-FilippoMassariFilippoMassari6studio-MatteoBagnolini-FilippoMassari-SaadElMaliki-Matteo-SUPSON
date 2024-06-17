@@ -30,6 +30,46 @@ Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano
 ### Bagnolini Matteo
 ### Gerarchia di entità di gioco
 
+```mermaid
+classDiagram
+    class AbstractGameEntity {
+        <<abstract>>
+        + getPosition() : Pos2d
+        + setPosition(pos : Pos2d)
+    }
+    
+    class AbstractMoveableEntity {
+        <<abstract>>
+        + getVelocity() : Vect2d
+        + setVelocity(vel : Vect2d)
+        + move(elapsed : long)
+    }
+
+    class Player {
+        + getLife() : int
+        + getScore() : int
+    }
+
+    class GameEntity {
+        <<interface>>
+    }
+
+    class AbstractCollectible {
+        <<Abstract>>
+        + collect(player : Player)
+    }
+
+    class Enemy {
+        + applyDamage(player: Player)
+    }
+
+    GameEntity <|.. AbstractGameEntity
+    AbstractGameEntity <|-- AbstractMoveableEntity
+    AbstractGameEntity <|-- AbstractCollectible
+    AbstractMoveableEntity <|-- Player
+    AbstractMoveableEntity <|-- Enemy
+```
+
 **Problema:** Gestire la definizione di varie entità di gioco, dotate di caratteristiche differenti. Si vuole minimizzare la ripetizione di codice e garantire estendibilità per future modifiche e feature aggiuntive.
 
 **Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, anello e power-up (foglie dell'albero) e `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (foglie dell'albero).
@@ -37,13 +77,152 @@ In questo modo ho ridotto la ripetizione di codice non necessario, poichè le cl
 
 ### Movimento delle entità
 
+```mermaid
+classDiagram
+    class AbstractMoveableEntity {
+        <<Abstract>>
+        - physicsComponent
+        + move(elapsed : long)
+        + updateVelocity() *
+    }
+
+    class Player {
+        + updateVelocity()
+    }
+
+    class Enemy {
+        + updateVelocity()
+    }
+
+    class Physics {
+        <<Interface>>
+        + moveRight(entity : MoveableEntity)
+        + moveLeft(entity : MoveableEntity)
+        + jump(entity : MoveableEntity)
+        + applyGravity(entity : MoveableEntity)
+        + applyFriction(entity : MoveableEntity)
+    }
+
+    class PhysicsImpl {
+        - acceleration : double
+        - deceleration : double
+        - maxSpeed : int
+        - friction : double
+        - jumpForce : int
+        - gravity : double
+    }
+
+    AbstractMoveableEntity <|-- Player
+    AbstractMoveableEntity <|-- Enemy
+    AbstractMoveableEntity *-- Physics
+    PhysicsImpl --|> Physics
+
+```
+
 **Problema:** Ogni `MoveableEntity` deve potersi muovere, e ogni entità dovrebbe avere la sua logica di movimento.
 
-**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del metodo `move()` della classe stessa. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità.
+**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()` della classe stessa. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. In questo modo si rende possibile il riuso del codice per entità che si muovono ognuna con una propria logica differente.
 
 **Problema:** Ogni `MoveableEntity` dovrebbe avere una propria fisica di gioco specifica. Inoltre si vuole separare la gestione della fisica dall'entità stessa per avere più modularità del codice.
 
-**Soluzione:**
+**Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (ad esempio forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità) che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco personalizzata. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
+
+### Gestione delle collisioni
+
+```mermaid
+classDiagram
+    
+    class CollisionObservable {
+        <<Interface>>
+        + register(obs : CollisionObserver)
+        + unregister(obs : CollisionObserver)
+        + notifyObservers(event : CollisionEvent)
+    }
+
+    class CollisionObserver {
+        <<Interface>>
+        + onNotify(event : CollisionEvent)
+    }
+
+    class CollisionResolver {
+        - observers : List~CollisionObserver~
+        + resolvePlatformCollisions(entity : MoveableGameEntity, blocks : List~Blocks~, startingPos : Pos2d)
+        + resolveTrapCollisions(player : Player, traps : List~Trap~)
+        + resolveEnemiesCollisions(player : Player, enemies : List~Enemy~)
+        + resolveCollectibleCollisions(player : Player, collectibles : List~Collectible~)
+    }
+
+    class PlayerManagerImpl {
+        + onNotify(event : CollisionEvent)
+        - leftCollision()
+        - rightCollision()
+        - upperCollision()
+        - lowerCollision()
+        - pushback()
+    }
+
+    class CollisionEvent {
+        <<enumeration>>
+        BLOCK_COLLISION
+        OBSTACLE_COLLISION
+    }
+
+    CollisionObservable <|.. CollisionResolver
+    CollisionObserver <|.. PlayerManagerImpl
+    CollisionResolver *-- PlayerManagerImpl
+    CollisionResolver --> CollisionEvent : Produces
+    PlayerManagerImpl --> CollisionEvent : Uses
+
+```
+
+**Problema:** Bisogna gestire le collisioni tra il giocatore e le entità di gioco. Ogni entità con cui il giocatore collide provoca effetti differenti.
+
+**Soluzione:** Per gestire le collisioni ho utilizzato il pattern Observer: la classe `CollisionResolver` funge da osservabile, che viene osservato da `PlayerManagerImpl`. Dopo ogni collisione tra il giocatore e specifiche entità di gioco (come blocchi e nemici), `CollisionResolver` notifica a `PlayerManagerImpl` l'evento (un enum di tipo `CollisionEvent`). Questo evento viene poi gestito tramite la specifica routine all'interno della classe manager. Ho voluto implementare questo pattern sia per rendere più manutenibile il codice, sia per renderlo aperto a future modifiche e migliorie. Ad esempio l'observer potrebbe essere usato per aggiungere elementi sonori al gioco semplicemente creando una classe che osserva il `CollisionResolver` e definendo delle specifiche subroutine per ogni evento.
+
+### Stato del giocatore
+
+```mermaid
+classDiagram
+    class Player {
+        - right : boolean
+        - left : boolean
+        - jump : boolean
+        - isJumping : boolean
+        - onGround : boolean
+        - invulnerable : boolean
+        + getState() : PlayerState
+        + setState(state : PlayerState)
+    }
+
+    class PlayerState {
+        - vel : Vect2d
+        - right : boolean
+        - left : boolean
+        - jump : boolean
+        - isJumping : boolean
+        - onGround : boolean
+        - invulnerable : boolean
+        + withVelocity(vel : Vect2d) : PlayerState
+        + setRight() : PlayerState
+        + setNotRight() : PlayerState
+    }
+    note for PlayerState "Sono presenti anche gli altri metodi set corrispettivi di tutti i campi"
+
+    class PlayerManagerImpl {
+        - state : PlayerState
+        + getUpdatedState() state : PlayerState
+        + setState(state : PlayerState)
+    }
+
+    PlayerManagerImpl *-- PlayerState
+    Player -- PlayerManagerImpl
+
+```
+
+**Problema:** Bisogna trovare un modo per rappresentare lo stato interno del giocatore, rappresentato dai vari campi della classe `Player`, tramite una classe apposita. Inoltre si vuole trovare un modo per creare istanze di questa classe in maniera linguisticamente efficiente.
+
+**Soluzione:** Ho creato una classe `PlayerState` che rappresenta lo stato del giocatore (velocità, flag di movimento e altre info). In questo modo quando una classe esterna dovrà interfacciarsi con il giocatore (sia per avere informazioni sia per modificare lo stato) lo farà tramite i metodi `getState()` e `setState()`, rendendo i vari campi di `Player` invisibili.
+La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/matteobagnolini/OOP23-SUPSON/blob/ff92ee9dbcf9d68474e429ec77a5ead622a2a205/src/main/java/supson/model/entity/player/PlayerState.java) per rendere più facile la creazione di una nuova istanza di `PlayerState` partendo da quella precedente (simulando i "copy constructor" di C++), tuttavia il codice risultava troppo pesante, e dopo essermi confrontato con il prof. Pianini ho optato per una soluzione più leggera e leggibile che utilizza metodi concatenabili e il cui risultato è simile alla modifica di un oggetto `PlayerState` già esistente.
 
 ### Massari Filippo
 
@@ -65,3 +244,23 @@ Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arr
 **Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
 
 **Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa preeenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il puttern observer implementato grazie al cunnubio di `CollisionResolver` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il puttern strategy, e ed in sinergia con il puttern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+
+### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
+
+**Problema:** I power-up dotati di timer hanno una routine di gestione pressochè sempre identica che se gestita in maniera errata potrebbe condurre a malfuzionamenti dovuti ad una sovrapposizione di queti ultimi.
+
+**Soluzione:** Per gestire in modo corretto gli effetti dei power-up timerizzati, abbiamo pensato un sistema di gestione sequenziale e differenziata, grazie all'interfaccia `CollectableEffect` che permette di ridurre la ripetizione di codice e rende altamente scalabile l'aggiunta futura di power-up dichiarando una factory di effetti che andrà a coadiuvare il lavoro di `CollectableFactory`.
+
+
+
+# Capitolo 3 - Sviluppo
+
+## 3.1 Testing automatizzato
+
+- TestPlayer: viene testato che il giocatore si muova effettivamente una volta impostati i vari flag `right`, `left` e `jump`. Inoltre vengono testati i metodi setters relativi allo score e alle vite.
+- TestPhysics: vengono testati i vari metodi della classe `PhysicsImpl` utilizzando delle classi `MoveableEntity` fittizie (dove viene specificato il metodo `updateVelocity()`). In particolare viene testato il corretto movimento con accelerazione, la frizione con il terreno di gioco, il salto e la forza di gravità.
+- TestHitbox: viene controllato che gli angoli dell'hitbox vengano calcolati correttamente quando si chiamano i relativi getters. Inoltre viene testato il metodo `isCollidingWith(Hitbox other)`, usato per controllare se due hitbox collidono tra di loro.
+
+
+## 3.2 Note di sviluppo
+
