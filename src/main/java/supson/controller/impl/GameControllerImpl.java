@@ -51,6 +51,7 @@ public final class GameControllerImpl implements GameController {
         this.model.updateGame(elapsed);
         if(this.model.isGameOver()){
             System.out.println("Game Over");
+            System.out.println("Score: "+this.model.getHud().getScore()+"\nTime: "+ this.model.getHud().getTime());
         }
     }
 
