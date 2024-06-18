@@ -65,6 +65,9 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
                 || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN)
                 || gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE);
         final int entityHeight = isLongEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
+        if (gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE)) {
+            return (int) Math.round(centerY - relativeY * entityHeight - (DEFAULT_DIMENSION));
+        }
         return (int) Math.round(centerY - relativeY * entityHeight - (isLongEntity ? (DEFAULT_DIMENSION / 2) : 0));
     }
 
