@@ -234,9 +234,42 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 
 ### Gerarchia dei Blocchi del Gioco
 
+```mermaid
+classDiagram
+    class GameEntity {
+        <<interface>>
+        + int getHeight()
+        + int getWidth()
+        + Pos2d getPosition()
+        + void setPosition(Pos2d pos)
+        + Hitbox getHitbox()
+        + GameEntityType getGameEntityType()
+        + boolean isCollidingWith(GameEntity otherGameEntity)
+        + void notifyCollision(GameEntity collidingGameEntity)
+    }
+
+    class Collectible {
+        <<interface>>
+        + void collect(Player player)
+    }
+
+    class CollectibleFactory {
+        <<interface>>
+        + Collectible createCollectible(GameEntityType type, Pos2d pos)
+    }
+
+    class Trap {
+        <<interface>>
+        + void activate(Player player)
+    }
+
+    GameEntity <|-- Collectible
+    GameEntity <|-- Trap
+```
+
 **Problema:** Nel nostro gioco, abbiamo diversi tipi di blocchi con comportamenti differenti. Alcuni blocchi possono essere raccolti dai giocatori, mentre altri rappresentano trappole che influenzano il giocatore. È necessario un sistema flessibile che permetta di gestire questi diversi comportamenti senza duplicare il codice e facilitando l'estensibilità futura.
 
-**Soluzione:** Abbiamo progettato una gerarchia di interfacce per i blocchi del gioco. Questa gerarchia utilizza i design pattern Factory e Strategy per creare oggetti e definire comportamenti intercambiabili. Le interfacce principali sono `BlockEntity`, `Collectible`, `Trap` e `CollectibleFactory`. `BlockEntity` è l'interfaccia di base per tutti i blocchi, raccoglibili e non raccoglibili che comongono il mondo di gioco. `Collectible` estende `BlockEntity` e rappresenta blocchi che possono essere raccolti.`Trap` estende `BlockEntity` e rappresenta blocchi che possono attivare trappole.`CollectibleFactory` fornisce un metodo per creare oggetti `Collectible`.Sebbene non esista, data l'assenza di una molteplicità effettiva di trappole, sarrebbe stato nei nostri piani realizzare anche un'interfaccia `TrapFactory` per gestire la creazione di più tipi di trappole con effetti differenti.
+**Soluzione:** Abbiamo progettato una gerarchia di interfacce per i blocchi del gioco. Questa gerarchia utilizza i design pattern Factory e Strategy per creare oggetti e definire comportamenti intercambiabili. Le interfacce principali sono `GameEntity`, `Collectible`, `Trap` e `CollectibleFactory`. `GameEntity` è l'interfaccia di base per tutti i blocchi, raccoglibili e non raccoglibili che comongono il mondo di gioco. `Collectible` estende `BlockEntity` e rappresenta blocchi che possono essere raccolti.`Trap` estende `BlockEntity` e rappresenta blocchi che possono attivare trappole.`CollectibleFactory` fornisce un metodo per creare oggetti `Collectible`.Sebbene non esista, data l'assenza di una molteplicità effettiva di trappole, sarrebbe stato nei nostri piani realizzare anche un'interfaccia `TrapFactory` per gestire la creazione di più tipi di trappole con effetti differenti.
 Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arrichire il gioco con nuovi racchoglibili e nuove trappole, infatti non sarà richiesta l'implentazione di nuove classi, e relativa gestione capillare, ma semplicemente si andranno ad implementare nuovi metodi all'interno delle factory.
 
 ### Gestione centralizzata del mondo di gioco
