@@ -228,9 +228,58 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 
 ### Gestione e riconoscimento delle entità di gioco
 
+```mermaid
+classDiagram
+    class GameEntity {
+        <<interface>>
+        + int getHeight()
+        + int getWidth()
+        + Pos2d getPosition()
+        + void setPosition(Pos2d pos)
+        + Hitbox getHitbox()
+        + GameEntityType getGameEntityType()
+        + boolean isCollidingWith(GameEntity otherGameEntity)
+        + void notifyCollision(GameEntity collidingGameEntity)
+    }
+
+    class GameEntityType {
+        <<enumeration>>
+        PLAYER : GameEntityType
+        TERRAIN : GameEntityType
+        LIFE_BOOST_POWER_UP : GameEntityType
+        STRENGTH_BOOST_POWER_UP : GameEntityType
+        RING : GameEntityType
+        DAMAGE_TRAP : GameEntityType
+        ENEMY : GameEntityType
+        SUBTERRAIN : GameEntityType
+        + String spritePath
+        + int index
+        + String getSpritePath()
+        + int getIndex()
+        + static GameEntityType getType(int index)
+    }
+
+    class Pos2d {
+        + int x
+        + int y
+        + int getX()
+        + int getY()
+    }
+
+    class Hitbox {
+        + int width
+        + int height
+        + boolean isCollidingWith(Hitbox otherHitbox)
+    }
+
+    GameEntity o-- Pos2d
+    GameEntity o-- Hitbox
+    GameEntity o-- GameEntityType
+```
+
 **Problema:** Nel contesto del gioco, sono presenti diverse entità con caratteristiche e comportamenti distinti. Queste entità devono essere rappresentate in modo coerente all'interno del modello di gioco, della sua rappresentazione visiva e dell'interazione con il giocatore. Tuttavia, la gestione di queste entità può diventare complessa a causa delle loro diverse proprietà e comportamenti.
 
-**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType, siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
+**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType in sinergia con `Pos2d` e `Hitbox`, siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
 
 ### Gerarchia dei Blocchi del Gioco
 
@@ -274,11 +323,116 @@ Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arr
 
 ### Gestione centralizzata del mondo di gioco
 
+```mermaid
+classDiagram
+    class World {
+        <<interface>>
+        + void loadWorld(String filePath)
+        + void reset(String filePath)
+        + void updateGame(long elapsed)
+        + void removeBlock(GameEntity block)
+        + void removeEnemy(Enemy enemy)
+        + List~GameEntity~ getBlocks()
+        + List~Enemy~ getEnemies()
+        + List~GameEntity~ getGameEntities()
+        + Player getPlayer()
+        + Hud getHud()
+        + Integer getMapWidth()
+        + void setMapWidth(Optional~Integer~ mapWidth)
+        + void addBlock(GameEntityType type, Pos2d pos)
+        + void addEnemy(Enemy enemy)
+        + void addCollectible(Collectible collectible)
+        + boolean isGameOver()
+    }
+
+    class GameEntity {
+        <<interface>>
+        + int getHeight()
+        + int getWidth()
+        + Pos2d getPosition()
+        + void setPosition(Pos2d pos)
+        + Hitbox getHitbox()
+        + GameEntityType getGameEntityType()
+        + boolean isCollidingWith(GameEntity otherGameEntity)
+        + void notifyCollision(GameEntity collidingGameEntity)
+    }
+
+    class CollisionManager {
+        <<interface>>
+        + void resolvePlatformCollisions(MoveableEntity entity, List~GameEntity~ blocks, Pos2d startingPos)
+        + List~Enemy~ resolveEnemiesCollisions(Player player, List~Enemy~ enemies)
+        + void resolveTrapCollisions(Player player, List~Trap~ traps)
+        + List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+    }
+
+    class GameEntityType {
+        <<enum>>
+        PLAYER
+        TERRAIN
+        LIFE_BOOST_POWER_UP
+        STRNGTH_BOOST_POWER_UP
+        RING
+        DAMAGE_TRAP
+        ENEMY
+        SUBTERRAIN
+        + String getSpritePath()
+        + int getIndex()
+        + static GameEntityType getType(int index)
+    }
+
+    World *-- GameEntity
+    World *-- GameEntityType
+
+    CollisionManager *-- GameEntity
+```
+
 **Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
 
-**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa preeenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il puttern observer implementato grazie al cunnubio di `CollisionResolver` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il puttern strategy, e ed in sinergia con il puttern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il puttern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il puttern strategy, e ed in sinergia con il puttern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
 
 ### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
+
+```mermaid
+classDiagram
+    class Collectible {
+        <<interface>>
+        + void collect(Player player)
+    }
+
+    class CollectibleFactory {
+        <<interface>>
+        + Collectible createCollectible(GameEntityType type, Pos2d pos)
+    }
+
+    class CollectibleEffect {
+        <<interface>>
+        + void activateEffect(Player player)
+        + void terminateEffect(Player player)
+        + void run()
+    }
+
+    class GameEntity {
+        <<interface>>
+        + int getHeight()
+        + int getWidth()
+        + Pos2d getPosition()
+        + void setPosition(Pos2d pos)
+        + Hitbox getHitbox()
+        + GameEntityType getGameEntityType()
+        + boolean isCollidingWith(GameEntity otherGameEntity)
+        + void notifyCollision(GameEntity collidingGameEntity)
+    }
+
+    Collectible ..|> GameEntity
+    CollectibleFactory o-- Collectible
+    CollectibleFactory o-- CollectibleEffect
+    CollectibleEffect <|.. Runnable
+
+    class Player {
+    }
+
+    CollectibleEffect --> Player
+```
 
 **Problema:** I power-up dotati di timer hanno una routine di gestione pressochè sempre identica che se gestita in maniera errata potrebbe condurre a malfuzionamenti dovuti ad una sovrapposizione di queti ultimi.
 
