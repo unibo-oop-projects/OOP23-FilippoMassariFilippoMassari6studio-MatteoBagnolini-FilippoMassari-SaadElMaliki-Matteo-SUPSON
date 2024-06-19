@@ -1,7 +1,7 @@
 package supson.model.effect.impl;
 
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.moveable.player.Player;
+import supson.model.entity.impl.moveable.player.PlayerState;
 
 /**
  * Represents a strength power-up effect that makes the player invulnerable.
@@ -21,13 +21,15 @@ public final class StrengthPowerUpEffectImpl extends AbstractCollectibleEffect {
 
     @Override
     public void activateEffect(final Player player) {
-        player.setState(new PlayerState.Builder(
-            player.getState()).isInvulnerable(true).build());
+        // player.setState(new PlayerState.Builder(
+        //     player.getState()).isInvulnerable(true).build());
+        player.setState(player.getState().setInvulnerable());
     }
 
     @Override
     public void terminateEffect(final Player player) {
-        player.setState(new PlayerState.Builder(
-            player.getState()).isInvulnerable(false).build());
+        // player.setState(new PlayerState.Builder(
+        //     player.getState()).isInvulnerable(false).build());
+        player.setState(player.getState().setNotInvulnerable());
     }
 }

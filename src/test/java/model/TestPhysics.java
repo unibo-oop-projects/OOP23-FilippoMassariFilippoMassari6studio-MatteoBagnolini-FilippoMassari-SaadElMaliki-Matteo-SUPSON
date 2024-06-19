@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.impl.AbstractMoveableEntity;
+import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.physics.impl.PhysicsImpl;
 
 /**

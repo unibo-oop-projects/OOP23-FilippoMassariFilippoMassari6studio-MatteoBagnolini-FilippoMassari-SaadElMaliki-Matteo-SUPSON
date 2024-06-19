@@ -60,11 +60,15 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
     private int calculateYPosition(final double entityY, final double playerY, final int centerY, final GameEntity gameEntity) {
         final int offSet = 6;
         final double relativeY = entityY - (offSet + playerY);
-        final boolean isSpecialEntity = gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
+        final boolean isLongEntity = gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
                 || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)
-                || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN);
-        final int entityHeight = isSpecialEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
-        return (int) Math.round(centerY - relativeY * entityHeight - (isSpecialEntity ? (DEFAULT_DIMENSION / 2) : 0));
+                || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN)
+                || gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE);
+        final int entityHeight = isLongEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
+        if (gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE)) {
+            return (int) Math.round(centerY - relativeY * entityHeight - (DEFAULT_DIMENSION));
+        }
+        return (int) Math.round(centerY - relativeY * entityHeight - (isLongEntity ? (DEFAULT_DIMENSION / 2) : 0));
     }
 
     @Override

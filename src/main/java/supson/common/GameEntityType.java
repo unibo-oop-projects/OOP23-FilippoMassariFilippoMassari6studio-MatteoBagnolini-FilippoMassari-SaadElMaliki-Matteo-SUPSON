@@ -43,7 +43,12 @@ public enum GameEntityType {
     /*
      * Represents sub terrain blocks.
      */
-    SUBTERRAIN("sprite/subterrain_sprite.png", 7);
+    SUBTERRAIN("sprite/subterrain_sprite.png", 7),
+
+    /*
+     * Represents the finihline blocks. 
+     */
+    FINISHLINE("sprite/finishline_sprite.png", 8);
 
     private final String spritePath;
     private final int index;

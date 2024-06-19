@@ -1,10 +1,10 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block.trap;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Trap;
+import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.impl.AbstractGameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * Represents a damage trap in the game.

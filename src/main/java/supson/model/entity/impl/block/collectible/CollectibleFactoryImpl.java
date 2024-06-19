@@ -1,11 +1,11 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block.collectible;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.CollectibleFactory;
 import supson.model.effect.impl.StrengthPowerUpEffectImpl;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.collectible.CollectibleFactory;
+import supson.model.entity.impl.moveable.player.Player;
 
 import java.util.EnumMap;
 import java.util.Map;

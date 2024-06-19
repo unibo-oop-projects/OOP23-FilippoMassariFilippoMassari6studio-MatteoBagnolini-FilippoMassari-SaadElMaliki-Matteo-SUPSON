@@ -10,7 +10,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.player.Player;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;

@@ -13,9 +13,9 @@ import java.util.stream.IntStream;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.CollectibleFactory;
-import supson.model.block.impl.CollectibleFactoryImpl;
-import supson.model.entity.impl.Enemy;
+import supson.model.entity.api.block.collectible.CollectibleFactory;
+import supson.model.entity.impl.block.collectible.CollectibleFactoryImpl;
+import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 
@@ -62,7 +62,8 @@ public final class WorldLoaderImpl implements WorldLoader {
             world.addEnemy(new Enemy(pos));
         } else if (type.equals(GameEntityType.TERRAIN) 
                    || type.equals(GameEntityType.DAMAGE_TRAP) 
-                   || type.equals(GameEntityType.SUBTERRAIN)) {
+                   || type.equals(GameEntityType.SUBTERRAIN)
+                   || type.equals(GameEntityType.FINISHLINE)) {
             world.addBlock(type, pos);
         } else {
             world.addCollectible(collectibleFactory.createCollectible(type, pos));

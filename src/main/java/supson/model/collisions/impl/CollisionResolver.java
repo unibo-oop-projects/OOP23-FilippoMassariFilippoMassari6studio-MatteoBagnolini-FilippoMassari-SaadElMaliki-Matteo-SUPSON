@@ -7,17 +7,20 @@ import java.util.stream.Collectors;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.Trap;
 import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionManager;
 import supson.model.collisions.api.CollisionObservable;
 import supson.model.collisions.api.CollisionObserver;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.finishline.Finishline;
+import supson.model.entity.api.block.trap.Trap;
+import supson.model.entity.api.moveable.MoveableEntity;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hitbox.api.Hitbox;
+import supson.model.world.api.World;
 
 /**
  * This class is a collision resolver. It is used to check
@@ -25,14 +28,13 @@ import supson.model.hitbox.api.Hitbox;
  */
 public final class CollisionResolver implements CollisionManager, CollisionObservable {
 
-    private static final int RENDER_DISTANCE = 10;
+    private static final int RENDER_DISTANCE = 5;
     private static final double DELTA = 0.000_001;
 
     private final List<CollisionObserver> observers;
 
     /**
-     * The constructor of this class is final and empty, ensuring it cannot
-     * be instantiated.
+     * This is the constructor of this class. It initializes the list of observers.
      */
     public CollisionResolver() {
         this.observers = new ArrayList<>();
@@ -40,19 +42,30 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
 
     @Override
     public void resolvePlatformCollisions(final MoveableEntity entity,
-            final List<GameEntity> blocks, final Pos2d startingPos) {
+            final List<TagBlockEntity> blocks, final Pos2d startingPos) {
 
         final Pos2d updatedPos = entity.getPosition();
         double newX = updatedPos.x();
         double newY = updatedPos.y();
 
-        final List<GameEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
+        final List<TagBlockEntity> collidingBlocks = getCollidingBlocks(entity, blocks);
         if (!collidingBlocks.isEmpty()) {
             newY = resolveVerticalCollision(entity, blocks, startingPos, newY);
             newX = resolveHorizontalCollision(entity, blocks, updatedPos, newY);
         }
 
         entity.setPosition(new Pos2dImpl(newX, newY));
+    }
+
+    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, World world) {
+        finishlines.stream()
+        .filter(f -> f.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(f -> f.getHitbox().isCollidingWith(player.getHitbox()))
+        .forEach(f -> {
+            f.endGame(world);
+            /*notifyObservers(f.getPosition().x()>player.getPosition().x()
+                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);*/
+        });
     }
 
     @Override
@@ -62,8 +75,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .filter(t -> t.getHitbox().isCollidingWith(player.getHitbox()))
         .forEach(t -> {
             t.activate(player);
-            notifyObservers(t.getPosition().x() > player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
+            player.setPosition(new Pos2dImpl(getAdjustedOrizontalCoord(player, t), player.getPosition().y()));
         });
     }
 
@@ -79,8 +91,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .forEach(e -> {
                 e.applyDamage(player);
-                notifyObservers(e.getPosition().x() > player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
+                player.setPosition(new Pos2dImpl(getAdjustedOrizontalCoord(player, e), player.getPosition().y()));
             });
             return List.of();
         }
@@ -95,7 +106,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .collect(Collectors.toList());
     }
 
-    private List<GameEntity> getCollidingBlocks(final MoveableEntity entity, final List<GameEntity> collidingBlocks) {
+    private List<TagBlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<TagBlockEntity> collidingBlocks) {
         return collidingBlocks.stream()
         .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
@@ -103,20 +114,20 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .collect(Collectors.toList());
     }
 
-    private double resolveVerticalCollision(final MoveableEntity entity, final List<GameEntity> blocks,
+    private double resolveVerticalCollision(final MoveableEntity entity, final List<TagBlockEntity> blocks,
         final Pos2d startingPos, final double updatedY) {
         entity.setPosition(new Pos2dImpl(startingPos.x(), updatedY));
-        final List<GameEntity> verticalColliding = getCollidingBlocks(entity, blocks);
+        final List<TagBlockEntity> verticalColliding = getCollidingBlocks(entity, blocks);
         if (!verticalColliding.isEmpty()) {
             return getAdjustedVerticalCoord(entity, verticalColliding.get(0));
         }
         return updatedY;
     }
 
-    private double resolveHorizontalCollision(final MoveableEntity entity, final List<GameEntity> blocks,
+    private double resolveHorizontalCollision(final MoveableEntity entity, final List<TagBlockEntity> blocks,
         final Pos2d updatedPos, final double adjustedY) {
         entity.setPosition(new Pos2dImpl(updatedPos.x(), adjustedY));
-        final List<GameEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
+        final List<TagBlockEntity> orizontalColliding = getCollidingBlocks(entity, blocks);
         if (!orizontalColliding.isEmpty()) {
             return getAdjustedOrizontalCoord(entity, orizontalColliding.get(0));
         }
@@ -124,52 +135,65 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     }
 
     /**
-     * This method adjust the orizontal position of the entity colliding with a block in the x axis.
-     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
-     * colliding with. The entity is moved perfectly to the right (or to the left) of the block, and a 
-     * delta is added to have the entity just ot the right (or to the left) of the colliding block.
+     * This method adjust the orizontal position of the entity colliding with another entity in the x axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the colliding entity.
+     * The entity is moved perfectly to the right (or to the left) of the block, and a 
+     * delta is added to have the entity just ot the right (or to the left) of the colliding entity.
      * @param entity the entity which is colliding
-     * @param block one of the block the entity is colliding with
+     * @param collidingEntity the colliding entity
      * @return the new x coordinate of the entity to be set
      */
-    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final GameEntity block) {
+    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final GameEntity collidingEntity) {
         final double newXPos;
-        if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
+        if (entity.getPosition().x() < collidingEntity.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
-                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION);
+                + collidingEntity.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+                // CHECKSTYLE: EmptyStatement OFF
+                // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
+                switch (collidingEntity.getGameEntityType()) {
+                    case TERRAIN : notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION); break;
+                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_RIGHT_COLLISION); break;
+                    default : ;
                 }
+                // CHECKSTYLE: EmptyStatement ON
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
-                + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
+                + collidingEntity.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION);
                 }
+                // CHECKSTYLE: EmptyStatement OFF
+                // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
+                switch (collidingEntity.getGameEntityType()) {
+                    case TERRAIN : notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION); break;
+                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_LEFT_COLLISION); break;
+                    default : ;
+                }
+                // CHECKSTYLE: EmptyStatement ON
         }
         return newXPos;
     }
 
     /**
-     * This method adjust the vertical position of the entity colliding with a block in the y axis.
-     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
-     * colliding with. The entity is moved perfectly above (or below) the block, and a delta is added
-     * to have the entity right over (or under) the colliding block.
+     * This method adjust the orizontal position of the entity colliding with another entity in the y axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the colliding entity.
+     * The entity is moved perfectly above (or below) of the block, and a delta is added to have the entity
+     * just right over (or under) of the colliding entity.
      * @param entity the entity which is colliding
-     * @param block one of the block the entity is colliding with
-     * @return the new y coordinate of the entity to be set
+     * @param collidingEntity the colliding entity
+     * @return the new x coordinate of the entity to be set
      */
-    private double getAdjustedVerticalCoord(final MoveableEntity entity, final GameEntity block) {
+    private double getAdjustedVerticalCoord(final MoveableEntity entity, final GameEntity collidingEntity) {
         final double newYPos;
-        if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
+        if (entity.getPosition().y() > collidingEntity.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
+                + collidingEntity.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_LOWER_COLLISION);
                 }
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().y() - entity.getHitbox().getURCorner().y() - DELTA;
+                + collidingEntity.getHitbox().getLLCorner().y() - entity.getHitbox().getURCorner().y() - DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_UPPER_COLLISION);
                 }
