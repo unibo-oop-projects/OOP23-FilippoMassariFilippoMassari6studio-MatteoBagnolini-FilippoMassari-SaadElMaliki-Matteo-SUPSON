@@ -232,49 +232,32 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 classDiagram
     class GameEntity {
         <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + void setPosition(Pos2d pos)
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
-        + boolean isCollidingWith(GameEntity otherGameEntity)
-        + void notifyCollision(GameEntity collidingGameEntity)
+
     }
 
     class GameEntityType {
         <<enumeration>>
-        PLAYER : GameEntityType
-        TERRAIN : GameEntityType
-        LIFE_BOOST_POWER_UP : GameEntityType
-        STRENGTH_BOOST_POWER_UP : GameEntityType
-        RING : GameEntityType
-        DAMAGE_TRAP : GameEntityType
-        ENEMY : GameEntityType
-        SUBTERRAIN : GameEntityType
-        + String spritePath
-        + int index
-        + String getSpritePath()
-        + int getIndex()
-        + static GameEntityType getType(int index)
+        PLAYER
+        TERRAIN
+        LIFE_BOOST_POWER_UP
+        STRENGTH_BOOST_POWER_UP
+        RINGe
+        DAMAGE_TRAP
+        ENEMY
+        SUBTERRAIN
+        END_GAME
+
     }
 
     class Pos2d {
-        + int x
-        + int y
-        + int getX()
-        + int getY()
     }
 
     class Hitbox {
-        + int width
-        + int height
-        + boolean isCollidingWith(Hitbox otherHitbox)
     }
 
-    GameEntity o-- Pos2d
-    GameEntity o-- Hitbox
-    GameEntity o-- GameEntityType
+    GameEntity *-- Pos2d
+    GameEntity *-- Hitbox
+    GameEntity *-- GameEntityType
 ```
 
 **Problema:** Nel contesto del gioco, sono presenti diverse entità con caratteristiche e comportamenti distinti. Queste entità devono essere rappresentate in modo coerente all'interno del modello di gioco, della sua rappresentazione visiva e dell'interazione con il giocatore. Tuttavia, la gestione di queste entità può diventare complessa a causa delle loro diverse proprietà e comportamenti.
@@ -287,14 +270,10 @@ classDiagram
 classDiagram
     class GameEntity {
         <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + void setPosition(Pos2d pos)
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
-        + boolean isCollidingWith(GameEntity otherGameEntity)
-        + void notifyCollision(GameEntity collidingGameEntity)
+    }
+
+    class TagBlockEntity {
+        <<interface>>
     }
 
     class Collectible {
@@ -312,13 +291,15 @@ classDiagram
         + void activate(Player player)
     }
 
-    GameEntity <|-- Collectible
-    GameEntity <|-- Trap
+    GameEntity <|.. TagBlockEntity
+    TagBlockEntity <|.. Collectible
+    TagBlockEntity <|.. Trap
+
 ```
 
-**Problema:** Nel nostro gioco, abbiamo diversi tipi di blocchi con comportamenti differenti. Alcuni blocchi possono essere raccolti dai giocatori, mentre altri rappresentano trappole che influenzano il giocatore. È necessario un sistema flessibile che permetta di gestire questi diversi comportamenti senza duplicare il codice e facilitando l'estensibilità futura.
+**Problema:** Nel nostro gioco abbiamo diversi tipi di blocchi con comportamenti differenti sia dalle restanti entità di gioco che tra loro stessi. Alcuni blocchi possono essere raccolti dai giocatori mentre altri rappresentano trappole o semplicemente ostacoli. È necessario un sistema flessibile che permetta di gestire questi diversi comportamenti senza duplicare il codice e facilitando l'estensibilità futura.
 
-**Soluzione:** Abbiamo progettato una gerarchia di interfacce per i blocchi del gioco. Questa gerarchia utilizza i design pattern Factory e Strategy per creare oggetti e definire comportamenti intercambiabili. Le interfacce principali sono `GameEntity`, `Collectible`, `Trap` e `CollectibleFactory`. `GameEntity` è l'interfaccia di base per tutti i blocchi, raccoglibili e non raccoglibili che comongono il mondo di gioco. `Collectible` estende `BlockEntity` e rappresenta blocchi che possono essere raccolti.`Trap` estende `BlockEntity` e rappresenta blocchi che possono attivare trappole.`CollectibleFactory` fornisce un metodo per creare oggetti `Collectible`.Sebbene non esista, data l'assenza di una molteplicità effettiva di trappole, sarrebbe stato nei nostri piani realizzare anche un'interfaccia `TrapFactory` per gestire la creazione di più tipi di trappole con effetti differenti.
+**Soluzione:** Abbiamo progettato una gerarchia di interfacce per i blocchi del gioco. Questa gerarchia utilizza i design pattern Factory e Strategy per creare oggetti e definire comportamenti intercambiabili. Le interfacce principali sono `GameEntity`, `TagBlockEntity`, `Collectible`, `Trap` e `CollectibleFactory`. `GameEntity` è l'interfaccia di base per tutte le entità di gioco, essa viene estesa dalla tag interface `TagBlockEntity` che va a dividere in maniera netta le moveable entity dai block entity evitando così possibili ambigutà. Essa rappresnta dunque tutti gli elementi statici all'interno del gioco. `Collectible` estende `TagBlockEntity` e rappresenta blocchi che possono essere raccolti.`Trap` estende `BlockEntity` e rappresenta blocchi che se attivati possono indurre un effetto negativo sul giocatore.`CollectibleFactory` fornisce un metodo per creare oggetti `Collectible`.Sebbene non esista, data l'assenza di una molteplicità effettiva di trappole, sarrebbe stato nei nostri piani realizzare anche un'interfaccia `TrapFactory` per gestire la creazione di più tipi di trappole con effetti differenti.
 Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arrichire il gioco con nuovi racchoglibili e nuove trappole, infatti non sarà richiesta l'implentazione di nuove classi, e relativa gestione capillare, ma semplicemente si andranno ad implementare nuovi metodi all'interno delle factory.
 
 ### Gestione centralizzata del mondo di gioco
@@ -328,33 +309,12 @@ classDiagram
     class World {
         <<interface>>
         + void loadWorld(String filePath)
-        + void reset(String filePath)
         + void updateGame(long elapsed)
-        + void removeBlock(GameEntity block)
-        + void removeEnemy(Enemy enemy)
-        + List~GameEntity~ getBlocks()
-        + List~Enemy~ getEnemies()
-        + List~GameEntity~ getGameEntities()
-        + Player getPlayer()
-        + Hud getHud()
-        + Integer getMapWidth()
-        + void setMapWidth(Optional~Integer~ mapWidth)
-        + void addBlock(GameEntityType type, Pos2d pos)
-        + void addEnemy(Enemy enemy)
-        + void addCollectible(Collectible collectible)
         + boolean isGameOver()
     }
 
     class GameEntity {
         <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + void setPosition(Pos2d pos)
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
-        + boolean isCollidingWith(GameEntity otherGameEntity)
-        + void notifyCollision(GameEntity collidingGameEntity)
     }
 
     class CollisionManager {
@@ -367,23 +327,11 @@ classDiagram
 
     class GameEntityType {
         <<enum>>
-        PLAYER
-        TERRAIN
-        LIFE_BOOST_POWER_UP
-        STRNGTH_BOOST_POWER_UP
-        RING
-        DAMAGE_TRAP
-        ENEMY
-        SUBTERRAIN
-        + String getSpritePath()
-        + int getIndex()
-        + static GameEntityType getType(int index)
     }
 
     World *-- GameEntity
     World *-- GameEntityType
-
-    CollisionManager *-- GameEntity
+    World *-- CollisionManager
 ```
 
 **Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
@@ -408,30 +356,18 @@ classDiagram
         <<interface>>
         + void activateEffect(Player player)
         + void terminateEffect(Player player)
-        + void run()
     }
 
     class GameEntity {
         <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + void setPosition(Pos2d pos)
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
-        + boolean isCollidingWith(GameEntity otherGameEntity)
-        + void notifyCollision(GameEntity collidingGameEntity)
+
     }
 
     Collectible ..|> GameEntity
-    CollectibleFactory o-- Collectible
-    CollectibleFactory o-- CollectibleEffect
-    CollectibleEffect <|.. Runnable
+    CollectibleFactory *-- Collectible
+    CollectibleFactory *-- CollectibleEffect
+    CollectibleEffect ..|> Runnable
 
-    class Player {
-    }
-
-    CollectibleEffect --> Player
 ```
 
 **Problema:** I power-up dotati di timer hanno una routine di gestione pressochè sempre identica che se gestita in maniera errata potrebbe condurre a malfuzionamenti dovuti ad una sovrapposizione di queti ultimi.
