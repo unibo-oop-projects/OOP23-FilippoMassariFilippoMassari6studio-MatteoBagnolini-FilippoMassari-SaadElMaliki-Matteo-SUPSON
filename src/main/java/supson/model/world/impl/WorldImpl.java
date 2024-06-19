@@ -42,7 +42,7 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
-    public WorldImpl() { //TODO : mettere i metodi protected
+    public WorldImpl() {
         this.gameOver = false;
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
@@ -56,7 +56,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void loadWorld(final String filePath) {
-        this.gameTimer.start(); // For debug
+        this.gameTimer.start();
         WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
     }
