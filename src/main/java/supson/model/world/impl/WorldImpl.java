@@ -72,11 +72,13 @@ public final class WorldImpl implements World {
 
     @Override
     public void updateGame(final long elapsed) {
-        updateEntities(elapsed);
-        handleCollisions();
-        player.setState(playerManager.getUpdatedState());
-        if (player.getLife() < 0) {
-            this.gameOver = true;
+        if(!this.isGameOver()) {
+            updateEntities(elapsed);
+            handleCollisions();
+            player.setState(playerManager.getUpdatedState());
+            if (player.getLife() < 0) {
+                this.gameOver = true;
+            }
         }
     }
 
