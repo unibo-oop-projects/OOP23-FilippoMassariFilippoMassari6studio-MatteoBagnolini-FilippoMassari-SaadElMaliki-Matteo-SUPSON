@@ -78,7 +78,7 @@ public final class WorldImpl implements World {
             handleCollisions();
             player.setState(playerManager.getUpdatedState());
             if (player.getLife() < 0) {
-                this.gameOver = true;
+                this.setGameOver(true);
             }
         }
     }
@@ -201,6 +201,9 @@ public final class WorldImpl implements World {
     @Override
     public void setGameOver(final boolean gameOver) {
         this.gameOver = gameOver;
+        if (this.isGameOver()) {
+            this.gameTimer.stop();
+        }
     }
     
 }
