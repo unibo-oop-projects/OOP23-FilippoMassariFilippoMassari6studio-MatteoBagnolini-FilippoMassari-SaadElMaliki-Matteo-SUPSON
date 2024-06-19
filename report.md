@@ -409,17 +409,17 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 ### Massari Filippo
 
-- Utilizzo del costrutto Function: https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
+- Utilizzo del costrutto Function: 
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
 
-- Utilizzo multiplo del costrutto Optional: https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
-                                            https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldImpl.java
-                                            https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
-                                            https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldImageManagerImpl.java
-                                            https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
+- Utilizzo multiplo del costrutto Optional, ne riporto qualche esempio: 
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldImageManagerImpl.java
 
-- Utilizzo multipolo del costrutto Method References: https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
-                                                      https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
+- Utilizzo multipolo del costrutto Method References, ne riporto qualche esempio: 
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
 
-- Utilizzo multiplo del costrutto Stream : https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldImpl.java
-                                           https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
-                                           https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
+- Utilizzo multiplo del costrutto Stream, ne riporto qualche esempio:
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
