@@ -11,6 +11,7 @@ import supson.common.impl.Pos2dImpl;
 import supson.model.collisions.api.CollisionObserver;
 import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
+import supson.model.entity.api.block.TagBlockEntity;
 import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.api.moveable.MoveableEntity;
@@ -32,7 +33,7 @@ public final class WorldImpl implements World {
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 7);
 
-    private final List<GameEntity> blocks;
+    private final List<TagBlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
     private Optional<Integer> mapWidth;
@@ -106,7 +107,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void removeBlock(final GameEntity block) {
+    public void removeBlock(final TagBlockEntity block) {
         this.blocks.remove(block);
     }
 
@@ -117,7 +118,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void addBlock(final GameEntityType type, final Pos2d pos) {
-        GameEntity block;
+        TagBlockEntity block;
         switch (type) {
             case DAMAGE_TRAP:
                 block = new DamageTrapImpl(pos);
@@ -143,7 +144,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public List<GameEntity> getBlocks() {
+    public List<TagBlockEntity> getBlocks() {
         return new ArrayList<>(this.blocks);
     }
 
