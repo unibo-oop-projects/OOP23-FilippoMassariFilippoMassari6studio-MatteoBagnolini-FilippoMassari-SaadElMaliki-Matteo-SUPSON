@@ -3,7 +3,6 @@ package supson.model.entity.impl.moveable.enemy;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
-import supson.common.impl.Pos2dImpl;
 import supson.common.impl.Vect2dImpl;
 import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.entity.impl.moveable.player.Player;
@@ -68,10 +67,8 @@ public final class Enemy extends AbstractMoveableEntity {
         //physicComponent.applyGravity(this);
     }
 
-    public void applyDamage(Player player){     // TODO: codice momentaneo, sarebbe meglio fare thread con sleep per rendere l'enemy innuocuo
+    public void applyDamage(Player player){
         player.setLife(player.getLife()-1);
-        forward = player.getVelocity().x() < 0;
-        this.setPosition(new Pos2dImpl(getPosition().x()+0.4, getPosition().y()));
     }
 
 }

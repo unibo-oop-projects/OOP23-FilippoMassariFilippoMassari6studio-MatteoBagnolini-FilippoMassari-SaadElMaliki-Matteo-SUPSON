@@ -11,6 +11,7 @@ import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionManager;
 import supson.model.collisions.api.CollisionObservable;
 import supson.model.collisions.api.CollisionObserver;
+import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
 import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.api.block.trap.Trap;
@@ -31,8 +32,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     private final List<CollisionObserver> observers;
 
     /**
-     * The constructor of this class is final and empty, ensuring it cannot
-     * be instantiated.
+     * This is the constructor of this class. It initializes the list of observers.
      */
     public CollisionResolver() {
         this.observers = new ArrayList<>();
@@ -62,8 +62,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         .filter(t -> t.getHitbox().isCollidingWith(player.getHitbox()))
         .forEach(t -> {
             t.activate(player);
-            notifyObservers(t.getPosition().x() > player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
+            player.setPosition(new Pos2dImpl(getAdjustedOrizontalCoord(player, t), player.getPosition().y()));
         });
     }
 
@@ -79,8 +78,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
             .filter(e -> playerHitbox.isCollidingWith(e.getHitbox()))
             .forEach(e -> {
                 e.applyDamage(player);
-                notifyObservers(e.getPosition().x() > player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);
+                player.setPosition(new Pos2dImpl(getAdjustedOrizontalCoord(player, e), player.getPosition().y()));
             });
             return List.of();
         }
@@ -124,52 +122,65 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     }
 
     /**
-     * This method adjust the orizontal position of the entity colliding with a block in the x axis.
-     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
-     * colliding with. The entity is moved perfectly to the right (or to the left) of the block, and a 
-     * delta is added to have the entity just ot the right (or to the left) of the colliding block.
+     * This method adjust the orizontal position of the entity colliding with another entity in the x axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the colliding entity.
+     * The entity is moved perfectly to the right (or to the left) of the block, and a 
+     * delta is added to have the entity just ot the right (or to the left) of the colliding entity.
      * @param entity the entity which is colliding
-     * @param block one of the block the entity is colliding with
+     * @param collidingEntity the colliding entity
      * @return the new x coordinate of the entity to be set
      */
-    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final TagBlockEntity block) {
+    private double getAdjustedOrizontalCoord(final MoveableEntity entity, final GameEntity collidingEntity) {
         final double newXPos;
-        if (entity.getPosition().x() < block.getPosition().x()) {     //contact from right
+        if (entity.getPosition().x() < collidingEntity.getPosition().x()) {     //contact from right
             newXPos = entity.getPosition().x()
-                + block.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
-                if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
-                    notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION);
+                + collidingEntity.getHitbox().getLLCorner().x() - entity.getHitbox().getURCorner().x() - DELTA;
+                // CHECKSTYLE: EmptyStatement OFF
+                // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
+                switch (collidingEntity.getGameEntityType()) {
+                    case TERRAIN : notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION); break;
+                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_RIGHT_COLLISION); break;
+                    default : ;
                 }
+                // CHECKSTYLE: EmptyStatement ON
         } else {                                                    //contatto from left
             newXPos = entity.getPosition().x()
-                + block.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
+                + collidingEntity.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION);
                 }
+                // CHECKSTYLE: EmptyStatement OFF
+                // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
+                switch (collidingEntity.getGameEntityType()) {
+                    case TERRAIN : notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION); break;
+                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_LEFT_COLLISION); break;
+                    default : ;
+                }
+                // CHECKSTYLE: EmptyStatement ON
         }
         return newXPos;
     }
 
     /**
-     * This method adjust the vertical position of the entity colliding with a block in the y axis.
-     * The position is adjusted based on the dimension of the hitbox of the entity and the block it is
-     * colliding with. The entity is moved perfectly above (or below) the block, and a delta is added
-     * to have the entity right over (or under) the colliding block.
+     * This method adjust the orizontal position of the entity colliding with another entity in the y axis.
+     * The position is adjusted based on the dimension of the hitbox of the entity and the colliding entity.
+     * The entity is moved perfectly above (or below) of the block, and a delta is added to have the entity
+     * just right over (or under) of the colliding entity.
      * @param entity the entity which is colliding
-     * @param block one of the block the entity is colliding with
-     * @return the new y coordinate of the entity to be set
+     * @param collidingEntity the colliding entity
+     * @return the new x coordinate of the entity to be set
      */
-    private double getAdjustedVerticalCoord(final MoveableEntity entity, final TagBlockEntity block) {
+    private double getAdjustedVerticalCoord(final MoveableEntity entity, final GameEntity collidingEntity) {
         final double newYPos;
-        if (entity.getPosition().y() > block.getPosition().y()) {                   //contact from above 
+        if (entity.getPosition().y() > collidingEntity.getPosition().y()) {                   //contact from above 
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
+                + collidingEntity.getHitbox().getURCorner().y() - entity.getHitbox().getLLCorner().y() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_LOWER_COLLISION);
                 }
         } else {                                                                    //contact from below
             newYPos = entity.getPosition().y()
-                + block.getHitbox().getLLCorner().y() - entity.getHitbox().getURCorner().y() - DELTA;
+                + collidingEntity.getHitbox().getLLCorner().y() - entity.getHitbox().getURCorner().y() - DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {
                     notifyObservers(CollisionEvent.BLOCK_UPPER_COLLISION);
                 }
