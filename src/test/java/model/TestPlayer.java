@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.moveable.player.Player;
+import supson.model.entity.impl.moveable.player.PlayerState;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Pos2dImpl;

@@ -1,4 +1,4 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block;
 
 import supson.model.entity.impl.AbstractGameEntity;
 import supson.common.GameEntityType;

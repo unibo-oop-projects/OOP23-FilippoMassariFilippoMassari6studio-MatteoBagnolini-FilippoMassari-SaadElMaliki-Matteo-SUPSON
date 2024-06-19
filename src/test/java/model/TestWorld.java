@@ -11,8 +11,8 @@ import java.util.List;
 
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;

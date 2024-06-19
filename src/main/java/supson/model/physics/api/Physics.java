@@ -1,6 +1,6 @@
 package supson.model.physics.api;
 
-import supson.model.entity.api.MoveableEntity;
+import supson.model.entity.api.moveable.MoveableEntity;
 
 /**
  * This interface models the physics of every moveable entity of the game.

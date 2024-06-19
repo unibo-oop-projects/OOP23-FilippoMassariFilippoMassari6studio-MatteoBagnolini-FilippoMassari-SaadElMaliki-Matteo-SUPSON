@@ -7,16 +7,16 @@ import java.util.stream.Collectors;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.Trap;
 import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionManager;
 import supson.model.collisions.api.CollisionObservable;
 import supson.model.collisions.api.CollisionObserver;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.trap.Trap;
+import supson.model.entity.api.moveable.MoveableEntity;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hitbox.api.Hitbox;
 
 /**

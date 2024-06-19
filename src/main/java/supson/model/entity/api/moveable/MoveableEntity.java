@@ -1,6 +1,7 @@
-package supson.model.entity.api;
+package supson.model.entity.api.moveable;
 
 import supson.common.api.Vect2d;
+import supson.model.entity.api.GameEntity;
 
 /**
  * This interface models a moveable entity. A moveable entity is an entity with life points 
