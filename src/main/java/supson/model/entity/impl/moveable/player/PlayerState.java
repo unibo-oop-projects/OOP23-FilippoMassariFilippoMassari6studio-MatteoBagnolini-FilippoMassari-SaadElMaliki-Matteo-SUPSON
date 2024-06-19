@@ -15,71 +15,139 @@ import supson.common.api.Vect2d;
  * @param isInvulnerable bool flag representing if the player is invulnerable
  */
 public record PlayerState(Vect2d vel, boolean right, boolean left,
-    boolean jump, boolean onGround, boolean isJumping, boolean isInvulnerable) { 
+    boolean jump, boolean onGround, boolean isJumping, boolean isInvulnerable) {
 
-    public PlayerState(final Builder builder) {
-        this(builder.vel, builder.right, builder.left, builder.jump,
-        builder.onGround, builder.isJumping, builder.isInvulnerable);
+    /**
+     * This method retuns a new instance of PlayerState, with the same flags of the calling
+     * object, but with a new velocity.
+     * @param velocity the new velocity.
+     * @return a new instance with the same flags of the original object, but with updated velocity.
+     */
+    public PlayerState withVelocity(final Vect2d velocity) {
+        return new PlayerState(velocity, right, left, jump, onGround, isJumping, isInvulnerable);
     }
 
-    public static final class Builder {
-        private Vect2d vel;
-        private boolean right;
-        private boolean left;
-        private boolean jump;
-        private boolean onGround;
-        private boolean isJumping;
-        private boolean isInvulnerable;
+    /**
+     * This method returns an instance of PlayerState, with the right flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for right flag.
+     */
+    public PlayerState setRight() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, true, left, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder(final PlayerState state) {
-            this.vel = state.vel;
-            this.right = state.right;
-            this.left = state.left;
-            this.jump = state.jump;
-            this.onGround = state.onGround;
-            this.isJumping = state.isJumping;
-            this.isInvulnerable = state.isInvulnerable;
-        }
+    /**
+     * This method returns an instance of PlayerState, with the right flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for right flag.
+     */
 
-        public Builder vel(final Vect2d vel) {
-            this.vel = vel;
-            return this;
-        }
+    public PlayerState setNotRight() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, false, left, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder right(final boolean right) {
-            this.right = right;
-            return this;
-        }
+    /**
+     * This method returns an instance of PlayerState, with the left flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for left flag.
+     */
 
-        public Builder left(final boolean left) {
-            this.left = left;
-            return this;
-        }
+    public PlayerState setLeft() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, true, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder jump(final boolean jump) {
-            this.jump = jump;
-            return this;
-        }
+    /**
+     * This method returns an instance of PlayerState, with the left flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for left flag.
+     */
 
-        public Builder onGround(final boolean onGround) {
-            this.onGround = onGround;
-            return this;
-        }
+    public PlayerState setNotLeft() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, false, jump, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder isJumping(final boolean isJumping) {
-            this.isJumping = isJumping;
-            return this;
-        }
+    /**
+     * This method returns an instance of PlayerState, with the jump flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for jump flag.
+     */
+    public PlayerState setJump() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, true, onGround, isJumping, isInvulnerable);
+    }
 
-        public Builder isInvulnerable(final boolean isInvulnerable) {
-            this.isInvulnerable = isInvulnerable;
-            return this;
-        }
+    /**
+     * This method returns an instance of PlayerState, with the jump flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for jump flag.
+     */
+    public PlayerState setNotJump() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, false, onGround, isJumping, isInvulnerable);
+    }
 
-        public PlayerState build() {
-            return new PlayerState(this);
-        }
+    /**
+     * This method returns an instance of PlayerState, with the onGround flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for onGround flag.
+     */
+    public PlayerState setOnGround() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, true, isJumping, isInvulnerable);
+    }
 
+    /**
+     * This method returns an instance of PlayerState, with the onGround flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for onGround flag.
+     */
+    public PlayerState setNotOnGround() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, false, isJumping, isInvulnerable);
+    }
+
+    /**
+     * This method returns an instance of PlayerState, with the isJumping flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for isJumping flag.
+     */
+    public PlayerState setIsJumping() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, onGround, true, isInvulnerable);
+    }
+
+    /**
+     * This method returns an instance of PlayerState, with the isJumping flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for isJumping flag.
+     */
+    public PlayerState setNotIsJumping() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, onGround, false, isInvulnerable);
+    }
+
+    /**
+     * This method returns an instance of PlayerState, with the invulnerable flag set to true.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for invulnerable flag.
+     */
+    public PlayerState setInvulnerable() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, onGround, isJumping, true);
+    }
+
+    /**
+     * This method returns an instance of PlayerState, with the invulnerable flag set to false.
+     * All the other flags are the same of the caller object.
+     * @return a new instance of PlayerState with the same flags of the original object
+     * except for invulnerable flag.
+     */
+    public PlayerState setNotInvulnerable() {     // NOPMD suppressed as this method should be used similar to a setter
+        return new PlayerState(vel, right, left, jump, onGround, isJumping, false);
     }
 
 }
