@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import supson.common.impl.Pos2dImpl;
 import supson.model.effect.api.CollectibleEffect;
 import supson.model.effect.impl.StrengthPowerUpEffectImpl;
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.moveable.player.Player;
+import supson.model.entity.impl.moveable.player.PlayerState;
 
 /*
  * This class contains unit tests for the Strength PowerUp Effect class.

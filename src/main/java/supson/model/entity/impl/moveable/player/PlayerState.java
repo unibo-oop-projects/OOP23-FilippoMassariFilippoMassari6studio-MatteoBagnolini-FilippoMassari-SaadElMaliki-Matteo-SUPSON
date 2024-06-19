@@ -1,4 +1,4 @@
-package supson.model.entity.player;
+package supson.model.entity.impl.moveable.player;
 
 import supson.common.api.Vect2d;
 

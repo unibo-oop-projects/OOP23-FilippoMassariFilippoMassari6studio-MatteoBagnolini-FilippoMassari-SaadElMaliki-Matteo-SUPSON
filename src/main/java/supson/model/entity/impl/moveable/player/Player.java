@@ -1,9 +1,9 @@
-package supson.model.entity.player;
+package supson.model.entity.impl.moveable.player;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Vect2dImpl;
-import supson.model.entity.impl.AbstractMoveableEntity;
+import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
 
@@ -16,7 +16,7 @@ public final class Player extends AbstractMoveableEntity {
     private static final int MAX_SPEED = 20;
     private static final double ACC_SPEED = 0.8;
     private static final double DEC_SPEED = 1.2;
-    private static final double FRICTION = 0.4;
+    private static final double FRICTION = 0.8;
     private static final int JUMP_FORCE = 12;
     private static final double GRAVITY = 0.8;
 
@@ -70,7 +70,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player moves right.
      * @param flag the boolean value representing right move
      */
-    public void setMoveRight(final boolean flag) {
+    public void setMoveRight(final boolean flag) { // TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.right = flag;
     }
 
@@ -79,7 +79,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player moves left.
      * @param flag the boolean value representing left move
      */
-    public void setMoveLeft(final boolean flag) {
+    public void setMoveLeft(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.left = flag;
     }
 
@@ -88,7 +88,7 @@ public final class Player extends AbstractMoveableEntity {
      * the player jumps.
      * @param flag the boolean value representing jump
      */
-    public void setJump(final boolean flag) {
+    public void setJump(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
         this.jump = flag;
     }
 

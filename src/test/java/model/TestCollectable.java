@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.entity.player.Player;
-import supson.model.block.impl.CollectibleFactoryImpl;
-import supson.model.block.api.Collectible;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.impl.block.collectible.CollectibleFactoryImpl;
+import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * This class contains unit tests for the Collectible class.
@@ -57,6 +57,7 @@ public class TestCollectable {
         assertNotNull(lifeBoost);
         assertEquals(GameEntityType.LIFE_BOOST_POWER_UP, lifeBoost.getGameEntityType());
 
+        player.setLife(1);
         lifeBoost.collect(player);
         assertEquals(2, player.getLife());
     }
@@ -73,6 +74,11 @@ public class TestCollectable {
         assertEquals(GameEntityType.STRNGTH_BOOST_POWER_UP, strengthBoost.getGameEntityType());
 
         strengthBoost.collect(player);
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(player.getState().isInvulnerable());
     }
 

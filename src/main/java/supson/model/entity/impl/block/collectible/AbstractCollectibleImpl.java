@@ -1,8 +1,8 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block.collectible;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
+import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.impl.AbstractGameEntity;
 
 /**

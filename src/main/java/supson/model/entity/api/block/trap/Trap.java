@@ -1,12 +1,13 @@
-package supson.model.block.api;
+package supson.model.entity.api.block.trap;
 
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * The Trap interface represents a block entity that can trap the player.
- * It extends the GameEntity interface.
+ * It extends the TagBlockEntity tag interface.
  */
-public interface Trap extends BlockEntity {
+public interface Trap extends TagBlockEntity {
 
     /**
      * Activates the trap and affects the player.

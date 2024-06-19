@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.BlockEntity;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
@@ -41,7 +41,7 @@ public class TestWorld {
      */
     @Test
     void testGetBlocks() {
-        List<BlockEntity> blocks = world.getBlocks();
+        List<TagBlockEntity> blocks = world.getBlocks();
         assertNotNull(blocks);
         assertFalse(blocks.isEmpty());
     }
@@ -92,7 +92,7 @@ public class TestWorld {
      */
     @Test
     void testRemoveBlock() {
-        List<BlockEntity> blocks = world.getBlocks();
+        List<TagBlockEntity> blocks = world.getBlocks();
         int initialBlockCount = blocks.size();
         if (initialBlockCount > 0) {
             world.removeBlock(blocks.get(0));
@@ -171,7 +171,7 @@ public class TestWorld {
     @Test
     void testLoadWorld() {
         world.loadWorld(FILE_PATH);
-        List<BlockEntity> blocks = world.getBlocks();
+        List<TagBlockEntity> blocks = world.getBlocks();
         List<Enemy> enemies = world.getEnemies();
         assertNotNull(blocks);
         assertFalse(blocks.isEmpty());

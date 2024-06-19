@@ -1,10 +1,10 @@
-package supson.model.entity.player;
+package supson.model.entity.impl.moveable.player;
 
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
 import supson.model.collisions.CollisionEvent;
 import supson.model.collisions.api.CollisionObserver;
-import supson.model.entity.api.PlayerManager;
+import supson.model.entity.api.moveable.player.PlayerManager;
 
 /**
  * This class represents a player manager. It is used to update the state of 
