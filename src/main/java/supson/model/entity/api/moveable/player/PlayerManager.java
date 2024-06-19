@@ -1,6 +1,6 @@
-package supson.model.entity.api;
+package supson.model.entity.api.moveable.player;
 
-import supson.model.entity.player.PlayerState;
+import supson.model.entity.impl.moveable.player.PlayerState;
 
 /**
  * This interface models a player manager.

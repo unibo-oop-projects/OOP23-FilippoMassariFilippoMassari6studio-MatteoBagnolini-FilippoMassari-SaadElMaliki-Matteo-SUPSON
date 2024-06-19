@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 
 /**
@@ -44,7 +45,7 @@ public interface World {
      *
      * @param block the block to be removed
      */
-    void removeBlock(GameEntity block);
+    void removeBlock(TagBlockEntity block);
 
     /**
      * Removes the specified enemy from the game world.
@@ -58,7 +59,7 @@ public interface World {
      *
      * @return a list of BlockEntity objects representing the blocks
      */
-    List<GameEntity> getBlocks();
+    List<TagBlockEntity> getBlocks();
 
     /**
      * Returns a list of all the enemies in the game world.

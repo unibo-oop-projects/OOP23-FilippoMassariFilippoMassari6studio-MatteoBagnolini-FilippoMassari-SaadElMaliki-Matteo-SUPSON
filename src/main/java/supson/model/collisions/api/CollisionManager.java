@@ -3,12 +3,12 @@ package supson.model.collisions.api;
 import java.util.List;
 
 import supson.common.api.Pos2d;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.Trap;
-import supson.model.entity.api.GameEntity;
-import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.trap.Trap;
+import supson.model.entity.api.moveable.MoveableEntity;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * This interface represent a collision manager. It is used to manage the collisions
@@ -25,7 +25,7 @@ public interface CollisionManager {
      * @param blocks the list of blocks in the level
      * @param startingPos the initial position of the entity, before it has move
      */
-    void resolvePlatformCollisions(MoveableEntity entity, List<GameEntity> blocks, Pos2d startingPos);
+    void resolvePlatformCollisions(MoveableEntity entity, List<TagBlockEntity> blocks, Pos2d startingPos);
 
     /**
      * This method resolves collisions between the player and the enemies.

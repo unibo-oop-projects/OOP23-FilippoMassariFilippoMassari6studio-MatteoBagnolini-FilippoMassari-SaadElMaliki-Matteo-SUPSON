@@ -1,7 +1,7 @@
 package supson.model.effect.impl;
 
 import supson.model.effect.api.CollectibleEffect;
-import supson.model.entity.player.Player;
+import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * Abstract base class for collectible effects.

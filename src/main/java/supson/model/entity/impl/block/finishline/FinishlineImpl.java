@@ -1,9 +1,8 @@
-package supson.model.block.impl;
+package supson.model.entity.impl.block.finishline;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.block.api.Finishline;
-
+import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.impl.AbstractGameEntity;
 import supson.model.world.api.World;
 

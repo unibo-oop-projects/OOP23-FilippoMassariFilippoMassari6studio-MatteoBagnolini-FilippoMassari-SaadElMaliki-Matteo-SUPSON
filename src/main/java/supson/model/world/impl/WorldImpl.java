@@ -8,21 +8,22 @@ import java.util.stream.Collectors;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
-import supson.model.block.api.Collectible;
-import supson.model.block.api.Finishline;
-import supson.model.block.api.Trap;
-import supson.model.block.impl.DamageTrapImpl;
-import supson.model.block.impl.FinishlineImpl;
-import supson.model.block.impl.SubTerrainImpl;
-import supson.model.block.impl.TerrainImpl;
 import supson.model.collisions.api.CollisionObserver;
 import supson.model.collisions.impl.CollisionResolver;
 import supson.model.entity.api.GameEntity;
-import supson.model.entity.api.MoveableEntity;
-import supson.model.entity.api.PlayerManager;
-import supson.model.entity.impl.Enemy;
-import supson.model.entity.player.Player;
-import supson.model.entity.player.PlayerManagerImpl;
+import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.finishline.Finishline;
+import supson.model.entity.api.block.trap.Trap;
+import supson.model.entity.api.moveable.MoveableEntity;
+import supson.model.entity.api.moveable.player.PlayerManager;
+import supson.model.entity.impl.block.SubTerrainImpl;
+import supson.model.entity.impl.block.TerrainImpl;
+import supson.model.entity.impl.block.finishline.FinishlineImpl;
+import supson.model.entity.impl.block.trap.DamageTrapImpl;
+import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.player.Player;
+import supson.model.entity.impl.moveable.player.PlayerManagerImpl;
 import supson.model.hud.api.Hud;
 import supson.model.hud.impl.HudImpl;
 import supson.model.timer.api.GameTimer;
@@ -34,7 +35,7 @@ public final class WorldImpl implements World {
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 7);
 
-    private final List<GameEntity> blocks;
+    private final List<TagBlockEntity> blocks;
     private final List<Enemy> enemies;
     private final Player player;
     private Optional<Integer> mapWidth;
@@ -43,7 +44,7 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
-    public WorldImpl() { //TODO : mettere i metodi protected
+    public WorldImpl() {
         this.gameOver = false;
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
@@ -57,7 +58,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void loadWorld(final String filePath) {
-        this.gameTimer.start(); // For debug
+        this.gameTimer.start();
         WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
     }
@@ -72,7 +73,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void updateGame(final long elapsed) {
-        if(!this.isGameOver()) {
+        if (!this.isGameOver()) {
             updateEntities(elapsed);
             handleCollisions();
             player.setState(playerManager.getUpdatedState());
@@ -109,11 +110,12 @@ public final class WorldImpl implements World {
         activated.forEach(this::removeBlock);
 
         collisionResolver.resolveFinishlineCollision(player, 
-                blocks.stream().filter(b -> b instanceof Finishline).map(Finishline.class::cast).collect(Collectors.toList()), this);
+                blocks.stream().filter(b -> b instanceof Finishline).map(Finishline.class::cast)
+                        .collect(Collectors.toList()), this);
     }
 
     @Override
-    public void removeBlock(final GameEntity block) {
+    public void removeBlock(final TagBlockEntity block) {
         this.blocks.remove(block);
     }
 
@@ -124,7 +126,7 @@ public final class WorldImpl implements World {
 
     @Override
     public void addBlock(final GameEntityType type, final Pos2d pos) {
-        GameEntity block;
+        TagBlockEntity block;
         switch (type) {
             case DAMAGE_TRAP:
                 block = new DamageTrapImpl(pos);
@@ -153,7 +155,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public List<GameEntity> getBlocks() {
+    public List<TagBlockEntity> getBlocks() {
         return new ArrayList<>(this.blocks);
     }
 
@@ -197,7 +199,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void setGameOver(boolean gameOver) {
+    public void setGameOver(final boolean gameOver) {
         this.gameOver = gameOver;
     }
     
