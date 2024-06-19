@@ -232,7 +232,11 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 classDiagram
     class GameEntity {
         <<interface>>
-
+        + int getHeight()
+        + int getWidth()
+        + Pos2d getPosition()
+        + Hitbox getHitbox()
+        + GameEntityType getGameEntityType()
     }
 
     class GameEntityType {
@@ -241,23 +245,27 @@ classDiagram
         TERRAIN
         LIFE_BOOST_POWER_UP
         STRENGTH_BOOST_POWER_UP
-        RINGe
+        RING
         DAMAGE_TRAP
         ENEMY
         SUBTERRAIN
         END_GAME
-
     }
 
     class Pos2d {
+        + double x()
+        + double y()
     }
 
     class Hitbox {
+        <<interface>>
+        + boolean isCollidingWith(Hitbox box)
     }
 
     GameEntity *-- Pos2d
     GameEntity *-- Hitbox
     GameEntity *-- GameEntityType
+
 ```
 
 **Problema:** Nel contesto del gioco, sono presenti diverse entità con caratteristiche e comportamenti distinti. Queste entità devono essere rappresentate in modo coerente all'interno del modello di gioco, della sua rappresentazione visiva e dell'interazione con il giocatore. Tuttavia, la gestione di queste entità può diventare complessa a causa delle loro diverse proprietà e comportamenti.
@@ -281,6 +289,11 @@ classDiagram
         + void collect(Player player)
     }
 
+    class TrapFactory {
+        <<interface>>
+        + Collectible createTrap(GameEntityType type, Pos2d pos)
+    }
+
     class CollectibleFactory {
         <<interface>>
         + Collectible createCollectible(GameEntityType type, Pos2d pos)
@@ -291,10 +304,11 @@ classDiagram
         + void activate(Player player)
     }
 
+    TrapFactory --> Trap : instantiate
     GameEntity <|.. TagBlockEntity
     TagBlockEntity <|.. Collectible
     TagBlockEntity <|.. Trap
-
+    CollectibleFactory --> Collectible : instantiate
 ```
 
 **Problema:** Nel nostro gioco abbiamo diversi tipi di blocchi con comportamenti differenti sia dalle restanti entità di gioco che tra loro stessi. Alcuni blocchi possono essere raccolti dai giocatori mentre altri rappresentano trappole o semplicemente ostacoli. È necessario un sistema flessibile che permetta di gestire questi diversi comportamenti senza duplicare il codice e facilitando l'estensibilità futura.
@@ -315,7 +329,9 @@ classDiagram
 
     class GameEntity {
         <<interface>>
+        + GameEntityType getGameEntityType
     }
+    note for GameEntity "Segue il resto della gerarchia delle GameEntity"
 
     class CollisionManager {
         <<interface>>
@@ -325,12 +341,7 @@ classDiagram
         + List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
     }
 
-    class GameEntityType {
-        <<enum>>
-    }
-
     World *-- GameEntity
-    World *-- GameEntityType
     World *-- CollisionManager
 ```
 
@@ -364,26 +375,33 @@ classDiagram
     }
 
     Collectible ..|> GameEntity
-    CollectibleFactory *-- Collectible
-    CollectibleFactory *-- CollectibleEffect
+    CollectibleFactory *-- Collectible : instantiate
+    Collectible *-- CollectibleEffect
     CollectibleEffect ..|> Runnable
-
 ```
 
 **Problema:** I power-up dotati di timer hanno una routine di gestione pressochè sempre identica che se gestita in maniera errata potrebbe condurre a malfuzionamenti dovuti ad una sovrapposizione di queti ultimi.
 
 **Soluzione:** Per gestire in modo corretto gli effetti dei power-up timerizzati, abbiamo pensato un sistema di gestione sequenziale e differenziata, grazie all'interfaccia `CollectableEffect` che permette di ridurre la ripetizione di codice e rende altamente scalabile l'aggiunta futura di power-up dichiarando una factory di effetti che andrà a coadiuvare il lavoro di `CollectableFactory`.
 
-
-
 # Capitolo 3 - Sviluppo
 
 ## 3.1 Testing automatizzato
 
 - TestPlayer: viene testato che il giocatore si muova effettivamente una volta impostati i vari flag `right`, `left` e `jump`. Inoltre vengono testati i metodi setters relativi allo score e alle vite.
+
 - TestPhysics: vengono testati i vari metodi della classe `PhysicsImpl` utilizzando delle classi `MoveableEntity` fittizie (dove viene specificato il metodo `updateVelocity()`). In particolare viene testato il corretto movimento con accelerazione, la frizione con il terreno di gioco, il salto e la forza di gravità.
+
 - TestHitbox: viene controllato che gli angoli dell'hitbox vengano calcolati correttamente quando si chiamano i relativi getters. Inoltre viene testato il metodo `isCollidingWith(Hitbox other)`, usato per controllare se due hitbox collidono tra di loro.
 
+- TestCollectable: Questa classe contiene i test per la creazione e l'uso dei vari oggetti collezionabili, verifica l'effettiva creazione dell'oggetto e che il suo effetto all'attivazione sia coerente con ciò che ci si aspetta.
+Viene anche verificata la casistica in cui si tenta di creare un collezionabile non valido (ad esempio di tipo ENEMY) e la conseguente generazione di un'eccezione IllegalArgumentException.
+
+- TestGameTimerImpl: Questa classe contiene i test per la classe che rappresenta il timer di gioco. I test verificano le effettiva funzionalità del timer come l'avvio, lo stop ed il reset, inoltre contralano l'effettiva coerenza del tempo trascorso con quello riportato dal timer.
+
+- TestStrengthPowerUpEffectImpl: Questa classe contiene i test per la che rappresenta l'effetto timerizzato del power-up di invulnerabilità. Verifica che l'effetto venga attivato e terminato correttamente dopo la durata specificata, rendendo il giocatore invulnerabile per quel periodo, controlla inltre che l'effetto rispetti lo stato di invulnerabilità iniziale del giocatore, aspettando se il giocatore è già invulnerabile e dunque già in possesso di un power-up similare.
+
+- TestWorld: Questa classe contiene i test per il mondo di gioco. Va dunque a testare l'aggiunta e la rimozione di elementi di gioco dal mondo stesso ed i relativi getter sia sulle singole istanze che sulle strutture dati in esso contenute.
 
 ## 3.2 Note di sviluppo
 
