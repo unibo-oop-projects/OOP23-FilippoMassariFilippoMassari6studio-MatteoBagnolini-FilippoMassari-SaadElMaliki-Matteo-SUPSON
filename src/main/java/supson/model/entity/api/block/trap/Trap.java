@@ -5,7 +5,7 @@ import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * The Trap interface represents a block entity that can trap the player.
- * It extends the GameEntity interface.
+ * It extends the TagBlockEntity tag interface.
  */
 public interface Trap extends TagBlockEntity {
 

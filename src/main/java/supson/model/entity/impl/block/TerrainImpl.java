@@ -7,7 +7,7 @@ import supson.common.api.Pos2d;
 
 /**
  * The TerrainImpl class represents a terrain block in the game.
- * It extends the AbstractGameEntity class and implements the BlockEntity interface.
+ * It extends the AbstractGameEntity class and implements TagBlockEntity tag interface.
  */
 public final class TerrainImpl extends AbstractGameEntity implements TagBlockEntity {
 

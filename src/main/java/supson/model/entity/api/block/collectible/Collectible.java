@@ -5,7 +5,7 @@ import supson.model.entity.impl.moveable.player.Player;
 
 /**
  * The Collectible interface represents a block entity that can be collected.
- * It extends the BlockEntity interface.
+ * It extends the TagBlockEntity tag interface.
  */
 public interface Collectible extends TagBlockEntity {
 
