@@ -39,7 +39,17 @@ public final class Player extends AbstractMoveableEntity {
         super(pos, HEIGHT, WIDTH, TYPE, new Vect2dImpl(0, 0), MAX_LIVES,
             new PhysicsImpl(MAX_SPEED, ACC_SPEED, DEC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
-    } 
+    }
+
+    /**
+     * This constructor creates a new instance of Player.
+     * The new object is a copy of the parameter player
+     * @param player the player to copy
+     */
+    public Player(final Player player) {
+        super(player.getPosition(), HEIGHT, WIDTH, TYPE, player.getVelocity(), player.getLife(), player.getPhysicsComponent());
+        setState(player.getState());
+    }
 
     @Override
     public void updateVelocity() {
@@ -63,33 +73,6 @@ public final class Player extends AbstractMoveableEntity {
             physicsComponent.adjustAirSpeed(this);
         }
         physicsComponent.applyGravity(this);
-    }
-
-    /**
-     * This method sets the right flag. It should be used when 
-     * the player moves right.
-     * @param flag the boolean value representing right move
-     */
-    public void setMoveRight(final boolean flag) { // TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.right = flag;
-    }
-
-    /**
-     * This method sets the left flag. It should be used when 
-     * the player moves left.
-     * @param flag the boolean value representing left move
-     */
-    public void setMoveLeft(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.left = flag;
-    }
-
-    /**
-     * This method sets the jump flag. It should be used when 
-     * the player jumps.
-     * @param flag the boolean value representing jump
-     */
-    public void setJump(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.jump = flag;
     }
 
     /**
@@ -130,6 +113,8 @@ public final class Player extends AbstractMoveableEntity {
 
     /**
      * This method set the state of the player.
+     * The method should be called whenever the state of the player
+     * needs to change, passing to this method an appropriate new state.
      * @param state the state to be set
      */
     public void setState(final PlayerState state) {

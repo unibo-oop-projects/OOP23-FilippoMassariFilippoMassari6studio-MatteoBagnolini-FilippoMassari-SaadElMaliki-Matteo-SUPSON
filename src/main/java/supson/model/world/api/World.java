@@ -138,4 +138,12 @@ public interface World {
      * @param gameOver the gameOver falg to set.
      */
     void setGameOver(boolean gameOver);
+
+    /**
+     * This method sets the player movement flags.
+     * @param right bool representing true if player should move right
+     * @param left bool representing true if player should move left
+     * @param jump bool representing true if player should jump
+     */
+    void setPlayerFlags(boolean right, boolean left, boolean jump);
 }

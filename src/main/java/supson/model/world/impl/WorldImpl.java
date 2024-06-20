@@ -182,7 +182,7 @@ public final class WorldImpl implements World {
 
     @Override
     public Player getPlayer() {
-        return this.player;
+        return new Player(player);
     }
 
     @Override
@@ -211,6 +211,13 @@ public final class WorldImpl implements World {
         if (this.isGameOver()) {
             this.gameTimer.stop();
         }
+    }
+
+    @Override
+    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
+        playerManager.moveRight(player, right);
+        playerManager.moveLeft(player, left);
+        playerManager.jump(player, jump);
     }
 
 }

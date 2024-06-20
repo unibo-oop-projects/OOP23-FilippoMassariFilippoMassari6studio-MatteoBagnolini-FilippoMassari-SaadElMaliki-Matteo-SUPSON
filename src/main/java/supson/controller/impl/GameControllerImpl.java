@@ -41,9 +41,10 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void processInput() {
-        this.model.getPlayer().setMoveLeft(input.isLeft());
-        this.model.getPlayer().setMoveRight(input.isRight());
-        this.model.getPlayer().setJump(input.isJump());
+        // this.model.getPlayer().setMoveLeft(input.isLeft());
+        // this.model.getPlayer().setMoveRight(input.isRight());
+        // this.model.getPlayer().setJump(input.isJump());
+        this.model.setPlayerFlags(input.isRight(), input.isLeft(), input.isJump());
     }
 
     @Override
