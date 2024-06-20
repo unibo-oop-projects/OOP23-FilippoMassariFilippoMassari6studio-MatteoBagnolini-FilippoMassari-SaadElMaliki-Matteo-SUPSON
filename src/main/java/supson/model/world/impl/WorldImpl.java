@@ -182,7 +182,7 @@ public final class WorldImpl implements World {
 
     @Override
     public Player getPlayer() {
-        return this.player;
+        return new Player(player);
     }
 
     @Override
