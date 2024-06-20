@@ -57,14 +57,13 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         entity.setPosition(new Pos2dImpl(newX, newY));
     }
 
-    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, World world) {
+    @Override
+    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, final World world) {
         finishlines.stream()
         .filter(f -> f.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(f -> f.getHitbox().isCollidingWith(player.getHitbox()))
         .forEach(f -> {
             f.endGame(world);
-            /*notifyObservers(f.getPosition().x()>player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);*/
         });
     }
 
