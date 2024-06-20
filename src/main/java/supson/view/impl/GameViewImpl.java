@@ -53,7 +53,7 @@ public final class GameViewImpl implements GameView {
         mainPanel.setOpaque(false);
         mainPanel.setLayout(new BorderLayout());
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);

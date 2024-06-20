@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,6 +29,7 @@ public final class WorldLoaderImpl implements WorldLoader {
 
     private static final String EMPTY = "0";
     private final CollectibleFactory collectibleFactory;
+    private static final Logger LOGGER = Logger.getLogger(WorldLoader.class.getName());
 
     /**
      * Constructs a new WorldLoaderImpl instance.
@@ -39,14 +42,14 @@ public final class WorldLoaderImpl implements WorldLoader {
     public void loadWorld(final String filePath, final World world) {
         try (InputStream inputStream = getClass().getResourceAsStream(filePath);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            List<String> lines = reader.lines().collect(Collectors.toList());
-            Optional<Integer> mapWidth = Optional.of(lines.size() - 1);
+            final List<String> lines = reader.lines().collect(Collectors.toList());
+            final Optional<Integer> mapWidth = Optional.of(lines.size() - 1);
             world.setMapWidth(mapWidth);
             IntStream.rangeClosed(0, mapWidth.get())
                     .map(y -> mapWidth.get() - y)
                     .forEach(y -> processLine(lines, y, world));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error loading world from file: " + filePath, e); //TODO : fare la refernce sul report
         }
     }
 
@@ -58,11 +61,12 @@ public final class WorldLoaderImpl implements WorldLoader {
      * @param world the world to which entities are to be added
      */
     private void processLine(final List<String> lines, final int y, final World world) {
-        String[] tokens = lines.get(world.getMapWidth() - y).split(" ");
+        final String[] tokens = lines.get(world.getMapWidth() - y).split(" ");
         IntStream.range(0, tokens.length)
-                .filter(x -> !tokens[x].equals(EMPTY))
+                .filter(x -> !EMPTY.equals(tokens[x])) //TODO : fare la refernce sul report
                 .forEach(x -> processToken(tokens[x], x, y, world));
     }
+    
 
     /**
      * Processes a token from the line and adds the corresponding entity to the world.
@@ -73,8 +77,8 @@ public final class WorldLoaderImpl implements WorldLoader {
      * @param world the world to which the entity is to be added
      */
     private void processToken(final String token, final int x, final int y, final World world) {
-        int worldElement = Integer.parseInt(token);
-        Pos2d pos = new Pos2dImpl(x, y);
+        final int worldElement = Integer.parseInt(token);
+        final Pos2d pos = new Pos2dImpl(x, y);
         Optional.ofNullable(GameEntityType.getType(worldElement))
                 .ifPresent(type -> addEntityToWorld(type, pos, world));
     }

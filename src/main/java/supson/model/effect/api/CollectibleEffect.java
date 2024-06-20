@@ -22,9 +22,7 @@ public interface CollectibleEffect extends Runnable {
      */
     void terminateEffect(Player player);
 
-    /**
-     * Runs the timer.
-     */
+    @Override
     void run();
 
 }

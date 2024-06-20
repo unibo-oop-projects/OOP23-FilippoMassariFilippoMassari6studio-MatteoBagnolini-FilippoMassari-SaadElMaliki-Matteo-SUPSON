@@ -27,9 +27,9 @@ public final class HudViewImpl implements HudView {
 
     @Override
     public void renderHud(final JPanel gamePanel, final Hud hud) {
-        JLabel scoreLabel = createLabel("Score: " + hud.getScore(), LABEL_X, SCORE_LABEL_Y);
-        JLabel livesLabel = createLabel("Lives: " + hud.getLives(), LABEL_X, LIVES_LABEL_Y);
-        JLabel timeLabel = createLabel("Time: " + String.format("%.2f", hud.getTime()), LABEL_X, TIME_LABEL_Y);
+        final JLabel scoreLabel = createLabel("Score: " + hud.getScore(), LABEL_X, SCORE_LABEL_Y);
+        final JLabel livesLabel = createLabel("Lives: " + hud.getLives(), LABEL_X, LIVES_LABEL_Y);
+        final JLabel timeLabel = createLabel("Time: " + String.format("%.2f", hud.getTime()), LABEL_X, TIME_LABEL_Y);
 
         gamePanel.add(scoreLabel);
         gamePanel.add(livesLabel);
@@ -45,7 +45,7 @@ public final class HudViewImpl implements HudView {
      * @return the created JLabel
      */
     private JLabel createLabel(final String text, final int x, final int y) {
-        JLabel label = new JLabel(text);
+        final JLabel label = new JLabel(text);
         label.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
         label.setFont(new Font("Arial", Font.BOLD, 16));
         label.setForeground(Color.WHITE);

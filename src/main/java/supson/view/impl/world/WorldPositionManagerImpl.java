@@ -19,11 +19,10 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
     @Override
     public void setPosition(final JLabel label, final GameEntity gameEntity, final double playerX, final double playerY, 
                             final int centerX, final int centerY, final int mapWidth) {
-        Pos2d pos = gameEntity.getPosition();
-        int x = calculateXPosition(pos.x(), playerX, centerX, mapWidth);
-        int y = calculateYPosition(pos.y(), playerY, centerY, gameEntity);
-
-        int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
+        final Pos2d pos = gameEntity.getPosition();
+        final int x = calculateXPosition(pos.x(), playerX, centerX, mapWidth);
+        final int y = calculateYPosition(pos.y(), playerY, centerY, gameEntity);
+        final int gameEntityHeight = DEFAULT_DIMENSION * gameEntity.getHeight();
         label.setBounds(x, y, DEFAULT_DIMENSION, gameEntityHeight);
     }
 
@@ -68,7 +67,7 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
         if (gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE)) {
             return (int) Math.round(centerY - relativeY * entityHeight - (DEFAULT_DIMENSION));
         }
-        return (int) Math.round(centerY - relativeY * entityHeight - (isLongEntity ? (DEFAULT_DIMENSION / 2) : 0));
+        return (int) Math.round(centerY - relativeY * entityHeight - (isLongEntity ? DEFAULT_DIMENSION / 2 : 0));
     }
 
     @Override

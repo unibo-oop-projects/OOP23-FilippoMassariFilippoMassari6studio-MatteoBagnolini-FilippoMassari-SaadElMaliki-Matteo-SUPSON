@@ -35,7 +35,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
     public Collectible createCollectible(final GameEntityType type, final Pos2d pos) {
-        Optional<Function<Pos2d, Collectible>> creator = Optional.ofNullable(collectibleCreators.get(type));
+        final Optional<Function<Pos2d, Collectible>> creator = Optional.ofNullable(collectibleCreators.get(type));
         if (creator.isPresent()) {
             return creator.get().apply(pos);
         } else {
@@ -74,7 +74,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
+                final Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
                 timer.start();
             }
         };

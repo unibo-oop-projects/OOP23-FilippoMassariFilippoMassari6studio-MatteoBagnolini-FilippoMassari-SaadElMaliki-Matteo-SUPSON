@@ -66,7 +66,7 @@ public final class WorldImpl implements World {
     @Override
     public void loadWorld(final String filePath) {
         this.gameTimer.start();
-        WorldLoader loader = new WorldLoaderImpl();
+        final WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
     }
 
