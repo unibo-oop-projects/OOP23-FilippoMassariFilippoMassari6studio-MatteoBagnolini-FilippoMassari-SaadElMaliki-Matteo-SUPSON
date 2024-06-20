@@ -5,10 +5,12 @@ import java.util.List;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.block.TagBlockEntity;
 import supson.model.entity.api.block.collectible.Collectible;
+import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.api.moveable.MoveableEntity;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
+import supson.model.world.api.World;
 
 /**
  * This interface represent a collision manager. It is used to manage the collisions
@@ -49,5 +51,14 @@ public interface CollisionManager {
      * @return a list of collectible that have been collected and have to be removed
      */
     List<Collectible> resolveCollectibleCollisions(Player player, List<Collectible> collectibles);
+
+    /**
+     * This method resolves collision between the player and the all possible finish lines.
+     * When this collision occur, the game should finish.
+     * @param player the main player
+     * @param finishLines a list containing all the finish lines
+     * @param world the world class
+     */
+    void resolveFinishlineCollision(Player player, List<Finishline> finishLines, World world);
 
 }
