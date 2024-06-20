@@ -213,4 +213,11 @@ public final class WorldImpl implements World {
         }
     }
 
+    @Override
+    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
+        playerManager.moveRight(player, right);
+        playerManager.moveLeft(player, left);
+        playerManager.jump(player, jump);
+    }
+
 }

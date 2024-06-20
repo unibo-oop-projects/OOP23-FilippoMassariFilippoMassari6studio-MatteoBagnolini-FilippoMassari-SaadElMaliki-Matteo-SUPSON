@@ -27,13 +27,21 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     @Override
-    public void moveRight() {
-        newState(state.setRight());
+    public void moveRight(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setRight());
+        } else {
+            player.setState(player.getState().setNotRight());
+        }
     }
 
     @Override
-    public void moveLeft() {
-        newState(state.setLeft());
+    public void moveLeft(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setLeft());
+        } else {
+            player.setState(player.getState().setNotLeft());
+        }
     }
 
     @Override
@@ -47,8 +55,12 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     @Override
-    public void jump() {
-        newState(state.setJump());
+    public void jump(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setJump());
+        } else {
+            player.setState(player.getState().setNotJump());
+        }
     }
 
     @Override
@@ -105,13 +117,11 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     private void pushBackRight() {
-        moveLeft();
-        newState(state.withVelocity(PUSH_BACK_RIGHT_VEL).setNotJump().setNotOnGround().setNotIsJumping());
+        newState(state.withVelocity(PUSH_BACK_RIGHT_VEL).setLeft().setNotJump().setNotOnGround().setNotIsJumping());
     }
 
     private void pushBackLeft() {
-        moveRight();
-        newState(state.withVelocity(PUSH_BACK_LEFT_VEL).setNotJump().setNotOnGround().setNotIsJumping());
+        newState(state.withVelocity(PUSH_BACK_LEFT_VEL).setRight().setNotJump().setNotOnGround().setNotIsJumping());
     }
 
     @Override

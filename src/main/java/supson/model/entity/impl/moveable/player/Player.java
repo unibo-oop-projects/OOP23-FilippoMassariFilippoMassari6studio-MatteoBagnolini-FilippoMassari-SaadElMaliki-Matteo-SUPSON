@@ -66,33 +66,6 @@ public final class Player extends AbstractMoveableEntity {
     }
 
     /**
-     * This method sets the right flag. It should be used when 
-     * the player moves right.
-     * @param flag the boolean value representing right move
-     */
-    public void setMoveRight(final boolean flag) { // TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.right = flag;
-    }
-
-    /**
-     * This method sets the left flag. It should be used when 
-     * the player moves left.
-     * @param flag the boolean value representing left move
-     */
-    public void setMoveLeft(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.left = flag;
-    }
-
-    /**
-     * This method sets the jump flag. It should be used when 
-     * the player jumps.
-     * @param flag the boolean value representing jump
-     */
-    public void setJump(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.jump = flag;
-    }
-
-    /**
      * This method is used to increment (or decrement) the score.
      * @param score the score to be incremented
      */
