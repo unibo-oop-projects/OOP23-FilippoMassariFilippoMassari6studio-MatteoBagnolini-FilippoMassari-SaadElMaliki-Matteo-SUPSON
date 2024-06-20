@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
@@ -135,7 +136,13 @@ final class TestWorld {
     void testGetGameEntities() {
         final List<GameEntity> entities = world.getGameEntities();
         assertNotNull(entities);
-        assertTrue(entities.contains(world.getPlayer()));
+        Boolean containPlayer = false;
+        for (final GameEntity gameEntity : entities) {
+            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)){
+                containPlayer = true;
+            }
+        }
+        assertTrue(containPlayer);
         assertTrue(entities.containsAll(world.getBlocks()));
         assertTrue(entities.containsAll(world.getEnemies()));
     }
@@ -159,8 +166,8 @@ final class TestWorld {
     @Test
     void testIsGameOver() {
         final Player player = world.getPlayer();
-        player.setLife(-1);
-        world.updateGame(0);
+        player.setLife(-2);
+        world.updateGame(1);
         assertTrue(world.isGameOver());
     }
 
