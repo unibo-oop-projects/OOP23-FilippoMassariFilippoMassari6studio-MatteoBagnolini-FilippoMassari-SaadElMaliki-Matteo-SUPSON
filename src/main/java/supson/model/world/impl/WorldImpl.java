@@ -84,7 +84,7 @@ public final class WorldImpl implements World {
             updateEntities(elapsed);
             handleCollisions();
             player.setState(playerManager.getUpdatedState());
-            if (player.getLife() < 0) {
+            if (player.getLife() <= 0) {
                 this.setGameOver(true);
             }
         }
