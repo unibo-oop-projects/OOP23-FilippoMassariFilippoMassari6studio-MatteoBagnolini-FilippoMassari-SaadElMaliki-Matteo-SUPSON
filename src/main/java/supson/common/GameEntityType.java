@@ -40,12 +40,12 @@ public enum GameEntityType {
      */
     ENEMY("sprite/enemy_sprite.png", 6),
 
-    /*
+    /**
      * Represents sub terrain blocks.
      */
     SUBTERRAIN("sprite/subterrain_sprite.png", 7),
 
-    /*
+    /**
      * Represents the finihline blocks. 
      */
     FINISHLINE("sprite/finishline_sprite.png", 8);
@@ -53,7 +53,7 @@ public enum GameEntityType {
     private final String spritePath;
     private final int index;
 
-    /*
+    /**
      * The costructor of GameEntityType enum
      */
     GameEntityType(final String spritePath, final int index) {
@@ -86,7 +86,7 @@ public enum GameEntityType {
      * @return the GameEntityType associated with the given index, or null if no mapping exists
      */
     public static GameEntityType getType(final int index) {
-        for (GameEntityType type : values()) {
+        for (final GameEntityType type : values()) {
             if (type.getIndex() == index) {
                 return type;
             }

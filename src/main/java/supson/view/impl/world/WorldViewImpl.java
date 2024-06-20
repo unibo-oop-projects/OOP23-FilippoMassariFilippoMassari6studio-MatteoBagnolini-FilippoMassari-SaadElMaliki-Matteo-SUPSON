@@ -29,7 +29,7 @@ public final class WorldViewImpl implements WorldView {
     @Override
     public void renderWorld(final JPanel gamePanel, final List<GameEntity> gameEntitiesList, final Player player) {
         cameraGameEntitiesList.clear();
-        int mapWidth = getMapWidth(gameEntitiesList);
+        final int mapWidth = getMapWidth(gameEntitiesList);
         selectGameEntity(gameEntitiesList, player, mapWidth);
         addToPanel(gamePanel, player, mapWidth);
     }
@@ -43,7 +43,7 @@ public final class WorldViewImpl implements WorldView {
     private int getMapWidth(final List<GameEntity> gameEntitiesList) { 
         //TODO:  viene calcolato nella mappa ma non viene passato decidere se tenerlo li e passarlo e tenerlo qui
         int mapWidth = 0;
-        for (GameEntity gameEntity : gameEntitiesList) {
+        for (final GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() > mapWidth) {
                 mapWidth = (int) gameEntity.getPosition().x();
             }
@@ -77,13 +77,13 @@ public final class WorldViewImpl implements WorldView {
      * @param mapWidth the width of the map.
      */
     private void addToPanel(final JPanel gamePanel, final Player player, final int mapWidth) {
-        final int centerX = (gamePanel.getWidth() / 2) + PIXELS_CORRECTOR;
+        final int centerX = gamePanel.getWidth() / 2 + PIXELS_CORRECTOR;
         final int centerY = gamePanel.getHeight() / 2;
         final double playerX = player.getPosition().x();
         final double playerY = player.getPosition().y();
 
-        for (GameEntity gameEntity : cameraGameEntitiesList) {
-            Optional<ImageIcon> icon = imageManager.getImageIcon(gameEntity, player);
+        for (final GameEntity gameEntity : cameraGameEntitiesList) {
+            final Optional<ImageIcon> icon = imageManager.getImageIcon(gameEntity, player);
             icon.ifPresent(imageIcon -> {
                 JLabel label = createLabel(imageIcon);
                 positionManager.setPosition(label, gameEntity, playerX, playerY, centerX, centerY, mapWidth);
@@ -99,7 +99,7 @@ public final class WorldViewImpl implements WorldView {
      * @return the created label.
      */
     private JLabel createLabel(final ImageIcon icon) {
-        JLabel label = new JLabel(icon);
+        final JLabel label = new JLabel(icon);
         label.setOpaque(false);
         return label;
     }
