@@ -21,7 +21,7 @@ import supson.model.world.impl.WorldImpl;
 /**
  * This class contains unit tests for the World class.
  */
-public class TestWorld {
+final class TestWorld {
 
     private static final String FILE_PATH = "/world.txt";
     private World world;

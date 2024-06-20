@@ -53,6 +53,9 @@ public enum GameEntityType {
     private final String spritePath;
     private final int index;
 
+    /*
+     * The costructor of GameEntityType enum
+     */
     GameEntityType(final String spritePath, final int index) {
         this.spritePath = spritePath;
         this.index = index;

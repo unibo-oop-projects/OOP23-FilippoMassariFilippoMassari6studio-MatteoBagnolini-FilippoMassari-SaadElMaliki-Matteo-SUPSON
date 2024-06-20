@@ -14,7 +14,7 @@ import supson.model.entity.impl.moveable.player.PlayerState;
 /*
  * This class contains unit tests for the Strength PowerUp Effect class.
  */
-public final class TestStrengthPowerUpEffectImpl {
+final class TestStrengthPowerUpEffectImpl {
 
     private Player player;
     private Object lock;

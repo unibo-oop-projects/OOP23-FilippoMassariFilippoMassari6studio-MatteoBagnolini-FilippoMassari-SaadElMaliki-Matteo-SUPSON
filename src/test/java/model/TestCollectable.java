@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * This class contains unit tests for the Collectible class.
  */
-public class TestCollectable {
+final class TestCollectable {
 
     private CollectibleFactoryImpl factory;
     private Player player;

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * This class contains unit tests for the GameTimerImpl class.
  */
-public final class TestGameTimerImpl {
+final class TestGameTimerImpl {
 
     private static final int NANO_SEC = 100_000_000;
     private static final double MICRO_SEC = 0.1;
