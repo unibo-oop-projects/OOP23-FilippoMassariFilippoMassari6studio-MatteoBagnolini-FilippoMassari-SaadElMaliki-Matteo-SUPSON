@@ -85,7 +85,7 @@ public final class WorldViewImpl implements WorldView {
         for (final GameEntity gameEntity : cameraGameEntitiesList) {
             final Optional<ImageIcon> icon = imageManager.getImageIcon(gameEntity, player);
             icon.ifPresent(imageIcon -> {
-                JLabel label = createLabel(imageIcon);
+                final JLabel label = createLabel(imageIcon);
                 positionManager.setPosition(label, gameEntity, playerX, playerY, centerX, centerY, mapWidth);
                 gamePanel.add(label);
             });

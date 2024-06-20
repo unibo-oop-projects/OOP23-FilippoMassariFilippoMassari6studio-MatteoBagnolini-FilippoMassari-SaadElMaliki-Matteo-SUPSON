@@ -66,7 +66,6 @@ public final class WorldLoaderImpl implements WorldLoader {
                 .filter(x -> !EMPTY.equals(tokens[x])) //TODO : fare la refernce sul report
                 .forEach(x -> processToken(tokens[x], x, y, world));
     }
-    
 
     /**
      * Processes a token from the line and adds the corresponding entity to the world.

@@ -4,7 +4,7 @@ import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerState;
 
 /**
- * this class procuce the tring that rapresent the sprite player
+ * this class procuce the tring that rapresent the sprite player.
  */
 public final class PlayerPathSelector {
 
@@ -20,7 +20,7 @@ public final class PlayerPathSelector {
     /**
      * Selects the path of the player sprite based on the player's state.
      *
-     * @param player the player entity
+     * @param player the player entity.
      * @return the path of the player sprite
      */
     public String selectPath(final Player player) {

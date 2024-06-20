@@ -40,13 +40,11 @@ public final class WorldImageManagerImpl implements WorldImageManager {
         if (imgURL.isPresent()) {
             try {
                 return Optional.of(new ImageIcon(imgURL.get()));
-            } catch (NullPointerException | IllegalArgumentException e) {
-                LOGGER.log(Level.SEVERE, "Error loading image icon form: " + gameEntity, e);
-                return Optional.empty();
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(Level.SEVERE, "Error loading image icon from: " + type.getSpritePath(), e);
             }
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     /**
@@ -61,13 +59,10 @@ public final class WorldImageManagerImpl implements WorldImageManager {
         if (imgURL.isPresent()) {
             try {
                 return Optional.of(new ImageIcon(imgURL.get()));
-            } catch (NullPointerException | IllegalArgumentException e) {
-                LOGGER.log(Level.SEVERE, "Error loading image icon form: " + player, e);
-                return Optional.empty();
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(Level.SEVERE, "Error loading image icon from: " + pps.selectPath(player), e);
             }
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
-
 }
