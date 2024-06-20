@@ -15,7 +15,7 @@ import supson.view.impl.InputManager;
  */
 public final class GameControllerImpl implements GameController {
 
-    private static final int WHIDTH = 948;
+    private static final int WIDTH = 948;
     private static final int HEIGHT = 720;
 
     private static final String WORLD_FILE_PATH = "/level_1.txt";
@@ -32,7 +32,7 @@ public final class GameControllerImpl implements GameController {
         this.model = new WorldImpl();
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.mainFrame.setSize(WHIDTH, HEIGHT);
+        this.mainFrame.setSize(WIDTH, HEIGHT);
         this.view = new GameViewImpl(mainFrame);
         this.input = new InputManager();
         this.mainFrame.addKeyListener(input);

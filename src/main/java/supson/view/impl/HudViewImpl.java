@@ -23,6 +23,7 @@ public final class HudViewImpl implements HudView {
     private static final int SCORE_LABEL_Y = 10;
     private static final int LIVES_LABEL_Y = 50;
     private static final int TIME_LABEL_Y = 90;
+    private static final int BG_COLOR = 150;
 
     @Override
     public void renderHud(final JPanel gamePanel, final Hud hud) {
@@ -48,7 +49,7 @@ public final class HudViewImpl implements HudView {
         label.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
         label.setFont(new Font("Arial", Font.BOLD, 16));
         label.setForeground(Color.WHITE);
-        label.setBackground(new Color(0, 0, 0, 150));
+        label.setBackground(new Color(0, 0, 0, BG_COLOR));
         label.setOpaque(true);
         label.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         label.setHorizontalAlignment(SwingConstants.CENTER);

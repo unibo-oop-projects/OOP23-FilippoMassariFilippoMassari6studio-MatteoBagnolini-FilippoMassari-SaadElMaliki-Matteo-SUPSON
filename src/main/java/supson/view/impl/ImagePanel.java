@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 /**
  * Represents a custom JPanel with an optional background image.
  */
-public class ImagePanel extends JPanel {
+public final class ImagePanel extends JPanel {
 
     private Optional<BufferedImage> backgroundImage;
 

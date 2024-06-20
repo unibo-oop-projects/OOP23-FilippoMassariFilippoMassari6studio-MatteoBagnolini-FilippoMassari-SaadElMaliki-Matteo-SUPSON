@@ -19,11 +19,18 @@ import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 
+/**
+ * Implementation of the WorldLoader interface.
+ * Loads the game world from a file.
+ */
 public final class WorldLoaderImpl implements WorldLoader {
 
     private static final String EMPTY = "0";
     private final CollectibleFactory collectibleFactory;
 
+    /**
+     * Constructs a new WorldLoaderImpl instance.
+     */
     public WorldLoaderImpl() {
         this.collectibleFactory = new CollectibleFactoryImpl();
     }
@@ -43,21 +50,43 @@ public final class WorldLoaderImpl implements WorldLoader {
         }
     }
 
-    private void processLine(List<String> lines, int y, World world) {
+    /**
+     * Processes a line from the file and adds corresponding entities to the world.
+     *
+     * @param lines the list of lines from the file
+     * @param y the y-coordinate of the line
+     * @param world the world to which entities are to be added
+     */
+    private void processLine(final List<String> lines, final int y, final World world) {
         String[] tokens = lines.get(world.getMapWidth() - y).split(" ");
         IntStream.range(0, tokens.length)
                 .filter(x -> !tokens[x].equals(EMPTY))
                 .forEach(x -> processToken(tokens[x], x, y, world));
     }
 
-    private void processToken(String token, int x, int y, World world) {
+    /**
+     * Processes a token from the line and adds the corresponding entity to the world.
+     *
+     * @param token the token representing an entity type
+     * @param x the x-coordinate of the entity
+     * @param y the y-coordinate of the entity
+     * @param world the world to which the entity is to be added
+     */
+    private void processToken(final String token, final int x, final int y, final World world) {
         int worldElement = Integer.parseInt(token);
         Pos2d pos = new Pos2dImpl(x, y);
         Optional.ofNullable(GameEntityType.getType(worldElement))
                 .ifPresent(type -> addEntityToWorld(type, pos, world));
     }
 
-    private void addEntityToWorld(final GameEntityType type, final Pos2d pos, World world) {
+    /**
+     * Adds an entity of the specified type to the world at the given position.
+     *
+     * @param type the type of the entity
+     * @param pos the position of the entity
+     * @param world the world to which the entity is to be added
+     */
+    private void addEntityToWorld(final GameEntityType type, final Pos2d pos, final World world) {
         if (type.equals(GameEntityType.ENEMY)) {
             world.addEnemy(new Enemy(pos));
         } else if (type.equals(GameEntityType.TERRAIN) 

@@ -40,7 +40,7 @@ public final class WorldViewImpl implements WorldView {
      * @param gameEntitiesList the list of game entities.
      * @return the width of the map.
      */
-    private int getMapWidth(final List<GameEntity> gameEntitiesList) { //TODO:  da calcolare nel loadworld della map
+    private int getMapWidth(final List<GameEntity> gameEntitiesList) { //TODO:  viene calcolato nella mappa ma non viene passato decidere se tenerlo li e passarlo e tenerlo qui
         int mapWidth = 0;
         for (GameEntity gameEntity : gameEntitiesList) {
             if (gameEntity.getPosition().x() > mapWidth) {

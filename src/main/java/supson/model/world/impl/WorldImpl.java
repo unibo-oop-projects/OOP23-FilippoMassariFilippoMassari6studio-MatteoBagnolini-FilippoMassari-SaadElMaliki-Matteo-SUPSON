@@ -31,6 +31,10 @@ import supson.model.timer.impl.GameTimerImpl;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 
+/**
+ * Implementation of the World interface.
+ * Manages the game world, including entities, collisions, and game state.
+ */
 public final class WorldImpl implements World {
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 7);
@@ -44,6 +48,9 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
+     /**
+     * Constructs a new WorldImpl instance.
+     */
     public WorldImpl() {
         this.gameOver = false;
         this.blocks = new ArrayList<>();
@@ -189,7 +196,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void setMapWidth(Optional<Integer> mapWidth) {
+    public void setMapWidth(final Optional<Integer> mapWidth) {
         this.mapWidth = mapWidth;
     }
 
@@ -205,5 +212,5 @@ public final class WorldImpl implements World {
             this.gameTimer.stop();
         }
     }
-    
+
 }

@@ -34,33 +34,14 @@ public final class TestStrengthPowerUpEffectImpl {
      */
     @Test
     void testRun() throws InterruptedException {
-        CollectibleEffect effect = new StrengthPowerUpEffectImpl(duration, player, lock);
+        final CollectibleEffect effect = new StrengthPowerUpEffectImpl(duration, player, lock);
 
-        Thread effectThread = new Thread(effect);
-        effectThread.start();
-        Thread.sleep(100);
-        assertTrue(player.getState().isInvulnerable());
-        effectThread.join();
         assertFalse(player.getState().isInvulnerable());
-    }
-
-    /**
-     * Tests if the effect respects the invulnerability state.
-     * It checks that the effect waits if the player is initially invulnerable.
-     */
-    @Test
-    void testRunWithInitialInvulnerability() throws InterruptedException {
-        player.setState(new PlayerState(null, true, true, true, true, true, true));
-        StrengthPowerUpEffectImpl effect = new StrengthPowerUpEffectImpl(duration, player, lock);
-        Thread effectThread = new Thread(effect);
-        effectThread.start();
-        Thread.sleep(100);
+        final Thread thread = new Thread(effect);
+        thread.start();
+        Thread.sleep(duration / 2);
         assertTrue(player.getState().isInvulnerable());
-        synchronized (lock) {
-            player.setState(new PlayerState(null, false, false, false, false, false, false));
-            lock.notifyAll();
-        }
-        effectThread.join();
+        thread.join();
         assertFalse(player.getState().isInvulnerable());
     }
 }

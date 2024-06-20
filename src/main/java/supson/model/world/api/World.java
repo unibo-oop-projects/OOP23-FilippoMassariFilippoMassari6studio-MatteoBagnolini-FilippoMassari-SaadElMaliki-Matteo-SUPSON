@@ -132,5 +132,8 @@ public interface World {
      */
     boolean isGameOver();
 
+    /*
+     * Set the game over state in the game.
+     */
     void setGameOver(boolean gameOver);
 }

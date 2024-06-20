@@ -72,7 +72,7 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
     }
 
     @Override
-    public final int calculateLeftBoundary(final int playerX, final int mapWidth) {
+    public int calculateLeftBoundary(final int playerX, final int mapWidth) {
         if (playerX >= mapWidth - CAMERA_RANGE) {
             return mapWidth - 2 * CAMERA_RANGE;
         }
@@ -80,7 +80,7 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
     }
 
     @Override
-    public final int calculateRightBoundary(final int playerX, final int mapWidth) {
+    public int calculateRightBoundary(final int playerX, final int mapWidth) {
         if (playerX <= CAMERA_RANGE) {
             return 2 * CAMERA_RANGE;
         }
@@ -88,7 +88,7 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
     }
 
     @Override
-    public final boolean isWithinCameraRange(final GameEntity gameEntity, final int leftBoundary, final int rightBoundary) {
+    public boolean isWithinCameraRange(final GameEntity gameEntity, final int leftBoundary, final int rightBoundary) {
         final double entityX = gameEntity.getPosition().x();
         return entityX >= leftBoundary && entityX <= rightBoundary;
     }
