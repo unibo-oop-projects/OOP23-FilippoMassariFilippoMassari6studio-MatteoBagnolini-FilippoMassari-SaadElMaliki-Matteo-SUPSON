@@ -60,9 +60,7 @@ public final class GameEngineImpl implements GameEngine {
         if (dt < REFRESH_RATE) {
             try {
                 Thread.sleep(REFRESH_RATE - dt);
-            } catch (InterruptedException ex) { 
-                //TODO: handle the exception
-            }
+            } catch (InterruptedException ex) { }
         }
     }
 
