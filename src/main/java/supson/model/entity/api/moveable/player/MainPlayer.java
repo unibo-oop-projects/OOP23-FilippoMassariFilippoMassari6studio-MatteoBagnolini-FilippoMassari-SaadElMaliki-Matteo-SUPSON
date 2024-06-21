@@ -13,31 +13,31 @@ public interface MainPlayer {
      * needs to change, passing to this method an appropriate new state.
      * @param state the state to be set
      */
-    public void setState(PlayerState state);
+    void setState(PlayerState state);
 
     /**
      * This method returns the current player state.
      * @return the player current state
      */
-    public PlayerState getState();
+    PlayerState getState();
 
     /**
      * This method is used to increment (or decrement) the score.
      * @param score the score to be incremented
      */
-    public void incrementScore(int score);
+    void incrementScore(int score);
 
     /**
      * This method return the score.
      * @return the score
      */
-    public int getScore();
+    int getScore();
 
     /**
      * This method increments (or decrements) the lives of the player. It does 
      * nothing when the player has already the max number of lives.
      * @param lives an integer representing how many lives to increment
      */
-    public void incrementLife(int lives);
+    void incrementLife(int lives);
 
 }
