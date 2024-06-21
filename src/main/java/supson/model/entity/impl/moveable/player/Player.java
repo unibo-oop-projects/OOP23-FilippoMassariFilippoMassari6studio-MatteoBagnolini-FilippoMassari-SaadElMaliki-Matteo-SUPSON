@@ -3,6 +3,7 @@ package supson.model.entity.impl.moveable.player;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Vect2dImpl;
+import supson.model.entity.api.moveable.player.MainPlayer;
 import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
@@ -11,7 +12,7 @@ import supson.model.physics.impl.PhysicsImpl;
  * This class, which extends the abstract class MoveableEntity, models
  * the player of the game.
  */
-public final class Player extends AbstractMoveableEntity {
+public final class Player extends AbstractMoveableEntity implements MainPlayer {
 
     private static final int MAX_SPEED = 20;
     private static final double ACC_SPEED = 0.8;
@@ -75,48 +76,30 @@ public final class Player extends AbstractMoveableEntity {
         physicsComponent.applyGravity(this);
     }
 
-    /**
-     * This method is used to increment (or decrement) the score.
-     * @param score the score to be incremented
-     */
+    @Override
     public void incrementScore(final int score) {
         this.score += score;
     }
 
-    /**
-     * This method return the score.
-     * @return the score
-     */
+    @Override
     public int getScore() {
         return this.score;
     }
 
-    /**
-     * This method increments (or decrements) the lives of the player. It does 
-     * nothing when the player has already the max number of lives.
-     * @param lives an integer representing how many lives to increment
-     */
+    @Override
     public void incrementLife(final int lives) {
         if (getLife() + lives <= MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
     }
 
-    /**
-     * This method returns the current player state.
-     * @return the player current state
-     */
+    @Override
     public PlayerState getState() {
         return new PlayerState(this.getVelocity(), right, left, jump,
         onGround, isJumping, isInvulnerable);
     }
 
-    /**
-     * This method set the state of the player.
-     * The method should be called whenever the state of the player
-     * needs to change, passing to this method an appropriate new state.
-     * @param state the state to be set
-     */
+    @Override
     public void setState(final PlayerState state) {
         this.setVelocity(state.vel());
         this.right = state.right();
