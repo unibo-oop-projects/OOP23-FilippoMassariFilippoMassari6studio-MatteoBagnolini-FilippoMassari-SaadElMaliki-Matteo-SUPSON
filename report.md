@@ -421,6 +421,9 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 ### Massari Filippo
 
 - Utilizzo del costrutto Function: 
+
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/b0da638214d4a25d83404a5f30eb88820b4a7f4a/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L21
+    
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
 
 - Utilizzo multiplo del costrutto Optional, ne riporto qualche esempio: 
