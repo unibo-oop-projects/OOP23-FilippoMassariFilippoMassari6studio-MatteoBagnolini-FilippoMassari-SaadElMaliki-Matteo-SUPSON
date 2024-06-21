@@ -45,7 +45,12 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void update(final long elapsed) {
-        this.model.updateGame(elapsed);
+        if(true) {
+            this.model.updateGame(elapsed);
+            //if(this.model.isGameOver())
+                //this.stateManager.setState(new ScoreState("ciao", mainFrame, this));
+        }
+
     }
 
     @Override
@@ -55,20 +60,20 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void initGame() {
-        this.model.loadWorld(WORLD_FILE_PATH);
         this.stateManager.setState(new StartState(this,mainFrame));
     }
 
     @Override
     public void startGame() {
+        this.model.loadWorld(WORLD_FILE_PATH);
         this.mainFrame.addKeyListener(input);
         this.mainFrame.requestFocusInWindow();
         this.stateManager.setState(new PlayState(mainFrame,model));
     }
 
     @Override
-    public void showScores() {
-        this.stateManager.setState(new ScoreState());
+    public void showScore() {
+        this.stateManager.setState(new ScoreState("ciao", mainFrame, this));
     }
 
     @Override

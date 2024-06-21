@@ -46,10 +46,6 @@ public class StartViewImpl implements StartView {
         this.gameFrame.setSize(WIDTH, HEIGHT);
         this.gameFrame.setResizable(false);
         this.gameFrame.setVisible(true);
-    }
-
-    @Override
-    public void renderView() {
         gameFrame.getContentPane().removeAll();
         gameFrame.repaint();
         backgroundPanel.setOpaque(false);
@@ -66,6 +62,10 @@ public class StartViewImpl implements StartView {
         backgroundPanel.add(quitButton, gbc);
         gameFrame.setContentPane(backgroundPanel);
         gameFrame.revalidate(); 
+    }
+
+    @Override
+    public void renderView() {
     }
 
 

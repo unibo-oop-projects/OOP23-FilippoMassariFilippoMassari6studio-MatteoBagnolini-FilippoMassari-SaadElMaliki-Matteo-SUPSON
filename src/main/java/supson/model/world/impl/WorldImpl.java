@@ -45,7 +45,7 @@ public final class WorldImpl implements World {
     private boolean gameOver;
 
     public WorldImpl() {
-        this.gameOver = false;
+        this.gameOver = true;
         this.blocks = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.player = new Player(DEFAULT_PLAYER_POSITION);
@@ -59,6 +59,7 @@ public final class WorldImpl implements World {
     @Override
     public void loadWorld(final String filePath) {
         this.gameTimer.start();
+        this.setGameOver(false);
         WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
     }

@@ -29,7 +29,7 @@ public interface GameController {
 
     void startGame();
 
-    void showScores();
+    void showScore();
 
     void quitGame();
 

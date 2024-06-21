@@ -25,8 +25,7 @@ public class StartState implements GameState {
 
     @Override
     public void exit() {
-        // TODO Auto-generated method stub
-        //throw new UnsupportedOperationException("Unimplemented method 'exit'");
+
     }
 
     @Override
