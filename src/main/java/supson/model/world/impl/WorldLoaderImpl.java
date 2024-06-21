@@ -49,7 +49,7 @@ public final class WorldLoaderImpl implements WorldLoader {
                     .map(y -> mapWidth.get() - y)
                     .forEach(y -> processLine(lines, y, world));
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error loading world from file: " + filePath, e); //TODO : fare la refernce sul report
+            LOGGER.log(Level.SEVERE, "Error loading world from file: " + filePath, e);
         }
     }
 
@@ -63,7 +63,7 @@ public final class WorldLoaderImpl implements WorldLoader {
     private void processLine(final List<String> lines, final int y, final World world) {
         final String[] tokens = lines.get(world.getMapWidth() - y).split(" ");
         IntStream.range(0, tokens.length)
-                .filter(x -> !EMPTY.equals(tokens[x])) //TODO : fare la refernce sul report
+                .filter(x -> !EMPTY.equals(tokens[x]))
                 .forEach(x -> processToken(tokens[x], x, y, world));
     }
 
