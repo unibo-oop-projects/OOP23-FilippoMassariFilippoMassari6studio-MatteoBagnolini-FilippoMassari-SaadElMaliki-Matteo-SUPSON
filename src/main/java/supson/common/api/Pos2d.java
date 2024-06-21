@@ -19,7 +19,7 @@ public interface Pos2d {
      * @param p the point to compute the distance with
      * @return the distance between two points
      */
-    double getdistance(Pos2d p);
+    double getDistance(Pos2d p);
 
     /**
      * This method shifts (sums) the point for a given vector.
