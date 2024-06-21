@@ -20,4 +20,5 @@ public record Pos2dImpl(double x, double y) implements Pos2d {
     public Pos2d sum(final Vect2d vect) {
         return new Pos2dImpl(this.x + vect.x(), this.y + vect.y());
     }
+
 }

@@ -9,6 +9,7 @@ public interface Vect2d {
      * @return the x component of the vector
      */
     double x();
+
     /**
      * @return the y component of the vector
      */

@@ -64,7 +64,6 @@ public final class GameEngineImpl implements GameEngine {
                 //TODO: handle the exception
             }
         }
-
     }
 
 }

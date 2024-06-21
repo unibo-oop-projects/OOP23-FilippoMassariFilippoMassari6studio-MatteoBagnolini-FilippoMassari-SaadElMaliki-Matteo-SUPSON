@@ -9,6 +9,7 @@ public interface Pos2d {
      * @return the x coordinate of the point 
      */
     double x();
+
     /**
      * @return the y coordinate of the point
      */
@@ -28,4 +29,5 @@ public interface Pos2d {
      *         and the vector
      */
     Pos2d sum(Vect2d vect);
+
 }

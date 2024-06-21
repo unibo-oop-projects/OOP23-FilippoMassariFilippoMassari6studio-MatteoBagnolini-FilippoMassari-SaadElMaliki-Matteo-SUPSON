@@ -20,7 +20,7 @@ public interface GameController {
     /**
      * Renders the game.
      */
-    void render(); //il render è gia presente in GameEngine vedere se tenerlo o no
+    void render();
 
     /**
      * Initialises the game.

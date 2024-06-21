@@ -44,15 +44,6 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
         }
     }
 
-    @Override
-    public void stopOnOrizontal() {
-        newState(state.withVelocity(new Vect2dImpl(0, state.vel().y())).setNotRight().setNotLeft());
-    }
-
-    @Override
-    public void stopOnVertical() {
-        newState(state.withVelocity(new Vect2dImpl(state.vel().x(), 0)).setNotJump());
-    }
 
     @Override
     public void jump(final Player player, final boolean flag) {
@@ -61,26 +52,6 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
         } else {
             player.setState(player.getState().setNotJump());
         }
-    }
-
-    @Override
-    public boolean isJumping() {
-        return state.isJumping();
-    }
-
-    @Override
-    public boolean isInvulnerable() {
-        return state.isInvulnerable();
-    }
-
-    @Override
-    public void setInvulnerable() {
-        newState(state.setInvulnerable());
-    }
-
-    @Override
-    public void setVulnerable() {
-        newState(state.setNotInvulnerable());
     }
 
     @Override
@@ -97,6 +68,14 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
             case OBSTACLE_RIGHT_COLLISION -> pushBackRight();
         }
         // CHECKSTYLE: MissignSwitchDefault ON
+    }
+
+    private void stopOnOrizontal() {
+        newState(state.withVelocity(new Vect2dImpl(0, state.vel().y())).setNotRight().setNotLeft());
+    }
+
+    private void stopOnVertical() {
+        newState(state.withVelocity(new Vect2dImpl(state.vel().x(), 0)).setNotJump());
     }
 
     private void leftCollision() {

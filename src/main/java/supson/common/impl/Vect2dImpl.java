@@ -30,4 +30,5 @@ public record Vect2dImpl(double x, double y) implements Vect2d {
     public Vect2d mul(final double factor) {
         return new Vect2dImpl(this.x * factor, this.y * factor);
     }
+
 }

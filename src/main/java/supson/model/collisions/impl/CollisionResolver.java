@@ -155,7 +155,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
                     default : ;
                 }
                 // CHECKSTYLE: EmptyStatement ON
-        } else {                                                    //contatto from left
+        } else {                                                    //contact from left
             newXPos = entity.getPosition().x()
                 + collidingEntity.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {

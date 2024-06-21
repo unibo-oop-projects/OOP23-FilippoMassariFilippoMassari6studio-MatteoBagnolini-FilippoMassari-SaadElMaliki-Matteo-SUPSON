@@ -73,7 +73,7 @@ public abstract class AbstractMoveableEntity extends AbstractGameEntity implemen
      * This method returns the physics component of the entity.
      * @return the physics component of the entity
      */
-    public Physics getPhysicsComponent() {
+    protected Physics getPhysicsComponent() {
         return this.physicsComponent;
     }
 
