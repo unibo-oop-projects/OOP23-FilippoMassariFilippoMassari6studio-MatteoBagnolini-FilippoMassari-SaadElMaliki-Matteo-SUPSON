@@ -9,9 +9,16 @@ import supson.model.entity.impl.moveable.player.Player;
  * Provides a skeletal implementation for collectible effects.
  */
 @SuppressFBWarnings(
-    value = "SWL_SLEEP_WITH_LOCK_HELD",
-    justification = "The sleep is necessary for the duration of the effect "
-                    + "and does not cause significant issues in this context."
+    value = {
+        "EI_EXPOSE_REP2",
+        "SWL_SLEEP_WITH_LOCK_HELD"
+    },
+    justification = "The player object is passed as an external reference avoiding" 
+                    + " creating a defensive copy since the Power-Up needs to"
+                    + " implement its effect directly on the latter"
+
+                    + "The sleep is necessary for the duration of the effect "
+                    + "and does not cause significant issues in this context. "
 )
 public abstract class AbstractCollectibleEffect implements CollectibleEffect {
 
