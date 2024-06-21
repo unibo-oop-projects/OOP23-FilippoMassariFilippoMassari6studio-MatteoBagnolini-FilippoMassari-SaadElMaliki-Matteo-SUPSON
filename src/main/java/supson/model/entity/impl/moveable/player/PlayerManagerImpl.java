@@ -44,7 +44,6 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
         }
     }
 
-
     @Override
     public void jump(final Player player, final boolean flag) {
         if (flag) {
