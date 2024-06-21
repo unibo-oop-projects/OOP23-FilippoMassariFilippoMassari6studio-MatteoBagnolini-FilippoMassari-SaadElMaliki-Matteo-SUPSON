@@ -412,8 +412,8 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/common/impl/Pos2dImpl.java
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/moveable/player/PlayerState.java
 
-- Utilizzo di stream e lambda (qualche esempio):
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L110-L113
+- Utilizzo di stream e lambda (ne riporto qualche esempio):
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L109-L113
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L101-L105
 
 - Codice reperito online: per farmi un'idea di come potesse funzionare la fisica di movimento all'interno del videogioco originale ho consultato [questo sito](https://info.sonicretro.org/SPG:Running)
