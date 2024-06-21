@@ -1,5 +1,6 @@
 package supson.model.effect.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import supson.model.effect.api.CollectibleEffect;
 import supson.model.entity.impl.moveable.player.Player;
 
@@ -7,6 +8,11 @@ import supson.model.entity.impl.moveable.player.Player;
  * Abstract base class for collectible effects.
  * Provides a skeletal implementation for collectible effects.
  */
+@SuppressFBWarnings(
+    value = "SWL_SLEEP_WITH_LOCK_HELD",
+    justification = "The sleep is necessary for the duration of the effect "
+                    + "and does not cause significant issues in this context."
+)
 public abstract class AbstractCollectibleEffect implements CollectibleEffect {
 
     private final long duration;

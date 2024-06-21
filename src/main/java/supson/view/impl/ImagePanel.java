@@ -18,7 +18,7 @@ public final class ImagePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(ImagePanel.class.getName());
 
-    private Optional<BufferedImage> backgroundImage;
+    private transient Optional<BufferedImage> backgroundImage;
 
     /**
      * Constructs a new `ImagePanel` with the specified background image path.
