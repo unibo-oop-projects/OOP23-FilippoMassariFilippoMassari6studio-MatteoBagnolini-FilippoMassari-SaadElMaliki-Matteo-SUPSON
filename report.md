@@ -448,3 +448,16 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 ### Bagnolini Matteo
 Sono in generale soddisfatto di come è stato realizzato questo progetto. Sono riuscito ad utilizzare abbastanza design pattern noti rendendo il codice piuttosto estendibile. Il mio ruolo è stata la gestione delle principali entità di gioco, in particolare quelle dotate di movimento, e credo di aver gestito bene questo compito. Il codice scritto è molto aperto ad estensioni, e questo penso sia dovuto a un buon lavoro di analisi iniziale, che ha semplificato la costruzione di tutto il progetto. Infatti non abbiamo avuto particolari problemi, anche perchè avendo deciso di consegnare il progetto durante la sessione estiva, abbiamo avuto tutto il tempo necessario per lo sviluppo. Ho cercato di essere il più disponibile possibile con gli altri membri, cercando di aiutarli quando comparivano difficoltà. Tuttavia credo che non ci sia stato pari impegno da parte di tutti i partecipanti del gruppo, anche se questo non ha impedito di realizzare le feature obligatorie previste.
 Per quanto riguarda il futuro di questo progetto credo che possa essere interessante cercare di aggiungere altri elementi come trappole, livelli e nemici, anche se attualmente non è la mia priorità. Queste cose sono facilmente implementabili grazie a un buon design generale.
+
+# Appendice A - Guida utente
+
+# Appendice B - Esercizi di laboratorio
+
+## B.0.1 matteo.bagnolini5@studio.unibo.it
+- Laboratorio 07: https://virtuale.unibo.it/mod/forum/discuss.php?d=147598#p209372
+- Laboratorio 08: https://virtuale.unibo.it/mod/forum/discuss.php?d=148025#p209972
+- Laboratorio 09: https://virtuale.unibo.it/mod/forum/discuss.php?d=149231#p211626
+- Laboratorio 11: https://virtuale.unibo.it/mod/forum/discuss.php?d=151542#p213969
+
+
+
