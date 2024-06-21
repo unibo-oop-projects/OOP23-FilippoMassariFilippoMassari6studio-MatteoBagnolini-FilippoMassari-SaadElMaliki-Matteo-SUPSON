@@ -92,6 +92,9 @@ class TestPhysics {
 
     };
 
+    /**
+     * This method initilizes all the entities.
+     */
     @BeforeEach
     void init() {
         jumpingEntity.setPosition(new Pos2dImpl(0, 0));
@@ -107,6 +110,9 @@ class TestPhysics {
         gravityMovingEntity.setVelocity(new Vect2dImpl(0, 0));
     }
 
+    /**
+     * This method tests the right movement.
+     */
     @Test
     void testMoveRight() {
         rightMovingEntity.move(TIME);
@@ -120,6 +126,9 @@ class TestPhysics {
         assertEquals(new Pos2dImpl(6, 0), rightMovingEntity.getPosition());
     }
 
+    /**
+     * This method tests the left movement.
+     */
     @Test
     void testMoveLeft() {
         leftMovingEntity.move(TIME);
@@ -133,6 +142,9 @@ class TestPhysics {
         assertEquals(new Pos2dImpl(-6, 0), leftMovingEntity.getPosition());
     }
 
+    /**
+     * This method test the changes of direction (deceleration).
+     */
     @Test
     void testZigZag() {
         zigzagMovingEntity.move(TIME);
@@ -156,6 +168,9 @@ class TestPhysics {
         assertEquals(new Pos2dImpl(10, 0), zigzagMovingEntity.getPosition());
     }
 
+    /**
+     * This method tests the max speed.
+     */
     @Test
     void testMaxSpeed() {
         for (int i = 0; i < 25; i++) {
@@ -168,6 +183,9 @@ class TestPhysics {
         assertEquals(new Vect2dImpl(20, 0), rightMovingEntity.getVelocity());
     }
 
+    /**
+     * This method test the friction.
+     */
     @Test
     void testFriction() {
         frictionEntity.move(TIME);
@@ -178,6 +196,9 @@ class TestPhysics {
         assertEquals(MAX_SPEED - 3 * FRICTION, frictionEntity.getVelocity().x());
     }
 
+    /**
+     * This method tests the jumping action.
+     */
     @Test
     void testJump() {
         jumpingEntity.move(TIME);
@@ -191,6 +212,9 @@ class TestPhysics {
         assertEquals(new Pos2dImpl(0, 6), jumpingEntity.getPosition());
     }
 
+    /**
+     * This method tests gravity.
+     */
     @Test
     void testGravity() {
         gravityMovingEntity.move(TIME);
