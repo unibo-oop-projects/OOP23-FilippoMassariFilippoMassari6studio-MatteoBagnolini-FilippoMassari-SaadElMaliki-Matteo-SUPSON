@@ -298,29 +298,22 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 
 ```mermaid
 classDiagram
+    GameEntity *-- GameEntityType
+
     class GameEntity {
-        <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
+        - GameEntityType type
+        + GameEntity(GameEntityType type)
+        + getType() : GameEntityType
     }
 
     class GameEntityType {
-        <<enumeration>>
-        PLAYER
-        TERRAIN
-        LIFE_BOOST_POWER_UP
-        STRENGTH_BOOST_POWER_UP
-        RING
-        DAMAGE_TRAP
-        ENEMY
-        SUBTERRAIN
-        END_GAME
+        - String name
+        - String spritePath
+        + GameEntityType(String name, String spritePath)
+        + getName() : String
+        + getSpritePath() : String
     }
 
-    GameEntity *-- GameEntityType
 
 ```
 
@@ -342,28 +335,28 @@ classDiagram
 
     class Collectible {
         <<interface>>
-        + void collect(Player player)
+        +collect(Player player) : void
     }
 
     class TrapFactory {
         <<interface>>
-        + Collectible createTrap(GameEntityType type, Pos2d pos)
+        +createTrap(GameEntityType type, Pos2d pos) : Trap
     }
 
     class CollectibleFactory {
         <<interface>>
-        + Collectible createCollectible(GameEntityType type, Pos2d pos)
+        +createCollectible(GameEntityType type, Pos2d pos) : Collectible
     }
 
     class Trap {
         <<interface>>
-        + void activate(Player player)
+        +activate(Player player) : void
     }
 
     TrapFactory --> Trap : instantiate
     GameEntity <|.. TagBlockEntity
-    TagBlockEntity <|.. Collectible
-    TagBlockEntity <|.. Trap
+    TagBlockEntity <|-- Collectible
+    TagBlockEntity <|-- Trap
     CollectibleFactory --> Collectible : instantiate
 ```
 
@@ -378,23 +371,23 @@ Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arr
 classDiagram
     class World {
         <<interface>>
-        + void loadWorld(String filePath)
-        + void updateGame(long elapsed)
-        + boolean isGameOver()
+        + loadWorld(filePath: String) : void
+        + updateGame(elapsed: long) : void
+        + isGameOver() : boolean
     }
 
     class GameEntity {
         <<interface>>
-        + GameEntityType getGameEntityType
+        + getGameEntityType() : GameEntityType
     }
     note for GameEntity "Segue il resto della gerarchia delle GameEntity"
 
     class CollisionManager {
         <<interface>>
-        + void resolvePlatformCollisions(MoveableEntity entity, List~GameEntity~ blocks, Pos2d startingPos)
-        + List~Enemy~ resolveEnemiesCollisions(Player player, List~Enemy~ enemies)
-        + void resolveTrapCollisions(Player player, List~Trap~ traps)
-        + List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+        + resolvePlatformCollisions(entity: MoveableEntity, blocks: List~GameEntity~, startingPos: Pos2d) : void
+        + resolveEnemiesCollisions(player: Player, enemies: List~Enemy~) : List~Enemy~
+        + resolveTrapCollisions(player: Player, traps: List~Trap~) : void
+        + resolveCollectibleCollisions(player: Player, collectibles: List~Collectible~) : List~Collectible~
     }
 
     World *-- GameEntity
@@ -407,6 +400,28 @@ classDiagram
 
 
 ### Gestione degli Effetti dei Raccoglibili
+
+```mermaid
+classDiagram
+
+    class CollisionManager {
+        <<interface>>
+        +List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+    }
+
+    class Collectible {
+        <<interface>>
+        +collect(Player player)
+    }
+
+    class Player {
+        <<interface>>
+    }
+
+    CollisionManager --> Collectible : resolve
+    CollisionManager --> Player : manage
+```
+
 
 **Problema:** Il problema consiste nel gestire in modo efficace gli effetti applicati al giocatore quando collezioniamo un oggetto raccoglibile rappresentato dall'interfaccia `Collectible`. Gli effetti possono essere di vario tipo, come incrementare il punteggio, cambiare lo stato del giocatore, o incrementare le vite. È necessario un approccio flessibile e modulare per applicare questi effetti senza rendere il codice difficile da mantenere o estendere.
 
