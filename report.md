@@ -34,6 +34,7 @@ Sonic può collezionare monete per incrementare il punteggio della partita, racc
 Insieme a Sonic, si muovono nella mappa i nemici, seguendo una logica prestabilita. Quando un nemico colpisce il personaggio, quest'ultimo subisce danno, decrementando la propria salute. Se la vita del giocatore arriva a 0, la partita finisce.
 Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano qualche tipo di effetto, per esempio un danno o un effetto "trampolino".
 
+```mermaid
 classDiagram
 
     class GameEntity {
@@ -83,6 +84,7 @@ classDiagram
     Collectable <|-- PowerUp
     Collectable <|-- Ring
     Level *-- GameEntity
+```
 
 # Capitolo 2 - Design
 !!
