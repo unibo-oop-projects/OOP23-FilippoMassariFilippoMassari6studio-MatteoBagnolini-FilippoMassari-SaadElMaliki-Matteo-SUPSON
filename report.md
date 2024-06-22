@@ -1,33 +1,100 @@
 # Capitolo 1 - Analisi
+
 ## 1.1 Requisiti
-Il software vuole riprendere il celebre videogioco 2d platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che potenziano Sonic.
+
+Il software vuole riprendere il celebre videogioco 2d platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che ne potenziano le capacità.
+
 ### Requisiti funzionali
-!!
+
 - Il player deve:
     - poter muoversi verso destra, verso sinistra con velocità incrementale, e saltare
+    - superare i blocchi e trappole tramite il salto
     - collezionare monete e ottenere power-ups che ne potenziano le abilità di gioco
     - sconfiggere i nemici attraverso il salto
 - I nemici devono:
     - ostacolare il player facendogli perdere vita al contatto
     - potersi muovere verso destra e verso sinistra con una loro logica
-- 
+- I power-up devono:
+    - poter essere raccolti dal player
+    - migliorarne una caratteristica (ad esempio aumentare la vita o conferire invulnerabilità)
+- Le trappole devono:
+    - far perdere vita al player quando avviene il contatto tra di essi
+- La partita deve terminare quando il player raggiunge la bandierina di fine livello, o quando perde tutte le vite
+
 ### Requisiti non funzionali
-!!
-- Menù iniziale
-- Il gameplay dovrà risultare fluido
-- Il videogioco dovrà essere compatibile con la maggiorparte dei dispositivi e sistemi operativi
+
+- Dovrà essere presente un menù iniziale.
+- Il gameplay dovrà risultare fluido (minimo 30 FPS).
+- Il videogioco dovrà essere compatibile con la maggiorparte dei dispositivi e sistemi operativi.
+
 ## 1.2 Analisi e modello del dominio
-Il giocatore ha modo di muoversi all'interno di una mappa, la quale si compone di blocchi non compenetrabili, trappole, nemici e oggetti raccoglibili.
-Sonic può collezionare monete per incrementare il punteggio della partita, raccogliere power-ups per potenziarsi e sconfiggere nemici tramite l'abilità di salto.
-Insieme a Sonic, si muovono nella mappa i nemici, seguendo una logica prestabilita. Quando un nemico colpisce il personaggio, quest'ultimo subisce danno, decrementando la propria salute.
-Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano qualche tipo di effetto, per esempio un danno oppure un effetto di qualche tipo.
+
+Il giocatore ha modo di muoversi all'interno di una mappa, la quale si compone di blocchi non compenetrabili, trappole, nemici, oggetti raccoglibili e bandierina di fine livello.
+Sonic può collezionare monete per incrementare il punteggio della partita, raccogliere power-ups per potenziarsi e sconfiggere nemici tramite l'abilità di salto. Inoltre deve riuscire ad arrivare alla bandierina di fine livello per terminare la partita.
+Insieme a Sonic, si muovono nella mappa i nemici, seguendo una logica prestabilita. Quando un nemico colpisce il personaggio, quest'ultimo subisce danno, decrementando la propria salute. Se la vita del giocatore arriva a 0, la partita finisce.
+Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano qualche tipo di effetto, per esempio un danno o un effetto "trampolino".
+
+```mermaid
+classDiagram
+
+    class GameEntity {
+        <<Interface>>
+    }
+
+    class Player {
+        <<Interface>>
+    }
+
+    class Level {
+        <<Interface>>
+    }
+
+    class Enemy {
+        <<Interface>>
+    }
+
+    class Block {
+        <<Interface>>
+    }
+
+    class Trap {
+        <<Interface>>
+    }
+
+    class Collectable {
+        <<Interface>>
+    }
+
+    class Ring {
+        <<Interface>>
+    }
+
+    class PowerUp {
+        <<Interface>>
+    }
+
+
+    GameEntity <|-- Player
+    Player --> Collectable : collect
+    GameEntity <|-- Enemy
+    Player <--> Enemy : damages
+    GameEntity <|-- Block
+    Player <-- Trap : effect
+    GameEntity <|-- Trap
+    GameEntity <|-- Collectable
+    Collectable <|-- PowerUp
+    Collectable <|-- Ring
+    Level *-- GameEntity
+```
 
 # Capitolo 2 - Design
 !!
 ## 2.1 Architettura
 !!
 ## 2.2 Design dettagliato
+
 ### Bagnolini Matteo
+
 ### Gerarchia di entità di gioco
 
 ```mermaid
@@ -446,7 +513,7 @@ Per quanto riguarda il futuro di questo progetto credo che possa essere interess
 
 # Appendice A - Guida utente
 
-Comandi: 
+Comandi:
 
 - Per avviare la partita premere il bottone Start nel menù principale.
 - Per muoversi a destra e a sinistra bisogna premere le rispettive frecce, o usare i tasti A-D.
