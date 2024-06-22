@@ -253,25 +253,13 @@ classDiagram
         END_GAME
     }
 
-    class Pos2d {
-        + double x()
-        + double y()
-    }
-
-    class Hitbox {
-        <<interface>>
-        + boolean isCollidingWith(Hitbox box)
-    }
-
-    GameEntity *-- Pos2d
-    GameEntity *-- Hitbox
     GameEntity *-- GameEntityType
 
 ```
 
 **Problema:** Nel contesto del gioco, sono presenti diverse entità con caratteristiche e comportamenti distinti. Queste entità devono essere rappresentate in modo coerente all'interno del modello di gioco, della sua rappresentazione visiva e dell'interazione con il giocatore. Tuttavia, la gestione di queste entità può diventare complessa a causa delle loro diverse proprietà e comportamenti.
 
-**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType in sinergia con `Pos2d` e `Hitbox`, siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
+**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
 
 ### Gerarchia dei Blocchi del Gioco
 
@@ -348,7 +336,14 @@ classDiagram
 
 **Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
 
-**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il puttern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il puttern strategy, e ed in sinergia con il puttern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il pattern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il pattern strategy, e ed in sinergia con il pattern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+
+
+### Gestione degli Effetti dei Raccoglibili
+
+**Problema:** Il problema consiste nel gestire in modo efficace gli effetti applicati al giocatore quando collezioniamo un oggetto raccoglibile rappresentato dall'interfaccia `Collectible`. Gli effetti possono essere di vario tipo, come incrementare il punteggio, cambiare lo stato del giocatore, o incrementare le vite. È necessario un approccio flessibile e modulare per applicare questi effetti senza rendere il codice difficile da mantenere o estendere.
+
+**Soluzione:** L'utilizzo del Command pattern aiuta la risoluzione di questo problema . In questo contesto, ogni effetto applicato al giocatore può essere rappresentato attraverso il metodo `collect(Player player)` dell'interfaccia `Collectible`.
 
 ### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
 
