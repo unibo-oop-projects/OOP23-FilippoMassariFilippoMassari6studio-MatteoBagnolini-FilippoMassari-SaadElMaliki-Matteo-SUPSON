@@ -451,6 +451,12 @@ Per quanto riguarda il futuro di questo progetto credo che possa essere interess
 
 # Appendice A - Guida utente
 
+Comandi: 
+
+- Per avviare la partita premere il bottone Start nel menù principale.
+- Per muoversi a destra e a sinistra bisogna premere le rispettive frecce, o usare i tasti A-D.
+- Per saltare bisogna premere il tasto SPACE.
+
 # Appendice B - Esercizi di laboratorio
 
 ## B.0.1 matteo.bagnolini5@studio.unibo.it
