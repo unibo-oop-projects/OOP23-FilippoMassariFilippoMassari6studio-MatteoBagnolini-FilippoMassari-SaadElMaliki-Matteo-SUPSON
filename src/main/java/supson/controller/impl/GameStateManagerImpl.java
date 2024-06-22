@@ -5,7 +5,7 @@ import supson.controller.api.GameStateManager;
 
 public class GameStateManagerImpl implements GameStateManager{
     private GameState currState;
-
+    
     @Override
     public GameState getState() {
         return currState;

@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import supson.controller.api.GameController;
 import supson.controller.api.GameState;
+import supson.controller.api.GameStateManager.GameStateType;
 import supson.view.api.StartView;
 import supson.view.impl.StartViewImpl;
 
@@ -31,6 +32,11 @@ public class StartState implements GameState {
     @Override
     public void render() {
         view.renderView();
+    }
+
+    @Override
+    public GameStateType getType() {
+        return GameStateType.MENU;
     }
 
 }

@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import supson.controller.api.GameController;
 import supson.controller.api.GameStateManager;
+import supson.controller.api.GameStateManager.GameStateType;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.impl.InputManager;
@@ -19,7 +20,7 @@ public final class GameControllerImpl implements GameController {
 
     private static final String WORLD_FILE_PATH = "/level/level_1.txt";
 
-    private final World model;
+    private World model;
     private final GameStateManager stateManager;
     private final InputManager input;
     private final JFrame mainFrame;
@@ -32,7 +33,6 @@ public final class GameControllerImpl implements GameController {
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
-        this.view = new GameViewImpl(mainFrame);
         this.input = new InputManager();
         stateManager = new GameStateManagerImpl();
     }
@@ -44,13 +44,14 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void update(final long elapsed) {
-        if(true) {
+        if(stateManager.getState().getType() == GameStateType.GAME) {
             this.model.updateGame(elapsed);
-            //if(this.model.isGameOver())
-                //this.stateManager.setState(new ScoreState("ciao", mainFrame, this));
+            if(this.model.isGameOver()) {
+                this.stateManager.setState(new ScoreState(mainFrame, this, model.getHud()));
+            }
         }
-
     }
+
 
     @Override
     public void render() {
@@ -64,6 +65,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void startGame() {
+        this.model = new WorldImpl();
         this.model.loadWorld(WORLD_FILE_PATH);
         this.mainFrame.addKeyListener(input);
         this.mainFrame.requestFocusInWindow();
@@ -72,7 +74,7 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void showScore() {
-        this.stateManager.setState(new ScoreState("ciao", mainFrame, this));
+        
     }
 
     @Override
