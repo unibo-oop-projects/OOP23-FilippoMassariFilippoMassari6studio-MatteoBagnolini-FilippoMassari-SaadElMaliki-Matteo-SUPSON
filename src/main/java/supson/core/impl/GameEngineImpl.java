@@ -9,7 +9,7 @@ import supson.controller.impl.GameControllerImpl;
  */
 public final class GameEngineImpl implements GameEngine {
 
-    private static final long REFRESH_RATE = 30;
+    private static final long REFRESH_RATE = 20;
 
     private final GameController controller;
 
@@ -60,11 +60,8 @@ public final class GameEngineImpl implements GameEngine {
         if (dt < REFRESH_RATE) {
             try {
                 Thread.sleep(REFRESH_RATE - dt);
-            } catch (InterruptedException ex) { 
-                //TODO: handle the exception
-            }
+            } catch (InterruptedException ex) { }
         }
-
     }
 
 }

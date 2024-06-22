@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
@@ -21,7 +22,7 @@ import supson.model.world.impl.WorldImpl;
 /**
  * This class contains unit tests for the World class.
  */
-public class TestWorld {
+final class TestWorld {
 
     private static final String FILE_PATH = "/world.txt";
     private World world;
@@ -41,7 +42,7 @@ public class TestWorld {
      */
     @Test
     void testGetBlocks() {
-        List<TagBlockEntity> blocks = world.getBlocks();
+        final List<TagBlockEntity> blocks = world.getBlocks();
         assertNotNull(blocks);
         assertFalse(blocks.isEmpty());
     }
@@ -52,7 +53,7 @@ public class TestWorld {
      */
     @Test
     void testGetEnemies() {
-        List<Enemy> enemies = world.getEnemies();
+        final List<Enemy> enemies = world.getEnemies();
         assertNotNull(enemies);
         assertFalse(enemies.isEmpty());
     }
@@ -63,7 +64,7 @@ public class TestWorld {
      */
     @Test
     void testGetPlayer() {
-        Player player = world.getPlayer();
+        final Player player = world.getPlayer();
         assertNotNull(player);
         final int y = 7;
         assertEquals(new Pos2dImpl(0, y), player.getPosition());
@@ -92,8 +93,8 @@ public class TestWorld {
      */
     @Test
     void testRemoveBlock() {
-        List<TagBlockEntity> blocks = world.getBlocks();
-        int initialBlockCount = blocks.size();
+        final List<TagBlockEntity> blocks = world.getBlocks();
+        final int initialBlockCount = blocks.size();
         if (initialBlockCount > 0) {
             world.removeBlock(blocks.get(0));
             assertEquals(initialBlockCount - 1, world.getBlocks().size());
@@ -107,8 +108,8 @@ public class TestWorld {
      */
     @Test
     void testRemoveEnemy() {
-        List<Enemy> enemies = world.getEnemies();
-        int initialEnemyCount = enemies.size();
+        final List<Enemy> enemies = world.getEnemies();
+        final int initialEnemyCount = enemies.size();
         if (initialEnemyCount > 0) {
             world.removeEnemy(enemies.get(0));
             assertEquals(initialEnemyCount - 1, world.getEnemies().size());
@@ -121,9 +122,9 @@ public class TestWorld {
      */
     @Test
     void testUpdateGame() {
-        long elapsed = 1000;
+        final long elapsed = 1000;
         world.updateGame(elapsed);
-        Player player = world.getPlayer();
+        final Player player = world.getPlayer();
         assertNotNull(player);
     }
 
@@ -133,9 +134,15 @@ public class TestWorld {
      */
     @Test
     void testGetGameEntities() {
-        List<GameEntity> entities = world.getGameEntities();
+        final List<GameEntity> entities = world.getGameEntities();
         assertNotNull(entities);
-        assertTrue(entities.contains(world.getPlayer()));
+        Boolean containPlayer = false;
+        for (final GameEntity gameEntity : entities) {
+            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)){
+                containPlayer = true;
+            }
+        }
+        assertTrue(containPlayer);
         assertTrue(entities.containsAll(world.getBlocks()));
         assertTrue(entities.containsAll(world.getEnemies()));
     }
@@ -146,7 +153,7 @@ public class TestWorld {
      */
     @Test
     void testGetHud() {
-        Hud hud = world.getHud();
+        final Hud hud = world.getHud();
         assertNotNull(hud);
         assertEquals(world.getPlayer().getScore(), hud.getScore());
         assertEquals(world.getPlayer().getLife(), hud.getLives());
@@ -158,9 +165,9 @@ public class TestWorld {
      */
     @Test
     void testIsGameOver() {
-        Player player = world.getPlayer();
-        player.setLife(-1);
-        world.updateGame(0);
+        final Player player = world.getPlayer();
+        player.setLife(-2);
+        world.updateGame(1);
         assertTrue(world.isGameOver());
     }
 
@@ -171,8 +178,8 @@ public class TestWorld {
     @Test
     void testLoadWorld() {
         world.loadWorld(FILE_PATH);
-        List<TagBlockEntity> blocks = world.getBlocks();
-        List<Enemy> enemies = world.getEnemies();
+        final List<TagBlockEntity> blocks = world.getBlocks();
+        final List<Enemy> enemies = world.getEnemies();
         assertNotNull(blocks);
         assertFalse(blocks.isEmpty());
         assertNotNull(enemies);

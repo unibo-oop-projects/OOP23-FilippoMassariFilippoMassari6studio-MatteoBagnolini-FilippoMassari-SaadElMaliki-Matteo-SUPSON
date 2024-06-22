@@ -29,6 +29,9 @@ class TestHitbox {
         hb4 = new RectHitbox(new Pos2dImpl(11, 4.5), 5, 2);
     }
 
+    /**
+     * This method tests the correct getters of corners of an hitbox.
+     */
     @Test
     void testCorners() {
         final Pos2d ll1 = hb1.getLLCorner();
@@ -48,6 +51,9 @@ class TestHitbox {
         assertTrue(ll4.equals(new Pos2dImpl(10, 2)) && ur4.equals(new Pos2dImpl(12, 7)));
     }
 
+    /**
+     * This method tests the colliding method of hitboxes.
+     */
     @Test
     void testCollisions() {
         assertTrue(hb1.isCollidingWith(hb2));
@@ -56,6 +62,5 @@ class TestHitbox {
         assertFalse(hb4.isCollidingWith(hb1));
         assertFalse(hb4.isCollidingWith(hb2));
         assertFalse(hb4.isCollidingWith(hb3));      //here the two rects share the same side (left side)
-
     }
 }

@@ -23,12 +23,13 @@ public final class HudViewImpl implements HudView {
     private static final int SCORE_LABEL_Y = 10;
     private static final int LIVES_LABEL_Y = 50;
     private static final int TIME_LABEL_Y = 90;
+    private static final int BG_COLOR = 150;
 
     @Override
     public void renderHud(final JPanel gamePanel, final Hud hud) {
-        JLabel scoreLabel = createLabel("Score: " + hud.getScore(), LABEL_X, SCORE_LABEL_Y);
-        JLabel livesLabel = createLabel("Lives: " + hud.getLives(), LABEL_X, LIVES_LABEL_Y);
-        JLabel timeLabel = createLabel("Time: " + String.format("%.2f", hud.getTime()), LABEL_X, TIME_LABEL_Y);
+        final JLabel scoreLabel = createLabel("Score: " + hud.getScore(), LABEL_X, SCORE_LABEL_Y);
+        final JLabel livesLabel = createLabel("Lives: " + hud.getLives(), LABEL_X, LIVES_LABEL_Y);
+        final JLabel timeLabel = createLabel("Time: " + String.format("%.2f", hud.getTime()), LABEL_X, TIME_LABEL_Y);
 
         gamePanel.add(scoreLabel);
         gamePanel.add(livesLabel);
@@ -44,11 +45,11 @@ public final class HudViewImpl implements HudView {
      * @return the created JLabel
      */
     private JLabel createLabel(final String text, final int x, final int y) {
-        JLabel label = new JLabel(text);
+        final JLabel label = new JLabel(text);
         label.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
         label.setFont(new Font("Arial", Font.BOLD, 16));
         label.setForeground(Color.WHITE);
-        label.setBackground(new Color(0, 0, 0, 150));
+        label.setBackground(new Color(0, 0, 0, BG_COLOR));
         label.setOpaque(true);
         label.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         label.setHorizontalAlignment(SwingConstants.CENTER);

@@ -20,7 +20,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     private final Map<GameEntityType, Function<Pos2d, Collectible>> collectibleCreators;
     private final Object lock = new Object();
-    
+
     /**
      * Constructs a new instance of the CollectibleFactoryImpl class.
      * This factory is responsible for creating different types of collectibles in the game.
@@ -35,7 +35,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     @Override
     public Collectible createCollectible(final GameEntityType type, final Pos2d pos) {
-        Optional<Function<Pos2d, Collectible>> creator = Optional.ofNullable(collectibleCreators.get(type));
+        final Optional<Function<Pos2d, Collectible>> creator = Optional.ofNullable(collectibleCreators.get(type));
         if (creator.isPresent()) {
             return creator.get().apply(pos);
         } else {
@@ -70,11 +70,11 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectibleImpl(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
-            private static final long DURATION = 8000;
+            private static final long DURATION = 3000;
 
             @Override
             public void collect(final Player player) {
-                Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
+                final Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
                 timer.start();
             }
         };

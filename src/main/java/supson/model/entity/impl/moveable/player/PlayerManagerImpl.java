@@ -27,55 +27,30 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     @Override
-    public void moveRight() {
-        //this.state = new PlayerState.Builder(state).right(true).build();
-        newState(state.setRight());
+    public void moveRight(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setRight());
+        } else {
+            player.setState(player.getState().setNotRight());
+        }
     }
 
     @Override
-    public void moveLeft() {
-        //this.state = new PlayerState.Builder(state).left(true).build();
-        newState(state.setLeft());
+    public void moveLeft(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setLeft());
+        } else {
+            player.setState(player.getState().setNotLeft());
+        }
     }
 
     @Override
-    public void stopOnOrizontal() {
-        //this.state = new PlayerState.Builder(state).left(false).right(false).build();
-        newState(state.withVelocity(new Vect2dImpl(0, state.vel().y())).setNotRight().setNotLeft());
-    }
-
-    @Override
-    public void stopOnVertical() {
-        //this.state = new PlayerState.Builder(state).vel(new Vect2dImpl(state.vel().x(), 0)).jump(false).build();
-        newState(state.withVelocity(new Vect2dImpl(state.vel().x(), 0)).setNotJump());
-    }
-
-    @Override
-    public void jump() {
-        //this.state = new PlayerState.Builder(state).jump(true).build();
-        newState(state.setJump());
-    }
-
-    @Override
-    public boolean isJumping() {
-        return state.isJumping();
-    }
-
-    @Override
-    public boolean isInvulnerable() {
-        return state.isInvulnerable();
-    }
-
-    @Override
-    public void setInvulnerable() {
-        //this.state = new PlayerState.Builder(state).isInvulnerable(true).build();
-        newState(state.setInvulnerable());
-    }
-
-    @Override
-    public void setVulnerable() {
-        //this.state = new PlayerState.Builder(state).isInvulnerable(false).build();
-        newState(state.setNotInvulnerable());
+    public void jump(final Player player, final boolean flag) {
+        if (flag) {
+            player.setState(player.getState().setJump());
+        } else {
+            player.setState(player.getState().setNotJump());
+        }
     }
 
     @Override
@@ -94,6 +69,14 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
         // CHECKSTYLE: MissignSwitchDefault ON
     }
 
+    private void stopOnOrizontal() {
+        newState(state.withVelocity(new Vect2dImpl(0, state.vel().y())).setNotRight().setNotLeft());
+    }
+
+    private void stopOnVertical() {
+        newState(state.withVelocity(new Vect2dImpl(state.vel().x(), 0)).setNotJump());
+    }
+
     private void leftCollision() {
         stopOnOrizontal();
     }
@@ -104,7 +87,6 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
 
     private void lowerCollision() {
         stopOnVertical();
-        //this.state = new PlayerState.Builder(state).onGround(true).isJumping(false).build();
         newState(state.setOnGround().setNotIsJumping());
     }
 
@@ -113,18 +95,11 @@ public final class PlayerManagerImpl implements PlayerManager, CollisionObserver
     }
 
     private void pushBackRight() {
-        moveLeft();
-        // final Vect2d vel = new Vect2dImpl(-PUSH_BACK_VEL.x(), PUSH_BACK_VEL.y());
-        // this.state = new PlayerState.Builder(state).vel(vel).jump(false)
-        //     .onGround(false).isJumping(false).build();
-        newState(state.withVelocity(PUSH_BACK_RIGHT_VEL).setNotJump().setNotOnGround().setNotIsJumping());
+        newState(state.withVelocity(PUSH_BACK_RIGHT_VEL).setLeft().setNotJump().setNotOnGround().setNotIsJumping());
     }
 
     private void pushBackLeft() {
-        moveRight();
-        // this.state = new PlayerState.Builder(state).vel(PUSH_BACK_VEL).jump(false)
-        //     .onGround(false).isJumping(false).build();
-        newState(state.withVelocity(PUSH_BACK_LEFT_VEL).setNotJump().setNotOnGround().setNotIsJumping());
+        newState(state.withVelocity(PUSH_BACK_LEFT_VEL).setRight().setNotJump().setNotOnGround().setNotIsJumping());
     }
 
     @Override

@@ -1,39 +1,107 @@
 # Capitolo 1 - Analisi
+
 ## 1.1 Requisiti
-Il software vuole riprendere il celebre videogioco 2d platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che potenziano Sonic.
+
+Il software vuole riprendere il celebre videogioco 2d platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che ne potenziano le capacità.
+
 ### Requisiti funzionali
-!!
+
 - Il player deve:
     - poter muoversi verso destra, verso sinistra con velocità incrementale, e saltare
+    - superare i blocchi e trappole tramite il salto
     - collezionare monete e ottenere power-ups che ne potenziano le abilità di gioco
     - sconfiggere i nemici attraverso il salto
 - I nemici devono:
     - ostacolare il player facendogli perdere vita al contatto
     - potersi muovere verso destra e verso sinistra con una loro logica
-- 
+- I power-up devono:
+    - poter essere raccolti dal player
+    - migliorarne una caratteristica (ad esempio aumentare la vita o conferire invulnerabilità)
+- Le trappole devono:
+    - far perdere vita al player quando avviene il contatto tra di essi
+- La partita deve terminare quando il player raggiunge la bandierina di fine livello, o quando perde tutte le vite
+
 ### Requisiti non funzionali
-!!
-- Menù iniziale
-- Il gameplay dovrà risultare fluido
-- Il videogioco dovrà essere compatibile con la maggiorparte dei dispositivi e sistemi operativi
+
+- Dovrà essere presente un menù iniziale.
+- Il gameplay dovrà risultare fluido (minimo 30 FPS).
+- Il videogioco dovrà essere compatibile con la maggiorparte dei dispositivi e sistemi operativi.
+
 ## 1.2 Analisi e modello del dominio
-Il giocatore ha modo di muoversi all'interno di una mappa, la quale si compone di blocchi non compenetrabili, trappole, nemici e oggetti raccoglibili.
-Sonic può collezionare monete per incrementare il punteggio della partita, raccogliere power-ups per potenziarsi e sconfiggere nemici tramite l'abilità di salto.
-Insieme a Sonic, si muovono nella mappa i nemici, seguendo una logica prestabilita. Quando un nemico colpisce il personaggio, quest'ultimo subisce danno, decrementando la propria salute.
-Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano qualche tipo di effetto, per esempio un danno oppure un effetto di qualche tipo.
+
+Il giocatore ha modo di muoversi all'interno di una mappa, la quale si compone di blocchi non compenetrabili, trappole, nemici, oggetti raccoglibili e bandierina di fine livello.
+Sonic può collezionare monete per incrementare il punteggio della partita, raccogliere power-ups per potenziarsi e sconfiggere nemici tramite l'abilità di salto. Inoltre deve riuscire ad arrivare alla bandierina di fine livello per terminare la partita.
+Insieme a Sonic, si muovono nella mappa i nemici, seguendo una logica prestabilita. Quando un nemico colpisce il personaggio, quest'ultimo subisce danno, decrementando la propria salute. Se la vita del giocatore arriva a 0, la partita finisce.
+Nella mappa sono sparse delle trappole, che al contatto con Sonic, gli provocano qualche tipo di effetto, per esempio un danno o un effetto "trampolino".
+
+```mermaid
+classDiagram
+
+    class GameEntity {
+        <<Interface>>
+    }
+
+    class Player {
+        <<Interface>>
+    }
+
+    class Level {
+        <<Interface>>
+    }
+
+    class Enemy {
+        <<Interface>>
+    }
+
+    class Block {
+        <<Interface>>
+    }
+
+    class Trap {
+        <<Interface>>
+    }
+
+    class Collectable {
+        <<Interface>>
+    }
+
+    class Ring {
+        <<Interface>>
+    }
+
+    class PowerUp {
+        <<Interface>>
+    }
+
+
+    GameEntity <|-- Player
+    Player --> Collectable : collect
+    GameEntity <|-- Enemy
+    Player <--> Enemy : damages
+    GameEntity <|-- Block
+    Player <-- Trap : effect
+    GameEntity <|-- Trap
+    GameEntity <|-- Collectable
+    Collectable <|-- PowerUp
+    Collectable <|-- Ring
+    Level *-- GameEntity
+```
 
 # Capitolo 2 - Design
 !!
 ## 2.1 Architettura
 !!
 ## 2.2 Design dettagliato
+
 ### Bagnolini Matteo
+
 ### Gerarchia di entità di gioco
 
 ```mermaid
 classDiagram
     class AbstractGameEntity {
         <<abstract>>
+        - hitbox : Hitbox
         + getPosition() : Pos2d
         + setPosition(pos : Pos2d)
     }
@@ -72,8 +140,8 @@ classDiagram
 
 **Problema:** Gestire la definizione di varie entità di gioco, dotate di caratteristiche differenti. Si vuole minimizzare la ripetizione di codice e garantire estendibilità per future modifiche e feature aggiuntive.
 
-**Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, anello e power-up (foglie dell'albero) e `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (foglie dell'albero).
-In questo modo ho ridotto la ripetizione di codice non necessario, poichè le classi "foglia" avrebbe dovuto implementare tutti metodi uguali tra di loro, e permetto di avere una buona estendibilità. Ad esempio per creare una nuova entità dotata di movimento (come un boss) è necessario solamente estendere la classe `AbstractMoveableEntity` ed aggiungere il codice dove si specificano le funzionalità aggiuntive della nuova entità.
+**Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, collezionabile o `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (che rappresentano le foglie dell'albero).
+In questo modo ho ridotto la ripetizione di codice non necessario, poichè le classi "foglia" avrebbe dovuto implementare molti metodi uguali tra di loro, e permetto di avere una buona estendibilità. Ad esempio per creare una nuova entità dotata di movimento (come un boss) è necessario solamente estendere la classe `AbstractMoveableEntity` ed aggiungere il codice dove si specificano funzionalità aggiuntive specifiche.
 
 ### Movimento delle entità
 
@@ -121,11 +189,11 @@ classDiagram
 
 **Problema:** Ogni `MoveableEntity` deve potersi muovere, e ogni entità dovrebbe avere la sua logica di movimento.
 
-**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()` della classe stessa. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. In questo modo si rende possibile il riuso del codice per entità che si muovono ognuna con una propria logica differente.
+**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()`. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. In questo modo si rende possibile il riuso del codice per entità che si muovono ognuna con una propria logica differente.
 
 **Problema:** Ogni `MoveableEntity` dovrebbe avere una propria fisica di gioco specifica. Inoltre si vuole separare la gestione della fisica dall'entità stessa per avere più modularità del codice.
 
-**Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (ad esempio forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità) che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco personalizzata. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
+**Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (ad esempio forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità), chiamato `physicsComponent`, che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco personalizzata. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
 
 ### Gestione delle collisioni
 
@@ -169,7 +237,7 @@ classDiagram
 
     CollisionObservable <|.. CollisionResolver
     CollisionObserver <|.. PlayerManagerImpl
-    CollisionResolver *-- PlayerManagerImpl
+    CollisionResolver <-- PlayerManagerImpl : Observes
     CollisionResolver --> CollisionEvent : Produces
     PlayerManagerImpl --> CollisionEvent : Uses
 
@@ -177,7 +245,7 @@ classDiagram
 
 **Problema:** Bisogna gestire le collisioni tra il giocatore e le entità di gioco. Ogni entità con cui il giocatore collide provoca effetti differenti.
 
-**Soluzione:** Per gestire le collisioni ho utilizzato il pattern Observer: la classe `CollisionResolver` funge da osservabile, che viene osservato da `PlayerManagerImpl`. Dopo ogni collisione tra il giocatore e specifiche entità di gioco (come blocchi e nemici), `CollisionResolver` notifica a `PlayerManagerImpl` l'evento (un enum di tipo `CollisionEvent`). Questo evento viene poi gestito tramite la specifica routine all'interno della classe manager. Ho voluto implementare questo pattern sia per rendere più manutenibile il codice, sia per renderlo aperto a future modifiche e migliorie. Ad esempio l'observer potrebbe essere usato per aggiungere elementi sonori al gioco semplicemente creando una classe che osserva il `CollisionResolver` e definendo delle specifiche subroutine per ogni evento.
+**Soluzione:** Per gestire le collisioni ho utilizzato il pattern Observer: la classe `CollisionResolver` funge da osservabile, che viene osservato da `PlayerManagerImpl`. Dopo ogni collisione tra il giocatore e specifiche entità di gioco (come blocchi e nemici), `CollisionResolver` notifica a `PlayerManagerImpl` l'evento (un enum di tipo `CollisionEvent`). Questo evento viene poi gestito tramite la specifica routine all'interno della classe manager, la quale modifica lo stato di `Player` in base al tipo di collisione. Ho voluto implementare questo pattern sia per rendere più manutenibile il codice, sia per renderlo aperto a future modifiche e migliorie. Ad esempio l'observer potrebbe essere usato per aggiungere elementi sonori al gioco semplicemente creando una classe che osserva il `CollisionResolver` e definendo delle specifiche subroutine per ogni evento.
 
 ### Stato del giocatore
 
@@ -230,47 +298,28 @@ La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/
 
 ```mermaid
 classDiagram
+    GameEntity *-- GameEntityType
+
     class GameEntity {
-        <<interface>>
-        + int getHeight()
-        + int getWidth()
-        + Pos2d getPosition()
-        + Hitbox getHitbox()
-        + GameEntityType getGameEntityType()
+        - GameEntityType type
+        + GameEntity(GameEntityType type)
+        + getType() : GameEntityType
     }
 
     class GameEntityType {
-        <<enumeration>>
-        PLAYER
-        TERRAIN
-        LIFE_BOOST_POWER_UP
-        STRENGTH_BOOST_POWER_UP
-        RING
-        DAMAGE_TRAP
-        ENEMY
-        SUBTERRAIN
-        END_GAME
+        - String name
+        - String spritePath
+        + GameEntityType(String name, String spritePath)
+        + getName() : String
+        + getSpritePath() : String
     }
 
-    class Pos2d {
-        + double x()
-        + double y()
-    }
-
-    class Hitbox {
-        <<interface>>
-        + boolean isCollidingWith(Hitbox box)
-    }
-
-    GameEntity *-- Pos2d
-    GameEntity *-- Hitbox
-    GameEntity *-- GameEntityType
 
 ```
 
 **Problema:** Nel contesto del gioco, sono presenti diverse entità con caratteristiche e comportamenti distinti. Queste entità devono essere rappresentate in modo coerente all'interno del modello di gioco, della sua rappresentazione visiva e dell'interazione con il giocatore. Tuttavia, la gestione di queste entità può diventare complessa a causa delle loro diverse proprietà e comportamenti.
 
-**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType in sinergia con `Pos2d` e `Hitbox`, siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
+**Soluzione:** Per affrontare questo problema e garantire una gestione efficace delle entità di gioco, abbiamo introdotto l'enum `GameEntityType`. Questo enum fornisce una rappresentazione univoca di ciascuna entità di gioco, associandole a un tipo specifico che comprende informazioni cruciali come il percorso dello sprite associato e l'indice identificativo. Utilizzando GameEntityType siamo in grado di stabilire una corrispondenza diretta tra le classi istanziate nel gioco e le loro rappresentazioni visive e funzionali. Questo semplifica notevolmente la gestione delle entità nel modello di gioco, consentendo una maggiore coerenza e facilitando lo sviluppo e la manutenzione del codice.
 
 ### Gerarchia dei Blocchi del Gioco
 
@@ -286,28 +335,28 @@ classDiagram
 
     class Collectible {
         <<interface>>
-        + void collect(Player player)
+        +collect(Player player) : void
     }
 
     class TrapFactory {
         <<interface>>
-        + Collectible createTrap(GameEntityType type, Pos2d pos)
+        +createTrap(GameEntityType type, Pos2d pos) : Trap
     }
 
     class CollectibleFactory {
         <<interface>>
-        + Collectible createCollectible(GameEntityType type, Pos2d pos)
+        +createCollectible(GameEntityType type, Pos2d pos) : Collectible
     }
 
     class Trap {
         <<interface>>
-        + void activate(Player player)
+        +activate(Player player) : void
     }
 
     TrapFactory --> Trap : instantiate
     GameEntity <|.. TagBlockEntity
-    TagBlockEntity <|.. Collectible
-    TagBlockEntity <|.. Trap
+    TagBlockEntity <|-- Collectible
+    TagBlockEntity <|-- Trap
     CollectibleFactory --> Collectible : instantiate
 ```
 
@@ -322,23 +371,23 @@ Attraverso l'utilizzo di tale gerarchia di interfacce risulta molto semplice arr
 classDiagram
     class World {
         <<interface>>
-        + void loadWorld(String filePath)
-        + void updateGame(long elapsed)
-        + boolean isGameOver()
+        + loadWorld(filePath: String) : void
+        + updateGame(elapsed: long) : void
+        + isGameOver() : boolean
     }
 
     class GameEntity {
         <<interface>>
-        + GameEntityType getGameEntityType
+        + getGameEntityType() : GameEntityType
     }
     note for GameEntity "Segue il resto della gerarchia delle GameEntity"
 
     class CollisionManager {
         <<interface>>
-        + void resolvePlatformCollisions(MoveableEntity entity, List~GameEntity~ blocks, Pos2d startingPos)
-        + List~Enemy~ resolveEnemiesCollisions(Player player, List~Enemy~ enemies)
-        + void resolveTrapCollisions(Player player, List~Trap~ traps)
-        + List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+        + resolvePlatformCollisions(entity: MoveableEntity, blocks: List~GameEntity~, startingPos: Pos2d) : void
+        + resolveEnemiesCollisions(player: Player, enemies: List~Enemy~) : List~Enemy~
+        + resolveTrapCollisions(player: Player, traps: List~Trap~) : void
+        + resolveCollectibleCollisions(player: Player, collectibles: List~Collectible~) : List~Collectible~
     }
 
     World *-- GameEntity
@@ -347,7 +396,36 @@ classDiagram
 
 **Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
 
-**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il puttern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il puttern strategy, e ed in sinergia con il puttern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+**Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il pattern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il pattern strategy, e ed in sinergia con il pattern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
+
+
+### Gestione degli Effetti dei Raccoglibili
+
+```mermaid
+classDiagram
+
+    class CollisionManager {
+        <<interface>>
+        +List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+    }
+
+    class Collectible {
+        <<interface>>
+        +collect(Player player)
+    }
+
+    class Player {
+        <<interface>>
+    }
+
+    CollisionManager --> Collectible : resolve
+    CollisionManager --> Player : manage
+```
+
+
+**Problema:** Il problema consiste nel gestire in modo efficace gli effetti applicati al giocatore quando collezioniamo un oggetto raccoglibile rappresentato dall'interfaccia `Collectible`. Gli effetti possono essere di vario tipo, come incrementare il punteggio, cambiare lo stato del giocatore, o incrementare le vite. È necessario un approccio flessibile e modulare per applicare questi effetti senza rendere il codice difficile da mantenere o estendere.
+
+**Soluzione:** L'utilizzo del Command pattern aiuta la risoluzione di questo problema . In questo contesto, ogni effetto applicato al giocatore può essere rappresentato attraverso il metodo `collect(Player player)` dell'interfaccia `Collectible`.
 
 ### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
 
@@ -407,19 +485,62 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 ### Bagnolini Matteo
 
+- Utilizzo di classi record per immutabili:
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/common/impl/Pos2dImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/moveable/player/PlayerState.java
+
+- Utilizzo di stream e lambda (ne riporto qualche esempio):
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L109-L113
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L101-L105
+
+- Codice reperito online: per farmi un'idea di come potesse funzionare la fisica di movimento all'interno del videogioco originale ho consultato [questo sito](https://info.sonicretro.org/SPG:Running)
+
 ### Massari Filippo
 
 - Utilizzo del costrutto Function: 
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
+
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/b0da638214d4a25d83404a5f30eb88820b4a7f4a/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L21
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/b0da638214d4a25d83404a5f30eb88820b4a7f4a/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L29-L44
 
 - Utilizzo multiplo del costrutto Optional, ne riporto qualche esempio: 
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldImageManagerImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/model/world/impl/WorldLoaderImpl.java#L78-L83
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/view/impl/world/WorldImageManagerImpl.java#L37-L48
 
 - Utilizzo multipolo del costrutto Method References, ne riporto qualche esempio: 
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L29-L34
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/view/impl/world/WorldViewImpl.java#L67-L69
 
 - Utilizzo multiplo del costrutto Stream, ne riporto qualche esempio:
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/model/world/impl/WorldLoaderImpl.java
-    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/world/WorldViewImpl.java
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/model/world/impl/WorldLoaderImpl.java#L48-L50
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/view/impl/world/WorldViewImpl.java#L67-L69
+
+- Codice reperito online: 
+    - Non sapevo come usare il logger in maniera appropriata ed ho guardato i metodi principali su [questo sito](https://www.geeksforgeeks.org/logger-getlogger-method-in-java-with-examples/).
+
+
+# Capitolo 4 - Commenti finali
+
+## 4.1 Autovalutazione e lavori futuri
+
+### Bagnolini Matteo
+Sono in generale soddisfatto di come è stato realizzato questo progetto. Sono riuscito ad utilizzare abbastanza design pattern noti rendendo il codice piuttosto estendibile. Il mio ruolo è stata la gestione delle principali entità di gioco, in particolare quelle dotate di movimento, e credo di aver gestito bene questo compito. Il codice scritto è molto aperto ad estensioni, e questo penso sia dovuto a un buon lavoro di analisi iniziale, che ha semplificato la costruzione di tutto il progetto. Infatti non abbiamo avuto particolari problemi, anche perchè avendo deciso di consegnare il progetto durante la sessione estiva, abbiamo avuto tutto il tempo necessario per lo sviluppo. Ho cercato di essere il più disponibile possibile con gli altri membri, cercando di aiutarli quando comparivano difficoltà. Tuttavia credo che non ci sia stato pari impegno da parte di tutti i partecipanti del gruppo, anche se questo non ha impedito di realizzare le feature obligatorie previste.
+Per quanto riguarda il futuro di questo progetto credo che possa essere interessante cercare di aggiungere altri elementi come trappole, livelli e nemici, anche se attualmente non è la mia priorità. Queste cose sono facilmente implementabili grazie a un buon design generale.
+
+# Appendice A - Guida utente
+
+Comandi:
+
+- Per avviare la partita premere il bottone Start nel menù principale.
+- Per muoversi a destra e a sinistra bisogna premere le rispettive frecce, o usare i tasti A-D.
+- Per saltare bisogna premere il tasto SPACE.
+
+# Appendice B - Esercizi di laboratorio
+
+## B.0.1 matteo.bagnolini5@studio.unibo.it
+- Laboratorio 07: https://virtuale.unibo.it/mod/forum/discuss.php?d=147598#p209372
+- Laboratorio 08: https://virtuale.unibo.it/mod/forum/discuss.php?d=148025#p209972
+- Laboratorio 09: https://virtuale.unibo.it/mod/forum/discuss.php?d=149231#p211626
+- Laboratorio 11: https://virtuale.unibo.it/mod/forum/discuss.php?d=151542#p213969
+
+
+

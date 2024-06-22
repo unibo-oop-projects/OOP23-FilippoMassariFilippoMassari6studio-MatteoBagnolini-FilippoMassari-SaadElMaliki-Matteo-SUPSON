@@ -7,29 +7,34 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import javax.imageio.ImageIO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a custom JPanel with an optional background image.
  */
-public class ImagePanel extends JPanel {
+public final class ImagePanel extends JPanel {
 
-    private Optional<BufferedImage> backgroundImage;
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(ImagePanel.class.getName());
 
-     /**
+    private transient Optional<BufferedImage> backgroundImage;
+
+    /**
      * Constructs a new `ImagePanel` with the specified background image path.
      *
      * @param imagePath The path to the background image file.
      */
     public ImagePanel(final String imagePath) {
         try {
-            Optional<URL> imgURL = Optional.ofNullable(getClass().getClassLoader().getResource(imagePath));
+            final Optional<URL> imgURL = Optional.ofNullable(getClass().getClassLoader().getResource(imagePath));
             if (imgURL.isPresent()) {
                 backgroundImage = Optional.of(ImageIO.read(imgURL.get()));
             } else {
                 backgroundImage = Optional.empty();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error loading the background image file from: " + imagePath, e);
             backgroundImage = Optional.empty();
         }
     }

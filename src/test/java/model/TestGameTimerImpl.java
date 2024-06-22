@@ -12,11 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * This class contains unit tests for the GameTimerImpl class.
  */
-public final class TestGameTimerImpl {
+final class TestGameTimerImpl {
 
     private static final int NANO_SEC = 100_000_000;
     private static final double MICRO_SEC = 0.1;
     private static final int SLEEP_SEC = 100;
+    private static final double DELTA = 0.000_001;
 
     private GameTimer timer;
 
@@ -44,7 +45,7 @@ public final class TestGameTimerImpl {
         timer.start();
         Thread.sleep(SLEEP_SEC);
         timer.stop();
-        long elapsedTime = timer.getElapsedTime();
+        final long elapsedTime = timer.getElapsedTime();
         assertTrue(elapsedTime >= NANO_SEC);
     }
 
@@ -58,7 +59,7 @@ public final class TestGameTimerImpl {
         timer.stop();
         timer.reset();
         assertEquals(0, timer.getElapsedTime());
-        assertEquals(0, timer.getElapsedTimeInSeconds(), 0.000001);
+        assertEquals(0, timer.getElapsedTimeInSeconds(), DELTA);
     }
 
     /**
@@ -70,7 +71,7 @@ public final class TestGameTimerImpl {
         timer.start();
         Thread.sleep(2 * SLEEP_SEC);
         timer.stop();
-        long elapsedTime = timer.getElapsedTime();
+        final long elapsedTime = timer.getElapsedTime();
         assertTrue(elapsedTime >= 2 * NANO_SEC);
     }
 
@@ -83,7 +84,7 @@ public final class TestGameTimerImpl {
         timer.start();
         Thread.sleep(3 * SLEEP_SEC);
         timer.stop();
-        double elapsedTimeInSeconds = timer.getElapsedTimeInSeconds();
+        final double elapsedTimeInSeconds = timer.getElapsedTimeInSeconds();
         assertTrue(elapsedTimeInSeconds >= 3 * MICRO_SEC);
     }
 
@@ -96,11 +97,11 @@ public final class TestGameTimerImpl {
         timer.start();
         Thread.sleep(SLEEP_SEC);
         timer.stop();
-        long firstElapsedTime = timer.getElapsedTime();
+        final long firstElapsedTime = timer.getElapsedTime();
         timer.start();
         Thread.sleep(SLEEP_SEC);
         timer.stop();
-        long secondElapsedTime = timer.getElapsedTime();
+        final long secondElapsedTime = timer.getElapsedTime();
         assertTrue(secondElapsedTime >= firstElapsedTime + MICRO_SEC);
     }
 }

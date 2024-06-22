@@ -66,9 +66,4 @@ public abstract class AbstractGameEntity implements GameEntity {
         return this.getHitbox().isCollidingWith(otherGameEntity.getHitbox());
     }
 
-    @Override
-    public final void notifyCollision(final GameEntity collidingGameEntity) {
-        //TODO : real implementation
-    }
-
 }

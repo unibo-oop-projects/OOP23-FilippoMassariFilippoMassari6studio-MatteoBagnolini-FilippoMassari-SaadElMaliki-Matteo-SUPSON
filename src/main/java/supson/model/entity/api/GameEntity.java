@@ -59,11 +59,4 @@ public interface GameEntity {
      */
     boolean isCollidingWith(GameEntity otherGameEntity);
 
-    /**
-     * Notify the entity that it is colliding with another entity.
-     *
-     * @param collidingGameEntity the other entity that the entity is colliding with
-     */
-    void notifyCollision(GameEntity collidingGameEntity);
-
 }

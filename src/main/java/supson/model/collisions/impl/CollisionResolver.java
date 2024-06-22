@@ -57,21 +57,20 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
         entity.setPosition(new Pos2dImpl(newX, newY));
     }
 
-    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, World world) {
+    @Override
+    public void resolveFinishlineCollision(final Player player, final List<Finishline> finishlines, final World world) {
         finishlines.stream()
-        .filter(f -> f.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(f -> f.getPosition().getDistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(f -> f.getHitbox().isCollidingWith(player.getHitbox()))
         .forEach(f -> {
             f.endGame(world);
-            /*notifyObservers(f.getPosition().x()>player.getPosition().x()
-                ? CollisionEvent.OBSTACLE_RIGHT_COLLISION : CollisionEvent.OBSTACLE_LEFT_COLLISION);*/
         });
     }
 
     @Override
     public void resolveTrapCollisions(final Player player, final List<Trap> traps) {
         traps.stream()
-        .filter(t -> t.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(t -> t.getPosition().getDistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(t -> t.getHitbox().isCollidingWith(player.getHitbox()))
         .forEach(t -> {
             t.activate(player);
@@ -100,7 +99,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
     @Override
     public List<Collectible> resolveCollectibleCollisions(final Player player, final List<Collectible> collectibles) {
         return collectibles.stream()
-        .filter(collectible -> collectible.getPosition().getdistance(player.getPosition()) <= RENDER_DISTANCE)
+        .filter(collectible -> collectible.getPosition().getDistance(player.getPosition()) <= RENDER_DISTANCE)
         .filter(collectible -> collectible.getHitbox().isCollidingWith(player.getHitbox()))
         .peek(collectible -> collectible.collect(player))
         .collect(Collectors.toList());
@@ -108,7 +107,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
 
     private List<TagBlockEntity> getCollidingBlocks(final MoveableEntity entity, final List<TagBlockEntity> collidingBlocks) {
         return collidingBlocks.stream()
-        .filter(b -> b.getPosition().getdistance(entity.getPosition()) <= RENDER_DISTANCE)
+        .filter(b -> b.getPosition().getDistance(entity.getPosition()) <= RENDER_DISTANCE)
         .filter(b -> b.getGameEntityType().equals(GameEntityType.TERRAIN))
         .filter(b -> b.getHitbox().isCollidingWith(entity.getHitbox()))
         .collect(Collectors.toList());
@@ -156,7 +155,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
                     default : ;
                 }
                 // CHECKSTYLE: EmptyStatement ON
-        } else {                                                    //contatto from left
+        } else {                                                    //contact from left
             newXPos = entity.getPosition().x()
                 + collidingEntity.getHitbox().getURCorner().x() - entity.getHitbox().getLLCorner().x() + DELTA;
                 if (entity.getGameEntityType().equals(GameEntityType.PLAYER)) {

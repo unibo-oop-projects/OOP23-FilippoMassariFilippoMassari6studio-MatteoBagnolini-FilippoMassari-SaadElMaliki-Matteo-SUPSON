@@ -12,7 +12,7 @@ import supson.common.api.Vect2d;
 public record Pos2dImpl(double x, double y) implements Pos2d {
 
     @Override
-    public double getdistance(final Pos2d p) {
+    public double getDistance(final Pos2d p) {
         return Math.sqrt((this.x - p.x()) * (this.x - p.x()) + (this.y - p.y() * (this.y - p.y())));
     }
 
@@ -20,4 +20,5 @@ public record Pos2dImpl(double x, double y) implements Pos2d {
     public Pos2d sum(final Vect2d vect) {
         return new Pos2dImpl(this.x + vect.x(), this.y + vect.y());
     }
+
 }

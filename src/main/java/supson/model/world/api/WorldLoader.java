@@ -1,6 +1,6 @@
 package supson.model.world.api;
 
-/*
+/**
  * Represents a world loader that loads a world from a file.
  */
 public interface WorldLoader {

@@ -3,6 +3,7 @@ package supson.model.entity.impl.moveable.player;
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Vect2dImpl;
+import supson.model.entity.api.moveable.player.MainPlayer;
 import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.physics.api.Physics;
 import supson.model.physics.impl.PhysicsImpl;
@@ -11,14 +12,14 @@ import supson.model.physics.impl.PhysicsImpl;
  * This class, which extends the abstract class MoveableEntity, models
  * the player of the game.
  */
-public final class Player extends AbstractMoveableEntity {
+public final class Player extends AbstractMoveableEntity implements MainPlayer {
 
-    private static final int MAX_SPEED = 20;
-    private static final double ACC_SPEED = 0.8;
-    private static final double DEC_SPEED = 1.2;
+    private static final int MAX_SPEED = 18;
+    private static final double ACC_SPEED = 0.6;
+    private static final double DEC_SPEED = 0.8;
     private static final double FRICTION = 0.8;
-    private static final int JUMP_FORCE = 12;
-    private static final double GRAVITY = 0.8;
+    private static final int JUMP_FORCE = 23;
+    private static final double GRAVITY = 1.5;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
@@ -39,7 +40,17 @@ public final class Player extends AbstractMoveableEntity {
         super(pos, HEIGHT, WIDTH, TYPE, new Vect2dImpl(0, 0), MAX_LIVES,
             new PhysicsImpl(MAX_SPEED, ACC_SPEED, DEC_SPEED, FRICTION,  JUMP_FORCE, GRAVITY));
         this.score = 0;
-    } 
+    }
+
+    /**
+     * This constructor creates a new instance of Player.
+     * The new object is a copy of the parameter player
+     * @param player the player to copy
+     */
+    public Player(final Player player) {
+        super(player.getPosition(), HEIGHT, WIDTH, TYPE, player.getVelocity(), player.getLife(), player.getPhysicsComponent());
+        setState(player.getState());
+    }
 
     @Override
     public void updateVelocity() {
@@ -65,73 +76,30 @@ public final class Player extends AbstractMoveableEntity {
         physicsComponent.applyGravity(this);
     }
 
-    /**
-     * This method sets the right flag. It should be used when 
-     * the player moves right.
-     * @param flag the boolean value representing right move
-     */
-    public void setMoveRight(final boolean flag) { // TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.right = flag;
-    }
-
-    /**
-     * This method sets the left flag. It should be used when 
-     * the player moves left.
-     * @param flag the boolean value representing left move
-     */
-    public void setMoveLeft(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.left = flag;
-    }
-
-    /**
-     * This method sets the jump flag. It should be used when 
-     * the player jumps.
-     * @param flag the boolean value representing jump
-     */
-    public void setJump(final boolean flag) {// TODO: eliminare metodo una volta che si è tolto il getPlayer da World
-        this.jump = flag;
-    }
-
-    /**
-     * This method is used to increment (or decrement) the score.
-     * @param score the score to be incremented
-     */
+    @Override
     public void incrementScore(final int score) {
         this.score += score;
     }
 
-    /**
-     * This method return the score.
-     * @return the score
-     */
+    @Override
     public int getScore() {
         return this.score;
     }
 
-    /**
-     * This method increments (or decrements) the lives of the player. It does 
-     * nothing when the player has already the max number of lives.
-     * @param lives an integer representing how many lives to increment
-     */
+    @Override
     public void incrementLife(final int lives) {
         if (getLife() + lives <= MAX_LIVES) {
             this.setLife(getLife() + lives);
         }
     }
 
-    /**
-     * This method returns the current player state.
-     * @return the player current state
-     */
+    @Override
     public PlayerState getState() {
         return new PlayerState(this.getVelocity(), right, left, jump,
         onGround, isJumping, isInvulnerable);
     }
 
-    /**
-     * This method set the state of the player.
-     * @param state the state to be set
-     */
+    @Override
     public void setState(final PlayerState state) {
         this.setVelocity(state.vel());
         this.right = state.right();

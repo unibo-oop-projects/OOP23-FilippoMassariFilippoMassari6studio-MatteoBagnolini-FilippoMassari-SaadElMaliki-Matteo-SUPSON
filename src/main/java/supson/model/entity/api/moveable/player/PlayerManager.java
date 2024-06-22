@@ -1,5 +1,6 @@
 package supson.model.entity.api.moveable.player;
 
+import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerState;
 
 /**
@@ -21,49 +22,26 @@ public interface PlayerManager {
 
     /**
      * Set the player to move right.
+     * @param player the player
+     * @param flag bool value representing true if player should go right,
+     * false otherwise
      */
-    void moveRight();
+    void moveRight(Player player, boolean flag);
 
     /**
      * Set the player to move left.
+     * @param player the player
+     * @param flag bool value representing true if player shoudl go left,
+     * false otherwise
      */
-    void moveLeft();
-
-    /**
-     * Stops the player to move right or left.
-     */
-    void stopOnOrizontal();
-
-    /**
-     * Stops the player to jump.
-     */
-    void stopOnVertical();
+    void moveLeft(Player player, boolean flag);
 
     /**
      * Sets the player to jump.
+     * @param player the player
+     * @param flag bool value representing true if player should jump,
+     * false otherwise
      */
-    void jump();
-
-    /**
-     * 
-     * @return true if the player is jumping, false otherwise
-     */
-    boolean isJumping();
-
-    /**
-     * 
-     * @return true if the player is invulnerable, false otherwise
-     */
-    boolean isInvulnerable();
-
-    /**
-     * Sets the player to be invulnerable to enemies.
-     */
-    void setInvulnerable();
-
-    /**
-     * Sets the player to be vulnerable to enemies.
-     */
-    void setVulnerable();
+    void jump(Player player, boolean flag);
 
 }

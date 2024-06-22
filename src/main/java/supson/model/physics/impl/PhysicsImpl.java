@@ -21,7 +21,6 @@ public final class PhysicsImpl implements Physics {
     private final int jumpForce;
     private final double gravity;
 
-
     /**
      * This is the constructor of the PhysicsImpl class.
      * @param maxSpeed the max speed of the entity
@@ -83,6 +82,7 @@ public final class PhysicsImpl implements Physics {
         }
         entity.setVelocity(new Vect2dImpl(newXVel, oldVel.y()));
     }
+
     @Override
     public void applyFriction(final MoveableEntity entity) {
         final Vect2d initialVel = entity.getVelocity();

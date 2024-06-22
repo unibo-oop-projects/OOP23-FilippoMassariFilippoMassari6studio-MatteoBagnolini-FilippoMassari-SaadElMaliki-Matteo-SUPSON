@@ -31,6 +31,10 @@ import supson.model.timer.impl.GameTimerImpl;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 
+/**
+ * Implementation of the World interface.
+ * Manages the game world, including entities, collisions, and game state.
+ */
 public final class WorldImpl implements World {
 
     private static final Pos2d DEFAULT_PLAYER_POSITION = new Pos2dImpl(0, 7);
@@ -44,6 +48,9 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
+     /**
+     * Constructs a new WorldImpl instance.
+     */
     public WorldImpl() {
         this.gameOver = true;
         this.blocks = new ArrayList<>();
@@ -60,7 +67,7 @@ public final class WorldImpl implements World {
     public void loadWorld(final String filePath) {
         this.gameTimer.start();
         this.setGameOver(false);
-        WorldLoader loader = new WorldLoaderImpl();
+        final WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
     }
 
@@ -78,7 +85,7 @@ public final class WorldImpl implements World {
             updateEntities(elapsed);
             handleCollisions();
             player.setState(playerManager.getUpdatedState());
-            if (player.getLife() < 0) {
+            if (player.getLife() <= 0) {
                 this.setGameOver(true);
             }
         }
@@ -176,7 +183,7 @@ public final class WorldImpl implements World {
 
     @Override
     public Player getPlayer() {
-        return this.player;
+        return new Player(player);
     }
 
     @Override
@@ -190,7 +197,7 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void setMapWidth(Optional<Integer> mapWidth) {
+    public void setMapWidth(final Optional<Integer> mapWidth) {
         this.mapWidth = mapWidth;
     }
 
@@ -206,5 +213,12 @@ public final class WorldImpl implements World {
             this.gameTimer.stop();
         }
     }
-    
+
+    @Override
+    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
+        playerManager.moveRight(player, right);
+        playerManager.moveLeft(player, left);
+        playerManager.jump(player, jump);
+    }
+
 }
