@@ -79,6 +79,7 @@ classDiagram
     GameEntity <|-- Enemy
     Player <--> Enemy : damages
     GameEntity <|-- Block
+    Player <-- Trap : effect
     GameEntity <|-- Trap
     GameEntity <|-- Collectable
     Collectable <|-- PowerUp
