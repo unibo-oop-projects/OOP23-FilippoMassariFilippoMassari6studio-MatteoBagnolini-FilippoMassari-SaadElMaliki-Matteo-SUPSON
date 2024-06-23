@@ -48,7 +48,7 @@ public final class WorldImpl implements World {
     private final CollisionResolver collisionResolver;
     private boolean gameOver;
 
-     /**
+    /**
      * Constructs a new WorldImpl instance.
      */
     public WorldImpl() {
@@ -90,6 +90,11 @@ public final class WorldImpl implements World {
         }
     }
 
+    /**
+     * Updates the entities in the game world.
+     * 
+     * @param elapsed the time elapsed since the last update
+     */
     private void updateEntities(final long elapsed) {
         final List<MoveableEntity> movEntities = new ArrayList<>(enemies);
         movEntities.add(player);
@@ -104,6 +109,9 @@ public final class WorldImpl implements World {
         });
     }
 
+    /**
+     * Handles collisions between entities in the game world.
+     */
     private void handleCollisions() {
         final List<Enemy> killed = collisionResolver.resolveEnemiesCollisions(player, List.copyOf(enemies));
         killed.forEach(this::removeEnemy);
