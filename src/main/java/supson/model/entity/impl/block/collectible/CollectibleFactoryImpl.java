@@ -24,6 +24,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     /**
      * Constructs a new instance of the CollectibleFactoryImpl class.
      * This factory is responsible for creating different types of collectibles in the game.
+     * 
      * The constructor initializes an EnumMap with GameEntityType as the key.
      */
     public CollectibleFactoryImpl() {
@@ -43,6 +44,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         }
     }
 
+    /**
+     * Creates a ring collectible at the specified position.
+     * 
+     * @param pos the position of the collectible
+     * @return a new ring collectible
+     */
     private Collectible createCollectibleRing(final Pos2d pos) {
         return new AbstractCollectible(pos, GameEntityType.RING) {
 
@@ -55,6 +62,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         };
     }
 
+    /**
+     * Creates a life boost power-up collectible at the specified position.
+     * 
+     * @param pos the position of the collectible
+     * @return a new life boost power-up collectible
+     */
     private Collectible createCollectibleLifeBoostPowerUp(final Pos2d pos) {
         return new AbstractCollectible(pos, GameEntityType.LIFE_BOOST_POWER_UP) {
 
@@ -67,6 +80,12 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
         };
     }
 
+    /**
+     * Creates a strength power-up collectible at the specified position.
+     * 
+     * @param pos the position of the collectible
+     * @return a new strength power-up collectible
+     */
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectible(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
