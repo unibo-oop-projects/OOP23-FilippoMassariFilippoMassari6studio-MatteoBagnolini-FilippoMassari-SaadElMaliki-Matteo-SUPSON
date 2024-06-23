@@ -516,6 +516,7 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 - Codice reperito online: 
     - Non sapevo come usare il logger in maniera appropriata ed ho guardato i metodi principali su [questo sito](https://www.geeksforgeeks.org/logger-getlogger-method-in-java-with-examples/).
+    - Per la realizzazione del timer di gioco ho guardato diversi siti tra cui [questo](https://www.geeksforgeeks.org/measure-time-taken-function-java/) che mi hanno permesso di capire il funzionamenteo di System.nanoTime().
 
 
 # Capitolo 4 - Commenti finali
