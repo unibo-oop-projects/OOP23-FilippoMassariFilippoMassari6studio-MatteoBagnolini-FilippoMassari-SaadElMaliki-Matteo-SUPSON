@@ -9,7 +9,7 @@ import supson.model.entity.impl.AbstractGameEntity;
  * An abstract implementation of the Collectible interface.
  * This class provides a base implementation for collectible blocks in the game.
  */
-public abstract class AbstractCollectibleImpl extends AbstractGameEntity implements Collectible {
+public abstract class AbstractCollectible extends AbstractGameEntity implements Collectible {
 
     private static final int HEIGHT = 1;
     private static final int WIDTH = 1;
@@ -20,7 +20,7 @@ public abstract class AbstractCollectibleImpl extends AbstractGameEntity impleme
      * @param pos  the position of the collectible block
      * @param type the type of the collectible block
      */
-    public AbstractCollectibleImpl(final Pos2d pos, final GameEntityType type) {
+    public AbstractCollectible(final Pos2d pos, final GameEntityType type) {
         super(pos, HEIGHT, WIDTH, type);
     }
 }
