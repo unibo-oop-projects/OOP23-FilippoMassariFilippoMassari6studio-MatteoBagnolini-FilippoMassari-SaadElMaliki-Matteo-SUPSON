@@ -28,15 +28,8 @@ import supson.model.world.api.WorldLoader;
 public final class WorldLoaderImpl implements WorldLoader {
 
     private static final String EMPTY = "0";
-    private final CollectibleFactory collectibleFactory;
+    private final CollectibleFactory collectibleFactory = new CollectibleFactoryImpl();
     private static final Logger LOGGER = Logger.getLogger(WorldLoader.class.getName());
-
-    /**
-     * Constructs a new WorldLoaderImpl instance.
-     */
-    public WorldLoaderImpl() {
-        this.collectibleFactory = new CollectibleFactoryImpl();
-    }
 
     @Override
     public void loadWorld(final String filePath, final World world) {
@@ -83,6 +76,19 @@ public final class WorldLoaderImpl implements WorldLoader {
     }
 
     /**
+     * Checks if the given entity type is not a collectible block.
+     *
+     * @param type the type of the entity
+     * @return true if the entity type is not a collectible block, false otherwise
+     */
+    private boolean isStaticBlock(final GameEntityType type) {
+        return type.equals(GameEntityType.TERRAIN) 
+            || type.equals(GameEntityType.DAMAGE_TRAP) 
+            || type.equals(GameEntityType.SUBTERRAIN)
+            || type.equals(GameEntityType.FINISHLINE);
+    }
+
+    /**
      * Adds an entity of the specified type to the world at the given position.
      *
      * @param type the type of the entity
@@ -92,10 +98,7 @@ public final class WorldLoaderImpl implements WorldLoader {
     private void addEntityToWorld(final GameEntityType type, final Pos2d pos, final World world) {
         if (type.equals(GameEntityType.ENEMY)) {
             world.addEnemy(new Enemy(pos));
-        } else if (type.equals(GameEntityType.TERRAIN) 
-                   || type.equals(GameEntityType.DAMAGE_TRAP) 
-                   || type.equals(GameEntityType.SUBTERRAIN)
-                   || type.equals(GameEntityType.FINISHLINE)) {
+        } else if (isStaticBlock(type)) {
             world.addBlock(type, pos);
         } else {
             world.addCollectible(collectibleFactory.createCollectible(type, pos));
