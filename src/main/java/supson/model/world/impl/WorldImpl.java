@@ -222,6 +222,15 @@ public final class WorldImpl implements World {
     }
 
     @Override
+    public Boolean isWon() {
+        if (player.getLife() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
         playerManager.moveRight(player, right);
         playerManager.moveLeft(player, left);

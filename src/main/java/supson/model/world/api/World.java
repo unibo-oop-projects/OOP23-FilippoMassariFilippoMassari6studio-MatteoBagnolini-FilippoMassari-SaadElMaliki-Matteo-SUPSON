@@ -140,6 +140,13 @@ public interface World {
     void setGameOver(boolean gameOver);
 
     /**
+     * Returns whether the player has won the game.
+     * 
+     * @return whether the player has won the game.
+     */
+    Boolean isWon();
+
+    /**
      * This method sets the player movement flags.
      * @param right bool representing true if player should move right
      * @param left bool representing true if player should move left
