@@ -24,7 +24,7 @@ import supson.model.world.impl.WorldImpl;
  */
 final class TestWorld {
 
-    private static final String FILE_PATH = "/world.txt";
+    private static final String FILE_PATH = "/level/world.txt";
     private World world;
 
     /**
