@@ -75,4 +75,14 @@ public final class GameViewImpl implements GameView {
         hudView.renderHud(mainPanel, hud);
         mainPanel.repaint();
     }
+
+    @Override
+    public void renderEndGame(final boolean isGameWon) {
+        if (isGameWon) {
+            //TODO: Render end game win menu
+        } else {
+            //TODO: Render end game loose menu
+        }
+    }
+
 }
