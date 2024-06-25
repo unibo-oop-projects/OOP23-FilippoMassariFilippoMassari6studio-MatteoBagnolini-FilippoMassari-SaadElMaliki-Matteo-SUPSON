@@ -89,7 +89,7 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectible(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
-            private static final long DURATION = 3000;
+            private static final int DURATION = 3;
 
             @Override
             public void collect(final Player player) {
