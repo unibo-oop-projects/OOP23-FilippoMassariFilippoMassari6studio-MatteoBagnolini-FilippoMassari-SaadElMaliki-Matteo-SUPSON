@@ -1,17 +1,11 @@
 package supson.core.impl;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import supson.core.api.GameEngine;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.ViewEvent;
-import supson.view.api.GameView;
-import supson.view.api.MenuView;
-import supson.view.impl.GameViewImpl;
 import supson.view.impl.InputManager;
-import supson.view.impl.MenuViewImpl;
+import supson.view.impl.MainView;
 
 /**
  * This class represents the main engine of the game.
@@ -25,8 +19,7 @@ public final class GameEngineImpl implements GameEngine {
     private GameState state;
 
     private final World model;
-    private final GameView view;
-    private final MenuView menuview;
+    private final MainView view;
     private final InputManager input;
 
     /**
@@ -34,35 +27,22 @@ public final class GameEngineImpl implements GameEngine {
      */
     public GameEngineImpl() {
         this.model = new WorldImpl();
-        this.view = new GameViewImpl();
-        this.menuview = new MenuViewImpl(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Play")){
-            initGame();
-            state = GameState.RUNNING;
-        }
-        if(e.getActionCommand().equals("Quit")){
-            System.exit(0);
-        }
-    }
-        });
+        this.view = new MainView();
         this.input = new InputManager();
-        this.mainFrame.addKeyListener(input);
-        // this.view.addInputManager(input);
+        this.view.addInputManager(input);
         this.state = GameState.LAUNCHER;
     }
 
     @Override
     public void initGame() {
         this.model.loadWorld(WORLD_FILE_PATH);
-        this.view.initView();
+        this.view.showGameView();
     }
 
     @Override
     public void mainControl() {
         if (state.equals(GameState.LAUNCHER)) {
-            //this.view.renderStartMenu();
+            this.view.showMenu();
         }
         if (state.equals(GameState.RUNNING)) {
             gameLoop();
@@ -104,7 +84,7 @@ public final class GameEngineImpl implements GameEngine {
 
     @Override
     public void render() {
-        this.view.renderView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
+        this.view.renderGameView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
     }
 
     @Override
