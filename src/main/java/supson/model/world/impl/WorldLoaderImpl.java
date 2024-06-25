@@ -16,7 +16,10 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.api.block.collectible.CollectibleFactory;
+import supson.model.entity.impl.block.SubTerrainImpl;
+import supson.model.entity.impl.block.TerrainImpl;
 import supson.model.entity.impl.block.collectible.CollectibleFactoryImpl;
+import supson.model.entity.impl.block.finishline.FinishlineImpl;
 import supson.model.entity.api.block.trap.TrapFactory;
 import supson.model.entity.impl.block.trap.TrapFactoryImpl;
 import supson.model.entity.impl.moveable.enemy.Enemy;
@@ -91,6 +94,24 @@ public final class WorldLoaderImpl implements WorldLoader {
     }
 
     /**
+     * Creates a static block of the specified type at the given position.
+     * 
+     * @param type the type of the block
+     * @param pos the position of the block
+     *
+     * @return a new static block
+     */
+    private void createStaticBlock(final GameEntityType type, final Pos2d pos, final World world) {
+        if (type.equals(GameEntityType.TERRAIN)) {
+            world.addBlock(new TerrainImpl(pos));
+        } else if (type.equals(GameEntityType.SUBTERRAIN)) {
+            world.addBlock(new SubTerrainImpl(pos));
+        } else {
+            world.addBlock(new FinishlineImpl(pos));
+        }
+    }
+
+    /**
      * Checks if the given entity type is a trap.
      *
      * @param type the type of the entity
@@ -111,7 +132,7 @@ public final class WorldLoaderImpl implements WorldLoader {
         if (type.equals(GameEntityType.ENEMY)) {
             world.addEnemy(new Enemy(pos));
         } else if (isStaticBlock(type)) {
-            world.addBlock(type, pos);
+            this.createStaticBlock(type, pos, world);
         } else if (isTrap(type)) {
             world.addTrap(trapFactory.createTrap(type, pos));
         } else {

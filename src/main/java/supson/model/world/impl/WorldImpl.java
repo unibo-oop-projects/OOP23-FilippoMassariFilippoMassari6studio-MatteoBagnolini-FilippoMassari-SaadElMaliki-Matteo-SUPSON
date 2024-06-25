@@ -17,9 +17,6 @@ import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.api.moveable.MoveableEntity;
 import supson.model.entity.api.moveable.player.PlayerManager;
-import supson.model.entity.impl.block.SubTerrainImpl;
-import supson.model.entity.impl.block.TerrainImpl;
-import supson.model.entity.impl.block.finishline.FinishlineImpl;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerManagerImpl;
@@ -139,25 +136,8 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void addBlock(final GameEntityType type, final Pos2d pos) {
-        TagBlockEntity block;
-        switch (type) {
-            case SUBTERRAIN:
-                block = new SubTerrainImpl(pos);
-                break;
-            case FINISHLINE:
-                block = new FinishlineImpl(pos);
-                break;
-            default:
-                block = new TerrainImpl(pos);
-                break;
-        }
+    public void addBlock(final TagBlockEntity block) {
         this.blocks.add(block);
-    }
-
-    @Override
-    public void addEnemy(final Enemy enemy) {
-        this.enemies.add(enemy);
     }
 
     @Override
@@ -168,6 +148,11 @@ public final class WorldImpl implements World {
     @Override
     public void addCollectible(final Collectible collectible) {
         this.blocks.add(collectible);
+    }
+
+    @Override
+    public void addEnemy(final Enemy enemy) {
+        this.enemies.add(enemy);
     }
 
     @Override

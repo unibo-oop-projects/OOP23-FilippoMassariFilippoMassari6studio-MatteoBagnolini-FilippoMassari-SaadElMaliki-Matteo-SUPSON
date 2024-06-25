@@ -3,8 +3,6 @@ package supson.model.world.api;
 import java.util.List;
 import java.util.Optional;
 
-import supson.common.GameEntityType;
-import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
 import supson.model.entity.api.block.collectible.Collectible;
@@ -105,12 +103,11 @@ public interface World {
     void setMapWidth(Optional<Integer> mapWidth);
 
     /**
-     * Adds a new block to the world at the specified position with the specified type.
+     * Adds a new block to the world .
      *
-     * @param type The type of block to add.
-     * @param pos  The position where the block should be added.
+     * @param block The block to add.
      */
-    void addBlock(GameEntityType type, Pos2d pos);
+    void addBlock(TagBlockEntity block);
 
     /**
      * Adds a new enemy to the world at the specified position.
