@@ -88,9 +88,11 @@ classDiagram
 ```
 
 # Capitolo 2 - Design
-!!
+
 ## 2.1 Architettura
-!!
+
+!!! 
+
 ## 2.2 Design dettagliato
 
 ### Bagnolini Matteo
@@ -398,6 +400,35 @@ classDiagram
 
 **Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il pattern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il pattern strategy, e ed in sinergia con il pattern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
 
+
+### Gestione degli Effetti dei Raccoglibili
+
+```mermaid
+classDiagram
+
+    class CollisionManager {
+        <<interface>>
+        +List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
+    }
+
+    class Collectible {
+        <<interface>>
+        +collect(Player player)
+    }
+
+    class Player {
+        <<interface>>
+    }
+
+    CollisionManager --> Collectible : resolve
+    CollisionManager --> Player : manage
+```
+
+
+**Problema:** Il problema consiste nel gestire in modo efficace gli effetti applicati al giocatore quando collezioniamo un oggetto raccoglibile rappresentato dall'interfaccia `Collectible`. Gli effetti possono essere di vario tipo, come incrementare il punteggio, cambiare lo stato del giocatore, o incrementare le vite. È necessario un approccio flessibile e modulare per applicare questi effetti senza rendere il codice difficile da mantenere o estendere.
+
+**Soluzione:** L'utilizzo del Command pattern aiuta la risoluzione di questo problema . In questo contesto, ogni effetto applicato al giocatore può essere rappresentato attraverso il metodo `collect(Player player)` dell'interfaccia `Collectible`.
+
 ### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
 
 ```mermaid
@@ -469,6 +500,7 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 ### Massari Filippo
 
 - Utilizzo del costrutto Function: 
+
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/b0da638214d4a25d83404a5f30eb88820b4a7f4a/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L21
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/b0da638214d4a25d83404a5f30eb88820b4a7f4a/src/main/java/supson/model/entity/impl/block/collectible/CollectibleFactoryImpl.java#L29-L44
 
@@ -486,7 +518,6 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 - Codice reperito online: 
     - Non sapevo come usare il logger in maniera appropriata ed ho guardato i metodi principali su [questo sito](https://www.geeksforgeeks.org/logger-getlogger-method-in-java-with-examples/).
-    - Per la realizzazione del timer di gioco ho guardato diversi siti tra cui [questo](https://www.geeksforgeeks.org/measure-time-taken-function-java/) che mi hanno permesso di capire il funzionamenteo di System.nanoTime().
 
 
 # Capitolo 4 - Commenti finali
@@ -496,13 +527,6 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 ### Bagnolini Matteo
 Sono in generale soddisfatto di come è stato realizzato questo progetto. Sono riuscito ad utilizzare abbastanza design pattern noti rendendo il codice piuttosto estendibile. Il mio ruolo è stata la gestione delle principali entità di gioco, in particolare quelle dotate di movimento, e credo di aver gestito bene questo compito. Il codice scritto è molto aperto ad estensioni, e questo penso sia dovuto a un buon lavoro di analisi iniziale, che ha semplificato la costruzione di tutto il progetto. Infatti non abbiamo avuto particolari problemi, anche perchè avendo deciso di consegnare il progetto durante la sessione estiva, abbiamo avuto tutto il tempo necessario per lo sviluppo. Ho cercato di essere il più disponibile possibile con gli altri membri, cercando di aiutarli quando comparivano difficoltà. Tuttavia credo che non ci sia stato pari impegno da parte di tutti i partecipanti del gruppo, anche se questo non ha impedito di realizzare le feature obligatorie previste.
 Per quanto riguarda il futuro di questo progetto credo che possa essere interessante cercare di aggiungere altri elementi come trappole, livelli e nemici, anche se attualmente non è la mia priorità. Queste cose sono facilmente implementabili grazie a un buon design generale.
-
-### Massari Filippo
-Alla luce del lavoro svolto, la mia valutazione finale è abbastanza positiva. Grazie a un lavoro di analisi preliminare approfondito, siamo riusciti a lavorare in modo ben strutturato sin da subito, costruendo un modello ben gerarchizzato, funzionante, estendibile e sufficientemente privo di ripetizioni nel codice.
-Personalmente, mi sono dedicato alla gestione dei blocchi, raccoglibili e non, e della mappa che, composta da questi ultimi, funge da manager delle entità di gioco. Inoltre, mi sono occupato di una parte sostanziosa della view. Quest'ultima è stata più complessa da realizzare a causa della mia poca dimestichezza con Swing, ma è stata anche molto sfidante e formativa.
-Lo scoglio più importante emerso da questo progetto è stata senza dubbio la collaborazione di gruppo. È emersa una grande differenza nell'approccio al lavoro di ogni partecipante, e la rinuncia di un componente in piena fase di sviluppo ha rallentato notevolmente la realizzazione.
-Personalmente, partivo con un bagaglio di competenze abbastanza limitato che ho cercato di colmare fin da subito, anche grazie alla disponibilità e alla competenza di Matteo Bagnolini.
-Il progetto ultimato si avvicina in tutto e per tutto agli obiettivi che ci eravamo preposti inizialmente. Date le notevoli difficoltà, soprattutto sotto il punto di vista delle risorse umane, la considero una vittoria. In futuro, il progetto potrebbe essere notevolmente ampliato con nuovi livelli, personaggi giocabili, trappole, raccoglibili e blocchi, grazie all'attenzione dedicata all'estendibilità durante la fase di design.
 
 # Appendice A - Guida utente
 
