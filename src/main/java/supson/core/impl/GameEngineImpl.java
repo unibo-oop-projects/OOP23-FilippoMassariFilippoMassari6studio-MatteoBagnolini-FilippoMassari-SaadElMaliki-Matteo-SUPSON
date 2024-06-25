@@ -2,7 +2,6 @@ package supson.core.impl;
 
 import supson.core.api.GameEngine;
 import supson.controller.api.GameController;
-import supson.controller.impl.GameControllerImpl;
 
 /**
  * This class represents the main engine of the game.
@@ -13,11 +12,16 @@ public final class GameEngineImpl implements GameEngine {
 
     private final GameController controller;
 
+    private boolean isGameRunning;
+
     /**
      * GameEngine constructor.
+     * 
+     * @param controller
      */
-    public GameEngineImpl() {
-        this.controller = new GameControllerImpl();
+    public GameEngineImpl(final GameController controller) {
+        this.controller = controller;
+        this.isGameRunning = false;
     }
 
     @Override
@@ -28,7 +32,7 @@ public final class GameEngineImpl implements GameEngine {
     @Override
     public void mainLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
-        while (true) {
+        while (isGameRunning) {
             final long currentCycleStartTime = System.currentTimeMillis();
             final long elapsed = currentCycleStartTime - previousCycleStartTime;
             processInput();
@@ -62,6 +66,22 @@ public final class GameEngineImpl implements GameEngine {
                 Thread.sleep(REFRESH_RATE - dt);
             } catch (InterruptedException ex) { }
         }
+    }
+
+    @Override
+    public void startGameLoop() {
+        this.isGameRunning = true;
+        mainLoop();
+    }
+
+    @Override
+    public void endGameLoop() {
+        this.isGameRunning = false;
+    }
+
+    @Override
+    public boolean isGameRunning() {
+        return isGameRunning;
     }
 
 }

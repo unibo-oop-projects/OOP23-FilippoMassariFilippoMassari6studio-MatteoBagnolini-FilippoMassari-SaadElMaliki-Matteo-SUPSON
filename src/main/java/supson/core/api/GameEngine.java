@@ -39,4 +39,21 @@ public interface GameEngine {
      */
     void waitForNextFrame(long cycleStartTime);
 
+
+    /**
+     * Returns if the game is running.
+     * 
+     * @return wheter the game is running.
+     */
+    boolean isGameRunning();
+
+    /**
+     * Starts main game loop.
+     */
+    void startGameLoop();
+
+    /**
+     * Ends main game loop.
+     */
+    void endGameLoop();
 }

@@ -3,6 +3,7 @@ package supson.view.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.api.GameView;
 import supson.view.api.HudView;
+import supson.view.api.MenuView;
 import supson.view.api.WorldView;
 import supson.view.impl.world.WorldViewImpl;
 
@@ -31,6 +33,7 @@ public final class GameViewImpl implements GameView {
     private final JFrame gameFrame;
     private final JPanel mainPanel;
     private final ImagePanel backgroundPanel;
+    private final MenuView menuView;
 
     /**
      * Constructs a new `GameViewImpl` with the specified main game frame.
@@ -39,6 +42,7 @@ public final class GameViewImpl implements GameView {
      */
     public GameViewImpl(final JFrame frame) {
         this.gameFrame = frame;
+        this.menuView = new MenuViewImpl();
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
         this.mainPanel = new JPanel();
@@ -62,6 +66,7 @@ public final class GameViewImpl implements GameView {
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(mainPanel, JLayeredPane.PALETTE_LAYER);
 
+        gameFrame.getContentPane().removeAll();
         gameFrame.setContentPane(layeredPane);
         gameFrame.pack();
         gameFrame.setResizable(false);
@@ -77,12 +82,19 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void renderEndGame(final boolean isGameWon) {
+    public void renderEndGame(final boolean isGameWon, ActionListener listener) {
         if (isGameWon) {
             //TODO: Render end game win menu
         } else {
             //TODO: Render end game loose menu
         }
+    }
+
+    @Override
+    public void renderMenu(ActionListener listener) {
+        mainPanel.removeAll();
+        menuView.render(mainPanel, listener);
+        mainPanel.repaint();
     }
 
 }

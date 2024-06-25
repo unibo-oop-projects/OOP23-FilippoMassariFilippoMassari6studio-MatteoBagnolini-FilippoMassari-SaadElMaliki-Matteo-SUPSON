@@ -1,7 +1,7 @@
 package supson;
 
-import supson.core.api.GameEngine;
-import supson.core.impl.GameEngineImpl;
+import supson.controller.api.GameController;
+import supson.controller.impl.GameControllerImpl;
 
 /**
  * This class is the entry point of the application.
@@ -16,9 +16,8 @@ public final class SonicLaunch {
      */
     public static void main(final String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
-        final GameEngine ge = new GameEngineImpl();
-        ge.initGame();
-        ge.mainLoop();
+        final GameController gc = new GameControllerImpl();
+        gc.initGame();
     }
 
 }

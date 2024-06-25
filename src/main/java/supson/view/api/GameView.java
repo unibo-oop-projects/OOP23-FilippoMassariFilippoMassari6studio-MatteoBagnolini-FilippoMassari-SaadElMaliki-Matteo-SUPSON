@@ -1,6 +1,8 @@
 package supson.view.api;
 
+import java.awt.event.ActionListener;
 import java.util.List;
+
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
@@ -26,6 +28,8 @@ public interface GameView {
      */
     void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
 
-    void renderEndGame(boolean isGameWon);
+    void renderMenu(ActionListener listener);
+
+    void renderEndGame(boolean isGameWon, ActionListener listener);
 
 }

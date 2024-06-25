@@ -27,4 +27,5 @@ public interface GameController {
      */
     void initGame();
 
+    void startGame();
 }
