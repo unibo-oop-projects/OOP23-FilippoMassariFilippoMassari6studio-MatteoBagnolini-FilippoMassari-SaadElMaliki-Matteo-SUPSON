@@ -134,9 +134,9 @@ public final class WorldLoaderImpl implements WorldLoader {
         } else if (isStaticBlock(type)) {
             this.createStaticBlock(type, pos, world);
         } else if (isTrap(type)) {
-            world.addTrap(trapFactory.createTrap(type, pos));
+            world.addBlock(trapFactory.createTrap(type, pos));
         } else {
-            world.addCollectible(collectibleFactory.createCollectible(type, pos));
+            world.addBlock(collectibleFactory.createCollectible(type, pos));
         }
     }
 }

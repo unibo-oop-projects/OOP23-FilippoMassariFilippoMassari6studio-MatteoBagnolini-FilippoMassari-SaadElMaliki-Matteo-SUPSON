@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
-import supson.model.entity.api.block.collectible.Collectible;
-import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
@@ -115,20 +113,6 @@ public interface World {
      * @param enemy The enemy to add.
      */
     void addEnemy(Enemy enemy);
-
-    /**
-     * Adds a new trap to the world at the specified position.
-     *
-     * @param trap The trap to add.
-     */
-    void addTrap(Trap trap);
-
-    /**
-     * Adds a collectible to the world at the specified position.
-     * 
-     * @param collectible The collectible to add.
-     */
-    void addCollectible(Collectible collectible);
 
     /**
      * Returns whether the game is over.

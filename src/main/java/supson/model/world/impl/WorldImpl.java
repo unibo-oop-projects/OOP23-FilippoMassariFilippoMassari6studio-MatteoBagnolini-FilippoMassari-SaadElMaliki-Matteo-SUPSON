@@ -141,16 +141,6 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void addTrap(final Trap trap) {
-        this.blocks.add(trap);
-    }
-
-    @Override
-    public void addCollectible(final Collectible collectible) {
-        this.blocks.add(collectible);
-    }
-
-    @Override
     public void addEnemy(final Enemy enemy) {
         this.enemies.add(enemy);
     }
