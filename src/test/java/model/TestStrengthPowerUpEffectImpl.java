@@ -18,14 +18,14 @@ final class TestStrengthPowerUpEffectImpl {
 
     private Player player;
     private Object lock;
-    private long duration;
+    private int duration;
 
     @BeforeEach
     void setUp() {
         player = new Player(new Pos2dImpl(0, 0));
         player.setState(new PlayerState(null, false, false, false, false, false, false));
         lock = new Object();
-        duration = 1000; // 1 second
+        duration = 1;
     }
 
     /**

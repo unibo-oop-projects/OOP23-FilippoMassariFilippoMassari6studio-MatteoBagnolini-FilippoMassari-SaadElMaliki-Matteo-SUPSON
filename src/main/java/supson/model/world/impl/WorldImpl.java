@@ -17,10 +17,6 @@ import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.api.moveable.MoveableEntity;
 import supson.model.entity.api.moveable.player.PlayerManager;
-import supson.model.entity.impl.block.SubTerrainImpl;
-import supson.model.entity.impl.block.TerrainImpl;
-import supson.model.entity.impl.block.finishline.FinishlineImpl;
-import supson.model.entity.impl.block.trap.DamageTrapImpl;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerManagerImpl;
@@ -68,14 +64,6 @@ public final class WorldImpl implements World {
         this.gameTimer.start();
         final WorldLoader loader = new WorldLoaderImpl();
         loader.loadWorld(filePath, this);
-    }
-
-    @Override
-    public void reset(final String filePath) {
-        this.blocks.clear();
-        this.enemies.clear();
-        this.player.setPosition(DEFAULT_PLAYER_POSITION);
-        this.loadWorld(filePath);
     }
 
     @Override
@@ -130,32 +118,15 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void removeBlock(final TagBlockEntity block) {
-        this.blocks.remove(block);
+    public void reset(final String filePath) {
+        this.blocks.clear();
+        this.enemies.clear();
+        this.player.setPosition(DEFAULT_PLAYER_POSITION);
+        this.loadWorld(filePath);
     }
-
+    
     @Override
-    public void removeEnemy(final Enemy enemy) {
-        this.enemies.remove(enemy);
-    }
-
-    @Override
-    public void addBlock(final GameEntityType type, final Pos2d pos) {
-        TagBlockEntity block;
-        switch (type) {
-            case DAMAGE_TRAP:
-                block = new DamageTrapImpl(pos);
-                break;
-            case SUBTERRAIN:
-                block = new SubTerrainImpl(pos);
-                break;
-            case FINISHLINE:
-                block = new FinishlineImpl(pos);
-                break;
-            default:
-                block = new TerrainImpl(pos);
-                break;
-        }
+    public void addBlock(final TagBlockEntity block) {
         this.blocks.add(block);
     }
 
@@ -165,8 +136,20 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void addCollectible(final Collectible collectible) {
-        this.blocks.add(collectible);
+    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
+        playerManager.moveRight(player, right);
+        playerManager.moveLeft(player, left);
+        playerManager.jump(player, jump);
+    }
+
+    @Override
+    public void removeBlock(final TagBlockEntity block) {
+        this.blocks.remove(block);
+    }
+
+    @Override
+    public void removeEnemy(final Enemy enemy) {
+        this.enemies.remove(enemy);
     }
 
     @Override
@@ -180,6 +163,11 @@ public final class WorldImpl implements World {
     }
 
     @Override
+    public Player getPlayer() {
+        return new Player(player);
+    }
+
+    @Override
     public List<GameEntity> getGameEntities() {
         final List<GameEntity> entities = new ArrayList<>();
         entities.addAll(this.blocks);
@@ -189,28 +177,18 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public Player getPlayer() {
-        return new Player(player);
-    }
-
-    @Override
     public Hud getHud() {
         return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
-
-    @Override
-    public Integer getMapWidth() {
-        return mapWidth.orElse(0);
-    }
-
+    
     @Override
     public void setMapWidth(final Optional<Integer> mapWidth) {
         this.mapWidth = mapWidth;
     }
 
     @Override
-    public boolean isGameOver() {
-        return gameOver;
+    public Integer getMapWidth() {
+        return mapWidth.orElse(0);
     }
 
     @Override
@@ -220,7 +198,7 @@ public final class WorldImpl implements World {
             this.gameTimer.stop();
         }
     }
-
+    
     @Override
     public Boolean isWon() {
         if (player.getLife() > 0) {
@@ -231,10 +209,8 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
-        playerManager.moveRight(player, right);
-        playerManager.moveLeft(player, left);
-        playerManager.jump(player, jump);
+    public boolean isGameOver() {
+        return gameOver;
     }
 
 }

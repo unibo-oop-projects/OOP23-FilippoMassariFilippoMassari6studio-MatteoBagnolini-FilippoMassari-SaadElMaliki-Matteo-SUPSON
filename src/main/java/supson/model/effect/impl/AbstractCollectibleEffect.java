@@ -3,6 +3,8 @@ package supson.model.effect.impl;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import supson.model.effect.api.CollectibleEffect;
 import supson.model.entity.impl.moveable.player.Player;
+import supson.model.timer.api.GameTimer;
+import supson.model.timer.impl.GameTimerImpl;
 
 /**
  * Abstract base class for collectible effects.
@@ -11,20 +13,19 @@ import supson.model.entity.impl.moveable.player.Player;
 @SuppressFBWarnings(
     value = {
         "EI_EXPOSE_REP2",
-        "SWL_SLEEP_WITH_LOCK_HELD"
     },
     justification = "The player object is passed as an external reference avoiding" 
                     + " creating a defensive copy since the Power-Up needs to"
                     + " implement its effect directly on the latter"
-
-                    + "The sleep is necessary for the duration of the effect "
-                    + "and does not cause significant issues in this context. "
 )
 public abstract class AbstractCollectibleEffect implements CollectibleEffect {
 
-    private final long duration;
+    private static final int WAIT_TIME = 10;
+
+    private final int duration;
     private final Player player;
     private final Object lock;
+    private final GameTimer timer;
 
     /**
      * Constructs an AbstractCollectibleEffect.
@@ -33,10 +34,11 @@ public abstract class AbstractCollectibleEffect implements CollectibleEffect {
      * @param player   The target player for the effect.
      * @param lock     An object used for synchronization.
      */
-    public AbstractCollectibleEffect(final long duration, final Player player, final Object lock) {
+    public AbstractCollectibleEffect(final int duration, final Player player, final Object lock) {
         this.duration = duration;
         this.player = player;
         this.lock = lock;
+        this.timer = new GameTimerImpl();
     }
 
     @Override
@@ -47,7 +49,12 @@ public abstract class AbstractCollectibleEffect implements CollectibleEffect {
                     lock.wait();
                 }
                 this.activateEffect(player);
-                Thread.sleep(duration);
+                timer.start();
+                while (timer.getElapsedTimeInSeconds() <= duration) {
+                    lock.wait(WAIT_TIME);
+                }
+                timer.stop();
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } finally {
@@ -57,3 +64,4 @@ public abstract class AbstractCollectibleEffect implements CollectibleEffect {
         }
     }
 }
+
