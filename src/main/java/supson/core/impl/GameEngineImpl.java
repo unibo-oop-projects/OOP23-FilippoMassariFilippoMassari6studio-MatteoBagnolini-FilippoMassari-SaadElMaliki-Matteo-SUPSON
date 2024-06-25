@@ -1,21 +1,21 @@
 package supson.core.impl;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import supson.core.api.GameEngine;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.api.GameView;
+import supson.view.api.MenuView;
 import supson.view.impl.GameViewImpl;
 import supson.view.impl.InputManager;
-
-import javax.swing.JFrame;
+import supson.view.impl.MenuViewImpl;
 
 /**
  * This class represents the main engine of the game.
  */
 public final class GameEngineImpl implements GameEngine {
-
-    private static final int WIDTH = 948;
-    private static final int HEIGHT = 720;
 
     private static final String WORLD_FILE_PATH = "/level/level_1.txt";
 
@@ -25,21 +25,33 @@ public final class GameEngineImpl implements GameEngine {
 
     private final World model;
     private final GameView view;
+    private final MenuView menuview;
     private final InputManager input;
-    private final JFrame mainFrame;
 
     /**
      * GameEngine constructor.
      */
     public GameEngineImpl() {
         this.model = new WorldImpl();
-        this.mainFrame = new JFrame("SUPER-SONIC");
-        this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.mainFrame.setSize(WIDTH, HEIGHT);
-        this.view = new GameViewImpl(mainFrame);
+        this.view = new GameViewImpl();
+        this.menuview = new MenuViewImpl(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("Play")){
+            initGame();
+            state = GameState.RUNNING;
+        }
+        if(e.getActionCommand().equals("Quit")){
+            System.exit(0);
+        }
+    }
+        });
         this.input = new InputManager();
-        this.mainFrame.addKeyListener(input);
-        this.state = GameState.RUNNING;
+        this.view.addKeyListener(input);
+        this.state = GameState.LAUNCHER;
+
+        this.menuview.initView();
+        this.menuview.renderView();
     }
 
     @Override
@@ -51,7 +63,7 @@ public final class GameEngineImpl implements GameEngine {
     public void mainLoop() {
         while (true) {
             switch (state) {
-                case LAUNCHER -> {/*tthis.view.renderMenu*/}
+                case LAUNCHER -> { menuview.renderView(); }
                 case RUNNING -> gameLoop();
                 case GAMEOVER_WON -> {/*this.view.renderEndGameMenu()*/}
                 case GAMEOVER_LOST -> {/*this.view.renderEndGameMenu()*/}
