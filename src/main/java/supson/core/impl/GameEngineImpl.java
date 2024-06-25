@@ -48,6 +48,7 @@ public final class GameEngineImpl implements GameEngine {
         this.view.initView();
     }
 
+    @Override
     public void mainLoop() {
         while (true) {
             switch (state) {
