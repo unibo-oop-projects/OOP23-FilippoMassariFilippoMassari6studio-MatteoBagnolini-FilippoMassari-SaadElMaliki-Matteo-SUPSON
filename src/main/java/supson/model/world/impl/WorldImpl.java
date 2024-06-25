@@ -20,7 +20,6 @@ import supson.model.entity.api.moveable.player.PlayerManager;
 import supson.model.entity.impl.block.SubTerrainImpl;
 import supson.model.entity.impl.block.TerrainImpl;
 import supson.model.entity.impl.block.finishline.FinishlineImpl;
-import supson.model.entity.impl.block.trap.DamageTrapImpl;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerManagerImpl;
@@ -143,9 +142,6 @@ public final class WorldImpl implements World {
     public void addBlock(final GameEntityType type, final Pos2d pos) {
         TagBlockEntity block;
         switch (type) {
-            case DAMAGE_TRAP:
-                block = new DamageTrapImpl(pos);
-                break;
             case SUBTERRAIN:
                 block = new SubTerrainImpl(pos);
                 break;
@@ -162,6 +158,11 @@ public final class WorldImpl implements World {
     @Override
     public void addEnemy(final Enemy enemy) {
         this.enemies.add(enemy);
+    }
+
+    @Override
+    public void addTrap(final Trap trap) {
+        this.blocks.add(trap);
     }
 
     @Override
