@@ -39,7 +39,8 @@ public final class GameEngineImpl implements GameEngine {
         this.view = new GameViewImpl(mainFrame);
         this.input = new InputManager();
         this.mainFrame.addKeyListener(input);
-        this.state = GameState.RUNNING;
+        // this.view.addInputManager(input);
+        this.state = GameState.LAUNCHER;
     }
 
     @Override
@@ -49,15 +50,17 @@ public final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public void mainLoop() {
-        while (true) {
-            switch (state) {
-                case LAUNCHER -> {/*tthis.view.renderMenu*/}
-                case RUNNING -> gameLoop();
-                case GAMEOVER_WON -> {/*this.view.renderEndGameMenu()*/}
-                case GAMEOVER_LOST -> {/*this.view.renderEndGameMenu()*/}
-                default -> { }
-            }
+    public void mainControl() {
+        if (state.equals(GameState.LAUNCHER)) {
+            //this.view.renderStartMenu();
+        }
+        if (state.equals(GameState.RUNNING)) {
+            gameLoop();
+        }
+        if (state.equals(GameState.GAMEOVER_WON)) {
+            //this.view.renderEndGameWon();
+        } else if (state.equals(GameState.GAMEOVER_LOST)) {
+            //this.view.renderEndGameLost();
         }
     }
 
@@ -86,7 +89,7 @@ public final class GameEngineImpl implements GameEngine {
 
     @Override
     public void updateGame(final long elapsed) {
-        this.model.updateGame(elapsed); //TODO: check endgame
+        this.model.updateGame(elapsed);
     }
 
     @Override
@@ -102,6 +105,15 @@ public final class GameEngineImpl implements GameEngine {
                 Thread.sleep(REFRESH_RATE - dt);
             } catch (InterruptedException ex) { }
         }
+   }
+
+    public void onNotifyFromView(ViewEvent event) {
+        switch (event) {
+            case START_GAME -> {}
+        }
+        //this.view.closeMenu();
+        this.state = GameState.RUNNING;
+        mainControl();
     }
 
     private enum GameState {
@@ -111,6 +123,12 @@ public final class GameEngineImpl implements GameEngine {
         GAMEOVER_LOST,
         RUNNING
 
+    }
+
+    private enum ViewEvent {
+        START_GAME,
+        CLOSE_GAME,
+        RESTART
     }
 
 }

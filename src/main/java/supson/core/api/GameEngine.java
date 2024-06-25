@@ -11,9 +11,9 @@ public interface GameEngine {
     void initGame();
 
     /**
-     * The main loop of the game.
+     * The main control method of the game.
      */
-    void mainLoop();
+    void mainControl();
 
     /**
      * Processes the user input.
