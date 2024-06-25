@@ -3,6 +3,7 @@ package supson.view.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -37,8 +38,10 @@ public final class GameViewImpl implements GameView {
      *
      * @param frame The main game frame.
      */
-    public GameViewImpl(final JFrame frame) {
-        this.gameFrame = frame;
+    public GameViewImpl() {
+        this.gameFrame = new JFrame("SUPER-SONIC");
+        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.gameFrame.setSize(WIDTH, HEIGHT);
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
         this.mainPanel = new JPanel();
@@ -77,12 +80,8 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void renderEndGame(final boolean isGameWon) {
-        if (isGameWon) {
-            //TODO: Render end game win menu
-        } else {
-            //TODO: Render end game loose menu
-        }
+    public void addKeyListener(KeyListener listener) {
+        this.gameFrame.addKeyListener(listener);
     }
 
 }
