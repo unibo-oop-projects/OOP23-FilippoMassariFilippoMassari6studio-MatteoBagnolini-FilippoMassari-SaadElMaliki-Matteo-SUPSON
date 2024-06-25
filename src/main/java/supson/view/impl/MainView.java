@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import supson.core.api.GameEngine;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
@@ -26,9 +27,9 @@ public class MainView {
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
         this.mainFrame.setResizable(false);
-        this.menuView = new MenuViewImpl();
+        this.menuView = new MenuViewImpl(this.mainFrame);
         this.gameView = new GameViewImpl(this.mainFrame);
-        this.endGameView = new EndGameViewImpl();
+        this.endGameView = new EndGameViewImpl(this.mainFrame);
     }
     
     public void showMenu(){

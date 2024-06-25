@@ -23,18 +23,13 @@ public class MenuViewImpl implements MenuView{
     private final MenuButton startButton;
     private final MenuButton quitButton;
 
-    public MenuViewImpl(ActionListener listener){
-        this.frame = new JFrame("SUPER-SONIC");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(WIDTH, HEIGHT);
-        this.frame.setResizable(false);
+    public MenuViewImpl(JFrame frame){
+        this.frame = frame;
         this.backgroundPanel = new ImagePanel(BG_PATH);
         startButton = new MenuButton("Play");
         startButton.setActionCommand("Play");
-        startButton.addActionListener(listener);
         quitButton = new MenuButton("Quit");
         quitButton.setActionCommand("Quit");
-        quitButton.addActionListener(listener);
     }
 
     @Override

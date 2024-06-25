@@ -38,10 +38,8 @@ public final class GameViewImpl implements GameView {
      *
      * @param frame The main game frame.
      */
-    public GameViewImpl() {
-        this.gameFrame = new JFrame("SUPER-SONIC");
-        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.gameFrame.setSize(WIDTH, HEIGHT);
+    public GameViewImpl(JFrame frame) {
+        this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
         this.mainPanel = new JPanel();
