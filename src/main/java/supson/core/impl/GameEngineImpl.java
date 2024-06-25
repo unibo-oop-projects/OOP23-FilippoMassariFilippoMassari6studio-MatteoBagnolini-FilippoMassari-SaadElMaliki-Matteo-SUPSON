@@ -3,6 +3,7 @@ package supson.core.impl;
 import supson.core.api.GameEngine;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
+import supson.view.ViewEvent;
 import supson.view.api.GameView;
 import supson.view.impl.GameViewImpl;
 import supson.view.impl.InputManager;
@@ -109,11 +110,24 @@ public final class GameEngineImpl implements GameEngine {
 
     public void onNotifyFromView(ViewEvent event) {
         switch (event) {
-            case START_GAME -> {}
+            case START_GAME -> {
+                //this.view.closeMenu();
+                initGame();
+                this.state = GameState.RUNNING;
+                mainControl();
+            }
+            case CLOSE_GAME -> {
+                //this.view.closeGameView();
+                this.state = model.isWon() ? GameState.GAMEOVER_WON : GameState.GAMEOVER_LOST;
+                mainControl();
+            }
+            case RESTART -> {
+                //this.view.closeEndMenu();
+                initGame();
+                this.state = GameState.RUNNING;
+                mainControl();
+            }
         }
-        //this.view.closeMenu();
-        this.state = GameState.RUNNING;
-        mainControl();
     }
 
     private enum GameState {
@@ -123,12 +137,6 @@ public final class GameEngineImpl implements GameEngine {
         GAMEOVER_LOST,
         RUNNING
 
-    }
-
-    private enum ViewEvent {
-        START_GAME,
-        CLOSE_GAME,
-        RESTART
     }
 
 }
