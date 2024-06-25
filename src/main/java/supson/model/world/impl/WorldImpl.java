@@ -67,14 +67,6 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void reset(final String filePath) {
-        this.blocks.clear();
-        this.enemies.clear();
-        this.player.setPosition(DEFAULT_PLAYER_POSITION);
-        this.loadWorld(filePath);
-    }
-
-    @Override
     public void updateGame(final long elapsed) {
         if (!this.isGameOver()) {
             updateEntities(elapsed);
@@ -126,15 +118,13 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void removeBlock(final TagBlockEntity block) {
-        this.blocks.remove(block);
+    public void reset(final String filePath) {
+        this.blocks.clear();
+        this.enemies.clear();
+        this.player.setPosition(DEFAULT_PLAYER_POSITION);
+        this.loadWorld(filePath);
     }
-
-    @Override
-    public void removeEnemy(final Enemy enemy) {
-        this.enemies.remove(enemy);
-    }
-
+    
     @Override
     public void addBlock(final TagBlockEntity block) {
         this.blocks.add(block);
@@ -143,6 +133,23 @@ public final class WorldImpl implements World {
     @Override
     public void addEnemy(final Enemy enemy) {
         this.enemies.add(enemy);
+    }
+
+    @Override
+    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
+        playerManager.moveRight(player, right);
+        playerManager.moveLeft(player, left);
+        playerManager.jump(player, jump);
+    }
+
+    @Override
+    public void removeBlock(final TagBlockEntity block) {
+        this.blocks.remove(block);
+    }
+
+    @Override
+    public void removeEnemy(final Enemy enemy) {
+        this.enemies.remove(enemy);
     }
 
     @Override
@@ -156,6 +163,11 @@ public final class WorldImpl implements World {
     }
 
     @Override
+    public Player getPlayer() {
+        return new Player(player);
+    }
+
+    @Override
     public List<GameEntity> getGameEntities() {
         final List<GameEntity> entities = new ArrayList<>();
         entities.addAll(this.blocks);
@@ -165,28 +177,18 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public Player getPlayer() {
-        return new Player(player);
-    }
-
-    @Override
     public Hud getHud() {
         return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
-
-    @Override
-    public Integer getMapWidth() {
-        return mapWidth.orElse(0);
-    }
-
+    
     @Override
     public void setMapWidth(final Optional<Integer> mapWidth) {
         this.mapWidth = mapWidth;
     }
 
     @Override
-    public boolean isGameOver() {
-        return gameOver;
+    public Integer getMapWidth() {
+        return mapWidth.orElse(0);
     }
 
     @Override
@@ -196,7 +198,7 @@ public final class WorldImpl implements World {
             this.gameTimer.stop();
         }
     }
-
+    
     @Override
     public Boolean isWon() {
         if (player.getLife() > 0) {
@@ -207,10 +209,8 @@ public final class WorldImpl implements World {
     }
 
     @Override
-    public void setPlayerFlags(final boolean right, final boolean left, final boolean jump) {
-        playerManager.moveRight(player, right);
-        playerManager.moveLeft(player, left);
-        playerManager.jump(player, jump);
+    public boolean isGameOver() {
+        return gameOver;
     }
 
 }
