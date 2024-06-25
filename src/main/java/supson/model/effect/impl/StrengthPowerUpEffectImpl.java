@@ -14,7 +14,7 @@ public final class StrengthPowerUpEffectImpl extends AbstractCollectibleEffect {
      * @param player   The player affected by the effect.
      * @param lock     An object used for synchronization.
      */
-    public StrengthPowerUpEffectImpl(final long duration, final Player player, final Object lock) {
+    public StrengthPowerUpEffectImpl(final int duration, final Player player, final Object lock) {
         super(duration, player, lock);
     }
 

@@ -3,11 +3,8 @@ package supson.model.world.api;
 import java.util.List;
 import java.util.Optional;
 
-import supson.common.GameEntityType;
-import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
-import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
@@ -27,6 +24,13 @@ public interface World {
     void loadWorld(String filePath);
 
     /**
+     * Updates every entity of the model based on time elapsed from last update.
+     *
+     * @param elapsed time elapsed from last update.
+     */
+    void updateGame(long elapsed);
+
+    /**
      * Resets the game world to its initial state.
      *
      * @param filePath the path of the file containing the game world data.
@@ -34,11 +38,27 @@ public interface World {
     void reset(String filePath);
 
     /**
-     * Updates every entity of the model based on time elapsed from last update.
+     * Adds a new block to the world.
      *
-     * @param elapsed time elapsed from last update.
+     * @param block The block to add.
      */
-    void updateGame(long elapsed);
+    void addBlock(TagBlockEntity block);
+
+    /**
+     * Adds a new enemy to the world at the specified position.
+     *
+     * @param enemy The enemy to add.
+     */
+    void addEnemy(Enemy enemy);
+
+    /**
+     * This method sets the player movement flags.
+     * 
+     * @param right bool representing true if player should move right
+     * @param left bool representing true if player should move left
+     * @param jump bool representing true if player should jump
+     */
+    void setPlayerFlags(boolean right, boolean left, boolean jump);
 
     /**
      * Removes the specified block from the game world.
@@ -69,18 +89,18 @@ public interface World {
     List<Enemy> getEnemies();
 
     /**
-     * Returns a list of all the entities in the game world.
-     *
-     * @return a list of GameEntity objects representing the entities.
-     */
-    List<GameEntity> getGameEntities();
-
-    /**
      * Returns the position of the player in the game world.
      *
      * @return a Player object representing the player's position.
      */
     Player getPlayer();
+
+    /**
+     * Returns a list of all the entities in the game world.
+     *
+     * @return a list of GameEntity objects representing the entities.
+     */
+    List<GameEntity> getGameEntities();
 
     /**
      * Returns the hud of the current state of the game.
@@ -90,13 +110,6 @@ public interface World {
     Hud getHud();
 
     /**
-     * Returns the height of the map.
-     * 
-     * @return the height of the map.
-     */
-    Integer getMapWidth();
-
-    /**
      * Sets the width of the map.
      * 
      * @param mapWidth the width of the map.
@@ -104,26 +117,18 @@ public interface World {
     void setMapWidth(Optional<Integer> mapWidth);
 
     /**
-     * Adds a new block to the world at the specified position with the specified type.
-     *
-     * @param type The type of block to add.
-     * @param pos  The position where the block should be added.
-     */
-    void addBlock(GameEntityType type, Pos2d pos);
-
-    /**
-     * Adds a new enemy to the world at the specified position.
-     *
-     * @param enemy The enemy to add.
-     */
-    void addEnemy(Enemy enemy);
-
-    /**
-     * Adds a collectible to the world at the specified position.
+     * Returns the height of the map.
      * 
-     * @param collectible The collectible to add.
+     * @return the height of the map.
      */
-    void addCollectible(Collectible collectible);
+    Integer getMapWidth();
+
+    /**
+     * Set the game over state in the game.
+     * 
+     * @param gameOver the gameOver flag to set.
+     */
+    void setGameOver(boolean gameOver);
 
     /**
      * Returns whether the game is over.
@@ -133,24 +138,9 @@ public interface World {
     boolean isGameOver();
 
     /**
-     * Set the game over state in the game.
-     * 
-     * @param gameOver the gameOver falg to set.
-     */
-    void setGameOver(boolean gameOver);
-
-    /**
      * Returns whether the player has won the game.
      * 
      * @return whether the player has won the game.
      */
     Boolean isWon();
-
-    /**
-     * This method sets the player movement flags.
-     * @param right bool representing true if player should move right
-     * @param left bool representing true if player should move left
-     * @param jump bool representing true if player should jump
-     */
-    void setPlayerFlags(boolean right, boolean left, boolean jump);
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import supson.core.api.GameEngine;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
+import supson.view.ViewEvent;
 import supson.view.api.GameView;
 import supson.view.api.MenuView;
 import supson.view.impl.GameViewImpl;
@@ -47,11 +48,9 @@ public final class GameEngineImpl implements GameEngine {
     }
         });
         this.input = new InputManager();
-        this.view.addKeyListener(input);
+        this.mainFrame.addKeyListener(input);
+        // this.view.addInputManager(input);
         this.state = GameState.LAUNCHER;
-
-        this.menuview.initView();
-        this.menuview.renderView();
     }
 
     @Override
@@ -60,15 +59,18 @@ public final class GameEngineImpl implements GameEngine {
         this.view.initView();
     }
 
-    public void mainLoop() {
-        while (true) {
-            switch (state) {
-                case LAUNCHER -> { menuview.renderView(); }
-                case RUNNING -> gameLoop();
-                case GAMEOVER_WON -> {/*this.view.renderEndGameMenu()*/}
-                case GAMEOVER_LOST -> {/*this.view.renderEndGameMenu()*/}
-                default -> { }
-            }
+    @Override
+    public void mainControl() {
+        if (state.equals(GameState.LAUNCHER)) {
+            //this.view.renderStartMenu();
+        }
+        if (state.equals(GameState.RUNNING)) {
+            gameLoop();
+        }
+        if (state.equals(GameState.GAMEOVER_WON)) {
+            //this.view.renderEndGameWon();
+        } else if (state.equals(GameState.GAMEOVER_LOST)) {
+            //this.view.renderEndGameLost();
         }
     }
 
@@ -97,7 +99,7 @@ public final class GameEngineImpl implements GameEngine {
 
     @Override
     public void updateGame(final long elapsed) {
-        this.model.updateGame(elapsed); //TODO: check endgame
+        this.model.updateGame(elapsed);
     }
 
     @Override
@@ -112,6 +114,28 @@ public final class GameEngineImpl implements GameEngine {
             try {
                 Thread.sleep(REFRESH_RATE - dt);
             } catch (InterruptedException ex) { }
+        }
+   }
+
+    public void onNotifyFromView(ViewEvent event) {
+        switch (event) {
+            case START_GAME -> {
+                //this.view.closeMenu();
+                initGame();
+                this.state = GameState.RUNNING;
+                mainControl();
+            }
+            case CLOSE_GAME -> {
+                //this.view.closeGameView();
+                this.state = model.isWon() ? GameState.GAMEOVER_WON : GameState.GAMEOVER_LOST;
+                mainControl();
+            }
+            case RESTART -> {
+                //this.view.closeEndMenu();
+                initGame();
+                this.state = GameState.RUNNING;
+                mainControl();
+            }
         }
     }
 
