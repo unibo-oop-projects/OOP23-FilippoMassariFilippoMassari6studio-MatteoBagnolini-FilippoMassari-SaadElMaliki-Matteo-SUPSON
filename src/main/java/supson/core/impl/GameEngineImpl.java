@@ -133,9 +133,9 @@ public final class GameEngineImpl implements GameEngine {
     private enum GameState {
         
         LAUNCHER,
+        RUNNING,
         GAMEOVER_WON,
-        GAMEOVER_LOST,
-        RUNNING
+        GAMEOVER_LOST
 
     }
 
