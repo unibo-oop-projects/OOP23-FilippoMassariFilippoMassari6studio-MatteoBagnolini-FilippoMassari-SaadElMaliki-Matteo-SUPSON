@@ -400,35 +400,6 @@ classDiagram
 
 **Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il pattern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il pattern strategy, e ed in sinergia con il pattern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
 
-
-### Gestione degli Effetti dei Raccoglibili
-
-```mermaid
-classDiagram
-
-    class CollisionManager {
-        <<interface>>
-        +List~Collectible~ resolveCollectibleCollisions(Player player, List~Collectible~ collectibles)
-    }
-
-    class Collectible {
-        <<interface>>
-        +collect(Player player)
-    }
-
-    class Player {
-        <<interface>>
-    }
-
-    CollisionManager --> Collectible : resolve
-    CollisionManager --> Player : manage
-```
-
-
-**Problema:** Il problema consiste nel gestire in modo efficace gli effetti applicati al giocatore quando collezioniamo un oggetto raccoglibile rappresentato dall'interfaccia `Collectible`. Gli effetti possono essere di vario tipo, come incrementare il punteggio, cambiare lo stato del giocatore, o incrementare le vite. È necessario un approccio flessibile e modulare per applicare questi effetti senza rendere il codice difficile da mantenere o estendere.
-
-**Soluzione:** L'utilizzo del Command pattern aiuta la risoluzione di questo problema . In questo contesto, ogni effetto applicato al giocatore può essere rappresentato attraverso il metodo `collect(Player player)` dell'interfaccia `Collectible`.
-
 ### Gestione consequenziale e differenziata degli effetti dei power-up timerizzati
 
 ```mermaid
