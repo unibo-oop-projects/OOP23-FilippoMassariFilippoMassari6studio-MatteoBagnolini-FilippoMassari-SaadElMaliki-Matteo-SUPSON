@@ -44,7 +44,7 @@ public final class GameEngineImpl implements GameEngine {
         if (state.equals(GameState.LAUNCHER)) {
             this.view.showMenu();
         }
-        if (state.equals(GameState.RUNNING)) {
+        while (state.equals(GameState.RUNNING)) {
             gameLoop();
         }
         if (state.equals(GameState.GAMEOVER_WON)) {
@@ -53,6 +53,7 @@ public final class GameEngineImpl implements GameEngine {
             //this.view.renderEndGameLost();
         }
     }
+
 
     private void gameLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
@@ -71,6 +72,7 @@ public final class GameEngineImpl implements GameEngine {
             this.state = GameState.GAMEOVER_LOST;
         }
     }
+    
 
     @Override
     public void processInput() {
@@ -97,30 +99,31 @@ public final class GameEngineImpl implements GameEngine {
         }
    }
 
-    public void onNotifyFromView(ViewEvent event) {
-        switch (event) {
-            case START_GAME -> {
-                //this.view.closeMenu();
-                this.state = GameState.RUNNING;
-                this.initGame();
-                mainControl();
-            }
-            case CLOSE_GAME -> {
-                //this.view.closeGameView();
-                this.state = model.isWon() ? GameState.GAMEOVER_WON : GameState.GAMEOVER_LOST;
-                mainControl();
-            }
-            case RESTART -> {
-                //this.view.closeEndMenu();
-                initGame();
-                this.state = GameState.RUNNING;
-                mainControl();
-            }
-            case EXIT -> {
-                System.exit(0);
-            }
+   public void onNotifyFromView(ViewEvent event) {
+    switch (event) {
+        case START_GAME -> {
+            //this.view.closeMenu();
+            this.state = GameState.RUNNING;
+            this.initGame();
+            new Thread(this::mainControl).start();
+        }
+        case CLOSE_GAME -> {
+            //this.view.closeGameView();
+            this.state = model.isWon() ? GameState.GAMEOVER_WON : GameState.GAMEOVER_LOST;
+            mainControl();
+        }
+        case RESTART -> {
+            //this.view.closeEndMenu();
+            initGame();
+            this.state = GameState.RUNNING;
+            new Thread(this::mainControl).start();
+        }
+        case EXIT -> {
+            System.exit(0);
         }
     }
+}
+
 
     private enum GameState {
         
