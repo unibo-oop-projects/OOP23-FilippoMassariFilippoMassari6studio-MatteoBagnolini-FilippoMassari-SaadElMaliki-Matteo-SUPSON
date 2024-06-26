@@ -23,17 +23,21 @@ public class MenuViewImpl implements MenuView{
     private final MenuButton startButton;
     private final MenuButton quitButton;
 
-    public MenuViewImpl(JFrame frame){
+    public MenuViewImpl(JFrame frame, ActionListener listener){
         this.frame = frame;
         this.backgroundPanel = new ImagePanel(BG_PATH);
         startButton = new MenuButton("Play");
         startButton.setActionCommand("Play");
+        startButton.addActionListener(listener);
         quitButton = new MenuButton("Quit");
         quitButton.setActionCommand("Quit");
+        quitButton.addActionListener(listener);
     }
 
     @Override
     public void initView() {
+        frame.getContentPane().removeAll();
+        backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         backgroundPanel.setOpaque(false);
         backgroundPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -48,6 +52,7 @@ public class MenuViewImpl implements MenuView{
         backgroundPanel.add(quitButton, gbc);
         frame.setContentPane(backgroundPanel);
         frame.revalidate();
+        frame.repaint();
     }
 
     @Override

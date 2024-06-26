@@ -48,6 +48,9 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void initView() {
+        
+        gameFrame.getContentPane().removeAll();
+
         backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         backgroundPanel.setLayout(new BorderLayout());
 
@@ -64,6 +67,8 @@ public final class GameViewImpl implements GameView {
         layeredPane.add(mainPanel, JLayeredPane.PALETTE_LAYER);
 
         gameFrame.setContentPane(layeredPane);
+        gameFrame.revalidate();
+        gameFrame.repaint();
         gameFrame.pack();
         gameFrame.setResizable(false);
         gameFrame.setVisible(true);

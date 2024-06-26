@@ -27,7 +27,7 @@ public final class GameEngineImpl implements GameEngine {
      */
     public GameEngineImpl() {
         this.model = new WorldImpl();
-        this.view = new MainView();
+        this.view = new MainView(this);
         this.input = new InputManager();
         this.view.addInputManager(input);
         this.state = GameState.LAUNCHER;
@@ -101,8 +101,8 @@ public final class GameEngineImpl implements GameEngine {
         switch (event) {
             case START_GAME -> {
                 //this.view.closeMenu();
-                initGame();
                 this.state = GameState.RUNNING;
+                this.initGame();
                 mainControl();
             }
             case CLOSE_GAME -> {
@@ -115,6 +115,9 @@ public final class GameEngineImpl implements GameEngine {
                 initGame();
                 this.state = GameState.RUNNING;
                 mainControl();
+            }
+            case EXIT -> {
+                System.exit(0);
             }
         }
     }

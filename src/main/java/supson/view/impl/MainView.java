@@ -4,10 +4,11 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import supson.core.api.GameEngine;
+import supson.core.impl.GameEngineImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
+import supson.view.ViewEvent;
 import supson.view.api.EndGameView;
 import supson.view.api.GameView;
 import supson.view.api.MenuView;
@@ -22,12 +23,19 @@ public class MainView {
     private final GameView gameView;
     private final EndGameView endGameView;
 
-    public MainView() {
+    public MainView(GameEngineImpl ge) {
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
         this.mainFrame.setResizable(false);
-        this.menuView = new MenuViewImpl(this.mainFrame);
+        this.menuView = new MenuViewImpl(this.mainFrame, e -> {
+            switch (e.getActionCommand()) {
+                case "Play" ->
+                    ge.onNotifyFromView(ViewEvent.START_GAME);
+                case "Quit" ->
+                    ge.onNotifyFromView(ViewEvent.EXIT);
+            }
+        });
         this.gameView = new GameViewImpl(this.mainFrame);
         this.endGameView = new EndGameViewImpl(this.mainFrame);
     }
@@ -38,7 +46,7 @@ public class MainView {
     }
 
     public void showGameView() {
-        gameView.initView();
+        this.gameView.initView();
     }
 
     public void renderGameView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
