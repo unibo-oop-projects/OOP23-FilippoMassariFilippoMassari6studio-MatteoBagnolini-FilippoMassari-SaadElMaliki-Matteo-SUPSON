@@ -1,6 +1,5 @@
 package supson.view.impl;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,12 +30,8 @@ public class MenuViewImpl implements MenuView{
         this.frame = frame;
         this.mainPanel = new JPanel();
         this.backgroundPanel = new ImagePanel(BG_PATH);
-        startButton = new MenuButton("Play");
-        startButton.setActionCommand("Play");
-        startButton.addActionListener(listener);
-        quitButton = new MenuButton("Quit");
-        quitButton.setActionCommand("Quit");
-        quitButton.addActionListener(listener);
+        startButton = new MenuButton("Play",listener);
+        quitButton = new MenuButton("Quit",listener);
     }
 
     @Override
@@ -82,20 +77,18 @@ public class MenuViewImpl implements MenuView{
 
     public static class MenuButton extends JButton {
 
-        private static final int WIDTH = 200;
-        private static final int HEIGHT = 100;
-
-        public MenuButton(String text) {
+        public MenuButton(String text, ActionListener listener) {
             super(text);
-            init();
+            init(text, listener);
         }
 
-        private void init() {
-            this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        private void init(String text, ActionListener listener) {
             this.setFont(new Font("Verdana", Font.BOLD, 50));
             this.setForeground(Color.WHITE);
             this.setBorderPainted(false);
             this.setFocusPainted(false);
+            this.setActionCommand(text);
+            this.addActionListener(listener);
         }
     }
 }

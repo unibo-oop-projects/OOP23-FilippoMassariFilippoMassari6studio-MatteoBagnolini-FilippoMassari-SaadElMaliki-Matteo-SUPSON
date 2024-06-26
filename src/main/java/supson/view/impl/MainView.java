@@ -1,5 +1,6 @@
 package supson.view.impl;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -28,16 +29,19 @@ public class MainView {
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
         this.mainFrame.setResizable(false);
-        this.menuView = new MenuViewImpl(this.mainFrame, e -> {
+
+        ActionListener listener = e -> {
             switch (e.getActionCommand()) {
-                case "Play" ->
-                    ge.onNotifyFromView(ViewEvent.START_GAME);
-                case "Quit" ->
-                    ge.onNotifyFromView(ViewEvent.EXIT);
+                case "Play" -> ge.onNotifyFromView(ViewEvent.START_GAME);
+                case "Quit" -> ge.onNotifyFromView(ViewEvent.EXIT);
+                case "Retry" -> ge.onNotifyFromView(ViewEvent.RESTART);
+                case "Menu" -> ge.onNotifyFromView(ViewEvent.MENU);
             }
-        });
+        };
+
+        this.menuView = new MenuViewImpl(this.mainFrame, listener);
         this.gameView = new GameViewImpl(this.mainFrame);
-        this.endGameView = new EndGameViewImpl(this.mainFrame);
+        this.endGameView = new EndGameViewImpl(this.mainFrame, listener);
     }
     
     public void showMenu(){
@@ -56,10 +60,10 @@ public class MainView {
         this.gameView.renderView(gameEntitiesList, player, hud);
     }
 
-    public void showEndGame(){
+    public void showEndGame(int score, double time, boolean isWon){
         this.resetView();
         endGameView.initView();
-        endGameView.renderView();
+        endGameView.renderView(score, time, isWon);
     }
 
     public void addInputManager(InputManager input){
