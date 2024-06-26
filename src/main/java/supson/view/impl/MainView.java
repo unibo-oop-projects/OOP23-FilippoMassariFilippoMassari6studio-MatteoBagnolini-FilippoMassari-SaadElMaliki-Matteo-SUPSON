@@ -48,6 +48,7 @@ public class MainView {
     public void showGameView() {
         this.resetView();
         this.gameView.initView();
+        this.mainFrame.requestFocus();
     }
 
     public void renderGameView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
