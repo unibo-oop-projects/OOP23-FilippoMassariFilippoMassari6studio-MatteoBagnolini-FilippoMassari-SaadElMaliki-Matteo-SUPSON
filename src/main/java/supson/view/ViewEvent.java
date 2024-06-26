@@ -8,6 +8,11 @@ package supson.view;
 public enum ViewEvent {
 
     /**
+     * This enum represents the menu of the game.
+     */
+    MENU,
+
+    /**
      * This enum represent the start of the game.
      */
     START_GAME,
@@ -26,5 +31,4 @@ public enum ViewEvent {
      * This enum represents the exit from the app.
      */
     EXIT
-
 }
