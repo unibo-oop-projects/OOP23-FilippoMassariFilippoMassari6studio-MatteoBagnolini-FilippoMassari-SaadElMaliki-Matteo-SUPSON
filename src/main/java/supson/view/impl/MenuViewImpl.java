@@ -43,13 +43,14 @@ public class MenuViewImpl implements MenuView{
     public void initView() {
 
         backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.setOpaque(false);
+        backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
 
-        mainPanel.setOpaque(false);
         mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
+        mainPanel.setOpaque(false);
+        mainPanel.setBounds(0, 0, WIDTH, HEIGHT);
         mainPanel.setLayout(new GridBagLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -57,15 +58,13 @@ public class MenuViewImpl implements MenuView{
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets.set(30, 30, 30, 30);
+
         mainPanel.add(this.startButton, gbc);
         gbc.gridy++;
         mainPanel.add(quitButton, gbc);
 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-        backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
-        mainPanel.setBounds(0, 0, WIDTH, HEIGHT);
 
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(mainPanel, JLayeredPane.PALETTE_LAYER);

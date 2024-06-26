@@ -41,6 +41,7 @@ public class MainView {
     }
     
     public void showMenu(){
+        this.resetView();
         this.menuView.initView();
         this.menuView.renderView();
     }
@@ -66,10 +67,8 @@ public class MainView {
     }
 
     public void resetView(){
-        System.out.println("Components before reset: " + mainFrame.getContentPane().getComponentCount());
         mainFrame.getContentPane().removeAll();
         mainFrame.revalidate();
         mainFrame.repaint();
-        System.out.println("Components after reset: " + mainFrame.getContentPane().getComponentCount());
     }
 }
