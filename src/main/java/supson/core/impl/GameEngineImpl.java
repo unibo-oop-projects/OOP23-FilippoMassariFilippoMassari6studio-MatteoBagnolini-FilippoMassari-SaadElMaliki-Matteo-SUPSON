@@ -47,10 +47,8 @@ public final class GameEngineImpl implements GameEngine {
         while (state.equals(GameState.RUNNING)) {
             gameLoop();
         }
-        if (state.equals(GameState.GAMEOVER_WON)) {
-            //this.view.renderEndGameWon();
-        } else if (state.equals(GameState.GAMEOVER_LOST)) {
-            //this.view.renderEndGameLost();
+        if (state.equals(GameState.GAMEOVER)) {      
+            this.view.showEndGame(this.model.getHud().getScore(),this.model.getHud().getTime(),this.model.isWon());
         }
     }
 
@@ -66,11 +64,7 @@ public final class GameEngineImpl implements GameEngine {
             waitForNextFrame(currentCycleStartTime);
             previousCycleStartTime = currentCycleStartTime;
         }
-        if (this.model.isWon()) {
-            this.state = GameState.GAMEOVER_WON;
-        } else {
-            this.state = GameState.GAMEOVER_LOST;
-        }
+        this.state = GameState.GAMEOVER;
     }
 
 
@@ -109,14 +103,20 @@ public final class GameEngineImpl implements GameEngine {
         }
         case CLOSE_GAME -> {
             //this.view.closeGameView();
-            this.state = model.isWon() ? GameState.GAMEOVER_WON : GameState.GAMEOVER_LOST;
+            this.state = GameState.GAMEOVER;
             mainControl();
         }
         case RESTART -> {
             //this.view.closeEndMenu();
-            initGame();
             this.state = GameState.RUNNING;
+            this.model.reset(WORLD_FILE_PATH);
+            this.initGame();
             new Thread(this::mainControl).start();
+        }
+        case MENU ->{
+            this.state = GameState.LAUNCHER;
+            this.model.reset(WORLD_FILE_PATH);
+            mainControl();
         }
         case EXIT -> {
             System.exit(0);
@@ -132,8 +132,7 @@ public final class GameEngineImpl implements GameEngine {
 
         LAUNCHER,
         RUNNING,
-        GAMEOVER_WON,
-        GAMEOVER_LOST
+        GAMEOVER,
 
     }
 
