@@ -516,7 +516,7 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/model/world/impl/WorldLoaderImpl.java#L48-L50
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/c405d3f4a2e9ed6e36d0be02aa59c9690faf051d/src/main/java/supson/view/impl/world/WorldViewImpl.java#L67-L69
 
--Utilizzo multiplo dei Thread, ne riporto qualche esempio:
+- Utilizzo multiplo dei Thread, ne riporto qualche esempio:
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/0cc4acde04ec467078dbdbfa45ca81a320406337/src/main/java/supson/model/effect/impl/AbstractCollectibleEffect.java#L44-L66
     - !!!
 
