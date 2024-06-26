@@ -72,7 +72,7 @@ public final class GameEngineImpl implements GameEngine {
             this.state = GameState.GAMEOVER_LOST;
         }
     }
-    
+
 
     @Override
     public void processInput() {
@@ -89,8 +89,7 @@ public final class GameEngineImpl implements GameEngine {
         this.view.renderGameView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
     }
 
-    @Override
-    public void waitForNextFrame(final long cycleStartTime) {
+    private void waitForNextFrame(final long cycleStartTime) {
         final long dt = System.currentTimeMillis() - cycleStartTime;
         if (dt < REFRESH_RATE) {
             try {
@@ -99,7 +98,8 @@ public final class GameEngineImpl implements GameEngine {
         }
    }
 
-   public void onNotifyFromView(ViewEvent event) {
+   @Override
+   public void onNotifyFromView(final ViewEvent event) {
     switch (event) {
         case START_GAME -> {
             //this.view.closeMenu();
@@ -121,16 +121,19 @@ public final class GameEngineImpl implements GameEngine {
         case EXIT -> {
             System.exit(0);
         }
+        default -> { }
     }
 }
 
-
+    /**
+     * This enum represent the state of the game.
+     */
     private enum GameState {
-        
+
         LAUNCHER,
+        RUNNING,
         GAMEOVER_WON,
-        GAMEOVER_LOST,
-        RUNNING
+        GAMEOVER_LOST
 
     }
 
