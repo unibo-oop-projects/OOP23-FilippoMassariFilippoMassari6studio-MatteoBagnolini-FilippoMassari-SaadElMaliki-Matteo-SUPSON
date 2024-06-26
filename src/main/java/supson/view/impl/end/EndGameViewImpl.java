@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.end;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,8 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import supson.view.api.EndGameView;
-import supson.view.impl.MenuViewImpl.MenuButton;
+import supson.view.api.end.EndGameView;
+import supson.view.impl.common.ImagePanel;
+import supson.view.impl.start.MenuViewImpl.MenuButton;
 
 public class EndGameViewImpl implements EndGameView {
 

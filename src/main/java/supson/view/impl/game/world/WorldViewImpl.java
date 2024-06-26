@@ -1,4 +1,4 @@
-package supson.view.impl.world;
+package supson.view.impl.game.world;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
-import supson.view.api.WorldView;
-import supson.view.api.WorldImageManager;
-import supson.view.api.WorldPositionManager;
+import supson.view.api.game.world.WorldImageManager;
+import supson.view.api.game.world.WorldPositionManager;
+import supson.view.api.game.world.WorldView;
 
 /**
  * Implementation of the {@link WorldView} interface.

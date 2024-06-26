@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.game;
 
 
 import java.awt.BorderLayout;
@@ -13,10 +13,11 @@ import javax.swing.JPanel;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
-import supson.view.api.GameView;
-import supson.view.api.HudView;
-import supson.view.api.WorldView;
-import supson.view.impl.world.WorldViewImpl;
+import supson.view.api.game.GameView;
+import supson.view.api.game.HudView;
+import supson.view.api.game.world.WorldView;
+import supson.view.impl.common.ImagePanel;
+import supson.view.impl.game.world.WorldViewImpl;
 
 /**
  * Represents the main game view that displays the game world and HUD.

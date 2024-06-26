@@ -1,4 +1,4 @@
-package supson.view.api;
+package supson.view.api.game;
 
 import java.awt.event.KeyListener;
 import java.util.List;

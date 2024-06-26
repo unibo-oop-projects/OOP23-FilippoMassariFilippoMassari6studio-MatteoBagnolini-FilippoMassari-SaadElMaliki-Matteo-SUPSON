@@ -1,11 +1,11 @@
-package supson.view.impl.world;
+package supson.view.impl.game.world;
 
 import javax.swing.JLabel;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.model.entity.api.GameEntity;
-import supson.view.api.WorldPositionManager;
+import supson.view.api.game.world.WorldPositionManager;
 
 /**
  * Implementation of the {@link WorldPositionManager} interface.

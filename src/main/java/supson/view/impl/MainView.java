@@ -10,9 +10,13 @@ import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 import supson.view.ViewEvent;
-import supson.view.api.EndGameView;
-import supson.view.api.GameView;
-import supson.view.api.MenuView;
+import supson.view.api.end.EndGameView;
+import supson.view.api.game.GameView;
+import supson.view.api.start.MenuView;
+import supson.view.impl.common.InputManager;
+import supson.view.impl.end.EndGameViewImpl;
+import supson.view.impl.game.GameViewImpl;
+import supson.view.impl.start.MenuViewImpl;
 
 public class MainView {
 

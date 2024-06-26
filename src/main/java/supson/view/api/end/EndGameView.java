@@ -1,4 +1,4 @@
-package supson.view.api;
+package supson.view.api.end;
 
 public interface EndGameView {
     void initView();

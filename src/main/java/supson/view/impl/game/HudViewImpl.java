@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.game;
 
 
 import java.awt.Color;
@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import supson.model.hud.api.Hud;
-import supson.view.api.HudView;
+import supson.view.api.game.HudView;
 
 /**
  * Represents the main hud view that displays the HUD.

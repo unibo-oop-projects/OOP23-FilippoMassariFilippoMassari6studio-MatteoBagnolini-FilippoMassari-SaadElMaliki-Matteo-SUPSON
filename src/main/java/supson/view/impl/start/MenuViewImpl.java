@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.start;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import supson.view.api.MenuView;
+import supson.view.api.start.MenuView;
+import supson.view.impl.common.ImagePanel;
 
 public class MenuViewImpl implements MenuView{
 

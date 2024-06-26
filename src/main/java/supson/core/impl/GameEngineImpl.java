@@ -4,8 +4,8 @@ import supson.core.api.GameEngine;
 import supson.model.world.api.World;
 import supson.model.world.impl.WorldImpl;
 import supson.view.ViewEvent;
-import supson.view.impl.InputManager;
 import supson.view.impl.MainView;
+import supson.view.impl.common.InputManager;
 
 /**
  * This class represents the main engine of the game.

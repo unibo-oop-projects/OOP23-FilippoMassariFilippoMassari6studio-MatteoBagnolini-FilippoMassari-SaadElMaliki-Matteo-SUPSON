@@ -1,4 +1,4 @@
-package supson.view.impl.world;
+package supson.view.impl.game.world;
 
 import java.net.URL;
 import java.util.Optional;
@@ -8,7 +8,8 @@ import javax.swing.ImageIcon;
 import supson.common.GameEntityType;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
-import supson.view.api.WorldImageManager;
+import supson.view.api.game.world.WorldImageManager;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

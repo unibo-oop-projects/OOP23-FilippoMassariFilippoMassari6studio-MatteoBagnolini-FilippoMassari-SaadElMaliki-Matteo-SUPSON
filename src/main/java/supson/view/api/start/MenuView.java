@@ -1,4 +1,4 @@
-package supson.view.api;
+package supson.view.api.start;
 
 public interface MenuView {
     void initView();
