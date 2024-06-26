@@ -37,11 +37,11 @@ public final class WorldImpl implements World {
 
     private final List<TagBlockEntity> blocks;
     private final List<Enemy> enemies;
-    private final Player player;
-    private Optional<Integer> mapWidth;
     private final PlayerManager playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
+    private Player player;
+    private Optional<Integer> mapWidth;
     private boolean gameOver;
 
     /**
@@ -121,7 +121,10 @@ public final class WorldImpl implements World {
     public void reset(final String filePath) {
         this.blocks.clear();
         this.enemies.clear();
-        this.player.setPosition(DEFAULT_PLAYER_POSITION);
+        this.player = new Player(DEFAULT_PLAYER_POSITION);
+        this.mapWidth = Optional.empty();
+        this.gameOver = false;
+        this.gameTimer.reset();
         this.loadWorld(filePath);
     }
     
