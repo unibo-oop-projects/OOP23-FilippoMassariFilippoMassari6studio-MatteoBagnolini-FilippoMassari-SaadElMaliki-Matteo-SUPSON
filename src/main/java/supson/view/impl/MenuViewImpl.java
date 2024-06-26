@@ -1,5 +1,6 @@
 package supson.view.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,6 +10,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 import supson.view.api.MenuView;
 
@@ -19,12 +22,14 @@ public class MenuViewImpl implements MenuView{
     private static final String BG_PATH = "sprite/menubackground.jpg";
 
     private final JFrame frame;
+    private final JPanel mainPanel;
     private final ImagePanel backgroundPanel;
     private final MenuButton startButton;
     private final MenuButton quitButton;
 
     public MenuViewImpl(JFrame frame, ActionListener listener){
         this.frame = frame;
+        this.mainPanel = new JPanel();
         this.backgroundPanel = new ImagePanel(BG_PATH);
         startButton = new MenuButton("Play");
         startButton.setActionCommand("Play");
@@ -36,10 +41,15 @@ public class MenuViewImpl implements MenuView{
 
     @Override
     public void initView() {
-        frame.getContentPane().removeAll();
+
         backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridBagLayout());
+
+        mainPanel.setOpaque(false);
+        mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -47,10 +57,20 @@ public class MenuViewImpl implements MenuView{
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets.set(30, 30, 30, 30);
-        backgroundPanel.add(this.startButton, gbc);
+        mainPanel.add(this.startButton, gbc);
         gbc.gridy++;
-        backgroundPanel.add(quitButton, gbc);
-        frame.setContentPane(backgroundPanel);
+        mainPanel.add(quitButton, gbc);
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
+        mainPanel.setBounds(0, 0, WIDTH, HEIGHT);
+
+        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(mainPanel, JLayeredPane.PALETTE_LAYER);
+
+        frame.setContentPane(layeredPane);
         frame.revalidate();
         frame.repaint();
     }

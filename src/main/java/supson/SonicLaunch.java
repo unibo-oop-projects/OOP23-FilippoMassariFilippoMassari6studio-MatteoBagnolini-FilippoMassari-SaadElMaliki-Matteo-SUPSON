@@ -17,7 +17,7 @@ public final class SonicLaunch {
     public static void main(final String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
         final GameEngine ge = new GameEngineImpl();
-        ge.initGame();
+        //ge.initGame();
         ge.mainControl();
     }
 

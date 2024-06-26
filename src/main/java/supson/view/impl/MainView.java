@@ -46,6 +46,7 @@ public class MainView {
     }
 
     public void showGameView() {
+        this.resetView();
         this.gameView.initView();
     }
 
@@ -54,11 +55,20 @@ public class MainView {
     }
 
     public void showEndGame(){
+        this.resetView();
         endGameView.initView();
         endGameView.renderView();
     }
 
     public void addInputManager(InputManager input){
         this.mainFrame.addKeyListener(input);
+    }
+
+    public void resetView(){
+        System.out.println("Components before reset: " + mainFrame.getContentPane().getComponentCount());
+        mainFrame.getContentPane().removeAll();
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        System.out.println("Components after reset: " + mainFrame.getContentPane().getComponentCount());
     }
 }
