@@ -2,5 +2,5 @@ package supson.view.api;
 
 public interface EndGameView {
     void initView();
-    void renderView();
+    void renderView(int score, double time, boolean isWon);
 }
