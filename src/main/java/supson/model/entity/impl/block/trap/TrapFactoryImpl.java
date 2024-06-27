@@ -50,7 +50,7 @@ public final class TrapFactoryImpl implements TrapFactory {
         return new AbstractTrap(pos, GameEntityType.DAMAGE_TRAP) {
 
             private static final int DAMAGE = 1;
-            
+
             @Override
             public void activate(final Player player) {
                 player.setLife(player.getLife() - DAMAGE);

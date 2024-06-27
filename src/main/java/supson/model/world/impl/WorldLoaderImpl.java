@@ -99,8 +99,7 @@ public final class WorldLoaderImpl implements WorldLoader {
      * 
      * @param type the type of the block
      * @param pos the position of the block
-     *
-     * @return a new static block
+     * @param world the world in which the block is inserted
      */
     private void createStaticBlock(final GameEntityType type, final Pos2d pos, final World world) {
         if (type.equals(GameEntityType.TERRAIN)) {
