@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import supson.view.api.end.EndGameView;
 import supson.view.impl.common.ImagePanel;
 import supson.view.impl.common.MenuButton;
@@ -19,6 +20,12 @@ import supson.view.impl.common.MenuButton;
 /**
  * Represents the end game view that displays the game result.
  */
+@SuppressFBWarnings(
+    value = {
+        "EI2",
+    },
+    justification = "JFrame is intentionally shared among the views"
+)
 public final class EndGameViewImpl implements EndGameView {
 
     private static final int WIDTH = 948;

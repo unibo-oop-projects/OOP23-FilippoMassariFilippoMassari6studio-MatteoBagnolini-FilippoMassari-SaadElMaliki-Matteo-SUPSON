@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import supson.view.api.start.MenuView;
 import supson.view.impl.common.ImagePanel;
 import supson.view.impl.common.MenuButton;
@@ -16,6 +17,12 @@ import supson.view.impl.common.MenuButton;
 /**
  * Represents the menu view that displays the main menu of the game.
  */
+@SuppressFBWarnings(
+    value = {
+        "EI2",
+    },
+    justification = "JFrame is intentionally shared among the views"
+)
 public final class MenuViewImpl implements MenuView {
 
     private static final int WIDTH = 948;
