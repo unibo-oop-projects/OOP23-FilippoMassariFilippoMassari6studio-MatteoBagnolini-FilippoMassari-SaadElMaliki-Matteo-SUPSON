@@ -58,7 +58,6 @@ public class FlyingEnemy extends AbstractMoveableEntity implements Enemy{
         } else {
             this.setVelocity(VELOCITYDOWN);
             if (this.getPosition().y() - this.initialPos.y() <= 0) {
-                System.out.println(this.getPosition().y() - this.initialPos.y());
                 this.upward = true;
             }
         }

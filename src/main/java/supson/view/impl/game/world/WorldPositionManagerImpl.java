@@ -61,6 +61,7 @@ public final class WorldPositionManagerImpl implements WorldPositionManager {
         final double relativeY = entityY - (offSet + playerY);
         final boolean isLongEntity = gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)
                 || gameEntity.getGameEntityType().equals(GameEntityType.ENEMY)
+                || gameEntity.getGameEntityType().equals(GameEntityType.FLYINGENEMY)
                 || gameEntity.getGameEntityType().equals(GameEntityType.SUBTERRAIN)
                 || gameEntity.getGameEntityType().equals(GameEntityType.FINISHLINE);
         final int entityHeight = isLongEntity ? DEFAULT_DIMENSION : DEFAULT_DIMENSION * gameEntity.getHeight();
