@@ -4,6 +4,7 @@ import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
 import supson.common.api.Vect2d;
 import supson.common.impl.Vect2dImpl;
+import supson.model.entity.api.enemy.Enemy;
 import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.physics.api.Physics;
@@ -13,7 +14,7 @@ import supson.model.physics.impl.PhysicsImpl;
  * This class, which extends the abstract class MoveableEntity, models
  * the base enemy of the game.
  */
-public final class Enemy extends AbstractMoveableEntity {
+public final class GroundEnemy extends AbstractMoveableEntity implements Enemy {
 
     private static final int MAX_SPEED = 2;
     private static final double ACC_SPEED = 0.4;
@@ -41,7 +42,7 @@ public final class Enemy extends AbstractMoveableEntity {
      * @param life the number of life of the enemy
      * @param range the range of movement of the enemy
      */
-    public Enemy(Pos2d pos) {
+    public GroundEnemy(Pos2d pos) {
         super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, ACC_SPEED,
                                                     FRICTION, JUMP_FORCE, GRAVITY));
         this.forward = false;
@@ -64,7 +65,6 @@ public final class Enemy extends AbstractMoveableEntity {
                 this.forward = true;
             }
         }
-        //physicComponent.applyGravity(this);
     }
 
     public void applyDamage(Player player){
