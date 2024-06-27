@@ -687,7 +687,7 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 - Per farmi un'idea di come potesse funzionare la fisica di movimento all'interno del videogioco originale ho consultato [questo sito](https://info.sonicretro.org/SPG:Running)
 
-- Per realizzare la `GameEngine` abbiamo preso spunto dalla conferenza [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
+- Per realizzare la `GameEngine` ho preso spunto dalla conferenza [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
 
 ### Massari Filippo
 
@@ -714,7 +714,7 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 - Codice reperito online: 
     - Mi sono aiutato nella costrizione del `GameTimerImpl` grazie a [questo sito](https://www.geeksforgeeks.org/measure-time-taken-function-java/)
-    - Inizialmente strutturare il lavoro è stato colplesso dunque implementazioni di base della view sono il frutto dello studio di [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
+    - Inizialmente strutturare il lavoro è stato complesso dunque implementazioni di base della view sono il frutto dello studio di [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
 
 ### Saad El Maliki
 
