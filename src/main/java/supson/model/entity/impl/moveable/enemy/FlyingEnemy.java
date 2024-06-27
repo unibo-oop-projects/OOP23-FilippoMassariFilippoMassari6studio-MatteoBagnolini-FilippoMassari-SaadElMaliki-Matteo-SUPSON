@@ -9,7 +9,12 @@ import supson.model.entity.impl.moveable.AbstractMoveableEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.physics.impl.PhysicsImpl;
 
-public class FlyingEnemy extends AbstractMoveableEntity implements Enemy{
+
+/**
+ * This class, which extends the abstract class MoveableEntity, models
+ * a flying enemy of the game.
+ */
+public final class FlyingEnemy extends AbstractMoveableEntity implements Enemy {
 
     private static final int MAX_SPEED = 2;
     private static final double ACC_SPEED = 0;
@@ -18,7 +23,7 @@ public class FlyingEnemy extends AbstractMoveableEntity implements Enemy{
     private static final double FRICTION = 0;
     private static final int JUMP_FORCE = 0;
     private static final double GRAVITY = 0.05;
-    
+
     private static final int LIFE = 1;
     private static final int RANGE = 3;
 
@@ -31,22 +36,17 @@ public class FlyingEnemy extends AbstractMoveableEntity implements Enemy{
     private final Pos2d initialPos;
     private double range;
 
-
     /**
-     * The constructor of the enemy class.
+     * The constructor of the flying enemy class.
      * @param pos the starting positon of the enemy
-     * @param vel the starting velocity of the enemy
-     * @param life the number of life of the enemy
-     * @param range the range of movement of the enemy
      */
-    public FlyingEnemy(Pos2d pos) {
+    public FlyingEnemy(final Pos2d pos) {
         super(pos, HEIGHT, WIDTH, TYPE, VELOCITYUP, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, ACC_SPEED,
                                                     FRICTION, JUMP_FORCE, GRAVITY));
         this.upward = true;
         this.initialPos = pos;
         this.range = RANGE;
     }
-
 
     @Override
     protected void updateVelocity() {
@@ -63,8 +63,9 @@ public class FlyingEnemy extends AbstractMoveableEntity implements Enemy{
         }
     }
 
-    public void applyDamage(Player player){
-        player.setLife(player.getLife()-1);
+    @Override
+    public void applyDamage(final Player player) {
+        player.setLife(player.getLife() - 1);
     }
 
 }

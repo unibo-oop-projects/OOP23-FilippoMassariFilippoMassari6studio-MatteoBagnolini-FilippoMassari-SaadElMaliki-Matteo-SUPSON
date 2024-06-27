@@ -2,7 +2,7 @@ package supson.common;
 
 /**
  * Enum representing different types of blocks and entities in the game,
- * along with their associated sprite paths and indices.
+ * Along with their associated sprite paths and indices.
  */
 public enum GameEntityType {
     /**
@@ -51,7 +51,7 @@ public enum GameEntityType {
     FINISHLINE("sprite/finishline_sprite.png", 8),
 
     /**
-     * Represent the flying enemy block
+     * Represent the flying enemy block.
      */
     FLYINGENEMY("sprite/flyingenemy_sprite.png", 9);
 

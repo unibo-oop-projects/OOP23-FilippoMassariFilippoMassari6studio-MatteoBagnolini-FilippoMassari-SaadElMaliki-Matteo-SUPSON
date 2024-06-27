@@ -22,7 +22,7 @@ public final class GroundEnemy extends AbstractMoveableEntity implements Enemy {
     private static final double FRICTION = 0.4;
     private static final int JUMP_FORCE = 0;
     private static final double GRAVITY = 0.05;
-    
+
     private static final int LIFE = 1;
     private static final int RANGE = 3;
 
@@ -36,20 +36,16 @@ public final class GroundEnemy extends AbstractMoveableEntity implements Enemy {
     private double range;
 
     /**
-     * The constructor of the enemy class.
+     * The constructor of the base enemy class.
      * @param pos the starting positon of the enemy
-     * @param vel the starting velocity of the enemy
-     * @param life the number of life of the enemy
-     * @param range the range of movement of the enemy
      */
-    public GroundEnemy(Pos2d pos) {
+    public GroundEnemy(final Pos2d pos) {
         super(pos, HEIGHT, WIDTH, TYPE, VELOCITY, LIFE, new PhysicsImpl(MAX_SPEED, ACC_SPEED, ACC_SPEED,
                                                     FRICTION, JUMP_FORCE, GRAVITY));
         this.forward = false;
         this.initialPos = pos;
         this.range = RANGE;
     }
-
 
     @Override
     protected void updateVelocity() {
@@ -67,8 +63,9 @@ public final class GroundEnemy extends AbstractMoveableEntity implements Enemy {
         }
     }
 
-    public void applyDamage(Player player){
-        player.setLife(player.getLife()-1);
+    @Override
+    public void applyDamage(final Player player) {
+        player.setLife(player.getLife() - 1);
     }
 
 }
