@@ -36,7 +36,7 @@ public enum GameEntityType {
     DAMAGE_TRAP("sprite/damage_trap_sprite.png", 5),
 
     /**
-     * Represents the enemy block.
+     * Represents the ground enemy block.
      */
     ENEMY("sprite/enemy_sprite.png", 6),
 
@@ -48,7 +48,12 @@ public enum GameEntityType {
     /**
      * Represents the finihline blocks. 
      */
-    FINISHLINE("sprite/finishline_sprite.png", 8);
+    FINISHLINE("sprite/finishline_sprite.png", 8),
+
+    /*
+     * Represent the flying enemy block
+     */
+    FLYINGENEMY("sprite/enemy_sprite.png", 9);
 
     private final String spritePath;
     private final int index;
