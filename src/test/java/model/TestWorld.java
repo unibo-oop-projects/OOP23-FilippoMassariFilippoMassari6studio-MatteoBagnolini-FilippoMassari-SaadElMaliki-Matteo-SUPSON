@@ -176,8 +176,8 @@ final class TestWorld {
      */
     @Test
     void testAddBlock() {
-        TagBlockEntity block = new TerrainImpl(new Pos2dImpl(0, 0));
-        int initialBlockCount = world.getBlocks().size();
+        final TagBlockEntity block = new TerrainImpl(new Pos2dImpl(0, 0));
+        final int initialBlockCount = world.getBlocks().size();
         world.addBlock(block);
         assertEquals(initialBlockCount + 1, world.getBlocks().size());
         assertTrue(world.getBlocks().contains(block));
@@ -189,8 +189,8 @@ final class TestWorld {
      */
     @Test
     void testAddEnemy() {
-        Enemy enemy = new Enemy(new Pos2dImpl(0, 0));
-        int initialEnemyCount = world.getEnemies().size();
+        final Enemy enemy = new Enemy(new Pos2dImpl(0, 0));
+        final int initialEnemyCount = world.getEnemies().size();
         world.addEnemy(enemy);
         assertEquals(initialEnemyCount + 1, world.getEnemies().size());
         assertTrue(world.getEnemies().contains(enemy));
@@ -202,7 +202,7 @@ final class TestWorld {
      */
     @Test
     void testSetGetMapWidth() {
-        Optional<Integer> mapWidth = Optional.of(100);
+        final Optional<Integer> mapWidth = Optional.of(100);
         world.setMapWidth(mapWidth);
         assertEquals(100, world.getMapWidth());
     }
