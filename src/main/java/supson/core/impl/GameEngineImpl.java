@@ -152,7 +152,7 @@ public final class GameEngineImpl implements GameEngine {
     }
 
     /**
-     * Exits the game by calling the System.exit() method.
+     * Exits the game.
      */
     private void exitGame() {
         System.exit(0);
