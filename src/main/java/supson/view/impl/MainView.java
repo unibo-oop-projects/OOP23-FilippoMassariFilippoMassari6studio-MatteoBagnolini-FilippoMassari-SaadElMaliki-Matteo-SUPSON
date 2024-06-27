@@ -32,6 +32,7 @@ public class MainView {
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
+        this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setResizable(false);
 
         ActionListener listener = e -> {
