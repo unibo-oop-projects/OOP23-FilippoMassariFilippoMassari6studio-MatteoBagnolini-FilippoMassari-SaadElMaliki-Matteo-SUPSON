@@ -51,11 +51,10 @@ public final class GameEngineImpl implements GameEngine {
         while (state.equals(GameState.RUNNING)) {
             gameLoop();
         }
-        if (state.equals(GameState.GAMEOVER)) {      
-            this.view.showEndGame(this.model.getHud().getScore(),this.model.getHud().getTime(),this.model.isWon());
+        if (state.equals(GameState.GAMEOVER)) {
+            this.view.showEndGame(this.model.getHud().getScore(), this.model.getHud().getTime(), this.model.isWon());
         }
     }
-
 
     private void gameLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
@@ -70,7 +69,6 @@ public final class GameEngineImpl implements GameEngine {
         }
         this.state = GameState.GAMEOVER;
     }
-
 
     @Override
     public void processInput() {
@@ -113,7 +111,7 @@ public final class GameEngineImpl implements GameEngine {
             this.initGame();
             new Thread(this::mainControl).start();
         }
-        case MENU ->{
+        case MENU -> {
             this.state = GameState.LAUNCHER;
             mainControl();
         }
