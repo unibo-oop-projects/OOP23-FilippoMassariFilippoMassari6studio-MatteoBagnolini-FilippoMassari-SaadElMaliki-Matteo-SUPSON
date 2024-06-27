@@ -48,17 +48,21 @@ public final class GameEngineImpl implements GameEngine {
         if (state.equals(GameState.LAUNCHER)) {
             this.view.showMenu();
         }
-        while (state.equals(GameState.RUNNING)) {
-            gameLoop();
+        if (state.equals(GameState.RUNNING)) {
+            runGameLoop();
         }
         if (state.equals(GameState.GAMEOVER)) {
             this.view.showEndGame(this.model.getHud().getScore(), this.model.getHud().getTime(), this.model.isWon());
         }
     }
 
-    private void gameLoop() {
+    /**
+     * Runs the game loop, which processes input, updates the game state, renders the game view,
+     * and waits for the next frame.
+     */
+    private void runGameLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
-        while (!this.model.isGameOver()) {
+        while (state == GameState.RUNNING && !this.model.isGameOver()) {
             final long currentCycleStartTime = System.currentTimeMillis();
             final long elapsed = currentCycleStartTime - previousCycleStartTime;
             processInput();
@@ -85,52 +89,81 @@ public final class GameEngineImpl implements GameEngine {
         this.view.renderGameView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
     }
 
+    /**
+     * Waits for the next frame based on the refresh rate.
+     *
+     * @param cycleStartTime The start time of the current game cycle.
+     */
     private void waitForNextFrame(final long cycleStartTime) {
         final long dt = System.currentTimeMillis() - cycleStartTime;
         if (dt < REFRESH_RATE) {
             try {
                 Thread.sleep(REFRESH_RATE - dt);
-            } catch (InterruptedException ex) { }
+            } catch (InterruptedException ignored) { }
         }
-   }
-
-   @Override
-   public void onNotifyFromView(final ViewEvent event) {
-    switch (event) {
-        case START_GAME -> {
-            this.state = GameState.RUNNING;
-            this.initGame();
-            new Thread(this::mainControl).start();
-        }
-        case CLOSE_GAME -> {
-            this.state = GameState.GAMEOVER;
-            mainControl();
-        }
-        case RESTART -> {
-            this.state = GameState.RUNNING;
-            this.initGame();
-            new Thread(this::mainControl).start();
-        }
-        case MENU -> {
-            this.state = GameState.LAUNCHER;
-            mainControl();
-        }
-        case EXIT -> {
-            System.exit(0);
-        }
-        default -> { }
     }
-}
+
+    @Override
+    public void onNotifyFromView(final ViewEvent event) {
+        switch (event) {
+            case START_GAME -> startNewGame();
+            case CLOSE_GAME -> closeGame();
+            case RESTART -> restartGame();
+            case MENU -> returnToMenu();
+            case EXIT -> exitGame();
+            default -> { }
+        }
+    }
 
     /**
-     * This enum represent the state of the game.
+     * Starts a new game by setting the state to RUNNING,
+     * initializing the game, and starting the main control loop in a new thread.
      */
-    private enum GameState {
-
-        LAUNCHER,
-        RUNNING,
-        GAMEOVER,
-
+    private void startNewGame() {
+        this.state = GameState.RUNNING;
+        this.initGame();
+        new Thread(this::mainControl).start();
     }
 
+    /**
+     * Closes the game by setting the state to GAMEOVER and calling the main control method.
+     */
+    private void closeGame() {
+        this.state = GameState.GAMEOVER;
+        mainControl();
+    }
+
+    /**
+     * Restarts the game by setting the state to RUNNING, initializing the game,
+     * and starting the main control loop in a new thread.
+     */
+    private void restartGame() {
+        this.state = GameState.RUNNING;
+        this.initGame();
+        new Thread(this::mainControl).start();
+    }
+
+    /**
+     * Returns to the menu by setting the state to LAUNCHER and calling the main control method.
+     */
+    private void returnToMenu() {
+        this.state = GameState.LAUNCHER;
+        mainControl();
+    }
+
+    /**
+     * Exits the game by calling the System.exit() method.
+     */
+    private void exitGame() {
+        System.exit(0);
+    }
+
+    /**
+     * This enum represents the state of the game.
+     */
+    private enum GameState {
+        LAUNCHER,
+        RUNNING,
+        GAMEOVER
+    }
 }
