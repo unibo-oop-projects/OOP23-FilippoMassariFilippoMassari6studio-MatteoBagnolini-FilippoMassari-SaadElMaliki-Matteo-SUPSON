@@ -535,6 +535,8 @@ classDiagram
 
 **Soluzione:** Abbiamo introdotto l'utilizzo dello state pattern per separare chiaramente i vari stati del gioco e facilitare la transizione tra di essi.
 
+### Cambio delle fasi nel gioco
+
 ```mermaid
 classDiagram
     class MainView {
