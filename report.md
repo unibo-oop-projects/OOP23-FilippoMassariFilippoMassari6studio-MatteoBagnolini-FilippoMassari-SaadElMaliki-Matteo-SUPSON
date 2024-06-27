@@ -91,7 +91,54 @@ classDiagram
 
 ## 2.1 Architettura
 
-!!! 
+Per la realizzazione di questo applicativo si è utilizzato il pattern architetturale MVC. La classe `GameEngine` funge da controller, che ha il compito di fare da mediatore tra la view e il model, e di gestire il loop principale di gioco. Esso riceve gli input dalla view tramite la classe `InputManager` e li passa al model (classe `World`). Successivamente il controller passa le liste con le entità di gioco alla view (classe `MainView`) per farle renderizzare.
+Il model ha il compito di gestire la logica di gioco e di aggiornare la posizione/stato delle entità. La view ha il compito di renderizzare le entità di gioco e di visualizzare i menù di inizio e fine partita. Inoltre la view comunica con il controller attraverso l'enum `ViewEvent` per gestire gli eventi che si verificano nella view che devono avere una conseguenza nel controller: ad esempio dopo il click del bottone "Play" del menù principale deve iniziare il livello, oppure dopo il click sul bottone “Quit" di fina partita, il programma deve terminarsi.
+Grazie all'utilizzo di MVC abbiamo definito degli entry-point per model e view (`World` e `MainView`) ben chiari, rendendo facile la sostituzione in blocco della view, o addirittura rendendo possibile la gestione di più view contemporaneamente.
+
+```mermaid
+classDiagram
+
+    class GameEngine {
+        <<Interface>>
+        + initGame()
+        + mainControl()
+        + processInput()
+        + render()
+        + onNotifyFromView(event : ViewEvent)
+    }
+
+    class World {
+        <<Interface>>
+        + loadWorld()
+        + updateGame(elapsed : long)
+        + getGameEntities() : List~GameEntity~
+        + isGameOver()
+    }
+
+    class MainView {
+        <<Interface>>
+        + showMenu()
+        + showGameView()
+        + renderGame(entities : List~GameEntity~)
+        + showEndGame()
+        + addInputManager(input : InputManager)
+    }
+
+    class ViewEvent {
+        <<Enum>>
+        MENU,
+        START_GAME,
+        CLOSE_GAME,
+        RESTART,
+        EXIT
+    }
+
+    GameEngine *-- World
+    GameEngine *--* MainView
+    ViewEvent --> GameEngine
+    ViewEvent --> MainView
+
+```
 
 ## 2.2 Design dettagliato
 
