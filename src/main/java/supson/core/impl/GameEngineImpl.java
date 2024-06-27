@@ -35,7 +35,11 @@ public final class GameEngineImpl implements GameEngine {
 
     @Override
     public void initGame() {
-        this.model.loadWorld(WORLD_FILE_PATH);
+        if (this.model.isGameOver()) {
+            this.model.reset(WORLD_FILE_PATH);
+        } else {
+            this.model.loadWorld(WORLD_FILE_PATH);
+        }
         this.view.showGameView();
     }
 
@@ -96,20 +100,16 @@ public final class GameEngineImpl implements GameEngine {
    public void onNotifyFromView(final ViewEvent event) {
     switch (event) {
         case START_GAME -> {
-            //this.view.closeMenu();
             this.state = GameState.RUNNING;
             this.initGame();
             new Thread(this::mainControl).start();
         }
         case CLOSE_GAME -> {
-            //this.view.closeGameView();
             this.state = GameState.GAMEOVER;
             mainControl();
         }
         case RESTART -> {
-            //this.view.closeEndMenu();
             this.state = GameState.RUNNING;
-            this.model.reset(WORLD_FILE_PATH);
             this.initGame();
             new Thread(this::mainControl).start();
         }
