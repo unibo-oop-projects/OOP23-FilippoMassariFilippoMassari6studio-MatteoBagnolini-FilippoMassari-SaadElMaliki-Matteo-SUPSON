@@ -19,7 +19,7 @@ public final class Player extends AbstractMoveableEntity implements MainPlayer {
     private static final double DEC_SPEED = 0.7;
     private static final double FRICTION = 0.8;
     private static final int JUMP_FORCE = 25;
-    private static final double GRAVITY = 1.4;
+    private static final double GRAVITY = 1.6;
 
     private static final int HEIGHT = 2;
     private static final int WIDTH = 1;
