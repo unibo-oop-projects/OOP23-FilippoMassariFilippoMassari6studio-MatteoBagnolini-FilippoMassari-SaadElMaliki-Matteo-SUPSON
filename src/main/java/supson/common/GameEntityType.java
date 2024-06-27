@@ -50,7 +50,7 @@ public enum GameEntityType {
      */
     FINISHLINE("sprite/finishline_sprite.png", 8),
 
-    /*
+    /**
      * Represent the flying enemy block
      */
     FLYINGENEMY("sprite/flyingenemy_sprite.png", 9);

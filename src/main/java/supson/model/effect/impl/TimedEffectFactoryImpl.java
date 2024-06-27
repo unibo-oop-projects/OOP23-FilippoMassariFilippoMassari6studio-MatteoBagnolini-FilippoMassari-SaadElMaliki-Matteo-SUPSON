@@ -51,7 +51,7 @@ public final class TimedEffectFactoryImpl implements TimedEffectFactory {
         final int duration = 5;
 
         return new AbstractCollectibleEffect(duration, player, lock) {
-        
+
             @Override
             public void activateEffect(final Player player) {
                 player.setState(player.getState().setInvulnerable());

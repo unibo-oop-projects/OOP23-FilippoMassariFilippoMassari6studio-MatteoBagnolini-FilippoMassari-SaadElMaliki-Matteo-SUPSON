@@ -93,7 +93,8 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
 
             @Override
             public void collect(final Player player) {
-                final Thread timer = new Thread(timedEffectFactory.createEffect(GameEntityType.STRNGTH_BOOST_POWER_UP, player, lock));
+                final Thread timer = new Thread(timedEffectFactory.createEffect(GameEntityType.STRNGTH_BOOST_POWER_UP,
+                                                                                player, lock));
                 timer.start();
             }
         };
