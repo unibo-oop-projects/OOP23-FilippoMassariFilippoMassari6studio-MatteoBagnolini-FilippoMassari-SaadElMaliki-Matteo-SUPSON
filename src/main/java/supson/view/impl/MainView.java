@@ -49,6 +49,7 @@ public class MainView {
                 case "Quit" -> ge.onNotifyFromView(ViewEvent.EXIT);
                 case "Retry" -> ge.onNotifyFromView(ViewEvent.RESTART);
                 case "Menu" -> ge.onNotifyFromView(ViewEvent.MENU);
+                default -> { }
             }
         };
 
