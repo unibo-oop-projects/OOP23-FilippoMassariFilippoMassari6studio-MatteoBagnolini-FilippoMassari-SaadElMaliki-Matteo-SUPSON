@@ -72,9 +72,7 @@ public final class WorldImpl implements World {
             updateEntities(elapsed);
             handleCollisions();
             player.setState(playerManager.getUpdatedState());
-            System.out.println("sono in update");
             if (player.getLife() <= 0) {
-                System.out.println("sono in modifica");
                 this.setGameOver(true);
             }
         }
