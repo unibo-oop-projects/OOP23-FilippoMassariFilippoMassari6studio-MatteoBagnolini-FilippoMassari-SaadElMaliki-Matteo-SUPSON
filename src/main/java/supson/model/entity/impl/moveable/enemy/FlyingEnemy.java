@@ -34,7 +34,7 @@ public final class FlyingEnemy extends AbstractMoveableEntity implements Enemy {
 
     private boolean upward;
     private final Pos2d initialPos;
-    private double range;
+    private final double range;
 
     /**
      * The constructor of the flying enemy class.

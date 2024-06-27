@@ -74,7 +74,7 @@ public final class MenuViewImpl implements MenuView {
         gbc.gridy++;
         mainPanel.add(quitButton, gbc);
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);

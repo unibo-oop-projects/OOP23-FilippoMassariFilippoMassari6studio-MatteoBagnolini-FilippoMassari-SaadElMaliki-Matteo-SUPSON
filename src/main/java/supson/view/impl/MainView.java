@@ -43,7 +43,7 @@ public class MainView {
         this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setResizable(false);
 
-        ActionListener listener = e -> {
+        final ActionListener listener = e -> {
             switch (e.getActionCommand()) {
                 case "Play" -> ge.onNotifyFromView(ViewEvent.START_GAME);
                 case "Quit" -> ge.onNotifyFromView(ViewEvent.EXIT);

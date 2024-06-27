@@ -78,7 +78,7 @@ public final class EndGameViewImpl implements EndGameView {
         mainPanel.setBounds(0, 0, WIDTH, HEIGHT);
         mainPanel.setLayout(new GridBagLayout());
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        final JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);

@@ -35,7 +35,6 @@ public class FinishlineImpl extends AbstractGameEntity implements Finishline {
     @Override
     public void endGame(final World world) {
         world.setGameOver(true);
-        System.out.println("GAME OVER");
     }
 
 }
