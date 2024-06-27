@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.common;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;

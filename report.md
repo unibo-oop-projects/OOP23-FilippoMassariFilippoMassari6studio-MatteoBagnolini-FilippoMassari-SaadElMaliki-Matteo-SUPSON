@@ -2,7 +2,7 @@
 
 ## 1.1 Requisiti
 
-Il software vuole riprendere il celebre videogioco 2d platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che ne potenziano le capacità.
+Il software vuole riprendere il celebre videogioco 2D platform Super Sonic 1991. Il giocatore controlla Sonic, che dovrà superare nemici e ostacoli per arrivare alla fine del livello, raccogliendo più anelli possibili, e sfruttando diversi power-up che ne potenziano le capacità.
 
 ### Requisiti funzionali
 
@@ -91,7 +91,55 @@ classDiagram
 
 ## 2.1 Architettura
 
-!!! 
+Per la realizzazione di questo applicativo si è utilizzato il pattern architetturale MVC. La classe `GameEngine` funge da controller, che ha il compito di fare da mediatore tra la view e il model, e di gestire il loop principale di gioco. Esso riceve gli input dalla view tramite la classe `InputManager` e li passa al model (classe `World`). Successivamente il controller passa le liste con le entità di gioco alla view (classe `MainView`) per farle renderizzare.
+Il model ha il compito di gestire la logica di gioco e di aggiornare la posizione/stato delle entità. La view ha il compito di renderizzare le entità di gioco e di visualizzare i menù di inizio e fine partita. Inoltre la view comunica con il controller attraverso l'enum `ViewEvent` per gestire gli eventi che si verificano nella view ma che devono avere una conseguenza nel controller: ad esempio dopo il click del bottone "Play" del menù principale deve iniziare il livello, oppure dopo il click sul bottone “Quit" di fina partita, il programma deve terminarsi.
+Grazie all'utilizzo di MVC abbiamo definito degli entry-point per model e view (`World` e `MainView`) ben chiari, rendendo facile la sostituzione in blocco della view, o addirittura rendendo possibile la gestione di più view contemporaneamente.
+
+```mermaid
+classDiagram
+
+    class GameEngine {
+        <<Interface>>
+        + initGame()
+        + mainControl()
+        - gameLoop()
+        + processInput()
+        + render()
+        + onNotifyFromView(event : ViewEvent)
+    }
+
+    class World {
+        <<Interface>>
+        + loadWorld()
+        + updateGame(elapsed : long)
+        + getGameEntities() : List~GameEntity~
+        + isGameOver()
+    }
+
+    class MainView {
+        <<Interface>>
+        + showMenu()
+        + showGameView()
+        + renderGame(entities : List~GameEntity~)
+        + showEndGame()
+        + addInputManager(input : InputManager)
+    }
+
+    class ViewEvent {
+        <<Enum>>
+        MENU,
+        START_GAME,
+        CLOSE_GAME,
+        RESTART,
+        EXIT
+    }
+
+    GameEngine *-- World
+    GameEngine *--* MainView
+    ViewEvent --> GameEngine
+    ViewEvent --> MainView
+
+```
 
 ## 2.2 Design dettagliato
 
@@ -142,7 +190,7 @@ classDiagram
 
 **Problema:** Gestire la definizione di varie entità di gioco, dotate di caratteristiche differenti. Si vuole minimizzare la ripetizione di codice e garantire estendibilità per future modifiche e feature aggiuntive.
 
-**Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, collezionabile o `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (che rappresentano le foglie dell'albero).
+**Soluzione:** Per gestire la definizione delle entità di gioco ho voluto utilizzare il pattern Composite, che permette di creare una gerarchia di classi. Si definisce quindi una struttura ad albero, dove la radice è `AbstractGameEntity`. Questa classe modella una generica entità di gioco, che può essere specializzata in blocco, collezionabile o `AbstractMoveableEntity`. Una `AbstractMoveableEntity` rappresenta una generica entità che può muoversi nella mappa di gioco, come ad esempio il personaggio principale e i nemici (le foglie dell'albero).
 In questo modo ho ridotto la ripetizione di codice non necessario, poichè le classi "foglia" avrebbe dovuto implementare molti metodi uguali tra di loro, e permetto di avere una buona estendibilità. Ad esempio per creare una nuova entità dotata di movimento (come un boss) è necessario solamente estendere la classe `AbstractMoveableEntity` ed aggiungere il codice dove si specificano funzionalità aggiuntive specifiche.
 
 ### Movimento delle entità
@@ -191,11 +239,11 @@ classDiagram
 
 **Problema:** Ogni `MoveableEntity` deve potersi muovere, e ogni entità dovrebbe avere la sua logica di movimento.
 
-**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()`. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. In questo modo si rende possibile il riuso del codice per entità che si muovono ognuna con una propria logica differente.
+**Soluzione:** Per gestire il movimento delle entità ho utilizzato il pattern template method all'interno della classe astratta `AbstractMoveableEntity`. In questa classe ho infatti definito un metodo astratto `updateVelocity()`, che viene chiamato all'interno del template method `move()`. In questo modo, quando si va a definire una classe concreta che estende `AbstractMoveableEntity`, si deve andare a specificare la logica con cui viene aggiornata la velocità dell'entità. Così si rende possibile il riuso del codice per entità che si muovono, ognuna con una propria logica differente.
 
 **Problema:** Ogni `MoveableEntity` dovrebbe avere una propria fisica di gioco specifica. Inoltre si vuole separare la gestione della fisica dall'entità stessa per avere più modularità del codice.
 
-**Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (ad esempio forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità), chiamato `physicsComponent`, che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco personalizzata. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
+**Soluzione:** Per risolvere questo problema ho voluto utilizzare il pattern Component. Ho definito quindi una classe `Physics` che modella la fisica di gioco utilizzando dei valori (forza di gravità, velocità massima, accelerazione e decelerazione, ecc..) che vengono specificati alla creazione dell'oggetto. Ogni `MoveableEntity` ha come attributo un'istanza di `Physics` personalizzata  (cioè con valori che possono essere differenti da entità a entità), chiamato `physicsComponent`, che utilizza per aggiornare la propria velocità nel metodo `updateVelocity()` descritto sopra. In questo modo ogni entità movibile può avere la propria fisica di gioco. Inoltre si rende il codice più modulare e manutenibile poichè si delega a un oggetto secondario il compito di aggiornare la velocità dell'entità secondo una specifica logica.
 
 ### Gestione delle collisioni
 
@@ -289,7 +337,7 @@ classDiagram
 
 ```
 
-**Problema:** Bisogna trovare un modo per rappresentare lo stato interno del giocatore, rappresentato dai vari campi della classe `Player`, tramite una classe apposita. Inoltre si vuole trovare un modo per creare istanze di questa classe in maniera linguisticamente efficiente.
+**Problema:** Bisogna trovare un modo per rappresentare lo stato interno del giocatore, definito dai vari campi della classe `Player`, tramite una classe apposita. Inoltre si vuole trovare un modo per creare istanze di questa classe in maniera linguisticamente efficiente.
 
 **Soluzione:** Ho creato una classe `PlayerState` che rappresenta lo stato del giocatore (velocità, flag di movimento e altre info). In questo modo quando una classe esterna dovrà interfacciarsi con il giocatore (sia per avere informazioni sia per modificare lo stato) lo farà tramite i metodi `getState()` e `setState()`, rendendo i vari campi di `Player` invisibili.
 La mia idea originale era di utilizzare uno [pseudo-builder](https://github.com/matteobagnolini/OOP23-SUPSON/blob/ff92ee9dbcf9d68474e429ec77a5ead622a2a205/src/main/java/supson/model/entity/player/PlayerState.java) per rendere più facile la creazione di una nuova istanza di `PlayerState` partendo da quella precedente (simulando i "copy constructor" di C++), tuttavia il codice risultava troppo pesante, e dopo essermi confrontato con il prof. Pianini ho optato per una soluzione più leggera e leggibile che utilizza metodi concatenabili e il cui risultato è simile alla modifica di un oggetto `PlayerState` già esistente.
@@ -441,7 +489,7 @@ classDiagram
 
 - TestPlayer: viene testato che il giocatore si muova effettivamente una volta impostati i vari flag `right`, `left` e `jump`. Inoltre vengono testati i metodi setters relativi allo score e alle vite.
 
-- TestPhysics: vengono testati i vari metodi della classe `PhysicsImpl` utilizzando delle classi `MoveableEntity` fittizie (dove viene specificato il metodo `updateVelocity()`). In particolare viene testato il corretto movimento con accelerazione, la frizione con il terreno di gioco, il salto e la forza di gravità.
+- TestPhysics: vengono testati i metodi della classe `PhysicsImpl` utilizzando delle classi `MoveableEntity` fittizie (dove viene specificato il metodo `updateVelocity()`). In particolare viene testato il corretto movimento con accelerazione, la frizione con il terreno di gioco, il salto e la forza di gravità.
 
 - TestHitbox: viene controllato che gli angoli dell'hitbox vengano calcolati correttamente quando si chiamano i relativi getters. Inoltre viene testato il metodo `isCollidingWith(Hitbox other)`, usato per controllare se due hitbox collidono tra di loro.
 
@@ -466,7 +514,11 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L109-L113
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/3456aa6260d29f44b60f5730526b85bd11b8dbbe/src/main/java/supson/model/collisions/impl/CollisionResolver.java#L101-L105
 
-- Codice reperito online: per farmi un'idea di come potesse funzionare la fisica di movimento all'interno del videogioco originale ho consultato [questo sito](https://info.sonicretro.org/SPG:Running)
+**Codice reperito online**
+
+- Per farmi un'idea di come potesse funzionare la fisica di movimento all'interno del videogioco originale ho consultato [questo sito](https://info.sonicretro.org/SPG:Running)
+
+- Per realizzare la `GameEngine` abbiamo preso spunto dalla conferenza [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
 
 ### Massari Filippo
 

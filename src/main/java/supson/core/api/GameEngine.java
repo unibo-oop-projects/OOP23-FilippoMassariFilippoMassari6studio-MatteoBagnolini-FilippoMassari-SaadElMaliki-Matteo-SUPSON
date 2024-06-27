@@ -1,5 +1,7 @@
 package supson.core.api;
 
+import supson.view.ViewEvent;
+
 /**
  * The GameEngine interface represents a game engine that controls the game flow.
  */
@@ -33,10 +35,10 @@ public interface GameEngine {
     void render();
 
     /**
-     * Waits for the next frame to start.
-     *
-     * @param cycleStartTime The start time of the current frame.
+     * This method receive an event from the view. It is used to
+     * manage the states of the game, based on the view's events.
+     * @param event
      */
-    void waitForNextFrame(long cycleStartTime);
+    void onNotifyFromView(ViewEvent event);
 
 }

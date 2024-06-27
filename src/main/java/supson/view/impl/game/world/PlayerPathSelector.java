@@ -1,4 +1,4 @@
-package supson.view.impl.world;
+package supson.view.impl.game.world;
 
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerState;

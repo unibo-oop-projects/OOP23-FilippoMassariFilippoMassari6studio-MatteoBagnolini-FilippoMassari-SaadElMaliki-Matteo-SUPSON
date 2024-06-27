@@ -1,8 +1,9 @@
-package supson.view.impl;
+package supson.view.impl.game;
 
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -12,10 +13,11 @@ import javax.swing.JPanel;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
-import supson.view.api.GameView;
-import supson.view.api.HudView;
-import supson.view.api.WorldView;
-import supson.view.impl.world.WorldViewImpl;
+import supson.view.api.game.GameView;
+import supson.view.api.game.HudView;
+import supson.view.api.game.world.WorldView;
+import supson.view.impl.common.ImagePanel;
+import supson.view.impl.game.world.WorldViewImpl;
 
 /**
  * Represents the main game view that displays the game world and HUD.
@@ -37,7 +39,7 @@ public final class GameViewImpl implements GameView {
      *
      * @param frame The main game frame.
      */
-    public GameViewImpl(final JFrame frame) {
+    public GameViewImpl(JFrame frame) {
         this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
@@ -47,6 +49,7 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void initView() {
+        
         backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         backgroundPanel.setLayout(new BorderLayout());
 
@@ -62,10 +65,11 @@ public final class GameViewImpl implements GameView {
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(mainPanel, JLayeredPane.PALETTE_LAYER);
 
+        gameFrame.getContentPane().removeAll();
         gameFrame.setContentPane(layeredPane);
-        gameFrame.pack();
-        gameFrame.setResizable(false);
-        gameFrame.setVisible(true);
+        gameFrame.revalidate();
+        gameFrame.repaint();
+
     }
 
     @Override
@@ -77,12 +81,8 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void renderEndGame(final boolean isGameWon) {
-        if (isGameWon) {
-            //TODO: Render end game win menu
-        } else {
-            //TODO: Render end game loose menu
-        }
+    public void addKeyListener(KeyListener listener) {
+        this.gameFrame.addKeyListener(listener);
     }
 
 }

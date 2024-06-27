@@ -1,4 +1,4 @@
-package supson.view.impl;
+package supson.view.impl.common;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

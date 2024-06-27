@@ -1,5 +1,6 @@
-package supson.view.api;
+package supson.view.api.game;
 
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import supson.model.entity.api.GameEntity;
@@ -26,6 +27,5 @@ public interface GameView {
      */
     void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
 
-    void renderEndGame(boolean isGameWon);
-
+    void addKeyListener(KeyListener listener);
 }

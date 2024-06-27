@@ -1,4 +1,4 @@
-package supson.view.api;
+package supson.view.api.game.world;
 
 import javax.swing.JLabel;
 
