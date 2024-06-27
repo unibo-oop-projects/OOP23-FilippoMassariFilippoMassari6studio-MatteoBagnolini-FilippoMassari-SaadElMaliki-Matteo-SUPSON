@@ -484,6 +484,149 @@ classDiagram
 
 **Soluzione:** Per gestire in modo corretto gli effetti dei power-up timerizzati, abbiamo pensato un sistema di gestione sequenziale e differenziata, grazie all'interfaccia `CollectableEffect` che permette di ridurre la ripetizione di codice e rende altamente scalabile grazie alla presenza dell'interfaccia `TimedEffectFactory` che affianca e alleggerisce il lavoro di `CollectableFactory`.
 
+### Saad El Maliki
+
+### MainView
+
+```mermaid
+classDiagram
+    class ViewEvent {
+    <<Enum>>
+    MENU,
+    START_GAME,
+    CLOSE_GAME,
+    RESTART,
+    EXIT
+    }
+    class MainView {
+        -mainFrame: JFrame
+        +MainView(GameEngineImpl)
+        +showMenu(): void
+        +showGameView(): void
+        +renderGameView(List~GameEntity~, Player, Hud): void
+        +showEndGame(int, double, boolean): void
+        +resetView(): void
+    }
+    class GameEngine {
+        <<Interface>>
+        + initGame()
+        + mainControl()
+        - gameLoop()
+        + processInput()
+        + render()
+        + onNotifyFromView(event : ViewEvent)
+    }
+    class MenuView {
+        <<interface>>
+        + initview() : void
+        + renderview() :void
+    }
+    class GameView {
+        <<interface>>
+        + initview() : void
+        + renderview(...) :void
+    }
+    class EndGameView {
+        <<interface>>
+        + initview() : void
+        + renderview(int, double, boolean) : void
+    }
+
+    GameEngine *-- World
+    GameEngine *--* MainView
+    ViewEvent --> GameEngine
+    ViewEvent --> MainView
+    MainView *-- MenuView
+    MainView *-- GameView
+    MainView *-- EndGameView
+```
+
+**Problema:** Gestire la comunicazione con il `GameEngine`
+
+**Soluzione:** Abbiamo introdotto l'utilizzo dello state pattern per separare chiaramente i vari stati del gioco e facilitare la transizione tra di essi.
+
+**Problema:** Passare da una fase all'altra del gioco
+
+**Soluzione:** Utilizzando `MainView` progettata con le differenti view al suo interno si ottiene un cambiamento fluido tra le fasi del gioco (menu principale, gameplay e schermata di fine gioco) all'interno dello stesso `JFrame`.
+
+### Fine del gioco
+
+```mermaid
+classDiagram
+    class TagBlockEntity {
+        <<Interface>>
+    }
+    class FinishLine {
+        <<Interface>>
+        +endGame(World world)
+    }
+    class World {
+        +setGameOver(boolean gameOver)
+        +isGameOver(): boolean
+        +isWon(): Boolean
+    }
+    class GameEngine {
+        <<Interface>>
+        + mainControl()
+    }
+    class MainView {
+        + showEndGame(): void
+    }
+
+    World --> TagBlockEntity
+    FinishLine --|> TagBlockEntity
+    FinishLine --> World : endGame(world)
+    MainView *--* GameEngine
+    World --* GameEngine
+
+```
+
+**Problema:** Come segnalare che il gioco è terminato?
+
+**Soluzione:** la classe `FinishLine` interagisce con `World` per attivare la condizione di fine gioco e informare il `GameEngine` che deve fare aggiornare `MainView` e visualizzare la schermata di fine gioco.
+
+### Gestione dell'input utente
+
+```mermaid
+classDiagram
+    class GameEngine
+    class KeyListener
+    class InputManager
+    class MainView
+    KeyListener <|-- InputManager
+    InputManager --* GameEngine
+    GameEngine *--* MainView
+    class KeyListener {
+        +keyTyped(e: KeyEvent)
+        +keyPressed(e: KeyEvent)
+        +keyReleased(e: KeyEvent)
+    }
+    class InputManager {
+        -left: boolean
+        -right: boolean
+        -jump: boolean
+        +isLeft(): boolean
+        +isRight(): boolean
+        +isJump(): boolean
+        +keyTyped(e: KeyEvent)
+        +keyPressed(e: KeyEvent)
+        +keyReleased(e: KeyEvent)
+    }
+    class GameEngine {
+        <<Interface>>
+        + processInput()
+    }
+    class MainView {
+        <<Interface>>
+        + addInputManager(input : InputManager)
+    }
+```
+
+**Problema:** Gestire l'input
+
+**Soluzione:** Utilizzando una classe `InputManager` che centralizza la gestione dell'input da tastiera ho ottenuto un sistema di input modulare e facilmente estensibile.
+
+
 # Capitolo 3 - Sviluppo
 
 ## 3.1 Testing automatizzato
