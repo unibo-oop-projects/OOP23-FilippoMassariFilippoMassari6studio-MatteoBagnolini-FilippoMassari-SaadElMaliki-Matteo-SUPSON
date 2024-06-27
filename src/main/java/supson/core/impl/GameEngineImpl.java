@@ -115,7 +115,6 @@ public final class GameEngineImpl implements GameEngine {
         }
         case MENU ->{
             this.state = GameState.LAUNCHER;
-            this.model.reset(WORLD_FILE_PATH);
             mainControl();
         }
         case EXIT -> {
@@ -137,4 +136,3 @@ public final class GameEngineImpl implements GameEngine {
     }
 
 }
-
