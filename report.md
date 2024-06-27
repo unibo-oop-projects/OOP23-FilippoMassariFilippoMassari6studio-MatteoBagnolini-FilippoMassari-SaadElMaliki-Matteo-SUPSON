@@ -74,16 +74,16 @@ classDiagram
     }
 
 
-    GameEntity <|-- Player
+    GameEntity <.. Player
     Player --> Collectable : collect
-    GameEntity <|-- Enemy
+    GameEntity <.. Enemy
     Player <--> Enemy : damages
-    GameEntity <|-- Block
+    GameEntity <.. Block
     Player <-- Trap : effect
-    GameEntity <|-- Trap
-    GameEntity <|-- Collectable
-    Collectable <|-- PowerUp
-    Collectable <|-- Ring
+    GameEntity <.. Trap
+    GameEntity <.. Collectable
+    Collectable <.. PowerUp
+    Collectable <.. Ring
     Level *-- GameEntity
 ```
 
