@@ -11,21 +11,20 @@ import supson.model.effect.impl.StrengthPowerUpEffectImpl;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerState;
 
-/*
- * This class contains unit tests for the Strength PowerUp Effect class.
+/**
+ * This class contains unit tests for the StrengthPowerUpEffectImpl class.
  */
 final class TestStrengthPowerUpEffectImpl {
 
     private Player player;
-    private Object lock;
+    private final Object lock = new Object();
     private int duration;
 
     @BeforeEach
     void setUp() {
         player = new Player(new Pos2dImpl(0, 0));
         player.setState(new PlayerState(null, false, false, false, false, false, false));
-        lock = new Object();
-        duration = 1;
+        duration = 1; // duration in seconds
     }
 
     /**
@@ -39,9 +38,13 @@ final class TestStrengthPowerUpEffectImpl {
         assertFalse(player.getState().isInvulnerable());
         final Thread thread = new Thread(effect);
         thread.start();
-        Thread.sleep(duration / 2);
-        assertTrue(player.getState().isInvulnerable());
+        Thread.sleep((duration * 1000) / 2);
+        synchronized (lock) {
+            assertTrue(player.getState().isInvulnerable());
+        }
         thread.join();
-        assertFalse(player.getState().isInvulnerable());
+        synchronized (lock) {
+            assertFalse(player.getState().isInvulnerable());
+        }
     }
 }
