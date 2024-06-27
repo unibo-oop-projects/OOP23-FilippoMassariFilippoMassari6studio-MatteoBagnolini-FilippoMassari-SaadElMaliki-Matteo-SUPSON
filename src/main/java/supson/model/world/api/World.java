@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
-import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.api.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
 

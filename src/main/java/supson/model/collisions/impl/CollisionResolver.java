@@ -17,7 +17,7 @@ import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.api.block.trap.Trap;
 import supson.model.entity.api.moveable.MoveableEntity;
-import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.api.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hitbox.api.Hitbox;
 import supson.model.world.api.World;
@@ -151,7 +151,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
                 // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
                 switch (collidingEntity.getGameEntityType()) {
                     case TERRAIN : notifyObservers(CollisionEvent.BLOCK_RIGHT_COLLISION); break;
-                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_RIGHT_COLLISION); break;
+                    case ENEMY, FLYINGENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_RIGHT_COLLISION); break;
                     default : ;
                 }
                 // CHECKSTYLE: EmptyStatement ON
@@ -165,7 +165,7 @@ public final class CollisionResolver implements CollisionManager, CollisionObser
                 // default case is intentionally empty: nothing has to be done if collidingEntity isn't Terrain, Enemy or Trap
                 switch (collidingEntity.getGameEntityType()) {
                     case TERRAIN : notifyObservers(CollisionEvent.BLOCK_LEFT_COLLISION); break;
-                    case ENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_LEFT_COLLISION); break;
+                    case ENEMY, FLYINGENEMY, DAMAGE_TRAP : notifyObservers(CollisionEvent.OBSTACLE_LEFT_COLLISION); break;
                     default : ;
                 }
                 // CHECKSTYLE: EmptyStatement ON

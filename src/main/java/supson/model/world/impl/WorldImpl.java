@@ -15,9 +15,9 @@ import supson.model.entity.api.block.TagBlockEntity;
 import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.api.block.finishline.Finishline;
 import supson.model.entity.api.block.trap.Trap;
+import supson.model.entity.api.enemy.Enemy;
 import supson.model.entity.api.moveable.MoveableEntity;
 import supson.model.entity.api.moveable.player.PlayerManager;
-import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerManagerImpl;
 import supson.model.hud.api.Hud;
@@ -37,11 +37,11 @@ public final class WorldImpl implements World {
 
     private final List<TagBlockEntity> blocks;
     private final List<Enemy> enemies;
+    private final Player player;
+    private Optional<Integer> mapWidth;
     private final PlayerManager playerManager;
     private final GameTimer gameTimer;
     private final CollisionResolver collisionResolver;
-    private Player player;
-    private Optional<Integer> mapWidth;
     private boolean gameOver;
 
     /**
@@ -121,10 +121,8 @@ public final class WorldImpl implements World {
     public void reset(final String filePath) {
         this.blocks.clear();
         this.enemies.clear();
-        this.player = new Player(DEFAULT_PLAYER_POSITION);
-        this.mapWidth = Optional.empty();
+        this.player.setPosition(DEFAULT_PLAYER_POSITION);
         this.gameOver = false;
-        this.gameTimer.reset();
         this.loadWorld(filePath);
     }
     

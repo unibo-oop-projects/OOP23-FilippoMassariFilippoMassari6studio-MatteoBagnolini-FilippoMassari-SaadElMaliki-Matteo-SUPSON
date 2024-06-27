@@ -22,7 +22,8 @@ import supson.model.entity.impl.block.collectible.CollectibleFactoryImpl;
 import supson.model.entity.impl.block.finishline.FinishlineImpl;
 import supson.model.entity.api.block.trap.TrapFactory;
 import supson.model.entity.impl.block.trap.TrapFactoryImpl;
-import supson.model.entity.impl.moveable.enemy.Enemy;
+import supson.model.entity.impl.moveable.enemy.GroundEnemy;
+import supson.model.entity.impl.moveable.enemy.FlyingEnemy;
 import supson.model.world.api.World;
 import supson.model.world.api.WorldLoader;
 
@@ -130,7 +131,9 @@ public final class WorldLoaderImpl implements WorldLoader {
      */
     private void addEntityToWorld(final GameEntityType type, final Pos2d pos, final World world) {
         if (type.equals(GameEntityType.ENEMY)) {
-            world.addEnemy(new Enemy(pos));
+            world.addEnemy(new GroundEnemy(pos));
+        } else if (type.equals(GameEntityType.FLYINGENEMY)) {
+            world.addEnemy(new FlyingEnemy(pos));
         } else if (isStaticBlock(type)) {
             this.createStaticBlock(type, pos, world);
         } else if (isTrap(type)) {
