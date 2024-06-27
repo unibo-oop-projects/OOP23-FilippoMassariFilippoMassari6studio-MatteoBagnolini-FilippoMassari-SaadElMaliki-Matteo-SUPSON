@@ -37,7 +37,7 @@ public interface GameEngine {
     /**
      * This method receive an event from the view. It is used to
      * manage the states of the game, based on the view's events.
-     * @param event
+     * @param event the event coming from view
      */
     void onNotifyFromView(ViewEvent event);
 
