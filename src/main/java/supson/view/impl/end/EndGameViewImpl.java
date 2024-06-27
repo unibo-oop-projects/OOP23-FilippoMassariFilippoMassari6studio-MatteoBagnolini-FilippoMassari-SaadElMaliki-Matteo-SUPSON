@@ -20,7 +20,7 @@ public class EndGameViewImpl implements EndGameView {
 
     private static final int WIDTH = 948;
     private static final int HEIGHT = 720;
-    private static final String BG_PATH = "sprite/menubackground.jpg";
+    private static final String BG_PATH = "sprite/endgamebackground.jpg";
 
     private final JFrame frame;
     private final JPanel mainPanel;
