@@ -53,7 +53,7 @@ public enum GameEntityType {
     /*
      * Represent the flying enemy block
      */
-    FLYINGENEMY("sprite/enemy_sprite.png", 9);
+    FLYINGENEMY("sprite/flyingenemy_sprite.png", 9);
 
     private final String spritePath;
     private final int index;
