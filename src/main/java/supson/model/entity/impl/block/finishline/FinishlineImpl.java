@@ -26,6 +26,12 @@ public class FinishlineImpl extends AbstractGameEntity implements Finishline {
         super(pos, HEIGHT, WIDTH, TYPE);
     }
 
+
+    /**
+     * Triggers the end of the current game when the player reaches the finishline.
+     * 
+     * @param world the game world which has to end
+     */
     @Override
     public void endGame(final World world) {
         world.setGameOver(true);
