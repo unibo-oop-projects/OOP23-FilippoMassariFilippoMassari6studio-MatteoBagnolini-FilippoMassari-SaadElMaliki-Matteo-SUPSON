@@ -27,5 +27,10 @@ public interface GameView {
      */
     void renderView(List<GameEntity> gameEntitiesList, Player player, Hud hud);
 
+    /**
+     * Add the key lissener.
+     * 
+     * @param listener the lissener to add
+     */
     void addKeyListener(KeyListener listener);
 }

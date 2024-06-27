@@ -39,7 +39,7 @@ public final class GameViewImpl implements GameView {
      *
      * @param frame The main game frame.
      */
-    public GameViewImpl(JFrame frame) {
+    public GameViewImpl(final JFrame frame) {
         this.gameFrame = frame;
         this.worldView = new WorldViewImpl();
         this.hudView = new HudViewImpl();
@@ -49,7 +49,7 @@ public final class GameViewImpl implements GameView {
 
     @Override
     public void initView() {
-        
+
         backgroundPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         backgroundPanel.setLayout(new BorderLayout());
 
@@ -81,7 +81,7 @@ public final class GameViewImpl implements GameView {
     }
 
     @Override
-    public void addKeyListener(KeyListener listener) {
+    public void addKeyListener(final KeyListener listener) {
         this.gameFrame.addKeyListener(listener);
     }
 

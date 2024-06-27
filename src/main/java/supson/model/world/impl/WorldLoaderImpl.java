@@ -98,6 +98,7 @@ public final class WorldLoaderImpl implements WorldLoader {
      * 
      * @param type the type of the block
      * @param pos the position of the block
+     * @param world the world in which the block is inserted
      *
      * @return a new static block
      */

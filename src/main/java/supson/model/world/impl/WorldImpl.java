@@ -127,7 +127,7 @@ public final class WorldImpl implements World {
         this.gameTimer.reset();
         this.loadWorld(filePath);
     }
-    
+
     @Override
     public void addBlock(final TagBlockEntity block) {
         this.blocks.add(block);
@@ -183,7 +183,7 @@ public final class WorldImpl implements World {
     public Hud getHud() {
         return new HudImpl(this.player.getScore(), this.player.getLife(), this.gameTimer.getElapsedTimeInSeconds());
     }
-    
+
     @Override
     public void setMapWidth(final Optional<Integer> mapWidth) {
         this.mapWidth = mapWidth;
@@ -201,14 +201,10 @@ public final class WorldImpl implements World {
             this.gameTimer.stop();
         }
     }
-    
+
     @Override
     public Boolean isWon() {
-        if (player.getLife() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return player.getLife() > 0;
     }
 
     @Override
