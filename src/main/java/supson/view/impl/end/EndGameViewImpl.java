@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import supson.view.api.end.EndGameView;
 import supson.view.impl.common.ImagePanel;
-import supson.view.impl.start.MenuViewImpl.MenuButton;
+import supson.view.impl.common.MenuButton;
 
 public class EndGameViewImpl implements EndGameView {
 

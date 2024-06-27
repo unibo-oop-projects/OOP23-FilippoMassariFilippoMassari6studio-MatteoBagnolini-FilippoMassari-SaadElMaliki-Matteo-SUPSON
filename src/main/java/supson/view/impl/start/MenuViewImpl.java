@@ -1,21 +1,19 @@
 package supson.view.impl.start;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import supson.view.api.start.MenuView;
 import supson.view.impl.common.ImagePanel;
+import supson.view.impl.common.MenuButton;
 
-public class MenuViewImpl implements MenuView{
+public class MenuViewImpl implements MenuView {
 
     private static final int WIDTH = 948;
     private static final int HEIGHT = 720;
@@ -73,23 +71,5 @@ public class MenuViewImpl implements MenuView{
     @Override
     public void renderView() {
         frame.setVisible(true);
-    }
-
-
-    public static class MenuButton extends JButton {
-
-        public MenuButton(String text, ActionListener listener) {
-            super(text);
-            init(text, listener);
-        }
-
-        private void init(String text, ActionListener listener) {
-            this.setFont(new Font("Verdana", Font.BOLD, 50));
-            this.setForeground(Color.WHITE);
-            this.setBorderPainted(false);
-            this.setFocusPainted(false);
-            this.setActionCommand(text);
-            this.addActionListener(listener);
-        }
     }
 }
