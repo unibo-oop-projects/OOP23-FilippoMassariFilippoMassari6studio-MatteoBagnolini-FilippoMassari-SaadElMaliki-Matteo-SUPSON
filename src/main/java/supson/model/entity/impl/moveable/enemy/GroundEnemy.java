@@ -33,7 +33,7 @@ public final class GroundEnemy extends AbstractMoveableEntity implements Enemy {
 
     private boolean forward;
     private final Pos2d initialPos;
-    private double range;
+    private final double range;
 
     /**
      * The constructor of the base enemy class.

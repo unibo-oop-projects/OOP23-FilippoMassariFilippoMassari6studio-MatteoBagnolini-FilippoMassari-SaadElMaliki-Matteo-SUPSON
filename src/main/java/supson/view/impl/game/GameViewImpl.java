@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
@@ -22,6 +23,12 @@ import supson.view.impl.game.world.WorldViewImpl;
 /**
  * Represents the main game view that displays the game world and HUD.
  */
+@SuppressFBWarnings(
+    value = {
+        "EI2",
+    },
+    justification = "JFrame is intentionally shared among the views"
+)
 public final class GameViewImpl implements GameView {
 
     private static final String BG_PATH = "sprite/background.jpg";

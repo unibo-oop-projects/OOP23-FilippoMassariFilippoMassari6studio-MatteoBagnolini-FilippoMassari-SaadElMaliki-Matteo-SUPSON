@@ -18,6 +18,9 @@ import supson.view.impl.end.EndGameViewImpl;
 import supson.view.impl.game.GameViewImpl;
 import supson.view.impl.start.MenuViewImpl;
 
+/**
+ * Represents the main view of the game, managing different the different menu, game, and end game views.
+ */
 public class MainView {
 
     private static final int WIDTH = 948;
@@ -28,19 +31,25 @@ public class MainView {
     private final GameView gameView;
     private final EndGameView endGameView;
 
-    public MainView(GameEngineImpl ge) {
+    /**
+     * Contructs a new MainView with the specified GameEngine.
+     * 
+     * @param ge the GameEngine istance to notify of view events.
+     */
+    public MainView(final GameEngineImpl ge) {
         this.mainFrame = new JFrame("SUPER-SONIC");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(WIDTH, HEIGHT);
         this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setResizable(false);
 
-        ActionListener listener = e -> {
+        final ActionListener listener = e -> {
             switch (e.getActionCommand()) {
                 case "Play" -> ge.onNotifyFromView(ViewEvent.START_GAME);
                 case "Quit" -> ge.onNotifyFromView(ViewEvent.EXIT);
                 case "Retry" -> ge.onNotifyFromView(ViewEvent.RESTART);
                 case "Menu" -> ge.onNotifyFromView(ViewEvent.MENU);
+                default -> { }
             }
         };
 
@@ -48,34 +57,62 @@ public class MainView {
         this.gameView = new GameViewImpl(this.mainFrame);
         this.endGameView = new EndGameViewImpl(this.mainFrame, listener);
     }
-    
-    public void showMenu(){
+
+    /**
+     * Displays the menu view.
+     */
+    public void showMenu() {
         this.resetView();
         this.menuView.initView();
         this.menuView.renderView();
     }
 
+    /**
+     * Displays the game view.
+    */
     public void showGameView() {
         this.resetView();
         this.gameView.initView();
         this.mainFrame.requestFocus();
     }
 
+    /**
+     * Renders the game view while playing.
+     * 
+     * @param gameEntitiesList the list of game entities to render
+     * @param player the player object to render
+     * @param hud the hud object to render
+     */
     public void renderGameView(final List<GameEntity> gameEntitiesList, final Player player, final Hud hud) {
         this.gameView.renderView(gameEntitiesList, player, hud);
     }
 
-    public void showEndGame(int score, double time, boolean isWon){
+    /**
+     * Displays the end game view.
+     * 
+     * @param score the final score
+     * @param time the final time
+     * @param isWon wether the game was won or lost
+     */
+    public void showEndGame(final int score, final double time, final boolean isWon) {
         this.resetView();
         endGameView.initView();
         endGameView.renderView(score, time, isWon);
     }
 
-    public void addInputManager(InputManager input){
+    /**
+     * Adds input manager to the main frame.
+     * 
+     * @param input the input manager to be added
+     */
+    public void addInputManager(final InputManager input) {
         this.mainFrame.addKeyListener(input);
     }
 
-    public void resetView(){
+    /**
+     * Clears the main view.
+     */
+    public void resetView() {
         mainFrame.getContentPane().removeAll();
         mainFrame.revalidate();
         mainFrame.repaint();

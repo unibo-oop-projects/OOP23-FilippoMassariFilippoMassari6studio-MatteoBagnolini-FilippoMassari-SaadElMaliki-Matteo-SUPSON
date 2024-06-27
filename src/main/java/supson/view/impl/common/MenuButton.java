@@ -11,6 +11,7 @@ import javax.swing.JButton;
  */
 public class MenuButton extends JButton {
 
+    private static final long serialVersionUID = 7L;
     private static final int TEXTSIZE  = 50;
 
     /**
