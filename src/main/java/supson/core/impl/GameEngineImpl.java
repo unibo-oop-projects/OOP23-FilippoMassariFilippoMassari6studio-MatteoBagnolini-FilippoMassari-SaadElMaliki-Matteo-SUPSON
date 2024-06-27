@@ -48,8 +48,8 @@ public final class GameEngineImpl implements GameEngine {
         if (state.equals(GameState.LAUNCHER)) {
             this.view.showMenu();
         }
-        while (state.equals(GameState.RUNNING)) {
-            gameLoop();
+        if (state.equals(GameState.RUNNING)) {
+            runGameLoop();
         }
         if (state.equals(GameState.GAMEOVER)) {      
             this.view.showEndGame(this.model.getHud().getScore(),this.model.getHud().getTime(),this.model.isWon());
@@ -57,9 +57,9 @@ public final class GameEngineImpl implements GameEngine {
     }
 
 
-    private void gameLoop() {
+    private void runGameLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
-        while (!this.model.isGameOver()) {
+        while (state == GameState.RUNNING && !this.model.isGameOver()) {
             final long currentCycleStartTime = System.currentTimeMillis();
             final long elapsed = currentCycleStartTime - previousCycleStartTime;
             processInput();
@@ -70,7 +70,6 @@ public final class GameEngineImpl implements GameEngine {
         }
         this.state = GameState.GAMEOVER;
     }
-
 
     @Override
     public void processInput() {
@@ -92,47 +91,54 @@ public final class GameEngineImpl implements GameEngine {
         if (dt < REFRESH_RATE) {
             try {
                 Thread.sleep(REFRESH_RATE - dt);
-            } catch (InterruptedException ex) { }
+            } catch (InterruptedException ignored) { }
         }
-   }
-
-   @Override
-   public void onNotifyFromView(final ViewEvent event) {
-    switch (event) {
-        case START_GAME -> {
-            this.state = GameState.RUNNING;
-            this.initGame();
-            new Thread(this::mainControl).start();
-        }
-        case CLOSE_GAME -> {
-            this.state = GameState.GAMEOVER;
-            mainControl();
-        }
-        case RESTART -> {
-            this.state = GameState.RUNNING;
-            this.initGame();
-            new Thread(this::mainControl).start();
-        }
-        case MENU ->{
-            this.state = GameState.LAUNCHER;
-            mainControl();
-        }
-        case EXIT -> {
-            System.exit(0);
-        }
-        default -> { }
     }
-}
+
+    @Override
+    public void onNotifyFromView(final ViewEvent event) {
+        switch (event) {
+            case START_GAME -> startNewGame();
+            case CLOSE_GAME -> closeGame();
+            case RESTART -> restartGame();
+            case MENU -> returnToMenu();
+            case EXIT -> exitGame();
+            default -> { }
+        }
+    }
+
+    private void startNewGame() {
+        this.state = GameState.RUNNING;
+        this.initGame();
+        new Thread(this::mainControl).start();
+    }
+
+    private void closeGame() {
+        this.state = GameState.GAMEOVER;
+        mainControl();
+    }
+
+    private void restartGame() {
+        this.state = GameState.RUNNING;
+        this.initGame();
+        new Thread(this::mainControl).start();
+    }
+
+    private void returnToMenu() {
+        this.state = GameState.LAUNCHER;
+        mainControl();
+    }
+
+    private void exitGame() {
+        System.exit(0);
+    }
 
     /**
-     * This enum represent the state of the game.
+     * This enum represents the state of the game.
      */
     private enum GameState {
-
         LAUNCHER,
         RUNNING,
-        GAMEOVER,
-
+        GAMEOVER
     }
-
 }
