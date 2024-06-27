@@ -564,7 +564,7 @@ Il progetto ultimato si avvicina in tutto e per tutto agli obiettivi che ci erav
 
 Comandi:
 
-- Per avviare la partita premere il bottone Start nel menù principale.
+- Per avviare la partita premere il bottone Play nel menù principale.
 - Per muoversi a destra e a sinistra bisogna premere le rispettive frecce, o usare i tasti A-D.
 - Per saltare bisogna premere il tasto SPACE.
 
