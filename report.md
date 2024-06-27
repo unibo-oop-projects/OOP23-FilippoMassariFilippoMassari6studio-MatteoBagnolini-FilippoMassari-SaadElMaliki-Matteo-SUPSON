@@ -462,26 +462,27 @@ classDiagram
         + Collectible createCollectible(GameEntityType type, Pos2d pos)
     }
 
-    class CollectibleEffect {
+    class TimedEffectFactory {
         <<interface>>
-        + void activateEffect(Player player)
-        + void terminateEffect(Player player)
+        + CollectibleEffect createEffect(GameEntityType type, Player player, Object lock)
     }
 
-    class GameEntity {
-        <<interface>>
-
+    class AbstractCollectibleEffect {
+        + run() void
+        + activateEffect(Player player)
+        + terminateEffect(Player player)
     }
 
-    Collectible ..|> GameEntity
-    CollectibleFactory *-- Collectible : instantiate
-    Collectible *-- CollectibleEffect
-    CollectibleEffect ..|> Runnable
+    CollectibleFactory --> Collectible : instantiate
+    Collectible *-- AbstractCollectibleEffect
+    AbstractCollectibleEffect ..|> Runnable
+    CollectibleFactory --> TimedEffectFactory : uses
+    TimedEffectFactory --> AbstractCollectibleEffect : instantiate
 ```
 
 **Problema:** I power-up dotati di timer hanno una routine di gestione pressochè sempre identica che se gestita in maniera errata potrebbe condurre a malfuzionamenti dovuti ad una sovrapposizione di queti ultimi.
 
-**Soluzione:** Per gestire in modo corretto gli effetti dei power-up timerizzati, abbiamo pensato un sistema di gestione sequenziale e differenziata, grazie all'interfaccia `CollectableEffect` che permette di ridurre la ripetizione di codice e rende altamente scalabile l'aggiunta futura di power-up dichiarando una factory di effetti che andrà a coadiuvare il lavoro di `CollectableFactory`.
+**Soluzione:** Per gestire in modo corretto gli effetti dei power-up timerizzati, abbiamo pensato un sistema di gestione sequenziale e differenziata, grazie all'interfaccia `CollectableEffect` che permette di ridurre la ripetizione di codice e rende altamente scalabile grazie alla presenza dell'interfaccia `TimedEffectFactory` che affianca e alleggerisce il lavoro di `CollectableFactory`.
 
 # Capitolo 3 - Sviluppo
 
