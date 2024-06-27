@@ -444,7 +444,7 @@ classDiagram
     World *-- CollisionManager
 ```
 
-**Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco
+**Problema:** Gestione del mondo di gioco, in particolar modo il riconoscimento, la distinzione e l'interazione tra entità di gioco.
 
 **Soluzione:** Il mondo è rappresentato da un'interfaccia `World` essa presenta metodi utili ad istaziare, aggiornare e confrontare tutte le entità di gioco, essa si serve dell'enum `GameEntityType` per istanziare le entità di gioco attraverso l'utilizzo delle factory, distinguerle tra loro e gestirne le iterazioni attraverso il pattern observer implementato grazie al cunnubio di `CollisionManager` e `PlayerManager`. Il compito pricipale dell'interfaccia `World`, ovvero quello di gestire il caricamento del mondo, è realizzato dall'interfaccia `WorldLoader`. La gestione di quest'ultima separatamente, adottanto dunque il pattern strategy, e ed in sinergia con il pattern factory ne permentto una migliore chiarezza, semplicità, manutenibiltà ed espandibiltà.
 
@@ -688,8 +688,8 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/937ff47ac211034bba9d2545bc4dd0243aada337/src/main/java/supson/core/impl/GameEngineImpl.java#L140-L144
 
 - Codice reperito online: 
-    - Non sapevo come usare il logger in maniera appropriata ed ho guardato i metodi principali su [questo sito](https://www.geeksforgeeks.org/logger-getlogger-method-in-java-with-examples/).
     - Mi sono aiutato nella costrizione del `GameTimerImpl` grazie a [questo sito](https://www.geeksforgeeks.org/measure-time-taken-function-java/)
+    - Inizialmente strutturare il lavoro è stato colplesso dunque implementazioni di base della view sono il frutto dello studio di [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
 
 
 # Capitolo 4 - Commenti finali
