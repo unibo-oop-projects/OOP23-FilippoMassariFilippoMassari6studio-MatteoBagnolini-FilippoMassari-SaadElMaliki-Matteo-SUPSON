@@ -541,10 +541,11 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
 
 - Utilizzo multiplo dei Thread, ne riporto qualche esempio:
     - https://github.com/matteobagnolini/OOP23-SUPSON/blob/0cc4acde04ec467078dbdbfa45ca81a320406337/src/main/java/supson/model/effect/impl/AbstractCollectibleEffect.java#L44-L66
-    - !!!
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/937ff47ac211034bba9d2545bc4dd0243aada337/src/main/java/supson/core/impl/GameEngineImpl.java#L140-L144
 
 - Codice reperito online: 
     - Non sapevo come usare il logger in maniera appropriata ed ho guardato i metodi principali su [questo sito](https://www.geeksforgeeks.org/logger-getlogger-method-in-java-with-examples/).
+    - Mi sono aiutato nella costrizione del `GameTimerImpl` grazie a [questo sito](https://www.geeksforgeeks.org/measure-time-taken-function-java/)
 
 
 # Capitolo 4 - Commenti finali
