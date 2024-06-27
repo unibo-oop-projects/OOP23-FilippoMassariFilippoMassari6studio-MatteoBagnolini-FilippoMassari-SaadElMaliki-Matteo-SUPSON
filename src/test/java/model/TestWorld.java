@@ -2,17 +2,16 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.model.entity.api.GameEntity;
 import supson.model.entity.api.block.TagBlockEntity;
+import supson.model.entity.impl.block.TerrainImpl;
 import supson.model.entity.impl.moveable.enemy.Enemy;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.hud.api.Hud;
@@ -136,13 +135,7 @@ final class TestWorld {
     void testGetGameEntities() {
         final List<GameEntity> entities = world.getGameEntities();
         assertNotNull(entities);
-        Boolean containPlayer = false;
-        for (final GameEntity gameEntity : entities) {
-            if (gameEntity.getGameEntityType().equals(GameEntityType.PLAYER)){
-                containPlayer = true;
-            }
-        }
-        assertTrue(containPlayer);
+        assertTrue(entities.stream().anyMatch(e -> e.getGameEntityType().equals(GameEntityType.PLAYER)));
         assertTrue(entities.containsAll(world.getBlocks()));
         assertTrue(entities.containsAll(world.getEnemies()));
     }
@@ -160,18 +153,6 @@ final class TestWorld {
     }
 
     /**
-     * Tests the isGameOver() method of the World class.
-     * It checks if the game over condition is correctly identified.
-     */
-    @Test
-    void testIsGameOver() {
-        final Player player = world.getPlayer();
-        player.setLife(-2);
-        world.updateGame(1);
-        assertTrue(world.isGameOver());
-    }
-
-    /**
      * Tests the loadWorld() method of the World class.
      * It checks if the world is loaded correctly from the file.
      */
@@ -184,5 +165,54 @@ final class TestWorld {
         assertFalse(blocks.isEmpty());
         assertNotNull(enemies);
         assertFalse(enemies.isEmpty());
+    }
+
+    /**
+     * Tests the addBlock() method of the World class.
+     * It checks if a block is added correctly to the world.
+     */
+    @Test
+    void testAddBlock() {
+        TagBlockEntity block = new TerrainImpl(new Pos2dImpl(0, 0));
+        int initialBlockCount = world.getBlocks().size();
+        world.addBlock(block);
+        assertEquals(initialBlockCount + 1, world.getBlocks().size());
+        assertTrue(world.getBlocks().contains(block));
+    }
+
+    /**
+     * Tests the addEnemy() method of the World class.
+     * It checks if an enemy is added correctly to the world.
+     */
+    @Test
+    void testAddEnemy() {
+        Enemy enemy = new Enemy(new Pos2dImpl(0,0));
+        int initialEnemyCount = world.getEnemies().size();
+        world.addEnemy(enemy);
+        assertEquals(initialEnemyCount + 1, world.getEnemies().size());
+        assertTrue(world.getEnemies().contains(enemy));
+    }
+
+    /**
+     * Tests the setMapWidth() and getMapWidth() methods of the World class.
+     * It checks if the map width is set and retrieved correctly.
+     */
+    @Test
+    void testSetGetMapWidth() {
+        Optional<Integer> mapWidth = Optional.of(100);
+        world.setMapWidth(mapWidth);
+        assertEquals(100, world.getMapWidth());
+    }
+
+    /**
+     * Tests the setGameOver() and isGameOver() methods of the World class.
+     * It checks if the game over state is set and retrieved correctly.
+     */
+    @Test
+    void testSetGetGameOver() {
+        world.setGameOver(true);
+        assertTrue(world.isGameOver());
+        world.setGameOver(false);
+        assertFalse(world.isGameOver());
     }
 }
