@@ -56,7 +56,10 @@ public final class GameEngineImpl implements GameEngine {
         }
     }
 
-
+    /**
+     * Runs the game loop, which processes input, updates the game state, renders the game view,
+     * and waits for the next frame.
+     */
     private void runGameLoop() {
         long previousCycleStartTime = System.currentTimeMillis();
         while (state == GameState.RUNNING && !this.model.isGameOver()) {
@@ -86,6 +89,11 @@ public final class GameEngineImpl implements GameEngine {
         this.view.renderGameView(this.model.getGameEntities(), this.model.getPlayer(), this.model.getHud());
     }
 
+    /**
+     * Waits for the next frame based on the refresh rate.
+     *
+     * @param cycleStartTime The start time of the current game cycle.
+     */
     private void waitForNextFrame(final long cycleStartTime) {
         final long dt = System.currentTimeMillis() - cycleStartTime;
         if (dt < REFRESH_RATE) {
@@ -107,28 +115,43 @@ public final class GameEngineImpl implements GameEngine {
         }
     }
 
+    /**
+     * Starts a new game by setting the state to RUNNING, initializing the game, and starting the main control loop in a new thread.
+     */
     private void startNewGame() {
         this.state = GameState.RUNNING;
         this.initGame();
         new Thread(this::mainControl).start();
     }
 
+    /**
+     * Closes the game by setting the state to GAMEOVER and calling the main control method.
+     */
     private void closeGame() {
         this.state = GameState.GAMEOVER;
         mainControl();
     }
 
+    /**
+     * Restarts the game by setting the state to RUNNING, initializing the game, and starting the main control loop in a new thread.
+     */
     private void restartGame() {
         this.state = GameState.RUNNING;
         this.initGame();
         new Thread(this::mainControl).start();
     }
 
+    /**
+     * Returns to the menu by setting the state to LAUNCHER and calling the main control method.
+     */
     private void returnToMenu() {
         this.state = GameState.LAUNCHER;
         mainControl();
     }
 
+    /**
+     * Exits the game by calling the System.exit() method.
+     */
     private void exitGame() {
         System.exit(0);
     }
