@@ -499,7 +499,6 @@ classDiagram
     EXIT
     }
     class MainView {
-        -mainFrame: JFrame
         +MainView(GameEngineImpl)
         +showMenu(): void
         +showGameView(): void
@@ -512,27 +511,18 @@ classDiagram
         + initGame()
         + mainControl()
         - gameLoop()
-        + processInput()
         + render()
         + onNotifyFromView(event : ViewEvent)
     }
     class MenuView {
         <<interface>>
-        + initview() : void
-        + renderview() :void
     }
     class GameView {
         <<interface>>
-        + initview() : void
-        + renderview(...) :void
     }
     class EndGameView {
         <<interface>>
-        + initview() : void
-        + renderview(int, double, boolean) : void
     }
-
-    GameEngine *-- World
     GameEngine *--* MainView
     ViewEvent --> GameEngine
     ViewEvent --> MainView
@@ -544,6 +534,38 @@ classDiagram
 **Problema:** Gestire la comunicazione con il `GameEngine`
 
 **Soluzione:** Abbiamo introdotto l'utilizzo dello state pattern per separare chiaramente i vari stati del gioco e facilitare la transizione tra di essi.
+
+```mermaid
+classDiagram
+    class MainView {
+      -mainFrame: JFrame
+      +MainView(GameEngineImpl)
+      +showMenu(): void
+      +showGameView(): void
+      +renderGameView(List~GameEntity~, Player, Hud): void
+      +showEndGame(int, double, boolean): void
+      +resetView(): void
+  }
+  class MenuView {
+      <<interface>>
+      + initview() : void
+      + renderview() :void
+  }
+  class GameView {
+      <<interface>>
+      + initview() : void
+      + renderview(...) :void
+  }
+  class EndGameView {
+      <<interface>>
+      + initview() : void
+      + renderview(int, double, boolean) : void
+  }
+  MainView *-- MenuView
+  MainView *-- GameView
+  MainView *-- EndGameView
+
+```
 
 **Problema:** Passare da una fase all'altra del gioco
 
@@ -614,6 +636,7 @@ classDiagram
     }
     class GameEngine {
         <<Interface>>
+        - input: InputManager
         + processInput()
     }
     class MainView {
@@ -691,6 +714,11 @@ Viene anche verificata la casistica in cui si tenta di creare un collezionabile 
     - Mi sono aiutato nella costrizione del `GameTimerImpl` grazie a [questo sito](https://www.geeksforgeeks.org/measure-time-taken-function-java/)
     - Inizialmente strutturare il lavoro è stato colplesso dunque implementazioni di base della view sono il frutto dello studio di [game-as-a-lab](https://github.com/pslab-unibo/oop-game-prog-patterns-2022) del prof. Ricci.
 
+### Saad El Maliki
+
+- Utilizzo di lambda e Listeners:
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/MainView.java#L46-L54
+    - https://github.com/matteobagnolini/OOP23-SUPSON/blob/master/src/main/java/supson/view/impl/common/InputManager.java
 
 # Capitolo 4 - Commenti finali
 
