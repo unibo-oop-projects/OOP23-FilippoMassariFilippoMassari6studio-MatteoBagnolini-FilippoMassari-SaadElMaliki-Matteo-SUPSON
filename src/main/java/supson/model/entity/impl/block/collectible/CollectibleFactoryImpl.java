@@ -2,7 +2,8 @@ package supson.model.entity.impl.block.collectible;
 
 import supson.common.GameEntityType;
 import supson.common.api.Pos2d;
-import supson.model.effect.impl.StrengthPowerUpEffectImpl;
+import supson.model.effect.api.TimedEffectFactory;
+import supson.model.effect.impl.TimedEffectFactoryImpl;
 import supson.model.entity.api.block.collectible.Collectible;
 import supson.model.entity.api.block.collectible.CollectibleFactory;
 import supson.model.entity.impl.moveable.player.Player;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 public final class CollectibleFactoryImpl implements CollectibleFactory {
 
     private final Map<GameEntityType, Function<Pos2d, Collectible>> collectibleCreators;
+    private final TimedEffectFactory timedEffectFactory = new TimedEffectFactoryImpl();
     private final Object lock = new Object();
 
     /**
@@ -89,11 +91,9 @@ public final class CollectibleFactoryImpl implements CollectibleFactory {
     private Collectible createCollectibleStrengthPowerUp(final Pos2d pos) {
         return new AbstractCollectible(pos, GameEntityType.STRNGTH_BOOST_POWER_UP) {
 
-            private static final int DURATION = 3;
-
             @Override
             public void collect(final Player player) {
-                final Thread timer = new Thread(new StrengthPowerUpEffectImpl(DURATION, player, lock));
+                final Thread timer = new Thread(timedEffectFactory.createEffect(GameEntityType.STRNGTH_BOOST_POWER_UP, player, lock));
                 timer.start();
             }
         };

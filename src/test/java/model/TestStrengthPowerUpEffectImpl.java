@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import supson.common.GameEntityType;
 import supson.common.impl.Pos2dImpl;
 import supson.model.effect.api.CollectibleEffect;
-import supson.model.effect.impl.StrengthPowerUpEffectImpl;
+import supson.model.effect.api.TimedEffectFactory;
+import supson.model.effect.impl.TimedEffectFactoryImpl;
 import supson.model.entity.impl.moveable.player.Player;
 import supson.model.entity.impl.moveable.player.PlayerState;
 
@@ -33,7 +35,8 @@ final class TestStrengthPowerUpEffectImpl {
      */
     @Test
     void testRun() throws InterruptedException {
-        final CollectibleEffect effect = new StrengthPowerUpEffectImpl(duration, player, lock);
+        final TimedEffectFactory factory = new TimedEffectFactoryImpl();
+        final CollectibleEffect effect = factory.createEffect(GameEntityType.STRNGTH_BOOST_POWER_UP, player, lock);
 
         assertFalse(player.getState().isInvulnerable());
         final Thread thread = new Thread(effect);
